@@ -1,6 +1,6 @@
 import React, { useEffect, useState, FunctionComponent } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { IndexStartupContainer } from '@/Containers'
+import { StartupContainer } from '@/Containers'
 import { useSelector } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native'
 import { navigationRef } from '@/Navigators/Root'
@@ -21,7 +21,7 @@ const ApplicationNavigator = () => {
 
   useEffect(() => {
     if (MainNavigator == null && !applicationIsLoading) {
-      MainNavigator = require('@/Navigators/Main').default
+      MainNavigator = require('@/Navigators/MainNavigator').default
       setIsApplicationLoaded(true)
     }
   }, [applicationIsLoading])
@@ -40,7 +40,7 @@ const ApplicationNavigator = () => {
       <NavigationContainer ref={navigationRef}>
         <StatusBar barStyle={'light-content'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Startup" component={IndexStartupContainer} />
+          <Stack.Screen name="Startup" component={StartupContainer} />
           {isApplicationLoaded && MainNavigator != null && (
             <Stack.Screen
               name="Main"

@@ -6,8 +6,9 @@ import FetchOne from '@/Store/User/FetchOne'
 import { useTranslation } from 'react-i18next'
 import { UserState } from '@/Store/User'
 import tw from '@/Styles/tailwind'
+import { ProfileTabIcon } from "@/Assets/Icons";
 
-const IndexExampleContainer = () => {
+const CardsContainer = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
@@ -32,6 +33,7 @@ const IndexExampleContainer = () => {
     <View style={tw`flex p-5`}>
       <View style={tw`flex flex-col items-center`}>
         <Brand />
+        <ProfileTabIcon/>
         {fetchOneUserLoading && <ActivityIndicator />}
         {fetchOneUserError ? (
           <Text style={tw`text-base text-error`}>
@@ -63,4 +65,4 @@ const IndexExampleContainer = () => {
   )
 }
 
-export default IndexExampleContainer
+export default CardsContainer

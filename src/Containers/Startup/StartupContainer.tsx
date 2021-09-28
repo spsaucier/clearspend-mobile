@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Brand } from '@/Components'
 import tw from '@/Styles/tailwind'
 
-const IndexStartupContainer = () => {
+const StartupContainer = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
@@ -23,4 +23,4 @@ const IndexStartupContainer = () => {
   )
 }
 
-export default IndexStartupContainer
+export default StartupContainer

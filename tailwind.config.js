@@ -1,4 +1,5 @@
 // Important: After editing this file, run npx trnc-create-styles. See README.md
+
 module.exports = {
   theme: {
     screens: {
@@ -11,17 +12,29 @@ module.exports = {
       '2xl': '1536px',
     },
     colors: {
-      white: '#fff',
-      black: '#000',
-      transparent: 'transparent',
-      primary: '#1D4ED8',
-      secondary: '#6500D8',
-      gray: {
-        100: '#f7fafc',
-        900: '#1a202c',
-      },
-      error: '#D80E00',
-      success: '#00B907',
+      black: "#000000",
+      white: "#FFFFFF",
+      transparent: "rgba(225,225,225,0)",
+
+      // Brand
+      primary: "#1D4ED8",
+      primaryDark: "#0c177d",
+      secondary: "#4EF8C1",
+
+      // Functional
+      error: '#ac204b',
+      success: '#00b971',
+
+      // Grayscale
+      gray10: "#1A1A1A",
+      gray20: "#333333",
+      gray30: "#4D4D4D",
+      gray40: "#666666",
+      gray50: "#808080",
+      gray60: "#999999",
+      gray70: "#B2B2B2",
+      gray80: "#CCCCCC",
+      gray90: "#E5E5E5",
     },
   },
   variants: {},
