@@ -1,15 +1,15 @@
-import React from "react";
-import { StyleProp, View, ViewStyle } from "react-native";
-import { Path, Svg } from "react-native-svg";
+import React from 'react'
+import { StyleProp, View, ViewStyle } from 'react-native'
+import { Path, Svg } from 'react-native-svg'
 
 import tw from '@/Styles/tailwind'
 
 type Props = {
-  color?: string;
-  style?: StyleProp<ViewStyle>;
-  testID?: string;
-  size?: string | number;
-};
+  color?: string
+  style?: StyleProp<ViewStyle>
+  testID?: string
+  size?: string | number
+}
 
 export const ProfileTabIcon = ({
   color = tw.color('primary'),
@@ -18,7 +18,10 @@ export const ProfileTabIcon = ({
   size = 20,
 }: Props) => {
   return (
-    <View style={[{ aspectRatio: 18 / 22, height: size, width: size }, style]} testID={testID}>
+    <View
+      style={[{ aspectRatio: 18 / 22, height: size, width: size }, style]}
+      testID={testID}
+    >
       <Svg width="100%" height="100%" viewBox="0 0 18 22" fill="none">
         <Path
           fill-rule="evenodd"
@@ -28,5 +31,5 @@ export const ProfileTabIcon = ({
         />
       </Svg>
     </View>
-  );
-};
+  )
+}

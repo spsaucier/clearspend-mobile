@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator, View, Text } from 'react-native'
+import { View, Text } from 'react-native'
 import { useDispatch } from 'react-redux'
 import InitStartup from '@/Store/Startup/Init'
 import { useTranslation } from 'react-i18next'
-import { Brand } from '@/Components'
 import tw from '@/Styles/tailwind'
+import { Logo } from '@/Assets/Svg/Logo'
+import { ActivityIndicator } from '@/Components'
 
 const StartupContainer = () => {
   const { t } = useTranslation()
@@ -16,8 +17,10 @@ const StartupContainer = () => {
 
   return (
     <View style={tw`flex-1 flex-col justify-center items-center bg-primary`}>
-      <Brand />
-      <ActivityIndicator size={'large'} style={tw`m-4`} />
+      <View style={tw`flex flex-row p-6`}>
+        <Logo style={tw`w-8/12`} />
+      </View>
+      <ActivityIndicator style={tw`my-3`} />
       <Text style={tw`text-center text-white`}>{t('welcome')}</Text>
     </View>
   )

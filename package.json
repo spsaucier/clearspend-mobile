@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start --reset-cache",
     "test": "jest",
-    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "lint": "eslint './src/**/*.{js,ts,tsx,json}'",
     "type-check": "tsc --build plugins/typescript/template/tsconfig.json",
     "podinstall": "cd ios && pod install && cd ..",
     "reinstall-pods": "rm -rf ios/Pods && yarn podinstall",
