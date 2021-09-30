@@ -6,7 +6,7 @@ import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { navigationRef } from '@/Navigators/Root';
 import { StartupState } from '@/Store/Startup';
-import { StartupContainer } from '@/Containers';
+import StartupScreen from '@/Containers/Startup/StartupScreen';
 
 const Stack = createStackNavigator();
 
@@ -41,7 +41,10 @@ const ApplicationNavigator = () => {
       <NavigationContainer ref={navigationRef}>
         <StatusBar barStyle="dark-content" />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Startup" component={StartupContainer} />
+          <Stack.Screen name="Startup" component={StartupScreen} />
+
+          {/* TODO Add Auth Stack check */}
+
           {isApplicationLoaded && MainNavigator != null && (
             <Stack.Screen
               name="Main"

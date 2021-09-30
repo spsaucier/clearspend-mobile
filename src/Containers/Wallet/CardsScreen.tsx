@@ -4,13 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { Card } from '@/Components/Card';
+import { NotificationBell } from '@/Components/NotificationBell';
+import { FocusAwareStatusBar } from '@/Components/FocusAwareStatusbar';
 
-const CardsContainer = () => {
+const CardsScreen = () => {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={tw`flex-1`} edges={['top']}>
+    <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
+      <FocusAwareStatusBar backgroundColor={tw.color('lightBG')} barStyle="dark-content" />
       <View style={tw`px-9 py-5`}>
+        <View style={tw`flex-row justify-between my-2`}>
+          <Text style={tw`text-base font-bold text-copy`}>Company Name</Text>
+          <NotificationBell />
+        </View>
         <Text style={tw`text-3xl font-bold text-copy`}>{t('wallet.header', { name: 'John' })}</Text>
       </View>
       <View style={tw`flex px-5 pt-4 pb-8`}>
@@ -51,4 +58,4 @@ const CardsContainer = () => {
   );
 };
 
-export default CardsContainer;
+export default CardsScreen;

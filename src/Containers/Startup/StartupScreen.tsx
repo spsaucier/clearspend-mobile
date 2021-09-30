@@ -7,7 +7,7 @@ import tw from '@/Styles/tailwind';
 import { Logo } from '@/Assets/Svg/Logo';
 import { ActivityIndicator } from '@/Components';
 
-const StartupContainer = () => {
+const StartupScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -26,4 +26,4 @@ const StartupContainer = () => {
   );
 };
 
-export default StartupContainer;
+export default StartupScreen;

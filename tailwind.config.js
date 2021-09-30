@@ -42,6 +42,9 @@ module.exports = {
       tertiary: '#04A7DA',
       copy: '#111827',
 
+      // Background Colours
+      lightBG: '#F1F7FF',
+
       // Functional
       error: '#ac204b',
       success: '#00b971',
