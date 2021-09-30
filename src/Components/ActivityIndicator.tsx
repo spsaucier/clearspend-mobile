@@ -1,21 +1,18 @@
-import { Animated, StyleProp, View, ViewStyle } from 'react-native'
-import React from 'react'
-import { Path, Svg } from 'react-native-svg'
+import { Animated, StyleProp, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { Path, Svg } from 'react-native-svg';
 
-import tw from '@/Styles/tailwind'
+import tw from '@/Styles/tailwind';
 
-import { useRotateAnimation } from '@/Hooks'
+import { useRotateAnimation } from '@/Hooks';
 
 type Props = {
-  color?: string
-  style?: StyleProp<ViewStyle>
-}
+  color?: string;
+  style?: StyleProp<ViewStyle>;
+};
 
-export const ActivityIndicator = ({
-  color = tw.color('primary'),
-  style,
-}: Props) => {
-  const [interpolatedRotate] = useRotateAnimation()
+export const ActivityIndicator = ({ color = tw.color('primary'), style }: Props) => {
+  const [interpolatedRotate] = useRotateAnimation();
 
   const loadingCircle = () => (
     <Svg width="100%" height="100%" viewBox="0 0 52 52" fill="none">
@@ -32,7 +29,7 @@ export const ActivityIndicator = ({
         fill={color}
       />
     </Svg>
-  )
+  );
 
   return (
     <View style={[tw`w-16`, { aspectRatio: 1 }, style]}>
@@ -48,5 +45,5 @@ export const ActivityIndicator = ({
         {loadingCircle()}
       </Animated.View>
     </View>
-  )
-}
+  );
+};

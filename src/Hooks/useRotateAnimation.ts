@@ -1,12 +1,8 @@
-import { useEffect } from 'react'
-import { Animated, Easing } from 'react-native'
+import { useEffect } from 'react';
+import { Animated, Easing } from 'react-native';
 
-export const useRotateAnimation = (
-  running: boolean = true,
-  duration: number = 1000,
-) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const animation = new Animated.Value(0)
+export const useRotateAnimation = (running: boolean = true, duration: number = 1000) => {
+  const animation = new Animated.Value(0);
 
   const loop = Animated.loop(
     Animated.timing(animation, {
@@ -16,22 +12,22 @@ export const useRotateAnimation = (
       useNativeDriver: true,
       isInteraction: false,
     }),
-  )
+  );
   const interpolatedRotate = animation.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
-  })
+  });
 
   useEffect(() => {
     if (running) {
-      loop.start()
+      loop.start();
     } else {
-      animation.setValue(0)
-      loop.stop()
+      animation.setValue(0);
+      loop.stop();
     }
 
-    return () => loop.stop()
-  }, [running, loop, animation])
+    return () => loop.stop();
+  }, [running, loop, animation]);
 
-  return [interpolatedRotate]
-}
+  return [interpolatedRotate];
+};

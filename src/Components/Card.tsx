@@ -1,27 +1,21 @@
-import {
-  StyleProp,
-  View,
-  ViewStyle,
-  Text,
-  TouchableOpacity,
-} from 'react-native'
-import React from 'react'
+import { StyleProp, View, ViewStyle, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
 
-import tw from '@/Styles/tailwind'
-import { Logo } from '@/Assets/Svg/Logo'
-import { Visa } from '@/Assets/Svg/Visa'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import tw from '@/Styles/tailwind';
+import { Logo } from '@/Assets/Svg/Logo.svg';
+import { Visa } from '@/Assets/Svg/Visa.svg';
 
 type Props = {
-  id: string
-  balance: string
-  lastDigits: string
-  isFrozen: boolean
-  cardTitle: string
-  isVirtual: boolean
-  isDisposable: boolean
-  style?: StyleProp<ViewStyle>
-}
+  id: string;
+  balance: string;
+  lastDigits: string;
+  isFrozen: boolean;
+  cardTitle: string;
+  isVirtual: boolean;
+  isDisposable: boolean;
+  style?: StyleProp<ViewStyle>;
+};
 
 export const Card = ({
   id,
@@ -33,7 +27,7 @@ export const Card = ({
   isDisposable,
   style,
 }: Props) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <TouchableOpacity
@@ -50,29 +44,21 @@ export const Card = ({
       ]}
       onPress={() => {}}
     >
-      {/* Top Row*/}
+      {/* Top Row */}
       <View style={tw`flex flex-row`}>
         <View style={tw`flex`}>
           <Logo style={tw`w-28 mt-1`} />
           <View style={tw`flex flex-row`}>
-            {isVirtual && (
-              <Text style={tw`text-white`}>
-                {t('card.virtual').toUpperCase()}
-              </Text>
-            )}
+            {isVirtual && <Text style={tw`text-white`}>{t('card.virtual').toUpperCase()}</Text>}
             {isDisposable && (
-              <Text style={tw`text-white`}>
-                {t('card.disposable').toUpperCase()}
-              </Text>
+              <Text style={tw`text-white`}>{t('card.disposable').toUpperCase()}</Text>
             )}
             <Text style={tw`text-white`}>{t('card.card').toUpperCase()}</Text>
           </View>
         </View>
         <View style={tw`flex-1 items-end`}>
           <Text style={tw`text-white text-2xl font-bold`}>{balance}</Text>
-          <Text style={tw`text-white text-xs`}>
-            {t('card.balance').toUpperCase()}
-          </Text>
+          <Text style={tw`text-white text-xs`}>{t('card.balance').toUpperCase()}</Text>
         </View>
       </View>
 
@@ -81,29 +67,22 @@ export const Card = ({
         <View style={tw`flex flex-row items-end`}>
           <View style={tw`flex font-card`}>
             <Text style={tw`text-white text-2xl font-card`}>
-              **** {lastDigits}
+              ****
+              {lastDigits}
             </Text>
-            {!!cardTitle && (
-              <Text style={tw`text-white text-base`}>{cardTitle}</Text>
-            )}
+            {!!cardTitle && <Text style={tw`text-white text-base`}>{cardTitle}</Text>}
           </View>
           <View style={tw`flex-1 items-end`}>
             {isFrozen && (
-              <View
-                style={tw`border py-1 px-2 rounded-full border-white bg-white bg-opacity-10`}
-              >
-                <Text style={tw`text-white text-xs`}>
-                  {t('card.frozen').toUpperCase()}
-                </Text>
+              <View style={tw`border py-1 px-2 rounded-full border-white bg-white bg-opacity-10`}>
+                <Text style={tw`text-white text-xs`}>{t('card.frozen').toUpperCase()}</Text>
               </View>
             )}
             <Visa style={tw`h-10 mt-1`} />
           </View>
         </View>
-        <Text style={tw`text-white text-xs text-center`}>
-          {t('card.viewControls')}
-        </Text>
+        <Text style={tw`text-white text-xs text-center`}>{t('card.viewControls')}</Text>
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};

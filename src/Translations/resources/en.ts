@@ -24,4 +24,4 @@ export default {
     showCardInfo: 'Show Card Info',
     freezeCard: 'Freeze Card',
   },
-}
+};

@@ -1,18 +1,18 @@
-const presets = ['module:metro-react-native-babel-preset']
-const plugins = []
+const presets = ['module:metro-react-native-babel-preset'];
+const plugins = [];
 
 plugins.push([
   'module-resolver',
   {
     root: ['./src'],
-    extensions: ['.js', '.json'],
+    extensions: ['.js', '.json', '.ts', '.tsx'],
     alias: {
       '@': './src',
     },
   },
-])
+]);
 
 module.exports = {
   presets,
   plugins,
-}
+};

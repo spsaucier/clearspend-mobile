@@ -1,13 +1,40 @@
 module.exports = {
   env: {
-    'jest/globals': true,
+    es6: true,
+    node: true,
   },
-  root: true,
-  extends: ['@react-native-community'],
-  plugins: ['jest'],
+  extends: ['airbnb', 'airbnb-typescript'],
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+  },
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    project: './tsconfig.json',
+  },
+  plugins: ['react', 'prettier', '@typescript-eslint'],
   rules: {
-    semi: ['error', 'never'],
-    'object-curly-spacing': ['error', 'always'],
+    'import/prefer-default-export': 'off',
+    'react/require-default-props': [
+      'error',
+      { forbidDefaultForRequired: true, ignoreFunctionalComponents: true },
+    ],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+    '@typescript-eslint/indent': ['off'],
+    'object-curly-newline': ['off'],
     'array-bracket-spacing': ['error', 'never'],
     'react/default-props-match-prop-types': ['error'],
     'react/sort-prop-types': ['error'],
@@ -17,4 +44,4 @@ module.exports = {
       'babel-module': {},
     },
   },
-}
+};

@@ -4,13 +4,13 @@
  *
  * You can add other navigation functions that you need and export them
  */
-import * as React from 'react'
-import { CommonActions, NavigationContainerRef } from '@react-navigation/native'
+import * as React from 'react';
+import { CommonActions, NavigationContainerRef } from '@react-navigation/native';
 
-export const navigationRef = React.createRef<NavigationContainerRef<any>>()
+export const navigationRef = React.createRef<NavigationContainerRef<any>>();
 
 export function navigate(name: string, params: any) {
-  navigationRef.current?.navigate(name, params)
+  navigationRef.current?.navigate(name, params);
 }
 
 export function navigateAndReset(routes = [], index = 0) {
@@ -19,7 +19,7 @@ export function navigateAndReset(routes = [], index = 0) {
       index,
       routes,
     }),
-  )
+  );
 }
 
 export function navigateAndSimpleReset(name: string, index = 0) {
@@ -28,5 +28,5 @@ export function navigateAndSimpleReset(name: string, index = 0) {
       index,
       routes: [{ name }],
     }),
-  )
+  );
 }

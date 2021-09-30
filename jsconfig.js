@@ -4,4 +4,4 @@ System.config({
   paths: {
     '@/*': './src/*',
   },
-})
+});

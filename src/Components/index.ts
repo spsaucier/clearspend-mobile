@@ -1,1 +1,1 @@
-export { ActivityIndicator } from './ActivityIndicator'
+export { ActivityIndicator } from './ActivityIndicator';

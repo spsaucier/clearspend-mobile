@@ -1,1 +1,1 @@
-export { useRotateAnimation } from './useRotateAnimation'
+export { useRotateAnimation } from './useRotateAnimation';

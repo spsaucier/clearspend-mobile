@@ -60,4 +60,4 @@ module.exports = {
   },
   variants: {},
   plugins: [],
-}
+};
