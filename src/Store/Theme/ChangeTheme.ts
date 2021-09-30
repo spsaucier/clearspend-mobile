@@ -9,13 +9,13 @@ export default {
   initialState: {},
   action: createAction<Partial<ThemeState>>('theme/changeTheme'),
   reducers(state: ThemeState, { payload }: PayloadInterface) {
-    const { theme, darkMode, ...rest } = state;
+    let { theme, darkMode } = state;
     if (typeof payload.theme !== 'undefined') {
       theme = payload.theme;
     }
     if (typeof payload.darkMode !== 'undefined') {
       darkMode = payload.darkMode;
     }
-    return { theme, darkMode, ...rest };
+    return Object.assign(state, { theme, darkMode });
   },
 };

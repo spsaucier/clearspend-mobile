@@ -10,8 +10,7 @@ export default {
   reducers(state: ThemeState, { payload }: PayloadInterface) {
     const { theme, darkMode, ...rest } = state;
     if (!state.theme) {
-      theme = payload.theme;
-      darkMode = payload.darkMode;
+      return { theme: payload.theme, darkMode: payload.darkMode, ...rest };
     }
     return { theme, darkMode, ...rest };
   },
