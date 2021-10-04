@@ -21,8 +21,20 @@ export default {
   signUp: {},
   wallet: {
     header: 'Hey {{name}}!',
-    recentTransactions: 'Recent Transactions',
-    balance: 'Balance: ',
+    transactions: {
+      recentTransactions: 'Recent Transactions',
+      noRecent: 'No recent transactions',
+      balance: 'Balance: ',
+    },
+    cardInfo: {
+      title: 'Card Info',
+    },
+    cardDetails: {
+      title: 'Card Details',
+    },
+    transactionDetails: {
+      title: 'Transaction Details',
+    },
   },
   card: {
     virtual: 'Virtual ',
@@ -33,6 +45,7 @@ export default {
     viewControls: 'Tap to view card controls',
     showCardInfo: 'Show Card Info',
     freezeCard: 'Freeze Card',
+    unfreezeCard: 'Unfreeze Card',
   },
   profile: {
     profileMenu: {
@@ -46,7 +59,18 @@ export default {
       logOut: 'Log out from this device',
     },
     changePassword: {
-      changePassword: 'Change Password',
+      title: 'Change Password',
     },
+    notificationSettings: {
+      title: 'Notification Settings',
+      disableAll: 'Disable all notifications',
+    },
+    auditLog: {
+      title: 'Audit Log',
+    },
+  },
+  notifications: {
+    title: 'Notifications',
+    youHaveNew: 'You have {{newNotifications}} new notifications',
   },
 };

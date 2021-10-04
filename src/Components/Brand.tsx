@@ -10,10 +10,8 @@ interface Props {
 
 const logoImage = require('@/Assets/Images/tranwall.png');
 
-const Brand = ({ height = 200, width = 200, mode = 'contain' }: Props) => (
+export const Brand = ({ height = 200, width = 200, mode = 'contain' }: Props) => (
   <View style={{ height, width }}>
     <Image style={tw`h-full w-full`} source={logoImage} resizeMode={mode} />
   </View>
 );
-
-export default Brand;

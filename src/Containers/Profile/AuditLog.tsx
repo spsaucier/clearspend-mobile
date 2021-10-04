@@ -4,14 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSettingHeader';
 
-const ChangePasswordScreen = () => {
+const AuditLogScreen = () => {
   const { t } = useTranslation();
 
   return (
     <SafeAreaView style={tw`bg-white flex-1 p-5`}>
-      <ProfileSettingsHeader title={t('profile.changePassword.title')} />
+      <ProfileSettingsHeader title={t('profile.auditLog.title')} />
     </SafeAreaView>
   );
 };
 
-export default ChangePasswordScreen;
+export default AuditLogScreen;

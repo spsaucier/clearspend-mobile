@@ -11,7 +11,6 @@ import StartupScreen from '@/Containers/Startup/StartupScreen';
 const Stack = createStackNavigator();
 
 let MainNavigator: FunctionComponent | null;
-
 // @refresh reset
 const ApplicationNavigator = () => {
   const [isApplicationLoaded, setIsApplicationLoaded] = useState(false);

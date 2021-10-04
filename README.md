@@ -20,6 +20,8 @@ Follow general React Native setup: (React Native CLI Quickstart): https://reactn
 
 - Run the iOS app (remember to start a simulator or connect a device): `yarn ios`
 
+  - Alternatively, open the workspace in Xcode and build & run the app from there
+
 - Run the Android app (remember to start a simulator or connect a device): `yarn android`
 
 ## Setup Issues

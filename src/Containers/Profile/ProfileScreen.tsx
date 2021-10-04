@@ -1,13 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { View, ActivityIndicator, Text, TouchableOpacity, Switch } from 'react-native';
+import { View, ActivityIndicator, Text, TouchableOpacity, Switch, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { UserState } from '@/Store/User';
 import tw from '@/Styles/tailwind';
-import { ChevronIcon } from '@/Assets/Icons';
+import { nameToInitials } from '@/Helpers/StringHelpers';
+import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
   const user = useSelector((state: { user: UserState }) => state.user.item);
   const fetchOneUserLoading = useSelector(
@@ -18,7 +19,7 @@ const ProfileScreen = () => {
     <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
       <View style={tw`flex p-5`}>
         <View style={tw`flex items-center justify-center bg-primary rounded-full h-12 w-12`}>
-          <Text style={tw`text-white text-xl`}>MH</Text>
+          <Text style={tw`text-white text-xl`}>{nameToInitials(user.name)}</Text>
         </View>
         {fetchOneUserLoading && <ActivityIndicator />}
         {fetchOneUserError ? (
@@ -34,55 +35,62 @@ const ProfileScreen = () => {
           {t('profile.profileMenu.manageAccount').toUpperCase()}
         </Text>
 
-        <TouchableOpacity
-          style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
-        >
-          <Text style={tw`text-base text-copy`}>{t('profile.profileMenu.faceId')}</Text>
-          <Switch
-            onValueChange={() => {}}
-            value
-            trackColor={{
-              true: tw.color('primary'),
-              false: tw.color('gray80'),
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <TouchableOpacity
+            style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
+          >
+            <Text style={tw`text-base text-copy`}>{t('profile.profileMenu.faceId')}</Text>
+            <Switch
+              onValueChange={() => {}}
+              value
+              trackColor={{
+                true: tw.color('primary'),
+                false: tw.color('gray80'),
+              }}
+              ios_backgroundColor={tw.color('white')}
+              thumbColor={tw.color('white')}
+            />
+          </TouchableOpacity>
+
+          <ProfileMenuRow
+            label={t('profile.profileMenu.biometrics')}
+            onPress={() => {
+              navigation.navigate('Profile');
             }}
-            ios_backgroundColor={tw.color('white')}
-            thumbColor={tw.color('white')}
           />
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
-        >
-          <Text style={tw`text-base text-copy`}>{t('profile.profileMenu.biometrics')}</Text>
-          <ChevronIcon />
-        </TouchableOpacity>
+          <ProfileMenuRow
+            label={t('profile.profileMenu.changePassword')}
+            onPress={() => {
+              navigation.navigate('Change Password');
+            }}
+          />
 
-        <TouchableOpacity
-          style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
-        >
-          <Text style={tw`text-base text-copy`}>{t('profile.profileMenu.changePassword')}</Text>
-          <ChevronIcon />
-        </TouchableOpacity>
+          <ProfileMenuRow
+            label={t('profile.profileMenu.notificationSettings')}
+            onPress={() => {
+              navigation.navigate('Notification Settings');
+            }}
+          />
 
-        <TouchableOpacity
-          style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
-        >
-          <Text style={tw`text-base text-copy`}>
-            {t('profile.profileMenu.notificationSettings')}
-          </Text>
-          <ChevronIcon />
-        </TouchableOpacity>
+          <ProfileMenuRow
+            label={t('profile.profileMenu.viewAuditLog')}
+            onPress={() => {
+              navigation.navigate('Audit Log');
+            }}
+          />
 
-        <TouchableOpacity
-          style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
-        >
-          <Text style={tw`text-base text-copy`}>{t('profile.profileMenu.changeCompany')}</Text>
-          <ChevronIcon />
-        </TouchableOpacity>
+          <ProfileMenuRow
+            label={t('profile.profileMenu.changeCompany')}
+            onPress={() => {
+              navigation.navigate('Profile');
+            }}
+          />
 
-        <TouchableOpacity style={tw`flex-row items-center justify-between py-6`}>
-          <Text style={tw`text-base text-primary`}>{t('profile.profileMenu.logOut')}</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={tw`flex-row items-center justify-between py-6`}>
+            <Text style={tw`text-base text-primary`}>{t('profile.profileMenu.logOut')}</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

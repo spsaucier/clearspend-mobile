@@ -15,6 +15,7 @@ type Props = {
   isVirtual: boolean;
   isDisposable: boolean;
   style?: StyleProp<ViewStyle>;
+  onPress: () => void;
 };
 
 const cardBGImageOverlay = require('@/Assets/Images/cardPattern.png');
@@ -28,6 +29,7 @@ export const Card = ({
   isVirtual,
   isDisposable,
   style,
+  onPress,
 }: Props) => {
   const { t } = useTranslation();
 
@@ -36,7 +38,7 @@ export const Card = ({
       key={id}
       style={[
         tw.style(
-          'flex bg-primary w-11/12 rounded-3xl shadow-xl overflow-hidden',
+          'flex bg-primary w-full rounded-3xl shadow-xl overflow-hidden',
           isVirtual && 'bg-tertiary',
           isDisposable && 'bg-black',
           isFrozen && 'bg-gray40',
@@ -44,7 +46,7 @@ export const Card = ({
         { aspectRatio: 328 / 208 },
         style,
       ]}
-      onPress={() => {}}
+      onPress={onPress}
     >
       <ImageBackground source={cardBGImageOverlay} resizeMode="cover" style={tw`flex-1`}>
         <View style={tw`flex-1 justify-between px-5 pt-7 pb-2`}>

@@ -7,14 +7,14 @@
     "ios": "react-native run-ios",
     "start": "react-native start --reset-cache",
     "test": "jest",
-    "lint": "eslint './src/**/*.{js,ts,tsx,json}'",
     "type-check": "tsc --build plugins/typescript/template/tsconfig.json",
     "podinstall": "cd ios && pod install && cd ..",
     "reinstall-pods": "rm -rf ios/Pods && yarn podinstall",
     "reinstall-modules": "watchman watch-del-all && rm -rf ./node_modules && rm -rf /tmp/metro-* && yarn install",
     "reinstall": "yarn reinstall-modules && yarn reinstall-pods",
-    "check-format": "./node_modules/.bin/prettier --check .",
-    "format": "./node_modules/.bin/prettier --write ."
+    "check-format": "./node_modules/.bin/prettier --check './src/**/*.{js,ts,tsx,json}'",
+    "lint": "eslint './src/**/*.{js,ts,tsx,json}'",
+    "format": "./node_modules/.bin/prettier --write './src/**/*.{js,ts,tsx,json}' && yarn lint --fix"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.7",
@@ -26,6 +26,7 @@
     "@thecodingmachine/redux-toolkit-wrapper": "2.0.1",
     "axios": "^0.21.4",
     "i18next": "^20.6.1",
+    "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-i18next": "^11.12.0",
@@ -48,6 +49,7 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/fbemitter": "^2.0.32",
     "@types/jest": "^27.0.2",
+    "@types/lodash": "^4.14.175",
     "@types/react": "^17.0.24",
     "@types/react-native": "^0.65.1",
     "@types/react-redux": "^7.1.18",
@@ -89,7 +91,7 @@
     "setupFiles": [
       "./jest.setup.js"
     ],
-    "timers": "fake",
+    "timers": "fakfe",
     "testEnvironment": "jsdom",
     "transformIgnorePatterns": [
       "/node_modules/(?!@react-native|react-native)"

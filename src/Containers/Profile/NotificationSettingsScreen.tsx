@@ -1,17 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
+import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSettingHeader';
 
 const NotificationSettingScreen = () => {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={tw`flex-1`}>
-      <View style={tw`flex p-5`}>
-        <Text style={tw`text-base text-primary`}>{t('profile.changePassword.changePassword')}</Text>
-      </View>
+    <SafeAreaView style={tw`bg-white flex-1 p-5`}>
+      <ProfileSettingsHeader title={t('profile.notificationSettings.title')} />
     </SafeAreaView>
   );
 };

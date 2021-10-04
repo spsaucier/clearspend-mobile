@@ -5,12 +5,14 @@ import { NotificationIcon } from '@/Assets/Icons';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
+  onPress: () => void;
 }
 
-export const NotificationBell = ({ style }: Props) => {
+export const NotificationBell = ({ style, onPress }: Props) => {
   const hasNotification = true;
+
   return (
-    <TouchableOpacity onPress={() => {}} style={[style]}>
+    <TouchableOpacity onPress={onPress} style={style}>
       {hasNotification && (
         <View style={tw`absolute bg-error h-2 w-2 rounded-full -top-1 -right-1`} />
       )}
