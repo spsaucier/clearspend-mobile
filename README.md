@@ -30,7 +30,7 @@ Follow general React Native setup: (React Native CLI Quickstart): https://reactn
 
 # Styling
 
-### Tailwind
+## Tailwind
 
 This project uses tailwind-react-native-classnames for styling: https://github.com/jaredh159/tailwind-react-native-classnames/tree/master#readme
 
@@ -48,15 +48,21 @@ When ready, we will move over to the V2 version: https://github.com/jaredh159/ta
   - This file contains the info the package needs to generate customized react-native styles.
   - It should be checked in to source control, and regenerated whenever you change your `tailwind.config.js` file
 
-#### Fonts
+## Fonts
 
-##### Add or modify fonts
+#### Add or modify fonts
 
 - Add (or remove) font files (.ttf or .otf) to the `src/Assets/Fonts` directory
 - Run `yarn react-native link` or `npx react-native link`
 - Add/modify `tailwind.config.js` with the font changes & run `npx trnc-create-styles`
 - Restart metro and rebuild project
 
-### Snyk tests - Security checks
+#### Card font
+- Kredit font is used for the cards: Downloaded from https://fontmeme.com/fonts/kredit-font/
+
+# Testing
+TBC
+
+## Snyk tests - Security checks
 
 Test new packages that are added with `snyk test packagename`

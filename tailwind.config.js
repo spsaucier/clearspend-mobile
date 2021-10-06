@@ -17,9 +17,10 @@ module.exports = {
       '2xl': '1536px',
     },
     fontSize: {
+      '3xs': '.55rem',
+      '2xs': '.65rem',
       xs: '.75rem',
       sm: '.875rem',
-      tiny: '.875rem',
       base: '1rem',
       lg: '1.125rem',
       xl: '1.25rem',
@@ -29,6 +30,8 @@ module.exports = {
       '5xl': '3rem',
       '6xl': '4rem',
       '7xl': '5rem',
+      '8xl': '6rem',
+      '9xl': '7rem',
     },
     colors: {
       black: '#000000',
@@ -37,10 +40,13 @@ module.exports = {
 
       // Brand
       primary: '#1D4ED8',
-      primaryDark: '#0c177d',
+      primaryDark: '#1E40AF',
+      primaryLight: '#2563EB',
+      primaryLightLight: '#366FED',
       secondary: '#4EF8C1',
       tertiary: '#04A7DA',
-      copy: '#111827',
+      copyDark: '#111827',
+      copyLight: '#BFDBFE',
 
       // Background Colours
       lightBG: '#F1F7FF',
@@ -60,6 +66,20 @@ module.exports = {
       gray80: '#CCCCCC',
       gray90: '#E5E5E5',
     },
+    borderWidth: {
+      DEFAULT: '1px',
+      '0': '0',
+      '1': '1px',
+      '2': '2px',
+      '3': '3px',
+      '4': '4px',
+      '5': '5px',
+      '6': '6px',
+      '7': '7px',
+      '8': '8px',
+      '9': '9px',
+      '10': '10px',
+    }
   },
   variants: {},
   plugins: [],

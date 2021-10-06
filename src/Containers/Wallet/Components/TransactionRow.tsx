@@ -3,8 +3,8 @@ import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
-import { ChevronIcon } from '@/Assets/Icons';
-import { EyeIcon } from '@/Assets/Icons/eyeIcon';
+import { ChevronIcon } from '@/Components/Icons';
+import { EyeIcon } from '@/Components/Icons/eyeIcon';
 
 type Props = {
   transactionId: string;
@@ -44,7 +44,7 @@ export const TransactionRow = ({
             <EyeIcon color={tw.color('white')} />
           </View>
         )}
-        <Text style={tw`text-sm text-copy ml-3`}>{merchant}</Text>
+        <Text style={tw`text-sm text-copyDark ml-3`}>{merchant}</Text>
       </View>
       <View style={tw`flex-row items-center`}>
         <Text style={tw`text-sm text-black font-bold`}>{amount}</Text>

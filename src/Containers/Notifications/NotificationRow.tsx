@@ -16,7 +16,7 @@ export const NotificationRow = ({ id }: Props) => (
       {/* Notification Info */}
       <View style={tw`flex ml-3`}>
         <View style={tw`flex-row items-center justify-between`}>
-          <Text style={tw`text-sm text-copy font-bold`}>Card Limit Reached</Text>
+          <Text style={tw`text-sm text-copyDark font-bold`}>Card Limit Reached</Text>
           <Text style={tw`text-xs text-gray60`}>20min ago</Text>
         </View>
         <Text style={tw`text-sm text-gray60 mt-2`}>

@@ -17,6 +17,7 @@
     "format": "./node_modules/.bin/prettier --write './src/**/*.{js,ts,tsx,json}' && yarn lint --fix"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.15",
     "@react-native-async-storage/async-storage": "^1.15.7",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/bottom-tabs": "^6.0.5",
@@ -25,6 +26,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "@thecodingmachine/redux-toolkit-wrapper": "2.0.1",
     "axios": "^0.21.4",
+    "graphql": "^15.6.0",
     "i18next": "^20.6.1",
     "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
@@ -33,6 +35,7 @@
     "react-native": "0.65.1",
     "react-native-flipper": "^0.103.0",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-reanimated": "^2.2.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.7.2",

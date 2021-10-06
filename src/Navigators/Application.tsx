@@ -4,15 +4,38 @@ import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { navigationRef } from '@/Navigators/Root';
 import { StartupState } from '@/Store/Startup';
 import StartupScreen from '@/Containers/Startup/StartupScreen';
+import AuthNavigator from '@/Navigators/AuthNavigator';
 
 const Stack = createStackNavigator();
 
 let MainNavigator: FunctionComponent | null;
+
+// Apollo
+const cache = new InMemoryCache();
+const client = new ApolloClient({
+  uri: 'localhost:4000/graphql',
+  cache,
+  defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
+});
+
 // @refresh reset
 const ApplicationNavigator = () => {
+  // TODO Apollo cache stuff:
+  // const [loadingCache, setLoadingCache] = useState(true);
+  // useEffect(() => {
+  //   persistCache({
+  //     cache,
+  //     storage: AsyncStorage,
+  //   }).then(() => setLoadingCache(false))
+  // }, [])
+  // if (loadingCache) {
+  //   return <StartupScreen />
+  // }
+
   const [isApplicationLoaded, setIsApplicationLoaded] = useState(false);
   const applicationIsLoading = useSelector(
     (state: { startup: StartupState }) => state.startup.loading,
@@ -35,27 +58,36 @@ const ApplicationNavigator = () => {
     [],
   );
 
+  const userIsLoggedIn = false;
+
   return (
-    <SafeAreaProvider>
-      <NavigationContainer ref={navigationRef}>
-        <StatusBar barStyle="dark-content" />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Startup" component={StartupScreen} />
-
-          {/* TODO Add Auth Stack check */}
-
-          {isApplicationLoaded && MainNavigator != null && (
-            <Stack.Screen
-              name="Main"
-              component={MainNavigator}
-              options={{
-                animationEnabled: false,
-              }}
-            />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <ApolloProvider client={client}>
+      <SafeAreaProvider>
+        <NavigationContainer ref={navigationRef}>
+          <StatusBar barStyle="dark-content" />
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Startup" component={StartupScreen} />
+            {isApplicationLoaded && userIsLoggedIn && MainNavigator != null ? (
+              <Stack.Screen
+                name="Main"
+                component={MainNavigator}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
+            ) : (
+              <Stack.Screen
+                name="Main"
+                component={AuthNavigator}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </ApolloProvider>
   );
 };
 

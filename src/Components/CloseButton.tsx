@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
-import { CloseIcon } from '@/Assets/Icons';
+import { CloseIcon } from '@/Components/Icons';
 
 type Props = {
   onPress?: () => void;

@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import InitStartup from '@/Store/Startup/Init';
 import tw from '@/Styles/tailwind';
-import { Logo } from '@/Assets/Svg/Logo';
+import { Logo } from '@/Components/Svg/Logo';
 import { ActivityIndicator } from '@/Components';
 
 const StartupScreen = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,8 +18,7 @@ const StartupScreen = () => {
       <View style={tw`flex flex-row p-6`}>
         <Logo style={tw`w-8/12`} />
       </View>
-      <ActivityIndicator style={tw`my-3`} />
-      <Text style={tw`text-center text-white`}>{t('welcome')}</Text>
+      <ActivityIndicator style={tw`my-3 w-5 h-5`} />
     </View>
   );
 };

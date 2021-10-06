@@ -3,8 +3,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
-import { Logo } from '@/Assets/Svg/Logo';
-import { Visa } from '@/Assets/Svg/Visa';
+import { Logo } from '@/Components/Svg/Logo';
+import { Visa } from '@/Components/Svg/Visa';
 
 type Props = {
   id: string;

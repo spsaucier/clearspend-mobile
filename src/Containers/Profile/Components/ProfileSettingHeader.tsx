@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
-import { BackArrowIcon } from '@/Assets/Icons';
+import { BackArrowIcon } from '@/Components/Icons';
 
 type Props = {
   title: string;

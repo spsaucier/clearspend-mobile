@@ -36,14 +36,16 @@ export const Button = ({
 }: Props) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[tw`flex-row p-3 rounded-xl bg-white items-center justify-center h-12`, containerStyle]}
+    style={[tw`flex-row p-3 rounded-2xl bg-white items-center justify-center h-12`, containerStyle]}
     disabled={disabled}
     testID={testID}
     onLayout={onLayout}
     activeOpacity={activeOpacity}
   >
     {_.isString(children) || label ? (
-      <Text style={[tw`text-black text-base`, textStyle]}>{label || children}</Text>
+      <Text style={[tw`text-primaryLight text-base font-semibold`, textStyle]}>
+        {label || children}
+      </Text>
     ) : (
       children
     )}

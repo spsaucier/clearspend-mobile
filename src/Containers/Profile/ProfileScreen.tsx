@@ -25,7 +25,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
         {fetchOneUserError ? (
           <Text style={tw`text-base text-error`}>{fetchOneUserError.message}</Text>
         ) : (
-          <Text style={tw`text-2xl font-bold text-copy py-4`}>{user.name}</Text>
+          <Text style={tw`text-2xl font-bold text-copyDark py-4`}>{user.name}</Text>
         )}
       </View>
 
@@ -39,7 +39,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
           <TouchableOpacity
             style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
           >
-            <Text style={tw`text-base text-copy`}>{t('profile.profileMenu.faceId')}</Text>
+            <Text style={tw`text-base text-copyDark`}>{t('profile.profileMenu.faceId')}</Text>
             <Switch
               onValueChange={() => {}}
               value

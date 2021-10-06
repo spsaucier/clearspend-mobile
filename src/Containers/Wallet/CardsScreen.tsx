@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { Card, NotificationBell, Button, FocusAwareStatusBar } from '@/Components';
-import { EyeIcon } from '@/Assets/Icons/eyeIcon';
-import { SnowflakeIcon } from '@/Assets/Icons/snowflakeIcon';
+import { EyeIcon } from '@/Components/Icons/eyeIcon';
+import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
 import { TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 
 const CardsScreen = ({ navigation }: { navigation: any }) => {
@@ -16,10 +16,12 @@ const CardsScreen = ({ navigation }: { navigation: any }) => {
       <FocusAwareStatusBar backgroundColor={tw.color('lightBG')} barStyle="dark-content" />
       <View style={tw`px-9 py-5`}>
         <View style={tw`flex-row justify-between my-2`}>
-          <Text style={tw`text-base font-bold text-copy`}>Company Name</Text>
+          <Text style={tw`text-base font-bold text-copyDark`}>Company Name</Text>
           <NotificationBell onPress={() => navigation.navigate('Notifications')} />
         </View>
-        <Text style={tw`text-3xl font-bold text-copy`}>{t('wallet.header', { name: 'John' })}</Text>
+        <Text style={tw`text-3xl font-bold text-copyDark`}>
+          {t('wallet.header', { name: 'John' })}
+        </Text>
       </View>
 
       {/* Card and buttons */}
@@ -60,7 +62,7 @@ const CardsScreen = ({ navigation }: { navigation: any }) => {
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* Recent Transactions */}
-          <Text style={tw`text-xl font-bold text-copy px-6 py-4`}>
+          <Text style={tw`text-xl font-bold text-copyDark px-6 py-4`}>
             {t('wallet.transactions.recentTransactions')}
           </Text>
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import tw from '@/Styles/tailwind';
-import { CardTabIcon, ProfileTabIcon } from '@/Assets/Icons';
+import { WalletIcon, ProfileIcon } from '@/Components/Icons';
 import CardsScreen from '@/Containers/Wallet/CardsScreen';
 import ProfileScreen from '@/Containers/Profile/ProfileScreen';
 import ChangePasswordScreen from '@/Containers/Profile/ChangePasswordScreen';
@@ -17,7 +17,7 @@ type MainStackParamTypes = {
   Home: undefined;
 
   // Profile & Settings
-  Profile: { userId: string };
+  Profile: undefined;
   'Change Password': undefined;
   'Notification Settings': undefined;
   'Audit Log': undefined;
@@ -25,9 +25,9 @@ type MainStackParamTypes = {
   // Wallet and Cards
   Wallet: undefined;
   Notifications: undefined;
-  'Card Details': undefined;
-  'Card Info': undefined;
-  'Transaction Details': undefined;
+  'Card Details': { cardId: string };
+  'Card Info': { cardId: string };
+  'Transaction Details': { transactionId: string };
 };
 
 const Stack = createStackNavigator<MainStackParamTypes>();
@@ -65,7 +65,7 @@ const TabNavigator = () => (
       component={WalletStack}
       options={{
         tabBarLabel: 'Wallet',
-        tabBarIcon: ({ color }) => <CardTabIcon color={color} size={28} />,
+        tabBarIcon: ({ color }) => <WalletIcon color={color} size={28} />,
       }}
     />
     <Tab.Screen
@@ -73,7 +73,7 @@ const TabNavigator = () => (
       component={ProfileStack}
       options={{
         tabBarLabel: 'Profile',
-        tabBarIcon: ({ color }) => <ProfileTabIcon color={color} size={22} />,
+        tabBarIcon: ({ color }) => <ProfileIcon color={color} size={28} />,
       }}
     />
   </Tab.Navigator>

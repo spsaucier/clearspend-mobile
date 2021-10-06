@@ -13,7 +13,7 @@ const NotificationScreen = () => {
     <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
       <View style={tw`flex p-5`}>
         <View style={tw`flex-row items-center justify-between`}>
-          <Text style={tw`text-2xl font-bold text-copy`}>Notifications</Text>
+          <Text style={tw`text-2xl font-bold text-copyDark`}>Notifications</Text>
           <CloseIconButton />
         </View>
         <Text style={tw`text-sm text-primary mt-2`}>

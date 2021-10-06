@@ -1,13 +1,6 @@
 export default {
-  welcome: 'Welcome to Tranwall',
   actions: {
     continue: 'Continue',
-  },
-  example: {
-    helloUser: 'I am a fake user, my name is {{name}}',
-    labels: {
-      userId: 'Enter a user id',
-    },
   },
   login: {
     heading: 'Modern commercial cards and accounts',
@@ -15,10 +8,61 @@ export default {
     emailPlaceholder: 'Enter you work email address',
     passwordLabel: 'Password',
     passwordPlaceholder: 'Enter Password',
-    cta: 'Get Started',
+    buttonCta: 'Get Started',
     forgotPassword: 'Forgot Password?',
+    businessSection: {
+      copy: 'Interested in signing up your business with Tranwall?',
+      buttonCta: 'Explore Tranwall Business',
+    },
   },
-  signUp: {},
+  selectOrganization: {
+    title: 'Select your organization',
+    subTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    buttonCta: 'Continue',
+  },
+  enterMobile: {
+    title: 'Enter mobile number',
+    subTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    mobileInputLabel: 'Mobile Number',
+    mobileInputPlaceholder: 'Enter your mobile number',
+    buttonCta: 'Get OTP',
+  },
+  verifyAccount: {
+    title: 'Verify your account',
+    subTitle: 'Enter the verification code send to your mobile number',
+    resendCta: "Didn't receive a code? Resend Code (in 15 seconds)",
+    buttonCta: 'Verify',
+  },
+  setPassword: {
+    title: 'Set your own password',
+    subTitle: 'The password we sent to your email was temporary. Please set your own password now.',
+    passwordInputLabel: 'New password',
+    passwordInputPlaceholder: 'Enter a new password',
+    rules: {
+      mustInclude: 'Must include',
+      mix: 'Mixture of letters and numbers',
+      length: 'At least 8 characters long',
+      upperCase: 'At least 1 character in uppercase',
+      lowerCase: 'At least 1 character in lowercase',
+      special: 'At least one special character, e.g., ! @ # ? ]',
+    },
+    buttonCta: 'Set password',
+  },
+  forgotPassword: {
+    enterEmail: {
+      title: 'Enter your work email',
+      subTitle: 'We will send a password reset email to this address',
+      emailInputLabel: 'Email Address',
+      emailInputPlaceholder: 'Enter your work email address',
+      buttonCta: 'Continue',
+    },
+    checkEmail: {
+      title: 'Check your email',
+      subTitle:
+        'We have sent the password reset email. Please follow the link on the email to set you new password. Make sure check you junk folder. If the email has not arrived after 1 min, you can request another.',
+      buttonCta: 'Resend Email',
+    },
+  },
   wallet: {
     header: 'Hey {{name}}!',
     transactions: {
