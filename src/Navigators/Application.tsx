@@ -17,7 +17,7 @@ let MainNavigator: FunctionComponent | null;
 // Apollo
 const cache = new InMemoryCache();
 const client = new ApolloClient({
-  uri: 'localhost:4000/graphql',
+  uri: 'http://localhost:4000',
   cache,
   defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
 });
@@ -32,6 +32,7 @@ const ApplicationNavigator = () => {
   //     storage: AsyncStorage,
   //   }).then(() => setLoadingCache(false))
   // }, [])
+  //
   // if (loadingCache) {
   //   return <StartupScreen />
   // }
@@ -58,7 +59,7 @@ const ApplicationNavigator = () => {
     [],
   );
 
-  const userIsLoggedIn = false;
+  const userIsLoggedIn = true;
 
   return (
     <ApolloProvider client={client}>

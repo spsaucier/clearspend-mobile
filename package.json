@@ -14,7 +14,9 @@
     "reinstall": "yarn reinstall-modules && yarn reinstall-pods",
     "check-format": "./node_modules/.bin/prettier --check './src/**/*.{js,ts,tsx,json}'",
     "lint": "eslint './src/**/*.{js,ts,tsx,json}'",
-    "format": "./node_modules/.bin/prettier --write './src/**/*.{js,ts,tsx,json}' && yarn lint --fix"
+    "format": "./node_modules/.bin/prettier --write './src/**/*.{js,ts,tsx,json}' && yarn lint --fix",
+    "localserver": "cd apolloserver && node index.js && cd ..",
+    "format-server": "./node_modules/.bin/prettier --write './apolloserver/**/*.{js,ts,tsx,json}' && eslint './apolloserver/**/*.{js,ts,tsx,json}' --fix"
   },
   "dependencies": {
     "@apollo/client": "^3.4.15",

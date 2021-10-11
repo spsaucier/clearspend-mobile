@@ -66,3 +66,17 @@ TBC
 ## Snyk tests - Security checks
 
 Test new packages that are added with `snyk test packagename`
+
+
+# Apollo Server
+
+## Run local Apollo Server
+
+1. Open terminal in `apolloserver` directory
+2. Install modules `npm install`
+3. Run `node index.js` from the `apolloserver` directory to start local server. Alternatively run the `yarn localserver` script from the main directory
+4. You should see output `Server ready at http://localhost:4000/`
+5. Follow the link to open the web server instance which will take you to https://studio.apollographql.com/sandbox/explorer. Here you can make test queries. 
+
+
+

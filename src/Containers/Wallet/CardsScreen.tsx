@@ -2,14 +2,42 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { gql, useQuery } from '@apollo/client';
 import tw from '@/Styles/tailwind';
-import { Card, NotificationBell, Button, FocusAwareStatusBar } from '@/Components';
+import { NotificationBell, Button, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
 import { EyeIcon } from '@/Components/Icons/eyeIcon';
 import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
 import { TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
+import { Card } from '@/Containers/Wallet/Components/Card';
+
+const CARDS_QUERY = gql`
+  query RootQuery {
+    cards {
+      cardId
+      isVirtual
+      isDisposable
+      isFrozen
+      currency
+      balance
+      cardTitle
+      lastDigits
+    }
+  }
+`;
 
 const CardsScreen = ({ navigation }: { navigation: any }) => {
+  const { data, loading } = useQuery(CARDS_QUERY);
   const { t } = useTranslation();
+
+  if (loading) {
+    return (
+      <SafeAreaView style={tw`flex-1 justify-center items-center bg-lightBG`} edges={['top']}>
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+  }
+
+  const card1 = data.cards[0];
 
   return (
     <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
@@ -27,13 +55,13 @@ const CardsScreen = ({ navigation }: { navigation: any }) => {
       {/* Card and buttons */}
       <View style={tw`flex px-8 pt-4 pb-6`}>
         <Card
-          id="1"
-          balance="$123"
-          isFrozen={false}
-          isDisposable={false}
-          isVirtual={false}
-          lastDigits="1234"
-          cardTitle="Sales Card"
+          id={card1.cardId}
+          balance={card1.balance}
+          isFrozen={card1.isFrozen}
+          isDisposable={card1.isDisposable}
+          isVirtual={card1.isVirtual}
+          lastDigits={card1.lastDigits}
+          cardTitle={card1.cardTitle}
           onPress={() => navigation.navigate('Card Details')}
         />
 

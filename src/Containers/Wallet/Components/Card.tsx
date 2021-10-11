@@ -63,7 +63,7 @@ export const Card = ({
               </View>
             </View>
             <View style={tw`flex-1 items-end`}>
-              <Text style={tw`text-white text-2xl font-bold`}>{balance}</Text>
+              <Text style={tw`text-white text-2xl font-thin font-card`}>{balance}</Text>
               <Text style={tw`text-white text-xs`}>{t('card.balance').toUpperCase()}</Text>
             </View>
           </View>
@@ -72,10 +72,7 @@ export const Card = ({
           <View>
             <View style={tw`flex flex-row items-end`}>
               <View style={tw`flex font-card`}>
-                <Text style={tw`text-white text-2xl font-card`}>
-                  ****
-                  {lastDigits}
-                </Text>
+                <Text style={tw`text-white text-2xl font-card`}>{`**** ${lastDigits}`}</Text>
                 {!!cardTitle && <Text style={tw`text-white text-base`}>{cardTitle}</Text>}
               </View>
               <View style={tw`flex-1 items-end`}>
