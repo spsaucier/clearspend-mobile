@@ -41,12 +41,8 @@ const SelectOrganizationScreen = () => {
           />
         </View>
 
-        <View style={tw`p-6`}>
-          <Button
-            containerStyle={tw`flex w-full h-16`}
-            textStyle={tw`text-primaryLight`}
-            onPress={handleSubmit}
-          >
+        <View style={tw`px-6`}>
+          <Button containerStyle={tw`mb-4`} onPress={handleSubmit}>
             {t('selectOrganization.buttonCta')}
           </Button>
         </View>

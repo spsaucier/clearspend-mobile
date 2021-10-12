@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
@@ -16,7 +16,7 @@ const ForgotPasswordScreen = () => {
 
   return (
     <SafeAreaView style={tw`flex-1 bg-primary`}>
-      <View style={tw`flex-1 p-6 justify-between`}>
+      <KeyboardAvoidingView style={tw`flex-1 p-6`} behavior="padding">
         <View>
           <OnboardingHeader
             title={t('forgotPassword.enterEmail.title')}
@@ -31,14 +31,10 @@ const ForgotPasswordScreen = () => {
             containerStyle={tw`mb-8`}
           />
         </View>
-        <Button
-          containerStyle={tw`flex w-full h-16`}
-          textStyle={tw`text-primaryLight`}
-          onPress={handleSubmit}
-        >
+        <Button containerStyle={tw`mt-auto mb-4`} onPress={handleSubmit}>
           {t('forgotPassword.enterEmail.buttonCta')}
         </Button>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

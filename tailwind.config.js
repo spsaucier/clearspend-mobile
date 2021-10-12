@@ -40,9 +40,11 @@ module.exports = {
 
       // Brand
       primary: '#1D4ED8',
-      primaryDark: '#1E40AF',
-      primaryLight: '#2563EB',
-      primaryLightLight: '#366FED',
+      'primary-dark': '#1E40AF',
+      'primary-light': '#2563EB',
+      'primary-light-light': '#366FED',
+      'primary-highlight': '#60A5FA',
+
       secondary: '#4EF8C1',
       tertiary: '#04A7DA',
       copyDark: '#111827',

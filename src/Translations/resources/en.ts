@@ -5,7 +5,7 @@ export default {
   login: {
     heading: 'Modern commercial cards and accounts',
     emailLabel: 'Email Address',
-    emailPlaceholder: 'Enter you work email address',
+    emailPlaceholder: 'Enter your work email address',
     passwordLabel: 'Password',
     passwordPlaceholder: 'Enter Password',
     buttonCta: 'Get Started',

@@ -67,12 +67,16 @@ const CardsScreen = ({ navigation }: { navigation: any }) => {
 
         {/* Button Row */}
         <View style={tw`flex-row items-center justify-center pt-3`}>
-          <Button containerStyle={tw`flex-1`} onPress={() => navigation.navigate('Card Info')}>
+          <Button
+            containerStyle={tw`flex-1`}
+            onPress={() => navigation.navigate('Card Info')}
+            small
+          >
             <EyeIcon style={tw`mr-1`} />
             <Text style={tw`text-base font-bold text-primary`}>{t('card.showCardInfo')}</Text>
           </Button>
           <View style={tw`w-3 h-3`} />
-          <Button containerStyle={tw`flex-1`}>
+          <Button containerStyle={tw`flex-1`} small>
             <SnowflakeIcon style={tw`mr-1`} />
             <Text style={tw`text-base font-bold text-primary`}>{t('card.freezeCard')}</Text>
           </Button>
