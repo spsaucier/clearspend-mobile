@@ -59,7 +59,7 @@ const ApplicationNavigator = () => {
     [],
   );
 
-  const userIsLoggedIn = false;
+  const userIsLoggedIn = true;
 
   return (
     <ApolloProvider client={client}>

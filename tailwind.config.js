@@ -46,6 +46,7 @@ module.exports = {
       'primary-highlight': '#60A5FA',
 
       secondary: '#4EF8C1',
+      'secondary-light': '#A5FFE0',
       tertiary: '#04A7DA',
       copyDark: '#111827',
       copyLight: '#BFDBFE',
@@ -55,7 +56,7 @@ module.exports = {
 
       // Functional
       error: '#ac204b',
-      success: '#00b971',
+      success: '#059669',
 
       // Grayscale
       gray10: '#1A1A1A',
@@ -67,6 +68,7 @@ module.exports = {
       gray70: '#B2B2B2',
       gray80: '#CCCCCC',
       gray90: '#E5E5E5',
+      gray95: '#F9FAFB',
     },
     borderWidth: {
       DEFAULT: '1px',

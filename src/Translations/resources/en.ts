@@ -1,6 +1,7 @@
 export default {
-  actions: {
+  general: {
     continue: 'Continue',
+    reload: 'Reload',
   },
   login: {
     heading: 'Modern commercial cards and accounts',
@@ -78,6 +79,7 @@ export default {
     },
     transactionDetails: {
       title: 'Transaction Details',
+      status: 'Transaction {{status}}',
     },
   },
   card: {

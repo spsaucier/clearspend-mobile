@@ -1,21 +1,31 @@
 const { gql } = require('apollo-server');
 
-const typeDefs = gql`
+const typeDefs = gql`  
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    token: String
+    cards: [Card]
+  }
+  
   type Transaction {
     transactionId: String!
     merchantName: String!
     merchantId: String
     merchantCategory: String
+    merchantCategoryCode: String
     merchantLogoUrl: String
     currency: String
     amount: Float!
-    withDrawn: Boolean!
+#    credited: Boolean!
     date: String!
     time: String!
     isReceiptLinked: Boolean
     receiptUrl: String
     notes: String
     status: TransactionStatus
+    location: String
   }
 
   enum TransactionStatus {
@@ -25,7 +35,7 @@ const typeDefs = gql`
   }
 
   type Card {
-    cardId: String
+    cardId: ID!
     creationDate: String
     expirationDate: String
     isVirtual: Boolean
@@ -39,14 +49,21 @@ const typeDefs = gql`
     cardholderName: String
     billingAddress: String
     cvv: String
-    transactions: [Transaction]
+    transactions: [Transaction]!
   }
 
   # "RootQuery" type lists all of the available queries that clients can execute,
   # along with the return type for each, define in typeDefs
   type Query {
-    cards: [Card]
+    cards: [Card]!
     card(cardId: ID!): Card
+#    transactions(cardId: ID!): [Transaction]!
+#    transaction(transactionId: ID!): Transaction!
+    user (id: ID!): User!
+  }
+
+  type Mutation {
+    login(email: String): User
   }
 `;
 

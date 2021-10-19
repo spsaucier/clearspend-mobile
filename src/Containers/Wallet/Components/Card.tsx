@@ -1,27 +1,31 @@
-import { StyleProp, View, ViewStyle, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import React from 'react';
+import { StyleProp, View, ViewStyle, Text, TouchableOpacity, ImageBackground } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { Logo } from '@/Components/Svg/Logo';
 import { Visa } from '@/Components/Svg/Visa';
 
-type Props = {
-  id: string;
+export type CardType = {
+  cardId: string;
   balance: string;
   lastDigits: string;
   isFrozen: boolean;
   cardTitle: string;
   isVirtual: boolean;
   isDisposable: boolean;
+};
+
+type Props = {
   style?: StyleProp<ViewStyle>;
   onPress: () => void;
-};
+  width?: any;
+} & CardType;
 
 const cardBGImageOverlay = require('@/Assets/Images/cardPattern.png');
 
 export const Card = ({
-  id,
+  cardId,
   balance,
   lastDigits,
   isFrozen,
@@ -30,12 +34,13 @@ export const Card = ({
   isDisposable,
   style,
   onPress,
+  width,
 }: Props) => {
   const { t } = useTranslation();
 
   return (
     <TouchableOpacity
-      key={id}
+      key={cardId}
       style={[
         tw.style(
           'flex bg-primary w-full rounded-3xl shadow-xl overflow-hidden',
@@ -43,12 +48,17 @@ export const Card = ({
           isDisposable && 'bg-black',
           isFrozen && 'bg-gray40',
         ),
-        { aspectRatio: 328 / 208 },
+        { aspectRatio: 328 / 208, width },
         style,
       ]}
       onPress={onPress}
     >
-      <ImageBackground source={cardBGImageOverlay} resizeMode="cover" style={tw`flex-1`}>
+      <ImageBackground
+        imageStyle={tw`opacity-30`}
+        source={cardBGImageOverlay}
+        resizeMode="cover"
+        style={tw`flex-1`}
+      >
         <View style={tw`flex-1 justify-between px-5 pt-7 pb-2`}>
           {/* Top Row */}
           <View style={tw`flex flex-row`}>
@@ -63,7 +73,7 @@ export const Card = ({
               </View>
             </View>
             <View style={tw`flex-1 items-end`}>
-              <Text style={tw`text-white text-2xl font-thin font-card`}>{balance}</Text>
+              <Text style={tw`text-white text-2xl font-thin font-card`}>{`$${balance}`}</Text>
               <Text style={tw`text-white text-xs`}>{t('card.balance').toUpperCase()}</Text>
             </View>
           </View>

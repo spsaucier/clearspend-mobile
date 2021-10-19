@@ -1,32 +1,27 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { View, ActivityIndicator, Text, TouchableOpacity, Switch, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Switch, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { UserState } from '@/Store/User';
 import tw from '@/Styles/tailwind';
 import { nameToInitials } from '@/Helpers/StringHelpers';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
+import { CloseIconButton } from '@/Components';
 
 const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
-  const user = useSelector((state: { user: UserState }) => state.user.item);
-  const fetchOneUserLoading = useSelector(
-    (state: { user: UserState }) => state.user.fetchOne.loading,
-  );
-  const fetchOneUserError = useSelector((state: { user: UserState }) => state.user.fetchOne.error);
+  const user = {
+    name: 'John Smith',
+  };
   return (
     <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
-      <View style={tw`flex p-5`}>
-        <View style={tw`flex items-center justify-center bg-primary rounded-full h-12 w-12`}>
-          <Text style={tw`text-white text-xl`}>{nameToInitials(user.name)}</Text>
-        </View>
-        {fetchOneUserLoading && <ActivityIndicator />}
-        {fetchOneUserError ? (
-          <Text style={tw`text-base text-error`}>{fetchOneUserError.message}</Text>
-        ) : (
+      <View style={tw`flex-row justify-between p-5`}>
+        <View>
+          <View style={tw`flex items-center justify-center bg-primary rounded-full h-12 w-12`}>
+            <Text style={tw`text-white text-xl`}>{nameToInitials(user.name)}</Text>
+          </View>
           <Text style={tw`text-2xl font-bold text-copyDark py-4`}>{user.name}</Text>
-        )}
+        </View>
+        <CloseIconButton />
       </View>
 
       {/* Bottom white area */}

@@ -19,6 +19,7 @@ module.exports = {
   plugins: ['react', 'prettier', '@typescript-eslint'],
   rules: {
     'import/prefer-default-export': 'off',
+    'no-nested-ternary': 'off',
     'react/require-default-props': [
       'error',
       { forbidDefaultForRequired: true, ignoreFunctionalComponents: true },

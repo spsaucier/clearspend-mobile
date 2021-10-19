@@ -10,7 +10,7 @@ import {
 import React, { useState } from 'react';
 
 import tw from '@/Styles/tailwind';
-import { EyeIcon } from '@/Components/Icons';
+import { EyeIcon, EyeStrikedIcon } from '@/Components/Icons';
 
 type Props = {
   label?: string;
@@ -48,8 +48,11 @@ export const TWTextInput = ({
 
   const renderEye = () => (
     <TouchableOpacity onPress={() => setShowSecureInput(!showSecureInput)}>
-      {/* TODO Add eye icon with line when ready */}
-      {showSecureInput ? <EyeIcon color={tw.color('white')} /> : <EyeIcon />}
+      {showSecureInput ? (
+        <EyeIcon color={tw.color('gray95')} />
+      ) : (
+        <EyeStrikedIcon color={tw.color('gray95')} />
+      )}
     </TouchableOpacity>
   );
 

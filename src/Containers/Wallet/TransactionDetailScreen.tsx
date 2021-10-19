@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { FocusAwareStatusBar } from '@/Components';
 import { CloseIconButton } from '@/Components/CloseButton';
+import { CheckCircleIcon } from '@/Components/Icons';
 
 const TransactionDetailScreen = () => {
   const { t } = useTranslation();
@@ -13,7 +14,15 @@ const TransactionDetailScreen = () => {
     <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
       <FocusAwareStatusBar backgroundColor={tw.color('lightBG')} barStyle="dark-content" />
 
-      <View style={tw`flex-row items-end justify-end px-4`}>
+      {/* Status */}
+      <View style={tw.style('flex-row items-center justify-center p-3 bg-success')}>
+        <CheckCircleIcon />
+        <Text style={tw`ml-2 text-base text-white`}>
+          {t('wallet.transactionDetails.status', { status: 'Approved' })}
+        </Text>
+      </View>
+
+      <View style={tw`flex-row items-end justify-end px-4 pt-3`}>
         <CloseIconButton />
       </View>
 
