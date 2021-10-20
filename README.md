@@ -26,6 +26,9 @@ Follow general React Native setup: (React Native CLI Quickstart): https://reactn
 
 ## Setup Issues
 
+M1 Mac:
+
+  - If the pod install fails with ruby-related issues, might using a rosetta terminal and installing ffi solve the problem: https://dev.to/javascriptcentric/setup-react-native-and-run-app-on-mac-m1-32kk
 #### TBC
 
 # Styling

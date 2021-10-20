@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Dimensions,
-  ListRenderItemInfo,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ListRenderItemInfo } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { gql, useQuery } from '@apollo/client';
@@ -15,10 +8,9 @@ import tw from '@/Styles/tailwind';
 import { NotificationBell, Button, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
 import { EyeIcon } from '@/Components/Icons/eyeIcon';
 import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
-import { TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { Card, CardType } from '@/Containers/Wallet/Components/Card';
 import { ProfileIcon } from '@/Components/Icons';
-import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
+import Transactions from './Transactions';
 
 const CARDS_QUERY = gql`
   query CardQuery {
@@ -35,57 +27,25 @@ const CARDS_QUERY = gql`
   }
 `;
 
-const CARD_QUERY = gql`
-  query CardQuery($cardId: ID!) {
-    card(cardId: $cardId) {
-      isFrozen
-      transactions {
-        transactionId
-        merchantName
-        merchantId
-        merchantCategory
-        merchantLogoUrl
-        amount
-        status
-        date
-        time
-        isReceiptLinked
-      }
-    }
-  }
-`;
-
 const { width: screenWidth } = Dimensions.get('screen');
 
 const WalletScreen = ({ navigation }: { navigation: any }) => {
-  const [selectedCardId, setSelectedCardId] = useState('1111');
+  const [selectedCard, setSelectedCard] = useState<any>();
 
   const { t } = useTranslation();
 
   const {
     data: cardsData,
     loading: cardsLoading,
-    error: cardsError,
     refetch: refetchCards,
+    error: cardsError,
   } = useQuery(CARDS_QUERY);
 
-  const {
-    data: cardData,
-    loading: cardLoading,
-    error: cardError,
-    refetch: refetchCard,
-  } = useQuery(CARD_QUERY, {
-    variables: { cardId: selectedCardId },
-  });
-
   useEffect(() => {
-    if (cardsData) setSelectedCardId(cardsData.cards[0].cardId);
-    refetchCard({ cardId: selectedCardId });
-  }, [cardsLoading, cardsData]);
-
-  useEffect(() => {
-    refetchCard({ cardId: selectedCardId });
-  }, [selectedCardId]);
+    if (cardsData?.cards.length > 0 && !selectedCard) {
+      setSelectedCard(cardsData.cards[0]);
+    }
+  }, [cardsData, selectedCard]);
 
   if (cardsLoading) {
     return (
@@ -145,7 +105,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           inactiveSlideOpacity={0.5}
           removeClippedSubviews={false}
           lockScrollWhileSnapping
-          onSnapToItem={(index: any) => setSelectedCardId(cardsData.cards[index].cardId)}
+          onSnapToItem={(index: any) => setSelectedCard(cardsData.cards[index])}
           renderItem={({ item }: ListRenderItemInfo<CardType>) => (
             <View style={[tw`p-2`, { width: cardWidth }]}>
               <Card
@@ -173,7 +133,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
         <View style={tw`w-3 h-3`} />
         <Button containerStyle={tw`flex-1`} small>
           <SnowflakeIcon style={tw`mr-1`} />
-          {!cardLoading && cardData.card.isFrozen ? (
+          {!cardsLoading && selectedCard?.isFrozen ? (
             <Text style={tw`text-base font-bold text-primary`}>{t('card.unfreezeCard')}</Text>
           ) : (
             <Text style={tw`text-base font-bold text-primary`}>{t('card.freezeCard')}</Text>
@@ -183,63 +143,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
 
       {/* TODO Slider dots */}
 
-      {/* Bottom white area */}
-      <View style={tw`flex-1 bg-white pb-6 shadow-xl rounded-t-3xl`}>
-        <View
-          style={tw.style('flex self-center bg-gray90 w-12 rounded-full my-3', {
-            height: 6,
-          })}
-        />
-        {/* Recent Transactions */}
-        <Text style={tw`text-xl font-bold text-copyDark px-6 py-4`}>
-          {t('wallet.transactions.recentTransactions')}
-        </Text>
-
-        {/* Date and balance */}
-        <View style={tw`flex-row justify-between bg-gray95 px-6 py-2 mb-4`}>
-          <Text style={tw`text-sm text-gray50`}>Jun 30, 2021</Text>
-          <Text style={tw`text-sm text-gray50`}>
-            {t('wallet.transactions.balance')}
-            $123.00
-          </Text>
-        </View>
-
-        {cardLoading ? (
-          <View style={tw`flex-1 items-center justify-center`}>
-            <ActivityIndicator style={tw`w-5`} />
-          </View>
-        ) : cardError ? (
-          <View style={tw`flex-1 items-center justify-center`}>
-            <Text>{cardError?.message}</Text>
-          </View>
-        ) : cardData.card.transactions && cardData.card.transactions.length > 0 ? (
-          <FlatList
-            scrollEnabled
-            decelerationRate="fast"
-            data={cardData.card.transactions}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <TransactionRow
-                key={item.transactionId}
-                cardId={item.cardId}
-                transactionId={item.transactionId}
-                merchantName={item.merchantName}
-                amount={item.amount}
-                onPress={() => {}}
-                status={item.status}
-                isReceiptLinked={item.isReceiptLinked}
-                time={item.time}
-              />
-            )}
-            keyExtractor={(item) => item.cardId}
-          />
-        ) : (
-          <View style={tw`flex-1 items-center justify-center`}>
-            <NoTransactionsSvg />
-            <Text style={tw`mt-3 font-semibold`}>{t('wallet.transactions.noRecent')}</Text>
-          </View>
-        )}
-      </View>
+      {selectedCard && <Transactions cardId={selectedCard!.cardId} />}
     </SafeAreaView>
   );
 };

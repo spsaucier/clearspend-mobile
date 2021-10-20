@@ -1,0 +1,32 @@
+import { TextInput, TextInputProps, View } from 'react-native';
+import React from 'react';
+
+import tw from '@/Styles/tailwind';
+import { MagnificationIcon } from '@/Components/Icons';
+
+export const TWSearchInput = ({
+  testID,
+  autoCapitalize = 'none',
+  autoCorrect = false,
+  keyboardType,
+  autoFocus,
+  placeholder,
+  onChangeText,
+  value,
+}: TextInputProps) => (
+  <View style={tw.style('flex-row justify-between rounded-lg border border-gray90 p-2')}>
+    <TextInput
+      autoFocus={autoFocus}
+      autoCapitalize={autoCapitalize}
+      autoCorrect={autoCorrect}
+      underlineColorAndroid="rgba(0,0,0,0)"
+      placeholder={placeholder}
+      placeholderTextColor={tw.color('gray50')}
+      testID={testID}
+      keyboardType={keyboardType}
+      onChangeText={onChangeText}
+      value={value}
+    />
+    <MagnificationIcon />
+  </View>
+);

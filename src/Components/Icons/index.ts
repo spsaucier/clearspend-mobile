@@ -15,3 +15,5 @@ export { ProfileIcon } from './profileIcon';
 export { ReceiptIcon } from './receiptIcon';
 export { SnowflakeIcon } from './snowflakeIcon';
 export { WalletIcon } from './walletIcon';
+export { MagnificationIcon } from './magnificationIcon';
+export { FilterIcon } from './filterIcon';

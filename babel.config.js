@@ -10,7 +10,7 @@ plugins.push([
       '@': './src',
     },
   },
-]);
+], 'react-native-reanimated/plugin');
 
 module.exports = {
   presets,

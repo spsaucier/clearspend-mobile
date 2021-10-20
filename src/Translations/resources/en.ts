@@ -68,6 +68,8 @@ export default {
     header: 'Hey {{name}}!',
     transactions: {
       recentTransactions: 'Recent Transactions',
+      allTransactions: 'Transactions',
+      searchTransactions: 'Search transactions',
       noRecent: 'No recent transactions',
       balance: 'Balance: ',
     },
