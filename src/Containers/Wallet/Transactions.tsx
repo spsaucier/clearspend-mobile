@@ -11,6 +11,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { gql, useQuery } from '@apollo/client';
+import { chain } from 'lodash';
+import { parse, format } from 'date-fns';
 import { TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
 import { TWSearchInput } from '@/Components/SearchInput';
@@ -121,6 +123,19 @@ const Transactions = ({ cardId }: Props) => {
     [translateY],
   );
 
+  const transactionsGroupedByDate =
+    cardData?.card.transactions.length > 0
+      ? chain(cardData.card.transactions)
+          .groupBy('date')
+          .map((value, key) => ({
+            date: key,
+            transactions: value,
+          }))
+          .orderBy((x) => parse(x.date, 'MM-dd-yyyy', new Date()))
+          .reverse()
+          .value()
+      : [];
+
   return (
     <PanGestureHandler onGestureEvent={panGestureEvent}>
       <Animated.View
@@ -142,27 +157,17 @@ const Transactions = ({ cardId }: Props) => {
             {t('wallet.transactions.recentTransactions')}
           </Animated.Text>
 
-          <Animated.View style={[tw`flex-row mt-4`, inputSearchAnimatedStyle]}>
-            <View style={tw`flex-grow`}>
+          <Animated.View style={[tw`flex-row mt-4 justify-between`, inputSearchAnimatedStyle]}>
+            <View style={tw`flex-grow pr-2`}>
               <TWSearchInput placeholder={t('wallet.transactions.searchTransactions')} />
             </View>
-            <View
-              style={tw`flex-none self-center rounded-lg mr-2 ml-2 bg-gray95 w-8 py-1 items-center`}
-            >
+            <View style={tw`flex-none self-center rounded-lg bg-gray95 w-8 py-1 items-center`}>
               <FilterIcon color="black" />
             </View>
           </Animated.View>
         </View>
 
         <View style={tw`flex h-full bg-white`}>
-          <View style={tw`flex-row justify-between bg-gray95 px-6 py-2 mb-4`}>
-            <Text style={tw`text-sm text-gray50`}>Jun 30, 2021</Text>
-            <Text style={tw`text-sm text-gray50`}>
-              {t('wallet.transactions.balance')}
-              $123.00
-            </Text>
-          </View>
-
           {cardLoading ? (
             <View style={tw`items-center justify-center`}>
               <ActivityIndicator style={tw`w-5`} />
@@ -171,26 +176,44 @@ const Transactions = ({ cardId }: Props) => {
             <View style={tw`items-center justify-center`}>
               <Text>{cardError?.message}</Text>
             </View>
-          ) : cardData.card.transactions && cardData.card.transactions.length > 0 ? (
+          ) : transactionsGroupedByDate.length > 0 ? (
             <FlatList
               scrollEnabled
               decelerationRate="fast"
-              data={cardData.card.transactions}
+              data={transactionsGroupedByDate}
               showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <TransactionRow
-                  key={item.transactionId}
-                  cardId={item.cardId}
-                  transactionId={item.transactionId}
-                  merchantName={item.merchantName}
-                  amount={item.amount}
-                  onPress={() => {}}
-                  status={item.status}
-                  isReceiptLinked={item.isReceiptLinked}
-                  time={item.time}
-                />
-              )}
-              keyExtractor={(item) => item.cardId}
+              renderItem={({ item }) => {
+                const { date, transactions } = item;
+                const dateParsed = parse(date, 'MM-dd-yyyy', new Date());
+
+                return (
+                  <View style={tw`pb-2`}>
+                    <View style={tw`flex-row justify-between bg-gray95 px-6 py-2 mb-2`}>
+                      <Text style={tw`text-sm text-gray50`}>
+                        {format(dateParsed, 'MMM dd, yyyy')}
+                      </Text>
+                      <Text style={tw`text-sm text-gray50`}>
+                        {t('wallet.transactions.balance')}
+                        $123.00
+                      </Text>
+                    </View>
+                    {transactions.map((transaction) => (
+                      <TransactionRow
+                        key={transaction.transactionId}
+                        cardId={transaction.cardId}
+                        transactionId={transaction.transactionId}
+                        merchantName={transaction.merchantName}
+                        amount={transaction.amount}
+                        onPress={() => {}}
+                        status={transaction.status}
+                        isReceiptLinked={transaction.isReceiptLinked}
+                        time={transaction.time}
+                      />
+                    ))}
+                  </View>
+                );
+              }}
+              keyExtractor={(item) => item.date}
             />
           ) : (
             <View style={tw`items-center justify-center`}>

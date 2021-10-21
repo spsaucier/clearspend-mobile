@@ -26,9 +26,18 @@ Follow general React Native setup: (React Native CLI Quickstart): https://reactn
 
 ## Setup Issues
 
-M1 Mac:
+M1 Macs:
 
-  - If the pod install fails with ruby-related issues, might using a rosetta terminal and installing ffi solve the problem: https://dev.to/javascriptcentric/setup-react-native-and-run-app-on-mac-m1-32kk
+- If the pod install fails due to ruby-related issues, might using a rosetta terminal and installing ffi solve the problem: https://dev.to/javascriptcentric/setup-react-native-and-run-app-on-mac-m1-32kk
+- Android:
+
+  - To launch emulator, must be using Studio Artic Fox (2020.3) which has Apple Silicon support (21/10/2021, https://stackoverflow.com/a/65176867)
+
+  - Emulator appearing offline on M1 Mac after the last update of arm64-v8a (https://stackoverflow.com/a/67261231/1118721)
+
+  - Failed to create sdcard in the AVD folder.
+    - Go to AVD > Show advanced settings > Memory and Storage > No SD Card
+
 #### TBC
 
 # Styling
@@ -61,15 +70,16 @@ When ready, we will move over to the V2 version: https://github.com/jaredh159/ta
 - Restart metro and rebuild project
 
 #### Card font
+
 - Kredit font is used for the cards: Downloaded from https://fontmeme.com/fonts/kredit-font/
 
 # Testing
+
 TBC
 
 ## Snyk tests - Security checks
 
 Test new packages that are added with `snyk test packagename`
-
 
 # Apollo Server
 
@@ -79,7 +89,4 @@ Test new packages that are added with `snyk test packagename`
 2. Install modules `npm install`
 3. Run `node index.js` from the `apolloserver` directory to start local server. Alternatively run the `yarn localserver` script from the main directory
 4. You should see output `Server ready at http://localhost:4000/`
-5. Follow the link to open the web server instance which will take you to https://studio.apollographql.com/sandbox/explorer. Here you can make test queries. 
-
-
-
+5. Follow the link to open the web server instance which will take you to https://studio.apollographql.com/sandbox/explorer. Here you can make test queries.

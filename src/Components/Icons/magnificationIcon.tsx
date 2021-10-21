@@ -12,7 +12,7 @@ type MagnificationIconProps = {
 };
 
 export const MagnificationIcon = ({
-  color = tw.color('gray80'),
+  color = tw.color('gray60'),
   style,
   testID,
   size = 20,

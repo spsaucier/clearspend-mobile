@@ -45,7 +45,7 @@ export const TransactionRow = ({
   const statusDeclined = status === 'DECLINED';
   return (
     <TouchableOpacity
-      style={tw`flex-row justify-between pl-6 pr-3 py-3`}
+      style={tw`flex-row justify-between pl-6 pr-3 py-2`}
       key={transactionId}
       onPress={handleOnPress}
     >

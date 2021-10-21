@@ -14,17 +14,18 @@ export const TWSearchInput = ({
   onChangeText,
   value,
 }: TextInputProps) => (
-  <View style={tw.style('flex-row justify-between rounded-lg border border-gray90 p-2')}>
+  <View style={tw`flex-row justify-between items-center rounded-lg border border-gray90 p-2`}>
     <TextInput
       autoFocus={autoFocus}
       autoCapitalize={autoCapitalize}
       autoCorrect={autoCorrect}
       underlineColorAndroid="rgba(0,0,0,0)"
       placeholder={placeholder}
-      placeholderTextColor={tw.color('gray50')}
+      placeholderTextColor={tw.color('gray40')}
       testID={testID}
       keyboardType={keyboardType}
       onChangeText={onChangeText}
+      style={tw`pt-0 pb-0`}
       value={value}
     />
     <MagnificationIcon />

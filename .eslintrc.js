@@ -39,6 +39,7 @@ module.exports = {
     'array-bracket-spacing': ['error', 'never'],
     'react/default-props-match-prop-types': ['error'],
     'react/sort-prop-types': ['error'],
+    'operator-linebreak': ["error", "before", { "overrides": { "=": "after"} }]
   },
   settings: {
     'import/resolver': {
