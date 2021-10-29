@@ -95,6 +95,19 @@ export default {
     freezeCard: 'Freeze Card',
     unfreezeCard: 'Unfreeze Card',
   },
+  cardProfile: {
+    cardBalance: 'Card Balance',
+    spendControls: 'Spend Controls',
+    reportCardLostOrStolen: 'Report Card Lost or Stolen',
+    moreSettings: 'More Settings',
+    moreSettingsSubtitle: 'Reset PIN, physical card request and more',
+    spentToday: 'Spent today',
+    limit: 'Limit: {{amount}}',
+    spentCurrentMonth: 'Spent this month',
+    remaining: 'Remaining: {{amount}}',
+    cardIsFrozenForSecurity: 'Card is frozen for security reasons.',
+    addToAppleWallet: 'Add to Apple Wallet',
+  },
   profile: {
     profileMenu: {
       manageAccount: 'Manage Account',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import WalletScreen from '@/Containers/Wallet/WalletScreen';
 import ProfileScreen from '@/Containers/Profile/ProfileScreen';
 import ChangePasswordScreen from '@/Containers/Profile/ChangePasswordScreen';
@@ -9,6 +9,9 @@ import NotificationScreen from '@/Containers/Notifications/NotificationScreen';
 import CardDetailScreen from '@/Containers/Wallet/CardDetailScreen';
 import CardInfoScreen from '@/Containers/Wallet/CardInfoScreen';
 import TransactionDetailScreen from '@/Containers/Wallet/TransactionDetailScreen';
+import CardSpendControlsScreen from '@/Containers/Wallet/CardSpendControlsScreen';
+import CardSettingsScreen from '@/Containers/Wallet/CardSettingsScreen';
+import CardLostStolen from '@/Containers/Wallet/CardLostStolen';
 
 type MainStackParamTypes = {
   Home: undefined;
@@ -26,6 +29,9 @@ type MainStackParamTypes = {
   'Card Details': { cardId: string };
   'Card Info': { cardId: string };
   'Transaction Details': { transactionId: string };
+  'Card Spend Controls': { cardId: string };
+  'Card Settings': { cardId: string };
+  'Card Lost Stolen': { cardId: string };
 };
 
 const Stack = createStackNavigator<MainStackParamTypes>();
@@ -43,10 +49,20 @@ const WalletStack = () => (
   <Stack.Navigator initialRouteName="Wallet" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Wallet" component={WalletScreen} />
     <Stack.Screen name="Notifications" component={NotificationScreen} />
-    <Stack.Screen name="Card Details" component={CardDetailScreen} />
     <Stack.Screen name="Card Info" component={CardInfoScreen} />
     <Stack.Screen name="Transaction Details" component={TransactionDetailScreen} />
     <Stack.Screen name="Profile" component={ProfileStack} />
+
+    <Stack.Screen
+      name="Card Details"
+      component={CardDetailScreen}
+      options={{
+        ...TransitionPresets.ModalSlideFromBottomIOS,
+      }}
+    />
+    <Stack.Screen name="Card Spend Controls" component={CardSpendControlsScreen} />
+    <Stack.Screen name="Card Settings" component={CardSettingsScreen} />
+    <Stack.Screen name="Card Lost Stolen" component={CardLostStolen} />
   </Stack.Navigator>
 );
 

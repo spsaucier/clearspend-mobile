@@ -23,6 +23,11 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		833F2006FE004CFBA319C9F2 /* libPods-TranwallMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE8F60935CC7F1EA8FB7E0E /* libPods-TranwallMobile.a */; };
 		E0BD253EC99E4C71831B7DDF /* kredit_embossed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EC9D01AD7BA49B2BC53A43D /* kredit_embossed.ttf */; };
+		4DF12126C5764548AC44164F /* SpaceGrotesk-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3E87B672992949B0A2A4952F /* SpaceGrotesk-Bold.ttf */; };
+		5015F9170F13448C95ED3049 /* SpaceGrotesk-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C4A3D27679A4141A06A1652 /* SpaceGrotesk-Light.ttf */; };
+		F035DEA05A274AB685ABAF9E /* SpaceGrotesk-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 883451986104433EA0200D5B /* SpaceGrotesk-Medium.ttf */; };
+		4382D31FC5944072A6B4B070 /* SpaceGrotesk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD211F912B0C4978A8C940F1 /* SpaceGrotesk-Regular.ttf */; };
+		EDD3F9AE71904E59AE2A7C4E /* SpaceGrotesk-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAA3FA9F27AE402EB2B068F2 /* SpaceGrotesk-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +74,11 @@
 		A8A496B83138A0046DC1D49A /* Pods-TranwallMobile-TranwallMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranwallMobile-TranwallMobileTests.release.xcconfig"; path = "Target Support Files/Pods-TranwallMobile-TranwallMobileTests/Pods-TranwallMobile-TranwallMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		3E87B672992949B0A2A4952F /* SpaceGrotesk-Bold.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Bold.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1C4A3D27679A4141A06A1652 /* SpaceGrotesk-Light.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Light.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		883451986104433EA0200D5B /* SpaceGrotesk-Medium.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Medium.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CD211F912B0C4978A8C940F1 /* SpaceGrotesk-Regular.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Regular.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AAA3FA9F27AE402EB2B068F2 /* SpaceGrotesk-SemiBold.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-SemiBold.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +210,11 @@
 				8EC9D01AD7BA49B2BC53A43D /* kredit_embossed.ttf */,
 				589FE03E0F7A4339992F34B8 /* kredit_shine.ttf */,
 				51590432D7354F979C9B337F /* kredit.ttf */,
+				3E87B672992949B0A2A4952F /* SpaceGrotesk-Bold.ttf */,
+				1C4A3D27679A4141A06A1652 /* SpaceGrotesk-Light.ttf */,
+				883451986104433EA0200D5B /* SpaceGrotesk-Medium.ttf */,
+				CD211F912B0C4978A8C940F1 /* SpaceGrotesk-Regular.ttf */,
+				AAA3FA9F27AE402EB2B068F2 /* SpaceGrotesk-SemiBold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -353,6 +368,11 @@
 				E0BD253EC99E4C71831B7DDF /* kredit_embossed.ttf in Resources */,
 				37B596D359774948B19BE217 /* kredit_shine.ttf in Resources */,
 				591690343459466393085F6A /* kredit.ttf in Resources */,
+				4DF12126C5764548AC44164F /* SpaceGrotesk-Bold.ttf in Resources */,
+				5015F9170F13448C95ED3049 /* SpaceGrotesk-Light.ttf in Resources */,
+				F035DEA05A274AB685ABAF9E /* SpaceGrotesk-Medium.ttf in Resources */,
+				4382D31FC5944072A6B4B070 /* SpaceGrotesk-Regular.ttf in Resources */,
+				EDD3F9AE71904E59AE2A7C4E /* SpaceGrotesk-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

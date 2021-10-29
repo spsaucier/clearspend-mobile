@@ -5,3 +5,4 @@ export { CloseIconButton } from './CloseButton';
 export { FocusAwareStatusBar } from './FocusAwareStatusbar';
 export { NotificationBell } from './NotificationBell';
 export { TWTextInput } from './TextInput';
+export { LinearProgressBar } from './LinearProgressBar';

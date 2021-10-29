@@ -17,3 +17,8 @@ export { SnowflakeIcon } from './snowflakeIcon';
 export { WalletIcon } from './walletIcon';
 export { MagnificationIcon } from './magnificationIcon';
 export { FilterIcon } from './filterIcon';
+export { AppleWalletIcon } from './appleWalletIcon';
+export { CardSettingsIcon } from './cardSettingsIcon';
+export { SuspensionPointsIcon } from './suspensionPointsIcon';
+export { AlarmIcon } from './alarmIcon';
+export { CardFrozenIcon } from './cardFrozenIcon';

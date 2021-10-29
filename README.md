@@ -73,6 +73,8 @@ When ready, we will move over to the V2 version: https://github.com/jaredh159/ta
 
 - Kredit font is used for the cards: Downloaded from https://fontmeme.com/fonts/kredit-font/
 
+- Space Grotesk font: https://fonts.google.com/specimen/Space+Grotesk
+
 # Testing
 
 TBC

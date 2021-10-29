@@ -117,7 +117,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
                 isVirtual={item.isVirtual}
                 lastDigits={item.lastDigits}
                 cardTitle={item.cardTitle}
-                onPress={() => navigation.navigate('Card Details')}
+                onPress={() => navigation.navigate('Card Details', { cardId: item.cardId })}
               />
             </View>
           )}
