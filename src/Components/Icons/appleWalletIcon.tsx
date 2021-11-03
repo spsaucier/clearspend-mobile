@@ -87,15 +87,21 @@ export const AppleWalletIcon = ({ testID, size = 32, style }: Props) => (
         </LinearGradient>
         <Image
           id="image0_171:51753"
-          xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALUAAABqCAYAAAD6OxBTAAAACXBIWXMAAEU0AABFNAGuxrUdAAAA"
+          xlinkHref={
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALUAAABqCAYAAAD6OxBTAAAACXBIWXMAAEU0AABFNAGuxrUdAAAA' as any
+          }
         />
         <Image
           id="image1_171:51753"
-          xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALUAAABeCAYAAABl0FXoAAAACXBIWXMAAEU0AABFNAGuxrUdAAAA"
+          xlinkHref={
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALUAAABeCAYAAABl0FXoAAAACXBIWXMAAEU0AABFNAGuxrUdAAAA' as any
+          }
         />
         <Image
           id="image2_171:51753"
-          xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAABYCAYAAABPnJ0/AAAACXBIWXMAAEU0AABFNAGuxrUdAAAA"
+          xlinkHref={
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAABYCAYAAABPnJ0/AAAACXBIWXMAAEU0AABFNAGuxrUdAAAA' as any
+          }
         />
       </Defs>
     </Svg>

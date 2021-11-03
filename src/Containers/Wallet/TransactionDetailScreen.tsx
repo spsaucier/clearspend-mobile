@@ -1,38 +1,217 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import React, { ReactNode } from 'react';
+import { View, Text, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { gql, useQuery } from '@apollo/client';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import tw from '@/Styles/tailwind';
-import { FocusAwareStatusBar } from '@/Components';
+import { ActivityIndicator, Button, FocusAwareStatusBar } from '@/Components';
 import { CloseIconButton } from '@/Components/CloseButton';
-import { CheckCircleIcon } from '@/Components/Icons';
+import {
+  AddReceiptIcon,
+  CheckCircleIcon,
+  ClockCircleIcon,
+  DeclinedCircleIcon,
+  ReceiptIcon,
+  WarningIcon,
+} from '@/Components/Icons';
+import { sentenceCase } from '@/Helpers/StringHelpers';
+import { DashedLine } from '@/Components/DashedLine';
+import { NoteInput } from '@/Containers/Wallet/Components/NoteInput';
 
-const TransactionDetailScreen = () => {
+const TRANSACTION_QUERY = gql`
+  query TransactionQuery($cardId: ID!, $transactionId: ID!) {
+    transaction(cardId: $cardId, transactionId: $transactionId) {
+      merchantName
+      merchantId
+      merchantCategory
+      merchantLogoUrl
+      amount
+      status
+      date
+      time
+      isReceiptLinked
+      country
+    }
+  }
+`;
+
+type InfoRowProps = {
+  label: string;
+  value?: string;
+  children?: ReactNode | string;
+};
+
+const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
+  <View style={tw`flex-row justify-between items-center`}>
+    <Text style={tw`text-sm text-gray50 mt-4`}>{label}</Text>
+    {!!value && <Text style={tw`text-sm text-copyDark mt-4`}>{value}</Text>}
+    {!!children && children}
+  </View>
+);
+
+const TransactionDetailScreen = ({ route }: any) => {
   const { t } = useTranslation();
+  const { loading, error, data } = useQuery(TRANSACTION_QUERY, {
+    variables: { cardId: route.params.cardId, transactionId: route.params.transactionId },
+  });
+
+  if (loading) {
+    return (
+      <View style={tw`flex-1 items-center justify-center p-6`}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={tw`flex-1 items-center justify-center p-6`}>
+        <Text style={tw`text-base text-error mb-2`}>{error?.message}</Text>
+      </View>
+    );
+  }
+
+  const {
+    merchantName,
+    merchantId,
+    merchantCategory,
+    merchantLogoUrl,
+    amount,
+    status,
+    date,
+    time,
+    isReceiptLinked,
+    country,
+  } = data.transaction;
+  const statusFormatted = sentenceCase(status);
+  const statusPending = status === 'PENDING';
+  const statusDeclined = status === 'DECLINED';
+  const statusApproved = status === 'APPROVED';
+  const categoryFormatted = sentenceCase(merchantCategory);
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
+    <SafeAreaView style={tw`flex-1 bg-white`} edges={['top', 'bottom']}>
       <FocusAwareStatusBar backgroundColor={tw.color('lightBG')} barStyle="dark-content" />
-
-      {/* Status */}
-      <View style={tw.style('flex-row items-center justify-center p-3 bg-success')}>
-        <CheckCircleIcon />
-        <Text style={tw`ml-2 text-base text-white`}>
-          {t('wallet.transactionDetails.status', { status: 'Approved' })}
-        </Text>
-      </View>
-
-      <View style={tw`flex-row items-end justify-end px-4 pt-3`}>
-        <CloseIconButton />
-      </View>
-
-      <View style={tw`flex px-8 pt-4 pb-6`}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={tw`text-base font-bold text-primary`}>
-            {t('wallet.transactionDetails.title')}
+      <KeyboardAwareScrollView
+        enableOnAndroid
+        keyboardShouldPersistTaps="handled"
+        enableResetScrollToCoords={false}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Transaction Status */}
+        <View
+          style={tw.style(
+            'flex-row items-center justify-center p-3 bg-gray95',
+            statusApproved && 'bg-success',
+            statusDeclined && 'bg-error',
+            statusPending && 'bg-pending',
+          )}
+        >
+          {statusApproved ? (
+            <CheckCircleIcon />
+          ) : statusDeclined ? (
+            <DeclinedCircleIcon />
+          ) : statusPending ? (
+            <ClockCircleIcon />
+          ) : null}
+          <Text style={tw`ml-2 text-base text-white`}>
+            {t('wallet.transactionDetails.status', { status: statusFormatted })}
           </Text>
-        </ScrollView>
-      </View>
+        </View>
+
+        {/* Map/banner area */}
+        <View style={tw`bg-gray90 h-38`}>
+          <View style={tw`flex-row items-end justify-end px-4 pt-3`}>
+            <CloseIconButton />
+          </View>
+        </View>
+
+        {/* Merchant logo */}
+        <View style={[tw`flex-row justify-center -top-7`]}>
+          <View style={[tw`bg-white justify-center items-center h-18 w-18`, { borderRadius: 18 }]}>
+            <View
+              style={[
+                tw`bg-primary h-16 w-16 overflow-hidden items-center justify-center`,
+                { borderRadius: 16 },
+              ]}
+            >
+              {merchantLogoUrl ? (
+                <Image
+                  source={{
+                    uri: merchantLogoUrl,
+                  }}
+                  style={tw`w-full h-full`}
+                  resizeMode="contain"
+                />
+              ) : (
+                <ReceiptIcon style={tw`h-8`} color={tw.color('white')} />
+              )}
+            </View>
+          </View>
+        </View>
+
+        <View style={tw`items-center`}>
+          <Text style={tw`font-bold text-black text-2xl`}>{`$${amount}`}</Text>
+          <Text style={tw`text-black text-xl my-2`}>
+            {merchantName}
+            {merchantCategory && ` • ${categoryFormatted}`}
+          </Text>
+          <Text style={tw`text-gray50 text-base`}>{`${date} ${time}`}</Text>
+        </View>
+
+        <View style={tw`p-6`}>
+          {isReceiptLinked ? (
+            <Button onPress={() => {}} small containerStyle={tw`bg-primary`}>
+              <ReceiptIcon color={tw.color('white')} />
+              <Text style={tw`text-base font-bold text-white ml-2`}>
+                {t('wallet.transactionDetails.viewReceipt')}
+              </Text>
+            </Button>
+          ) : (
+            <Button onPress={() => {}} small containerStyle={tw`bg-primary`}>
+              <AddReceiptIcon color={tw.color('white')} />
+              <Text style={tw`text-base font-bold text-white ml-2`}>
+                {t('wallet.transactionDetails.addReceipt')}
+              </Text>
+            </Button>
+          )}
+
+          <DashedLine style={tw`my-6 w-full`} />
+
+          <NoteInput />
+
+          <Text style={tw`text-sm font-bold text-gray30 mt-6`}>
+            {t('wallet.transactionDetails.merchant.title').toUpperCase()}
+          </Text>
+          <InfoRow
+            label={t('wallet.transactionDetails.merchant.merchantName')}
+            value={merchantName}
+          />
+          <InfoRow label={t('wallet.transactionDetails.merchant.merchantId')} value={merchantId} />
+          <InfoRow
+            label={t('wallet.transactionDetails.merchant.merchantCategory')}
+            value={merchantCategory}
+          />
+
+          <Text style={tw`text-sm font-bold text-gray30 mt-6`}>
+            {t('wallet.transactionDetails.details.title').toUpperCase()}
+          </Text>
+          <InfoRow
+            label={t('wallet.transactionDetails.details.dateTime')}
+            value={`${date} ${time}`}
+          />
+          <InfoRow label={t('wallet.transactionDetails.details.amount')} value={`$${amount}`} />
+          <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
+
+          <Button small containerStyle={tw`mt-10 bg-gray95`}>
+            <Text style={tw`mr-1 text-base font-semibold text-gray50`}>
+              {t('wallet.transactionDetails.report')}
+            </Text>
+            <WarningIcon color={tw.color('gray50')} />
+          </Button>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

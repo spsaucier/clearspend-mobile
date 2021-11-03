@@ -28,7 +28,7 @@ type MainStackParamTypes = {
   Notifications: undefined;
   'Card Details': { cardId: string };
   'Card Info': { cardId: string };
-  'Transaction Details': { transactionId: string };
+  'Transaction Details': { cardId: string; transactionId: string };
   'Card Spend Controls': { cardId: string };
   'Card Settings': { cardId: string };
   'Card Lost Stolen': { cardId: string };

@@ -26,6 +26,7 @@ const typeDefs = gql`
     notes: String
     status: TransactionStatus
     location: String
+    country: String
   }
 
   enum TransactionStatus {
@@ -57,8 +58,8 @@ const typeDefs = gql`
   type Query {
     cards: [Card]!
     card(cardId: ID!): Card
-#    transactions(cardId: ID!): [Transaction]!
-#    transaction(transactionId: ID!): Transaction!
+    transactions(cardId: ID!): [Transaction]!
+    transaction(cardId: ID!, transactionId: ID!): Transaction
     user (id: ID!): User!
   }
 

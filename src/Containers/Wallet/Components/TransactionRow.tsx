@@ -16,7 +16,6 @@ type Props = {
   amount: string;
   merchantImage?: string;
   category?: string;
-  onPress: () => void;
   status: Status;
   isReceiptLinked: boolean;
   time: string;
@@ -32,14 +31,10 @@ export const TransactionRow = ({
   status,
   isReceiptLinked = false,
   time = '',
-  onPress,
 }: Props) => {
   const navigation = useNavigation<any>(); // TODO Add type
   const handleOnPress = () => {
-    if (onPress) {
-      onPress();
-    }
-    navigation.navigate('Transaction Details', { transactionId, cardId });
+    navigation.navigate('Transaction Details', { cardId, transactionId });
   };
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';

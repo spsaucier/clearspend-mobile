@@ -19,22 +19,19 @@ import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 
-const CARD_QUERY = gql`
-  query CardQuery($cardId: ID!) {
-    card(cardId: $cardId) {
-      isFrozen
-      transactions {
-        transactionId
-        merchantName
-        merchantId
-        merchantCategory
-        merchantLogoUrl
-        amount
-        status
-        date
-        time
-        isReceiptLinked
-      }
+const TRANSACTIONS_QUERY = gql`
+  query TransactionsQuery($cardId: ID!) {
+    transactions(cardId: $cardId) {
+      transactionId
+      merchantName
+      merchantId
+      merchantCategory
+      merchantLogoUrl
+      amount
+      status
+      date
+      time
+      isReceiptLinked
     }
   }
 `;
@@ -58,11 +55,7 @@ const Transactions = ({ cardId }: Props) => {
   const translateY = useSharedValue(0);
   const isViewExpanded = useSharedValue(false);
 
-  const {
-    data: cardData,
-    loading: cardLoading,
-    error: cardError,
-  } = useQuery(CARD_QUERY, {
+  const { data, loading, error } = useQuery(TRANSACTIONS_QUERY, {
     variables: { cardId },
   });
 
@@ -124,8 +117,8 @@ const Transactions = ({ cardId }: Props) => {
   );
 
   const transactionsGroupedByDate =
-    cardData?.card.transactions.length > 0
-      ? chain(cardData.card.transactions)
+    data?.transactions.length > 0
+      ? chain(data.transactions)
           .groupBy('date')
           .map((value, key) => ({
             date: key,
@@ -168,13 +161,13 @@ const Transactions = ({ cardId }: Props) => {
         </View>
 
         <View style={tw`flex h-full bg-white`}>
-          {cardLoading ? (
+          {loading ? (
             <View style={tw`items-center justify-center`}>
               <ActivityIndicator style={tw`w-5`} />
             </View>
-          ) : cardError ? (
+          ) : error ? (
             <View style={tw`items-center justify-center`}>
-              <Text>{cardError?.message}</Text>
+              <Text>{error?.message}</Text>
             </View>
           ) : transactionsGroupedByDate.length > 0 ? (
             <FlatList
@@ -200,11 +193,10 @@ const Transactions = ({ cardId }: Props) => {
                     {transactions.map((transaction) => (
                       <TransactionRow
                         key={transaction.transactionId}
-                        cardId={transaction.cardId}
+                        cardId={cardId}
                         transactionId={transaction.transactionId}
                         merchantName={transaction.merchantName}
                         amount={transaction.amount}
-                        onPress={() => {}}
                         status={transaction.status}
                         isReceiptLinked={transaction.isReceiptLinked}
                         time={transaction.time}

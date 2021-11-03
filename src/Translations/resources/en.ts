@@ -82,6 +82,25 @@ export default {
     transactionDetails: {
       title: 'Transaction Details',
       status: 'Transaction {{status}}',
+      viewReceipt: 'View Receipt',
+      addReceipt: 'Add Receipt',
+      addNotes: 'Add transaction note',
+      merchant: {
+        title: 'Merchant',
+        merchantName: 'Merchant Name',
+        merchantId: 'Merchant ID',
+        merchantCategory: 'Merchant Category',
+      },
+      details: {
+        title: 'Transaction Details',
+        dateTime: 'Posted on',
+        amount: 'Posted amount',
+        location: 'Country',
+      },
+      report: 'Report an issue',
+      notes: {
+        placeholder: 'Add transaction notes...',
+      },
     },
   },
   card: {
