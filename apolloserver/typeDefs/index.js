@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server');
 
-const typeDefs = gql`  
+const typeDefs = gql`
   type User {
     id: ID!
     name: String!
@@ -8,7 +8,7 @@ const typeDefs = gql`
     token: String
     cards: [Card]
   }
-  
+
   type Transaction {
     transactionId: String!
     merchantName: String!
@@ -18,7 +18,7 @@ const typeDefs = gql`
     merchantLogoUrl: String
     currency: String
     amount: Float!
-#    credited: Boolean!
+    #    credited: Boolean!
     date: String!
     time: String!
     isReceiptLinked: Boolean
@@ -35,6 +35,15 @@ const typeDefs = gql`
     DECLINED
   }
 
+  type BillingAddress {
+    streetLine1: String
+    streetLine2: String
+    locality: String
+    region: String
+    postalCode: String
+    country: String
+  }
+
   type Card {
     cardId: ID!
     creationDate: String
@@ -48,7 +57,7 @@ const typeDefs = gql`
     cardNumber: String
     cardTitle: String
     cardholderName: String
-    billingAddress: String
+    billingAddress: BillingAddress
     cvv: String
     transactions: [Transaction]!
   }
@@ -60,7 +69,7 @@ const typeDefs = gql`
     card(cardId: ID!): Card
     transactions(cardId: ID!): [Transaction]!
     transaction(cardId: ID!, transactionId: ID!): Transaction
-    user (id: ID!): User!
+    user(id: ID!): User!
   }
 
   type Mutation {

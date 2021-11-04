@@ -59,7 +59,11 @@ const WalletStack = () => (
   <Stack.Navigator initialRouteName="Wallet" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Wallet" component={WalletScreen} />
     <Stack.Screen name="Notifications" component={NotificationScreen} />
-    <Stack.Screen name="Card Info" component={CardInfoScreen} />
+    <Stack.Screen
+      name="Card Info"
+      component={CardInfoScreen}
+      options={{ presentation: 'transparentModal' }}
+    />
     <Stack.Screen name="Transaction Details" component={TransactionDetailScreen} />
     <Stack.Screen name="Profile" component={ProfileStack} />
 

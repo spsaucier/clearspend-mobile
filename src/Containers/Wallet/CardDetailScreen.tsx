@@ -20,7 +20,7 @@ import { Visa } from '@/Components/Svg/Visa';
 const cardBGImageOverlay = require('@/Assets/Images/cardPattern.png');
 
 const CARD_QUERY = gql`
-  query CardQuery($cardId: ID!) {
+  query CardDetailsQuery($cardId: ID!) {
     card(cardId: $cardId) {
       isFrozen
       isDisposable
@@ -121,7 +121,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
             <View style={tw`flex-row items-center justify-evenly`}>
               <Button
                 containerStyle={tw`flex-1 mr-1`}
-                onPress={() => navigation.navigate('Card Info')}
+                onPress={() => navigation.navigate('Card Info', { cardId })}
                 small
               >
                 <EyeIcon style={tw`mr-1`} />

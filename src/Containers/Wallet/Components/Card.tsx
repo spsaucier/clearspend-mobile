@@ -2,23 +2,29 @@ import React from 'react';
 import { StyleProp, View, ViewStyle, Text, TouchableOpacity, ImageBackground } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
+import { parse, format } from 'date-fns';
+
 import tw from '@/Styles/tailwind';
 import { Logo } from '@/Components/Svg/Logo';
 import { Visa } from '@/Components/Svg/Visa';
 
 export type CardType = {
   cardId: string;
-  balance: string;
+  cardNumber?: string;
   lastDigits: string;
-  isFrozen: boolean;
   cardTitle: string;
+  expirationDate?: string;
+  cvv?: string;
+  balance: string;
+  isFrozen: boolean;
   isVirtual: boolean;
   isDisposable: boolean;
+  showSensitiveInformation?: boolean;
 };
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  onPress: () => void;
+  onPress?: () => void;
   width?: any;
 } & CardType;
 
@@ -26,17 +32,28 @@ const cardBGImageOverlay = require('@/Assets/Images/cardPattern.png');
 
 export const Card = ({
   cardId,
-  balance,
+  cardNumber,
   lastDigits,
-  isFrozen,
   cardTitle,
+  expirationDate,
+  cvv,
+  balance,
+  isFrozen,
   isVirtual,
   isDisposable,
   style,
   onPress,
   width,
+  showSensitiveInformation = false,
 }: Props) => {
   const { t } = useTranslation();
+
+  const disabled = !onPress;
+
+  const expirationDateFormatted =
+    showSensitiveInformation &&
+    expirationDate &&
+    format(parse(expirationDate!, 'yyyy-MM-dd', new Date()), 'MM/yy');
 
   return (
     <TouchableOpacity
@@ -52,6 +69,7 @@ export const Card = ({
         style,
       ]}
       onPress={onPress}
+      disabled={disabled}
     >
       <ImageBackground
         imageStyle={tw`opacity-30`}
@@ -73,18 +91,40 @@ export const Card = ({
               </View>
             </View>
             <View style={tw`flex-1 items-end`}>
-              <Text style={tw`text-white text-2xl font-thin font-card`}>{`$${balance}`}</Text>
+              <Text style={tw`text-white text-2xl font-card`}>{`$${balance}`}</Text>
               <Text style={tw`text-white text-xs`}>{t('card.balance').toUpperCase()}</Text>
             </View>
           </View>
 
           {/* Bottom Row */}
           <View>
-            <View style={tw`flex flex-row items-end`}>
-              <View style={tw`flex font-card`}>
-                <Text style={tw`text-white text-2xl font-card`}>{`**** ${lastDigits}`}</Text>
-                {!!cardTitle && <Text style={tw`text-white text-base`}>{cardTitle}</Text>}
+            <View style={tw`flex flex-row items-end `}>
+              <View style={tw`flex `}>
+                <Text style={tw`text-white text-2xl font-card`}>
+                  {showSensitiveInformation ? `${cardNumber}` : `**** ${lastDigits}`}
+                </Text>
+                {!!cardTitle && (
+                  <Text style={tw`text-white text-base font-card mt-1`}>{cardTitle}</Text>
+                )}
+
+                {showSensitiveInformation && (
+                  <View style={tw`flex-row mt-4`}>
+                    <View>
+                      <Text style={tw`text-white font-spacegrotesk text-opacity-60`}>
+                        {t('card.validThru').toUpperCase()}
+                      </Text>
+                      <Text style={tw`text-white mt-1`}>{expirationDateFormatted}</Text>
+                    </View>
+                    <View style={tw`ml-4`}>
+                      <Text style={tw`text-white font-spacegrotesk text-opacity-60`}>
+                        {t('card.cvv').toUpperCase()}
+                      </Text>
+                      <Text style={tw`text-white mt-1`}>{cvv}</Text>
+                    </View>
+                  </View>
+                )}
               </View>
+
               <View style={tw`flex-1 items-end`}>
                 {isFrozen && (
                   <View
@@ -96,7 +136,9 @@ export const Card = ({
                 <Visa style={tw`h-10 mt-1`} />
               </View>
             </View>
-            <Text style={tw`text-white text-xs text-center`}>{t('card.viewControls')}</Text>
+            {!disabled && (
+              <Text style={tw`text-white text-xs text-center`}>{t('card.viewControls')}</Text>
+            )}
           </View>
         </View>
       </ImageBackground>

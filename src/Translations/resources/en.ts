@@ -113,6 +113,8 @@ export default {
     showCardInfo: 'Show Card Info',
     freezeCard: 'Freeze Card',
     unfreezeCard: 'Unfreeze Card',
+    validThru: 'Valid Thru',
+    cvv: 'CVV',
   },
   cardProfile: {
     cardBalance: 'Card Balance',
@@ -126,6 +128,12 @@ export default {
     remaining: 'Remaining: {{amount}}',
     cardIsFrozenForSecurity: 'Card is frozen for security reasons.',
     addToAppleWallet: 'Add to Apple Wallet',
+  },
+  cardInfo: {
+    dismiss: 'Dismiss',
+    copyCardNumber: 'Copy Card Number',
+    copyCVV: 'Copy CVV',
+    billingAddress: 'Billing Address',
   },
   profile: {
     profileMenu: {

@@ -8,6 +8,7 @@ export { CheckCircleIcon } from './checkCircleIcon';
 export { ChevronIcon } from './chevronIcon';
 export { ClockCircleIcon } from './clockCircleIcon';
 export { CloseIcon } from './closeIcon';
+export { CopyIcon } from './copyIcon';
 export { DeclinedCircleIcon } from './declinedCircleIcon';
 export { EditIcon } from './editIcon';
 export { EmailIcon } from './emailIcon';

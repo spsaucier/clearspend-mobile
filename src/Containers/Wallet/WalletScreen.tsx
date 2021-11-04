@@ -126,7 +126,11 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
 
       {/* Button Row */}
       <View style={tw`flex-row items-center justify-center pt-3 pb-4 px-9`}>
-        <Button containerStyle={tw`flex-1`} onPress={() => navigation.navigate('Card Info')} small>
+        <Button
+          containerStyle={tw`flex-1`}
+          onPress={() => navigation.navigate('Card Info', { cardId: selectedCard?.cardId })}
+          small
+        >
           <EyeIcon style={tw`mr-1`} />
           <Text style={tw`text-base font-bold text-primary`}>{t('card.showCardInfo')}</Text>
         </Button>
