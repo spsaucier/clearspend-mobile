@@ -1,5 +1,9 @@
 import React from 'react';
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackNavigationOptions,
+  TransitionPresets,
+} from '@react-navigation/stack';
 import WalletScreen from '@/Containers/Wallet/WalletScreen';
 import ProfileScreen from '@/Containers/Profile/ProfileScreen';
 import ChangePasswordScreen from '@/Containers/Profile/ChangePasswordScreen';
@@ -36,6 +40,12 @@ type MainStackParamTypes = {
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
+const transparentBottomSheet: StackNavigationOptions = {
+  presentation: 'transparentModal',
+  gestureEnabled: false,
+  cardOverlayEnabled: true,
+};
+
 const ProfileStack = () => (
   <Stack.Navigator initialRouteName="Profile Screen" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Profile Screen" component={ProfileScreen} />
@@ -60,8 +70,16 @@ const WalletStack = () => (
         ...TransitionPresets.ModalSlideFromBottomIOS,
       }}
     />
-    <Stack.Screen name="Card Spend Controls" component={CardSpendControlsScreen} />
-    <Stack.Screen name="Card Settings" component={CardSettingsScreen} />
+    <Stack.Screen
+      name="Card Spend Controls"
+      component={CardSpendControlsScreen}
+      options={transparentBottomSheet}
+    />
+    <Stack.Screen
+      name="Card Settings"
+      component={CardSettingsScreen}
+      options={transparentBottomSheet}
+    />
     <Stack.Screen name="Card Lost Stolen" component={CardLostStolen} />
   </Stack.Navigator>
 );

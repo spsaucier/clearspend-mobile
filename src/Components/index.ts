@@ -6,3 +6,4 @@ export { FocusAwareStatusBar } from './FocusAwareStatusbar';
 export { NotificationBell } from './NotificationBell';
 export { TWTextInput } from './TextInput';
 export { LinearProgressBar } from './LinearProgressBar';
+export { BottomSheetModal } from './BottomSheetModal';
