@@ -83,7 +83,9 @@ export const Card = ({
             <View style={tw`flex`}>
               <Logo style={tw`w-28 mt-1`} />
               <View style={tw`flex flex-row`}>
-                {isVirtual && <Text style={tw`text-white`}>{t('card.virtual').toUpperCase()}</Text>}
+                {isVirtual && (
+                  <Text style={tw`text-white `}>{t('card.virtual').toUpperCase()}</Text>
+                )}
                 {isDisposable && (
                   <Text style={tw`text-white`}>{t('card.disposable').toUpperCase()}</Text>
                 )}
