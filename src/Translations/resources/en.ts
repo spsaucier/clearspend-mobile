@@ -12,8 +12,8 @@ export default {
     buttonCta: 'Get Started',
     forgotPassword: 'Forgot Password?',
     businessSection: {
-      copy: 'Interested in signing up your business with Tranwall?',
-      buttonCta: 'Explore Tranwall Business',
+      copy: 'Interested in signing up your business with ClearSpend?',
+      buttonCta: 'Explore ClearSpend Business',
     },
   },
   selectOrganization: {

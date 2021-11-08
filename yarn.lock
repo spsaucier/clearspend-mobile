@@ -1282,17 +1282,6 @@
     query-string "^7.0.0"
     react-is "^16.13.0"
 
-"@react-navigation/core@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-6.1.0.tgz#95fbf54d78ad0ed976cb73219f0c0199775a1d26"
-  integrity sha512-LyZqD/ZCXSK9+ES8KiH+0tU+7aL84jUw1N9OxZfEuns/OcnSXKC3sOO+9NQ9XRowB1wLUfJhmqZ8G8rUlg33fQ==
-  dependencies:
-    "@react-navigation/routers" "^6.1.0"
-    escape-string-regexp "^4.0.0"
-    nanoid "^3.1.23"
-    query-string "^7.0.0"
-    react-is "^16.13.0"
-
 "@react-navigation/elements@^1.1.2":
   version "1.1.2"
   resolved "https://registry.npmjs.org/@react-navigation/elements/-/elements-1.1.2.tgz"
@@ -6819,10 +6808,10 @@ react-native-codegen@^0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-flipper@^0.103.0:
-  version "0.103.0"
-  resolved "https://registry.npmjs.org/react-native-flipper/-/react-native-flipper-0.103.0.tgz"
-  integrity sha512-F49O8FAPLt9BsuKQYre3ATJ8oaghc9xJu/S4WFhKqAboesFoUyB3i8EAkBFbXEgA1+Foolct3QTWQLc7KTI/tA==
+react-native-flipper@^0.118.0:
+  version "0.118.0"
+  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.118.0.tgz#2e73cb517cb71c9a8e5d65f70873eebbf4807592"
+  integrity sha512-oOJN7CZJOXu0rB9XgdZfCpe+3a9PZqpTvds/ByssAjTaxzR5bk9YliLAMqj2Yp+F0gWE9gpamUS3ShtilEvvGA==
 
 react-native-gesture-handler@^1.10.3:
   version "1.10.3"
