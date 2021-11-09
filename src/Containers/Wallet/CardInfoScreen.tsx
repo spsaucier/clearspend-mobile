@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { gql, useQuery } from '@apollo/client';
@@ -87,7 +87,7 @@ const CardInfoScreen = () => {
   };
 
   return (
-    <BlurView style={tw`flex-1`} blurType={Platform.select({ ios: 'chromeMaterialDark' })}>
+    <BlurView style={tw`flex-1`} blurAmount={50}>
       <SafeAreaView style={tw`flex-1`}>
         <FocusAwareStatusBar backgroundColor={tw.color('gray50')} barStyle="light-content" />
         <View style={tw`flex-1 justify-center m-4 mt-12`}>

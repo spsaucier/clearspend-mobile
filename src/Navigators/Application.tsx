@@ -17,7 +17,7 @@ let MainNavigator: FunctionComponent | null;
 // Apollo
 const cache = new InMemoryCache();
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: 'http://192.168.1.4:4000',
   cache,
   defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
 });

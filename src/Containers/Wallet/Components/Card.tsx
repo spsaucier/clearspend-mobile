@@ -4,9 +4,10 @@ import { StyleProp, View, ViewStyle, Text, TouchableOpacity, ImageBackground } f
 import { useTranslation } from 'react-i18next';
 import { parse, format } from 'date-fns';
 
-import tw from '@/Styles/tailwind';
 import { Logo } from '@/Components/Svg/Logo';
 import { Visa } from '@/Components/Svg/Visa';
+
+import tw from '@/Styles/tailwind';
 
 export type CardType = {
   cardId: string;
@@ -84,17 +85,25 @@ export const Card = ({
               <Logo style={tw`w-28 mt-1`} />
               <View style={tw`flex flex-row`}>
                 {isVirtual && (
-                  <Text style={tw`text-white `}>{t('card.virtual').toUpperCase()}</Text>
+                  <Text style={tw`text-white text-xs xxs:text-sm`}>
+                    {t('card.virtual').toUpperCase()}
+                  </Text>
                 )}
                 {isDisposable && (
-                  <Text style={tw`text-white`}>{t('card.disposable').toUpperCase()}</Text>
+                  <Text style={tw`text-white text-xs xxs:text-sm`}>
+                    {t('card.disposable').toUpperCase()}
+                  </Text>
                 )}
-                <Text style={tw`text-white`}>{t('card.card').toUpperCase()}</Text>
+                <Text style={tw`text-white text-xs xxs:text-sm`}>
+                  {t('card.card').toUpperCase()}
+                </Text>
               </View>
             </View>
             <View style={tw`flex-1 items-end`}>
-              <Text style={tw`text-white text-2xl font-card`}>{`$${balance}`}</Text>
-              <Text style={tw`text-white text-xs`}>{t('card.balance').toUpperCase()}</Text>
+              <Text style={tw`text-white text-lg xxs:text-2xl font-card`}>{`$${balance}`}</Text>
+              <Text style={tw`text-white text-2xs xxs:text-xs`}>
+                {t('card.balance').toUpperCase()}
+              </Text>
             </View>
           </View>
 
@@ -102,11 +111,13 @@ export const Card = ({
           <View>
             <View style={tw`flex flex-row items-end `}>
               <View style={tw`flex `}>
-                <Text style={tw`text-white text-2xl font-card`}>
+                <Text style={tw`text-white text-lg xxs:text-2xl font-card`}>
                   {showSensitiveInformation ? `${cardNumber}` : `**** ${lastDigits}`}
                 </Text>
                 {!!cardTitle && (
-                  <Text style={tw`text-white text-base font-card mt-1`}>{cardTitle}</Text>
+                  <Text style={tw`text-white text-sm xxs:text-xl font-card mt-0 xxs:mt-1`}>
+                    {cardTitle}
+                  </Text>
                 )}
 
                 {showSensitiveInformation && (
@@ -115,13 +126,13 @@ export const Card = ({
                       <Text style={tw`text-white font-spacegrotesk text-opacity-60`}>
                         {t('card.validThru').toUpperCase()}
                       </Text>
-                      <Text style={tw`text-white mt-1`}>{expirationDateFormatted}</Text>
+                      <Text style={tw`text-white mt-1 font-card`}>{expirationDateFormatted}</Text>
                     </View>
                     <View style={tw`ml-4`}>
                       <Text style={tw`text-white font-spacegrotesk text-opacity-60`}>
                         {t('card.cvv').toUpperCase()}
                       </Text>
-                      <Text style={tw`text-white mt-1`}>{cvv}</Text>
+                      <Text style={tw`text-white mt-1 font-card`}>{cvv}</Text>
                     </View>
                   </View>
                 )}
