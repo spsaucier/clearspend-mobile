@@ -10,7 +10,7 @@ const NotificationScreen = () => {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
+    <SafeAreaView style={tw`flex-1 bg-lightBG`}>
       <View style={tw`flex p-5`}>
         <View style={tw`flex-row items-center justify-between`}>
           <Text style={tw`text-2xl font-bold text-copyDark`}>Notifications</Text>

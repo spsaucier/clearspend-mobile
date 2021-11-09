@@ -43,7 +43,6 @@ const Stack = createStackNavigator<MainStackParamTypes>();
 const transparentBottomSheet: StackNavigationOptions = {
   presentation: 'transparentModal',
   gestureEnabled: false,
-  cardOverlayEnabled: true,
 };
 
 const ProfileStack = () => (
@@ -64,7 +63,11 @@ const WalletStack = () => (
       component={CardInfoScreen}
       options={{ presentation: 'transparentModal' }}
     />
-    <Stack.Screen name="Transaction Details" component={TransactionDetailScreen} />
+    <Stack.Screen
+      name="Transaction Details"
+      component={TransactionDetailScreen}
+      options={transparentBottomSheet}
+    />
     <Stack.Screen name="Profile" component={ProfileStack} />
 
     <Stack.Screen

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { useBottomSheet } from '@gorhom/bottom-sheet';
 import tw from '@/Styles/tailwind';
-import { BottomSheetModal, Button } from '@/Components';
+import { CSBottomSheet, Button } from '@/Components';
 
 const CardSpendControlsContent = () => {
   const { close } = useBottomSheet();
@@ -21,9 +21,9 @@ const CardSpendControlsContent = () => {
 };
 
 const CardSpendControlsScreen = () => (
-  <BottomSheetModal snapPoints={['90%']}>
+  <CSBottomSheet snapPoints={['90%']}>
     <CardSpendControlsContent />
-  </BottomSheetModal>
+  </CSBottomSheet>
 );
 
 export default CardSpendControlsScreen;

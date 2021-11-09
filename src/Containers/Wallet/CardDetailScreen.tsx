@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, ScrollView, ImageBackground, Text, Platform } from 'react-native';
+import { View, ScrollView, ImageBackground, Text, Platform, StatusBar } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { gql, useQuery } from '@apollo/client';
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator, Button, FocusAwareStatusBar, LinearProgressBar } from '@/Components';
+import { ActivityIndicator, Button, LinearProgressBar } from '@/Components';
 import {
   AlarmIcon,
   AppleWalletIcon,
@@ -84,7 +84,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
 
   return (
     <View style={tw`flex-1 bg-white`}>
-      <FocusAwareStatusBar backgroundColor={tw.color('primary')} barStyle="light-content" />
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       <View
         style={[
           tw.style(
@@ -102,11 +102,15 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
           resizeMode="cover"
           style={tw`flex-1`}
         >
-          <View style={tw`flex-1 items-start justify-end h-full p-6`}>
+          <View style={tw`flex-1 items-start justify-around h-full p-6`}>
             <View
-              style={tw.style('flex self-center bg-white w-12 rounded-full my-3 opacity-40 mb-8', {
-                height: 6,
-              })}
+              style={[
+                tw`flex self-center bg-white w-12 rounded-full my-3 opacity-40 mb-8`,
+                {
+                  height: 6,
+                },
+                Platform.select({ ios: tw`mt-8` }),
+              ]}
             />
             <View style={tw`flex-row w-full justify-between mb-4`}>
               <View style={tw`flex font-card`}>
