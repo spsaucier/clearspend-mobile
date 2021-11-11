@@ -15,6 +15,7 @@
 		3B3054DCCD394D6CB57BF7F0 /* kredit_embossed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C52CCE69D7E4CF0A67725F1 /* kredit_embossed.ttf */; };
 		4206B675381142CDAF183D36 /* kredit_back.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 039D823F21734DFE8FED81C0 /* kredit_back.ttf */; };
 		4244C200D19E455994C2A5EA /* SpaceGrotesk-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C58D545898F4D619B80E734 /* SpaceGrotesk-Light.ttf */; };
+		431103B0273D085C0009F367 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 431103AF273D085C0009F367 /* AppCenter-Config.plist */; };
 		7B23BD4804E747D18F8056A0 /* SpaceGrotesk-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D5C8EAD4DC140C7AE286B0E /* SpaceGrotesk-Bold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9E2BBBA3FF1D43DCABE3F15D /* SpaceGrotesk-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 721D1E1A8F0347C6908A5CD2 /* SpaceGrotesk-Medium.ttf */; };
@@ -39,27 +40,28 @@
 		00E356EE1AD99517003FC87E /* ClearSpendMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClearSpendMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ClearSpendMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClearSpendMobileTests.m; sourceTree = "<group>"; };
-		039D823F21734DFE8FED81C0 /* kredit_back.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_back.ttf; path = ../src/Assets/Fonts/kredit_back.ttf; sourceTree = "<group>"; };
+		039D823F21734DFE8FED81C0 /* kredit_back.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_back.ttf; path = ../src/Assets/Fonts/kredit_back.ttf; sourceTree = "<group>"; };
 		03A07999C3D928377FD42A96 /* libPods-ClearSpendMobile-ClearSpendMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClearSpendMobile-ClearSpendMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BB39BBBAF893E4937E8BDB2 /* Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile-ClearSpendMobileTests/Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0DCCC7C3CBBD6A3C3AD35FB7 /* Pods-ClearSpendMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile.release.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile/Pods-ClearSpendMobile.release.xcconfig"; sourceTree = "<group>"; };
-		12CEFB5CFD104312A3309649 /* kredit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = kredit.ttf; path = ../src/Assets/Fonts/kredit.ttf; sourceTree = "<group>"; };
+		12CEFB5CFD104312A3309649 /* kredit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = kredit.ttf; path = ../src/Assets/Fonts/kredit.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ClearSpendMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClearSpendMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ClearSpendMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ClearSpendMobile/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ClearSpendMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ClearSpendMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ClearSpendMobile/main.m; sourceTree = "<group>"; };
-		1C58D545898F4D619B80E734 /* SpaceGrotesk-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Light.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Light.ttf"; sourceTree = "<group>"; };
+		1C58D545898F4D619B80E734 /* SpaceGrotesk-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Light.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Light.ttf"; sourceTree = "<group>"; };
 		37F90DF01FFAF6ED4DC3881C /* Pods-ClearSpendMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile.debug.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile/Pods-ClearSpendMobile.debug.xcconfig"; sourceTree = "<group>"; };
-		412D9E6158F74EB89ADEFA92 /* SpaceGrotesk-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-SemiBold.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-SemiBold.ttf"; sourceTree = "<group>"; };
-		4DC11B24EE664941BC49385F /* kredit_shine.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_shine.ttf; path = ../src/Assets/Fonts/kredit_shine.ttf; sourceTree = "<group>"; };
-		5C52CCE69D7E4CF0A67725F1 /* kredit_embossed.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_embossed.ttf; path = ../src/Assets/Fonts/kredit_embossed.ttf; sourceTree = "<group>"; };
-		6D5C8EAD4DC140C7AE286B0E /* SpaceGrotesk-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Bold.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Bold.ttf"; sourceTree = "<group>"; };
-		721D1E1A8F0347C6908A5CD2 /* SpaceGrotesk-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Medium.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Medium.ttf"; sourceTree = "<group>"; };
+		412D9E6158F74EB89ADEFA92 /* SpaceGrotesk-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-SemiBold.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-SemiBold.ttf"; sourceTree = "<group>"; };
+		431103AF273D085C0009F367 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
+		4DC11B24EE664941BC49385F /* kredit_shine.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_shine.ttf; path = ../src/Assets/Fonts/kredit_shine.ttf; sourceTree = "<group>"; };
+		5C52CCE69D7E4CF0A67725F1 /* kredit_embossed.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_embossed.ttf; path = ../src/Assets/Fonts/kredit_embossed.ttf; sourceTree = "<group>"; };
+		6D5C8EAD4DC140C7AE286B0E /* SpaceGrotesk-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Bold.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Bold.ttf"; sourceTree = "<group>"; };
+		721D1E1A8F0347C6908A5CD2 /* SpaceGrotesk-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Medium.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Medium.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClearSpendMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C1101426D51910CF1247F0EE /* Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile-ClearSpendMobileTests/Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig"; sourceTree = "<group>"; };
-		E4046B7C3CB04C34A8F1A1D3 /* SpaceGrotesk-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Regular.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Regular.ttf"; sourceTree = "<group>"; };
+		E4046B7C3CB04C34A8F1A1D3 /* SpaceGrotesk-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Regular.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F243A0E93BD2FC643D2FBB25 /* libPods-ClearSpendMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClearSpendMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -115,7 +117,6 @@
 				412D9E6158F74EB89ADEFA92 /* SpaceGrotesk-SemiBold.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		13B07FAE1A68108700A75B9A /* ClearSpendMobile */ = {
@@ -151,6 +152,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				431103AF273D085C0009F367 /* AppCenter-Config.plist */,
 				13B07FAE1A68108700A75B9A /* ClearSpendMobile */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ClearSpendMobileTests */,
@@ -181,7 +183,6 @@
 				0BB39BBBAF893E4937E8BDB2 /* Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig */,
 				C1101426D51910CF1247F0EE /* Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -284,6 +285,7 @@
 				4206B675381142CDAF183D36 /* kredit_back.ttf in Resources */,
 				3B3054DCCD394D6CB57BF7F0 /* kredit_embossed.ttf in Resources */,
 				CD644D700ECD4DBE9304020F /* kredit_shine.ttf in Resources */,
+				431103B0273D085C0009F367 /* AppCenter-Config.plist in Resources */,
 				B8E48F18A0F847D69E17E5C6 /* kredit.ttf in Resources */,
 				7B23BD4804E747D18F8056A0 /* SpaceGrotesk-Bold.ttf in Resources */,
 				4244C200D19E455994C2A5EA /* SpaceGrotesk-Light.ttf in Resources */,
