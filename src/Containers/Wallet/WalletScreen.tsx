@@ -12,9 +12,9 @@ import { Card, CardType } from '@/Containers/Wallet/Components/Card';
 import { ProfileIcon } from '@/Components/Icons';
 import Transactions from './Transactions';
 
-const CARDS_QUERY = gql`
-  query CardQuery {
-    cards {
+const USER_CARDS_QUERY = gql`
+  query UserCardsQuery {
+    cards @rest(type: "Card", path: "/users/cards") {
       cardId
       isVirtual
       isDisposable
@@ -39,7 +39,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
     loading: cardsLoading,
     refetch: refetchCards,
     error: cardsError,
-  } = useQuery(CARDS_QUERY);
+  } = useQuery(USER_CARDS_QUERY);
 
   useEffect(() => {
     if (cardsData?.cards.length > 0 && !selectedCard) {

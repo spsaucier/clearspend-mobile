@@ -20,26 +20,14 @@ import { Visa } from '@/Components/Svg/Visa';
 const cardBGImageOverlay = require('@/Assets/Images/cardPattern.png');
 
 const CARD_QUERY = gql`
-  query CardDetailsQuery($cardId: ID!) {
-    card(cardId: $cardId) {
+  query CardDetailsQuery($cardId: String!) {
+    cardDetails(cardId: $cardId) @rest(type: "Card", path: "/cards/{args.cardId}") {
       isFrozen
       isDisposable
       isVirtual
       lastDigits
       cardTitle
       balance
-      transactions {
-        transactionId
-        merchantName
-        merchantId
-        merchantCategory
-        merchantLogoUrl
-        amount
-        status
-        date
-        time
-        isReceiptLinked
-      }
     }
   }
 `;
@@ -66,7 +54,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
     );
   }
 
-  const { isVirtual, isDisposable, isFrozen, balance, lastDigits, cardTitle } = data.card;
+  const { isVirtual, isDisposable, isFrozen, balance, lastDigits, cardTitle } = data.cardDetails;
 
   // TODO: CALCULATIONS WILL BE DONE PROPERLY WHEN API INTEGRATED
   const tempData = {

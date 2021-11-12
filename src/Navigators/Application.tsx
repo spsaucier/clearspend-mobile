@@ -5,20 +5,25 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { RestLink } from 'apollo-link-rest';
+import AuthNavigator from '@/Navigators/AuthNavigator';
 import { navigationRef } from '@/Navigators/Root';
 import { StartupState } from '@/Store/Startup';
 import StartupScreen from '@/Containers/Startup/StartupScreen';
-import AuthNavigator from '@/Navigators/AuthNavigator';
 
 const Stack = createStackNavigator();
 
 let MainNavigator: FunctionComponent | null;
 
 // Apollo
+const restLink = new RestLink({
+  uri: 'http://localhost:8000',
+});
+
 const cache = new InMemoryCache();
 const client = new ApolloClient({
-  uri: 'http://192.168.1.4:4000',
   cache,
+  link: restLink,
   defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
 });
 
@@ -59,7 +64,7 @@ const ApplicationNavigator = () => {
     [],
   );
 
-  const userIsLoggedIn = false;
+  const userIsLoggedIn = true;
 
   return (
     <ApolloProvider client={client}>

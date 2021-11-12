@@ -21,8 +21,9 @@ import { DashedLine } from '@/Components/DashedLine';
 import { NoteInput } from '@/Containers/Wallet/Components/NoteInput';
 
 const TRANSACTION_QUERY = gql`
-  query TransactionQuery($cardId: ID!, $transactionId: ID!) {
-    transaction(cardId: $cardId, transactionId: $transactionId) {
+  query TransactionDetailQuery($cardId: ID!, $transactionId: ID!) {
+    transactionDetail(cardId: $cardId, transactionId: $transactionId)
+      @rest(type: "Transaction", path: "/cards/{args.cardId}/transactions/{args.transactionId}") {
       merchantName
       merchantId
       merchantCategory
@@ -87,7 +88,7 @@ const TransactionDetailScreenContent = () => {
     time,
     isReceiptLinked,
     country,
-  } = data.transaction;
+  } = data.transactionDetail;
   const statusFormatted = sentenceCase(status);
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';

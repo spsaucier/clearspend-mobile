@@ -19,9 +19,10 @@ import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 
-const TRANSACTIONS_QUERY = gql`
-  query TransactionsQuery($cardId: ID!) {
-    transactions(cardId: $cardId) {
+const CARD_TRANSACTIONS_QUERY = gql`
+  query TransactionsQuery($cardId: String!) {
+    transactions(cardId: $cardId)
+      @rest(type: "Transactions", path: "/cards/{args.cardId}/transactions") {
       transactionId
       merchantName
       merchantId
@@ -55,7 +56,7 @@ const Transactions = ({ cardId }: Props) => {
   const translateY = useSharedValue(0);
   const isViewExpanded = useSharedValue(false);
 
-  const { data, loading, error } = useQuery(TRANSACTIONS_QUERY, {
+  const { data, loading, error } = useQuery(CARD_TRANSACTIONS_QUERY, {
     variables: { cardId },
   });
 

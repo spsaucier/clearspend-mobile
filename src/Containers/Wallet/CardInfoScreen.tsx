@@ -12,8 +12,8 @@ import { Card } from './Components/Card';
 import { CopyIcon } from '@/Components/Icons';
 
 const CARD_QUERY = gql`
-  query CardInfoQuery($cardId: ID!) {
-    card(cardId: $cardId) {
+  query CardInfoQuery($cardId: String!) {
+    cardInfo(cardId: $cardId) @rest(type: "Card", path: "/cards/{args.cardId}") {
       cardId
       isVirtual
       isDisposable
@@ -74,7 +74,7 @@ const CardInfoScreen = () => {
     cvv,
     expirationDate,
     billingAddress,
-  } = data.card;
+  } = data.cardInfo;
 
   const { streetLine1, streetLine2, locality, region, postalCode, country } = billingAddress;
 
