@@ -17,7 +17,8 @@ import {
 } from '@/Components/Icons';
 import { Visa } from '@/Components/Svg/Visa';
 
-const cardBGImageOverlay = require('@/Assets/Images/cardPattern.png');
+const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
+const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
 
 const CARD_QUERY = gql`
   query CardDetailsQuery($cardId: String!) {
@@ -85,8 +86,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
         ]}
       >
         <ImageBackground
-          imageStyle={tw`opacity-30`}
-          source={cardBGImageOverlay}
+          source={isDisposable ? cardBGImageLight : cardBGImageDark}
           resizeMode="cover"
           style={tw`flex-1`}
         >

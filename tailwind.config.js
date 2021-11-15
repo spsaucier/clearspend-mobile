@@ -67,6 +67,10 @@ module.exports = {
       white: '#FFFFFF',
       transparent: 'rgba(225,225,225,0)',
 
+      // New Brand
+      'primary-new': '#5BEA83',
+      'forest-green': '#10292C',
+
       // Brand
       primary: '#1D4ED8',
       'primary-dark': '#1E40AF',

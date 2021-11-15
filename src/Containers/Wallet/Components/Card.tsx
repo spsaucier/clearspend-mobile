@@ -29,7 +29,8 @@ type Props = {
   width?: any;
 } & CardType;
 
-const cardBGImageOverlay = require('@/Assets/Images/cardPattern.png');
+const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
+const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
 
 export const Card = ({
   cardId,
@@ -51,6 +52,8 @@ export const Card = ({
 
   const disabled = !onPress;
 
+  const darkContent = isVirtual && !isDisposable;
+
   const expirationDateFormatted =
     showSensitiveInformation &&
     expirationDate &&
@@ -61,10 +64,10 @@ export const Card = ({
       key={cardId}
       style={[
         tw.style(
-          'flex bg-primary w-full rounded-3xl shadow-xl overflow-hidden',
-          isVirtual && 'bg-tertiary',
+          'flex bg-forest-green w-full rounded-2xl shadow-xl overflow-hidden',
+          isVirtual && 'bg-primary-new',
           isDisposable && 'bg-black',
-          isFrozen && 'bg-gray40',
+          isFrozen && 'bg-gray30',
         ),
         { aspectRatio: 328 / 208, width },
         style,
@@ -73,35 +76,47 @@ export const Card = ({
       disabled={disabled}
     >
       <ImageBackground
-        imageStyle={tw`opacity-30`}
-        source={cardBGImageOverlay}
+        source={isDisposable ? cardBGImageLight : cardBGImageDark}
         resizeMode="cover"
         style={tw`flex-1`}
       >
-        <View style={tw`flex-1 justify-between px-5 pt-7 pb-2`}>
+        <View
+          style={tw.style(
+            'flex-1 justify-between px-5 pt-3 pb-2',
+            showSensitiveInformation ? 'pb-5' : 'pb-2',
+          )}
+        >
           {/* Top Row */}
           <View style={tw`flex flex-row`}>
             <View style={tw`flex`}>
-              <Logo style={tw`w-28 mt-1`} />
+              <Logo
+                style={tw`w-28 mt-1 mb-2`}
+                color={darkContent ? tw.color('black') : tw.color('white')}
+                iconColor={darkContent ? tw.color('black') : tw.color('primary-new')}
+              />
+              {/* Card Type */}
               <View style={tw`flex flex-row`}>
-                {isVirtual && (
-                  <Text style={tw`text-white text-xs xxs:text-sm`}>
-                    {t('card.virtual').toUpperCase()}
-                  </Text>
-                )}
-                {isDisposable && (
-                  <Text style={tw`text-white text-xs xxs:text-sm`}>
-                    {t('card.disposable').toUpperCase()}
-                  </Text>
-                )}
-                <Text style={tw`text-white text-xs xxs:text-sm`}>
+                <Text
+                  style={tw.style('text-xs xxs:text-sm', darkContent ? 'text-black' : 'text-white')}
+                >
+                  {isVirtual && t('card.virtual').toUpperCase()}
+                  {isDisposable && t('card.disposable').toUpperCase()}
                   {t('card.card').toUpperCase()}
                 </Text>
               </View>
             </View>
             <View style={tw`flex-1 items-end`}>
-              <Text style={tw`text-white text-lg xxs:text-2xl font-card`}>{`$${balance}`}</Text>
-              <Text style={tw`text-white text-2xs xxs:text-xs`}>
+              <Text
+                style={tw.style(
+                  'text-lg xxs:text-2xl font-card mt-3',
+                  darkContent ? 'text-black' : 'text-white',
+                )}
+              >
+                {`$${balance}`}
+              </Text>
+              <Text
+                style={tw.style('text-2xs xxs:text-xs', darkContent ? 'text-black' : 'text-white')}
+              >
                 {t('card.balance').toUpperCase()}
               </Text>
             </View>
@@ -111,11 +126,21 @@ export const Card = ({
           <View>
             <View style={tw`flex flex-row items-end `}>
               <View style={tw`flex `}>
-                <Text style={tw`text-white text-lg xxs:text-2xl font-card`}>
+                <Text
+                  style={tw.style(
+                    'text-lg xxs:text-2xl font-card',
+                    darkContent ? 'text-black' : 'text-white',
+                  )}
+                >
                   {showSensitiveInformation ? `${cardNumber}` : `**** ${lastDigits}`}
                 </Text>
                 {!!cardTitle && (
-                  <Text style={tw`text-white text-sm xxs:text-xl font-card mt-0 xxs:mt-1`}>
+                  <Text
+                    style={tw.style(
+                      'text-xs xxs:text-sm mt-0 xxs:mt-1',
+                      darkContent ? 'text-black' : 'text-white',
+                    )}
+                  >
                     {cardTitle}
                   </Text>
                 )}
@@ -123,16 +148,40 @@ export const Card = ({
                 {showSensitiveInformation && (
                   <View style={tw`flex-row mt-4`}>
                     <View>
-                      <Text style={tw`text-white font-spacegrotesk text-opacity-60`}>
+                      <Text
+                        style={tw.style(
+                          'text-white font-spacegrotesk text-opacity-60',
+                          darkContent ? 'text-black' : 'text-white',
+                        )}
+                      >
                         {t('card.validThru').toUpperCase()}
                       </Text>
-                      <Text style={tw`text-white mt-1 font-card`}>{expirationDateFormatted}</Text>
+                      <Text
+                        style={tw.style(
+                          'mt-1 font-card',
+                          darkContent ? 'text-black' : 'text-white',
+                        )}
+                      >
+                        {expirationDateFormatted}
+                      </Text>
                     </View>
                     <View style={tw`ml-4`}>
-                      <Text style={tw`text-white font-spacegrotesk text-opacity-60`}>
+                      <Text
+                        style={tw.style(
+                          'font-spacegrotesk text-opacity-60',
+                          darkContent ? 'text-black' : 'text-white',
+                        )}
+                      >
                         {t('card.cvv').toUpperCase()}
                       </Text>
-                      <Text style={tw`text-white mt-1 font-card`}>{cvv}</Text>
+                      <Text
+                        style={tw.style(
+                          'text-white mt-1 font-card',
+                          darkContent ? 'text-black' : 'text-white',
+                        )}
+                      >
+                        {cvv}
+                      </Text>
                     </View>
                   </View>
                 )}
@@ -141,16 +190,30 @@ export const Card = ({
               <View style={tw`flex-1 items-end`}>
                 {isFrozen && (
                   <View
-                    style={tw`border py-1 px-2 rounded-full border-white bg-white bg-opacity-10`}
+                    style={tw.style(
+                      'border py-1 px-2 rounded-full',
+                      darkContent
+                        ? 'border-black bg-black bg-opacity-5'
+                        : 'border-white bg-white bg-opacity-10',
+                    )}
                   >
-                    <Text style={tw`text-white text-xs`}>{t('card.frozen').toUpperCase()}</Text>
+                    <Text style={tw.style('text-xs', darkContent ? 'text-black' : 'text-white')}>
+                      {t('card.frozen').toUpperCase()}
+                    </Text>
                   </View>
                 )}
-                <Visa style={tw`h-10 mt-1`} />
+                <Visa
+                  style={tw`h-8 mt-1`}
+                  color={darkContent ? tw.color('black') : tw.color('white')}
+                />
               </View>
             </View>
             {!disabled && (
-              <Text style={tw`text-white text-xs text-center`}>{t('card.viewControls')}</Text>
+              <Text
+                style={tw.style('text-xs text-center', darkContent ? 'text-black' : 'text-white')}
+              >
+                {t('card.viewControls')}
+              </Text>
             )}
           </View>
         </View>
