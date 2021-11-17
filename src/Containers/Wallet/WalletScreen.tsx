@@ -71,26 +71,22 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
     );
   }
 
-  const cardWidth = 0.9 * screenWidth;
+  const cardWidth = 0.95 * screenWidth;
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-lightBG`} edges={['top']}>
-      <FocusAwareStatusBar backgroundColor={tw.color('lightBG')} barStyle="dark-content" />
+    <SafeAreaView style={tw`flex-1 bg-forest-green`} edges={['top']}>
+      <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
 
       {/* Header and icons */}
       <View style={tw`px-9 py-5`}>
-        <View style={tw`flex-row items-center justify-between my-2`}>
-          <Text style={tw`text-base font-bold text-copyDark`}>Company Name</Text>
-          <View style={tw`flex-row items-center justify-center`}>
+        <View style={tw`flex-row items-center justify-end my-2`}>
+          <View style={tw`flex-row`}>
             <NotificationBell onPress={() => navigation.navigate('Notifications')} />
             <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-              <ProfileIcon color={tw.color('black')} style={tw`ml-3`} size={26} />
+              <ProfileIcon color={tw.color('white')} style={tw`ml-3`} size={26} />
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={tw`text-3xl font-bold text-copyDark`}>
-          {t('wallet.header', { name: 'John' })}
-        </Text>
       </View>
 
       {/* Card Carousel w. buttons */}
@@ -102,7 +98,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           sliderWidth={screenWidth}
           itemWidth={cardWidth}
           inactiveSlideScale={1}
-          inactiveSlideOpacity={0.5}
+          inactiveSlideOpacity={0.1}
           removeClippedSubviews={false}
           lockScrollWhileSnapping
           onSnapToItem={(index: any) => setSelectedCard(cardsData.cards[index])}
@@ -124,28 +120,41 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      {/* Button Row */}
-      <View style={tw`flex-row items-center justify-center pt-3 pb-4 px-9`}>
+      {/* Slider dots */}
+      <View style={tw`flex-row justify-center my-3`}>
+        {cardsData.cards.length > 1 &&
+          cardsData.cards.map((card: { cardId: string }) => (
+            <View
+              style={tw.style(
+                'rounded-full bg-white mx-1',
+                card.cardId === selectedCard?.cardId ? 'opacity-90' : 'opacity-10',
+                { height: 6, width: 6 },
+              )}
+            />
+          ))}
+      </View>
+
+      {/* Buttons */}
+      <View style={tw`flex-row items-center justify-center self-center pt-3 pb-4 w-90`}>
         <Button
-          containerStyle={tw`flex-1`}
+          containerStyle={tw`flex-1 mr-1`}
           onPress={() => navigation.navigate('Card Info', { cardId: selectedCard?.cardId })}
           small
+          theme="dark"
         >
-          <EyeIcon style={tw`mr-1`} />
-          <Text style={tw`text-base font-bold text-primary`}>{t('card.showCardInfo')}</Text>
+          <EyeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
+          <Text style={tw`text-base text-white`}>{t('card.showCardInfo')}</Text>
         </Button>
-        <View style={tw`w-3 h-3`} />
-        <Button containerStyle={tw`flex-1`} small>
-          <SnowflakeIcon style={tw`mr-1`} />
+
+        <Button containerStyle={tw`flex-1 ml-1`} small theme="dark">
+          <SnowflakeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
           {!cardsLoading && selectedCard?.isFrozen ? (
-            <Text style={tw`text-base font-bold text-primary`}>{t('card.unfreezeCard')}</Text>
+            <Text style={tw`text-base text-white`}>{t('card.unfreezeCard')}</Text>
           ) : (
-            <Text style={tw`text-base font-bold text-primary`}>{t('card.freezeCard')}</Text>
+            <Text style={tw`text-base text-white`}>{t('card.freezeCard')}</Text>
           )}
         </Button>
       </View>
-
-      {/* TODO Slider dots */}
 
       {selectedCard && <Transactions cardId={selectedCard!.cardId} />}
     </SafeAreaView>

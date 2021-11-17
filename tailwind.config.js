@@ -70,6 +70,9 @@ module.exports = {
       // New Brand
       'primary-new': '#5BEA83',
       'forest-green': '#10292C',
+      'card-primary': '#5BEA83',
+      'card-dark': '#1C3437',
+      'card-light': '#F3F2EF',
 
       // Brand
       primary: '#1D4ED8',
@@ -109,6 +112,7 @@ module.exports = {
     borderWidth: {
       DEFAULT: '1px',
       '0': '0',
+      '1/2': '0.5px',
       '1': '1px',
       '2': '2px',
       '3': '3px',

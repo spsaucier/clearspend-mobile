@@ -52,7 +52,7 @@ export const Card = ({
 
   const disabled = !onPress;
 
-  const darkContent = isVirtual && !isDisposable;
+  const darkContent = !isDisposable;
 
   const expirationDateFormatted =
     showSensitiveInformation &&
@@ -64,10 +64,9 @@ export const Card = ({
       key={cardId}
       style={[
         tw.style(
-          'flex bg-forest-green w-full rounded-2xl shadow-xl overflow-hidden',
-          isVirtual && 'bg-primary-new',
-          isDisposable && 'bg-black',
-          isFrozen && 'bg-gray30',
+          'flex bg-card-primary w-full rounded-2xl shadow-xl overflow-hidden',
+          isVirtual && 'bg-card-light',
+          isDisposable && 'bg-card-dark',
         ),
         { aspectRatio: 328 / 208, width },
         style,

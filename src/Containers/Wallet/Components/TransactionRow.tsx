@@ -46,10 +46,10 @@ export const TransactionRow = ({
     >
       <View style={tw`flex-row items-center`}>
         {merchantImage || category ? (
-          <View style={tw`p-1 bg-secondary rounded-lg h-10 w-10`} />
+          <View style={tw`p-1 bg-primary-new rounded-full h-9 w-9`} />
         ) : (
-          <View style={tw`p-1 bg-secondary rounded-lg h-10 w-10 items-center justify-center`}>
-            <EyeIcon color={tw.color('white')} />
+          <View style={tw`p-1 bg-primary-new rounded-full h-9 w-9 items-center justify-center`}>
+            <EyeIcon color={tw.color('black')} />
           </View>
         )}
         <View>
@@ -74,12 +74,12 @@ export const TransactionRow = ({
 
         <View
           style={tw.style(
-            'h-9 w-9 items-center justify-center rounded-lg ml-3 mr-2 border border-gray95',
+            'h-9 w-9 items-center justify-center rounded-lg ml-3 mr-1 border border-gray95',
             isReceiptLinked ? 'bg-white' : 'bg-gray95',
           )}
         >
           {isReceiptLinked ? (
-            <ReceiptIcon color={tw.color('secondary')} size={28} />
+            <ReceiptIcon color={tw.color('primary-new')} size={26} />
           ) : (
             <NoReceiptIcon color={tw.color('gray70')} size={26} />
           )}

@@ -24,6 +24,7 @@ type Props = {
   children?: ReactNode | string;
   small?: boolean;
   loading?: boolean;
+  theme?: 'primary' | 'dark';
 };
 
 export const Button = ({
@@ -38,18 +39,30 @@ export const Button = ({
   children,
   small = false,
   loading = false,
+  theme = 'primary',
 }: Props) => {
+  const isPrimaryTheme = theme === 'primary';
+  const isDarkTheme = theme === 'dark';
+
   const renderChildren = () => {
     if (loading) {
-      return <ActivityIndicator color={tw.color('white')} style={tw`w-6`} />;
+      return (
+        <ActivityIndicator
+          color={isPrimaryTheme ? tw.color('black') : tw.color('white')}
+          style={tw`w-6`}
+        />
+      );
     }
+
     if (_.isString(children) || label) {
       return (
         <Text
           style={[
             tw.style(
-              'text-base font-semibold',
-              disabled ? 'text-primary-highlight' : 'text-primary-light',
+              isPrimaryTheme && 'text-black',
+              isDarkTheme && 'text-white',
+              // disabled && isPrimaryTheme && 'text-black', // TODO Disabled design
+              // disabled && isPrimaryTheme && 'text-white' // TODO Disabled design
             ),
             textStyle,
           ]}
@@ -66,9 +79,11 @@ export const Button = ({
       onPress={onPress}
       style={[
         tw.style(
-          'flex-row p-3 rounded-2xl items-center justify-center',
+          'flex-row p-3 rounded items-center justify-center',
           small ? 'h-12' : 'h-16 flex w-full',
-          disabled ? 'bg-primary-light' : 'bg-white',
+          isPrimaryTheme && 'bg-primary-new',
+          isDarkTheme && 'bg-card-dark',
+          // disabled && 'bg-primary-light' : 'bg-white', // TODO Disabled design
         ),
         containerStyle,
       ]}

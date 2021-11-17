@@ -22,7 +22,7 @@ const EnterMobileScreen = () => {
     setSubmitButtonDisabled(!mobile);
   }, [mobile]);
   return (
-    <SafeAreaView style={tw`flex-1 bg-primary`}>
+    <SafeAreaView style={tw`flex-1 bg-forest-green`}>
       <KeyboardAvoidingView style={tw`flex-1 p-6`} behavior="padding">
         <OnboardingHeader
           title={t('enterMobile.title')}

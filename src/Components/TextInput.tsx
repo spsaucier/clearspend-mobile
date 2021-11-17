@@ -61,21 +61,15 @@ export const TWTextInput = ({
       {label && <Text style={tw`text-white pl-1 mb-1`}>{label}</Text>}
       <View
         style={tw.style(
-          'flex-row items-center h-14 bg-primary-dark rounded-2xl border px-5',
-          isFocused ? 'border-white' : 'border-primary-light',
+          'flex-row items-center h-14 rounded border-white border px-5',
+          isFocused ? 'border-primary-new' : 'border-white',
         )}
       >
         <TextInput
           // ref={(e) => {
           //   this.inputField = e;
           // }}
-          style={[
-            tw.style(
-              'flex-1 bg-primary-dark rounded-2xl text-base text-white',
-              isFocused ? 'border-white' : 'border-primary-light',
-            ),
-            style,
-          ]}
+          style={[tw.style('flex-1 rounded-2xl text-base text-white'), style]}
           onBlur={onBlur}
           onFocus={onFocus}
           autoFocus={autoFocus}
@@ -83,7 +77,7 @@ export const TWTextInput = ({
           autoCorrect={autoCorrect}
           underlineColorAndroid="rgba(0,0,0,0)"
           placeholder={placeholder}
-          placeholderTextColor={tw.color('copyLight')}
+          placeholderTextColor={tw.color('white')}
           testID={testID}
           keyboardType={keyboardType}
           onChangeText={onChangeText}
@@ -92,7 +86,7 @@ export const TWTextInput = ({
         />
         {secureTextEntry && renderEye()}
       </View>
-      {errorMessage && <Text style={tw`text-sm text-copyLight pl-1 mb-1`}>{errorMessage}</Text>}
+      {errorMessage && <Text style={tw`text-sm text-white pl-1 mt-1 mb-1`}>{errorMessage}</Text>}
     </View>
   );
 };

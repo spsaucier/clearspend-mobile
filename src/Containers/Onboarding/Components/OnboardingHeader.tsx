@@ -13,14 +13,12 @@ interface Props {
 
 export const OnboardingHeader = ({ title, subTitle, icon }: Props) => (
   <View style={tw`mb-5`}>
-    <FocusAwareStatusBar backgroundColor={tw.color('primary')} barStyle="light-content" />
+    <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
     <BackArrowButton color={tw.color('white')} style={tw`mb-6`} />
-    <View
-      style={tw`p-1 bg-primary-light rounded-lg h-10 w-10 items-center justify-center border border-primary-light-light`}
-    >
+    <View style={tw`p-1 rounded-lg h-10 w-10 items-center justify-center border border-white`}>
       {icon || <EyeIcon color={tw.color('white')} />}
     </View>
     <Text style={tw`text-3xl text-white font-semibold mb-3 mt-6`}>{title}</Text>
-    <Text style={tw`text-sm text-copyLight mb-6`}>{subTitle}</Text>
+    <Text style={tw`text-sm text-white mb-6`}>{subTitle}</Text>
   </View>
 );

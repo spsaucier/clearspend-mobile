@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import tw from '@/Styles/tailwind';
 import { Button, FocusAwareStatusBar } from '@/Components';
 import { TWTextInput } from '@/Components/TextInput';
+import { Logo } from '@/Components/Svg/Logo';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   }, [email, password]);
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-primary`} edges={['top']}>
+    <SafeAreaView style={tw`flex-1 bg-forest-green`} edges={['top']}>
       <FocusAwareStatusBar backgroundColor={tw.color('primary')} barStyle="light-content" />
       <KeyboardAwareScrollView
         enableOnAndroid
@@ -38,12 +39,13 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         showsVerticalScrollIndicator={false}
       >
         <View style={tw`flex-1 p-5 justify-center`}>
-          <Text style={tw`text-3xl text-white mb-6 font-semibold`}>{t('login.heading')}</Text>
+          <Logo style={tw`w-30 mb-3`} />
+          <Text style={tw`text-3xl text-white mb-10 mt-6`}>{t('login.heading')}</Text>
 
           {/* Work Email */}
           <TWTextInput
             label={t('login.emailLabel')}
-            errorMessage="There was an error"
+            // errorMessage="There was an error"
             placeholder={t('login.emailPlaceholder')}
             keyboardType="email-address"
             containerStyle={tw`mb-8`}
@@ -71,14 +73,14 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
               navigation.navigate('Forgot Password');
             }}
           >
-            <Text style={tw`text-sm text-copyLight mt-6 self-center font-semibold`}>
+            <Text style={tw`text-sm text-white mt-6 self-center font-semibold`}>
               {t('login.forgotPassword')}
             </Text>
           </TouchableOpacity>
         </View>
 
         <SafeAreaView
-          style={tw`justify-center items-center bg-primary-light rounded-t-3xl p-5`}
+          style={tw`justify-center items-center bg-card-dark rounded-t-3xl p-5 pb-3`}
           edges={['bottom']}
         >
           <View
@@ -86,10 +88,13 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
               height: 6,
             })}
           />
-          <Text style={tw`text-sm text-copyLight mb-5`}>{t('login.businessSection.copy')}</Text>
-          <Button containerStyle={tw`bg-primary-light-light`} textStyle={tw`text-copyLight`}>
-            {t('login.businessSection.buttonCta')}
-          </Button>
+          <Text style={tw`text-sm text-white mb-5`}>
+            {t('login.businessSection.copy')}
+            <Text style={tw`text-sm text-primary-new mb-5`} onPress={() => {}}>
+              {' '}
+              {t('login.businessSection.buttonCta')}
+            </Text>
+          </Text>
         </SafeAreaView>
       </KeyboardAwareScrollView>
     </SafeAreaView>

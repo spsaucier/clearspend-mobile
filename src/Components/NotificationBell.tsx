@@ -16,7 +16,7 @@ export const NotificationBell = ({ style, onPress }: Props) => {
       {hasNotification && (
         <View style={tw`absolute bg-error h-2 w-2 rounded-full -top-0 -right-0`} />
       )}
-      <NotificationIcon />
+      <NotificationIcon color={tw.color('white')} />
     </TouchableOpacity>
   );
 };

@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashLogo" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gcL-BS-RjS">
-                                <rect key="frame" x="59" y="278" width="258" height="111"/>
+                                <rect key="frame" x="58.5" y="278" width="258" height="111"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="gcL-BS-RjS" secondAttribute="height" multiplier="86:37" id="amT-27-8BC"/>
                                     <constraint firstAttribute="width" constant="258" id="aop-7g-wNe"/>
@@ -26,7 +26,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.062745098039215685" green="0.16078431372549018" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="gcL-BS-RjS" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Axm-wY-i7L"/>

@@ -33,9 +33,7 @@ export const OrganizationCard = ({
             resizeMode="contain"
           />
         ) : (
-          <View
-            style={tw`bg-primary-light rounded-full h-14 w-14 items-center justify-center border border-primary-light-light`}
-          />
+          <View style={tw`bg-primary-new rounded-full h-14 w-14 items-center justify-center`} />
         )}
         <View style={tw`ml-7`}>
           <Text style={tw`text-base text-black font-bold mb-2`}>{companyName}</Text>
@@ -49,7 +47,7 @@ export const OrganizationCard = ({
       <View
         style={tw.style(
           'rounded-full h-5 w-5',
-          isSelected ? 'border-6 border-primary-light bg-white' : 'border border-gray90 bg-white',
+          isSelected ? 'border-6 border-primary-new bg-white' : 'border border-gray90 bg-white',
         )}
       />
     </View>
