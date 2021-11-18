@@ -64,7 +64,7 @@ const ApplicationNavigator = () => {
     [],
   );
 
-  const userIsLoggedIn = false;
+  const userIsLoggedIn = false; // Set to false before merge
 
   return (
     <ApolloProvider client={client}>

@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, ScrollView, ImageBackground, Text, Platform, StatusBar } from 'react-native';
+import { View, ScrollView, ImageBackground, Text, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { gql, useQuery } from '@apollo/client';
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator, Button, LinearProgressBar } from '@/Components';
+import { ActivityIndicator, Button, FocusAwareStatusBar, LinearProgressBar } from '@/Components';
 import {
   AlarmIcon,
   AppleWalletIcon,
@@ -17,7 +17,6 @@ import {
 } from '@/Components/Icons';
 import { Visa } from '@/Components/Svg/Visa';
 
-const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
 
 const CARD_QUERY = gql`
@@ -71,25 +70,26 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
   const monthlyRemaining = Math.abs(monthlySpendLimit - amountSpentCurrentMonth);
   const displayAppleWalletBtn = Platform.OS === 'ios';
 
+  const darkContent = !isDisposable;
+
   return (
     <View style={tw`flex-1 bg-white`}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <FocusAwareStatusBar
+        barStyle={isDisposable ? 'light-content' : 'dark-content'}
+        translucent
+        backgroundColor="transparent"
+      />
       <View
         style={[
           tw.style(
-            'flex bg-primary w-full rounded-b-3xl overflow-hidden z-30',
-            isVirtual && 'bg-tertiary',
-            isDisposable && 'bg-black',
-            isFrozen && 'bg-gray40',
+            'flex bg-primary-new w-full rounded-b-3xl overflow-hidden z-30',
+            isVirtual && 'bg-card-light',
+            isDisposable && 'bg-card-dark',
+            { height: 150 },
           ),
-          { aspectRatio: 328 / 208 }, // WHY 1.57?
         ]}
       >
-        <ImageBackground
-          source={isDisposable ? cardBGImageLight : cardBGImageDark}
-          resizeMode="cover"
-          style={tw`flex-1`}
-        >
+        <ImageBackground source={cardBGImageDark} resizeMode="cover" style={tw`flex-1`}>
           <View style={tw`flex-1 items-start justify-around h-full p-6`}>
             <View
               style={[
@@ -102,81 +102,76 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
             />
             <View style={tw`flex-row w-full justify-between mb-4`}>
               <View style={tw`flex font-card`}>
-                <Text style={tw`text-white text-xl font-card`}>{`**** ${lastDigits}`}</Text>
-                {!!cardTitle && <Text style={tw`text-white text-base`}>{cardTitle}</Text>}
-              </View>
-              <View>
-                <Visa style={tw`h-10 mt-1`} />
-              </View>
-            </View>
-
-            <View style={tw`flex-row items-center justify-evenly`}>
-              <Button
-                containerStyle={tw`flex-1 mr-1`}
-                onPress={() => navigation.navigate('Card Info', { cardId })}
-                small
-              >
-                <EyeIcon style={tw`mr-1`} />
-                <Text style={tw`text-base font-semibold text-primary`}>
-                  {t('card.showCardInfo')}
+                <Text style={tw.style('text-xl', darkContent ? 'text-black' : 'text-white')}>
+                  {`**** ${lastDigits}`}
                 </Text>
-              </Button>
-              <Button containerStyle={tw`flex-1 ml-1`} small>
-                <SnowflakeIcon style={tw`mr-1`} />
-                {isFrozen ? (
-                  <Text style={tw`text-base font-semibold text-primary`}>
-                    {t('card.unfreezeCard')}
-                  </Text>
-                ) : (
-                  <Text style={tw`text-base font-semibold text-primary`}>
-                    {t('card.freezeCard')}
+                {!!cardTitle && (
+                  <Text style={tw.style('text-base', darkContent ? 'text-black' : 'text-white')}>
+                    {cardTitle}
                   </Text>
                 )}
-              </Button>
+              </View>
+              <View>
+                <Visa
+                  style={tw`h-10 mt-1`}
+                  color={darkContent ? tw.color('black') : tw.color('white')}
+                />
+              </View>
             </View>
           </View>
         </ImageBackground>
       </View>
 
-      {isFrozen && (
-        <View
-          style={tw`flex-row items-center -mt-4 rounded-b-3xl bg-warning border-1 border-warning-highlight overflow-hidden z-20 pl-6 pb-4 pt-8`}
-        >
-          <CardFrozenIcon />
-          <Text style={tw`ml-1 text-error`}>{t('cardProfile.cardIsFrozenForSecurity')}</Text>
-        </View>
-      )}
+      <ScrollView style={tw`bg-forest-green -mt-5`}>
+        {isFrozen && (
+          <View
+            style={tw`flex-row items-center rounded-b-3xl bg-warning border-1 border-warning-highlight overflow-hidden z-20 -mt-6 pl-6 pb-2 pt-8`}
+          >
+            <CardFrozenIcon />
+            <Text style={tw`ml-1 text-error`}>{t('cardProfile.cardIsFrozenForSecurity')}</Text>
+          </View>
+        )}
 
-      <ScrollView style={tw`bg-lightBG -mt-4`}>
-        <View style={tw`bg-lightBG rounded-b-3xl overflow-hidden z-10 p-6`}>
+        <View style={tw`bg-forest-green rounded-b-3xl overflow-hidden z-10 p-6 pt-8`}>
+          {/* Show Card Info & Frozen Buttons */}
+          <View style={tw`flex-row items-center justify-evenly pt-3 pb-6`}>
+            <Button
+              containerStyle={tw`flex-1 mr-1`}
+              onPress={() => navigation.navigate('Card Info', { cardId })}
+              small
+              theme="dark"
+            >
+              <EyeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
+              <Text style={tw`text-base text-white`}>{t('card.showCardInfo')}</Text>
+            </Button>
+            <Button containerStyle={tw`flex-1 ml-1`} small theme="dark">
+              <SnowflakeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
+              {isFrozen ? (
+                <Text style={tw`text-base text-white`}>{t('card.unfreezeCard')}</Text>
+              ) : (
+                <Text style={tw`text-base text-white`}>{t('card.freezeCard')}</Text>
+              )}
+            </Button>
+          </View>
+
           <View>
-            <Text style={tw`font-spacegrotesk text-base mt-2 mb-2`}>
+            <Text style={tw`font-spacegrotesk text-base text-white mt-2 mb-2`}>
               {t('cardProfile.cardBalance')}
             </Text>
-            <Text style={tw`text-2xl mt-1 mb-2`}>{`$${balance}`}</Text>
-            {displayAppleWalletBtn && (
-              <TouchableOpacity
-                style={tw`flex-row bg-black rounded-lg p-1 w-full items-center justify-center border-gray80 border-2 mt-2 mb-2`}
-              >
-                <AppleWalletIcon style={tw`mr-1`} />
-                <Text style={tw`text-white ml-1 text-base`}>
-                  {t('cardProfile.addToAppleWallet')}
-                </Text>
-              </TouchableOpacity>
-            )}
+            <Text style={tw`text-2xl mt-1 mb-8 text-white`}>{`$${balance}`}</Text>
 
             {isFrozen && (
               <TouchableOpacity
                 style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
                 onPress={() => navigation.navigate('Card Lost Stolen')}
               >
-                <View style={tw`rounded-lg p-2 border-1 bg-warning border-warning-highlight`}>
+                <View style={tw`rounded p-2 bg-card-dark`}>
                   <AlarmIcon />
                 </View>
-                <Text style={tw`flex-grow ml-2 text-sm font-medium`}>
+                <Text style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
                   {t('cardProfile.reportCardLostOrStolen')}
                 </Text>
-                <ChevronIcon />
+                <ChevronIcon color={tw.color('white')} />
               </TouchableOpacity>
             )}
 
@@ -184,42 +179,53 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
               onPress={() => navigation.navigate('Card Spend Controls')}
             >
-              <View
-                style={[
-                  tw`rounded-lg p-2 border-1 bg-primary bg-opacity-10 border-primary border-opacity-10`,
-                ]}
-              >
-                <CardSettingsIcon />
+              <View style={tw`rounded p-2 bg-card-dark`}>
+                <CardSettingsIcon color={tw.color('primary-new')} />
               </View>
-              <Text style={tw`flex-grow ml-2 text-sm font-medium`}>
+              <Text style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
                 {t('cardProfile.spendControls')}
               </Text>
-              <ChevronIcon />
+              <ChevronIcon color={tw.color('white')} />
             </TouchableOpacity>
 
             <TouchableOpacity
               style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
               onPress={() => navigation.navigate('Card Settings')}
             >
-              <View
-                style={tw`rounded-lg p-2 border-1 bg-primary bg-opacity-10 border-primary border-opacity-10`}
-              >
-                <SuspensionPointsIcon />
+              <View style={tw`rounded p-2 bg-card-dark`}>
+                <SuspensionPointsIcon color={tw.color('primary-new')} />
               </View>
               <View style={tw`flex-grow ml-2`}>
-                <Text style={tw`text-sm font-medium`}>{t('cardProfile.moreSettings')}</Text>
-                <Text style={tw`text-xs text-gray40`}>{t('cardProfile.moreSettingsSubtitle')}</Text>
+                <Text style={tw`text-sm font-medium text-white`}>
+                  {t('cardProfile.moreSettings')}
+                </Text>
+                <Text style={tw`text-xs text-white`}>{t('cardProfile.moreSettingsSubtitle')}</Text>
               </View>
-              <ChevronIcon />
+              <ChevronIcon color={tw.color('white')} />
             </TouchableOpacity>
+
+            {/* Apple Wallet Button */}
+            {displayAppleWalletBtn && (
+              <TouchableOpacity
+                style={tw`flex-row bg-black rounded-lg p-1 w-full items-center justify-center border-black border-2 mt-5 mb-2`}
+                onPress={() => {
+                  navigation.navigate('Add Card To Apple Wallet', { cardId, termsAccepted: false });
+                }}
+              >
+                <AppleWalletIcon style={tw`mr-1`} />
+                <Text style={tw`text-white ml-1 text-base`}>
+                  {t('cardProfile.addToAppleWallet')}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
+
         <View style={[tw`bg-white -mt-6 p-6 pt-8 h-full`]}>
-          <View style={tw`mb-4`}>
+          {/* Spent Today */}
+          <View style={tw`mb-4 mt-4`}>
             <View style={tw`flex-row justify-between mt-2`}>
-              <Text style={tw`font-spacegrotesk text-sm uppercase`}>
-                {t('cardProfile.spentToday')}
-              </Text>
+              <Text style={tw`text-xs text-black uppercase`}>{t('cardProfile.spentToday')}</Text>
               <View style={tw`flex-row`}>
                 <Text style={tw`text-sm`}>
                   {t('cardProfile.limit', { amount: `$${dailySpendLimit.toFixed(2)}` })}
@@ -227,14 +233,18 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               </View>
             </View>
             <LinearProgressBar progress={(amountSpentToday / dailySpendLimit) * 100} />
-            <Text style={tw`text-lg mt-1`}>{`$${amountSpentToday}`}</Text>
-            <Text style={tw`text-sm text-gray40 mt-1`}>
-              {t('cardProfile.remaining', { amount: `$${dailyRemaining.toFixed(2)}` })}
-            </Text>
+            <View style={tw`flex-row justify-between items-start`}>
+              <Text style={tw`text-lg mt-1`}>{`$${amountSpentToday}`}</Text>
+              <Text style={tw`text-sm text-black mt-1`}>
+                {t('cardProfile.remaining', { amount: `$${dailyRemaining.toFixed(2)}` })}
+              </Text>
+            </View>
           </View>
-          <View style={tw`mb-4`}>
+
+          {/* Spent this month */}
+          <View style={tw`mb-4 mt-4`}>
             <View style={tw`flex-row justify-between mt-2`}>
-              <Text style={tw`font-spacegrotesk text-base uppercase`}>
+              <Text style={tw`text-xs text-black uppercase`}>
                 {t('cardProfile.spentCurrentMonth')}
               </Text>
               <View style={tw`flex-row`}>
@@ -244,11 +254,15 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               </View>
             </View>
             <LinearProgressBar progress={(amountSpentCurrentMonth / monthlySpendLimit) * 100} />
-            <Text style={tw`text-lg mt-1`}>{`$${amountSpentCurrentMonth}`}</Text>
-            <Text style={tw`text-sm text-gray40 mt-1`}>
-              {t('cardProfile.remaining', { amount: `$${monthlyRemaining.toFixed(2)}` })}
-            </Text>
+            <View style={tw`flex-row justify-between items-start`}>
+              <Text style={tw`text-lg mt-1`}>{`$${amountSpentCurrentMonth}`}</Text>
+              <Text style={tw`text-sm text-black mt-1`}>
+                {t('cardProfile.remaining', { amount: `$${monthlyRemaining.toFixed(2)}` })}
+              </Text>
+            </View>
           </View>
+
+          <View style={tw`h-20`} />
         </View>
       </ScrollView>
     </View>

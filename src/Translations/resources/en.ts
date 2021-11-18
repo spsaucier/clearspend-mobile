@@ -109,7 +109,6 @@ export default {
     card: 'Card',
     balance: 'Balance',
     frozen: 'Frozen',
-    viewControls: 'Tap to view card controls',
     showCardInfo: 'Show Card Info',
     freezeCard: 'Freeze Card',
     unfreezeCard: 'Unfreeze Card',

@@ -97,6 +97,10 @@ module.exports = {
       warning: '#FBEFEE',
       'warning-highlight': '#FEE2E2',
 
+      // Wallet flow
+      'ios-link': '#008de1',
+      'ios-gray-bg': '#F7F7F6',
+
       // Grayscale
       gray10: '#1A1A1A',
       gray20: '#333333',

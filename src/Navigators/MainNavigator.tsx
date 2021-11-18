@@ -16,6 +16,9 @@ import TransactionDetailScreen from '@/Containers/Wallet/TransactionDetailScreen
 import CardSpendControlsScreen from '@/Containers/Wallet/CardSpendControlsScreen';
 import CardSettingsScreen from '@/Containers/Wallet/CardSettingsScreen';
 import CardLostStolen from '@/Containers/Wallet/CardLostStolen';
+import AddCardScreen from '@/Containers/Wallet/AppleWallet/AddCardScreen';
+import WalletTermsScreen from '@/Containers/Wallet/AppleWallet/WalletTermsScreen';
+import SetCardAsDefaultScreen from '@/Containers/Wallet/AppleWallet/SetCardAsDefaultScreen';
 
 type MainStackParamTypes = {
   Home: undefined;
@@ -36,6 +39,12 @@ type MainStackParamTypes = {
   'Card Spend Controls': { cardId: string };
   'Card Settings': { cardId: string };
   'Card Lost Stolen': { cardId: string };
+
+  // Apple Wallet Mock UI Screens
+  'Apple Wallet': { cardId: string; termsAccepted: boolean };
+  'Add Card To Apple Wallet': { cardId: string; termsAccepted: boolean };
+  'Wallet Terms': { cardId: string };
+  'Set Card As Default': { cardId: string };
 };
 
 const Stack = createStackNavigator<MainStackParamTypes>();
@@ -88,6 +97,15 @@ const WalletStack = () => (
       options={transparentBottomSheet}
     />
     <Stack.Screen name="Card Lost Stolen" component={CardLostStolen} />
+
+    {/* Apple Wallet Mock UI Screens */}
+    <Stack.Screen name="Add Card To Apple Wallet" component={AddCardScreen} />
+    <Stack.Screen
+      name="Wallet Terms"
+      component={WalletTermsScreen}
+      options={{ presentation: 'modal' }}
+    />
+    <Stack.Screen name="Set Card As Default" component={SetCardAsDefaultScreen} />
   </Stack.Navigator>
 );
 

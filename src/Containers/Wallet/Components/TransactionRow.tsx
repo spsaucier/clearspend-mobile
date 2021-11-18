@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
-import { ChevronIcon, NoReceiptIcon, ReceiptIcon } from '@/Components/Icons';
+import { NoReceiptIcon, ReceiptIcon } from '@/Components/Icons';
 import { EyeIcon } from '@/Components/Icons/eyeIcon';
 import { sentenceCase } from '@/Helpers/StringHelpers';
 
@@ -40,7 +40,7 @@ export const TransactionRow = ({
   const statusDeclined = status === 'DECLINED';
   return (
     <TouchableOpacity
-      style={tw`flex-row justify-between pl-6 pr-3 py-2`}
+      style={tw`flex-row justify-between pl-6 pr-3 py-3`}
       key={transactionId}
       onPress={handleOnPress}
     >
@@ -66,16 +66,14 @@ export const TransactionRow = ({
               statusDeclined && 'line-through',
             )}
           >
-            -$
-            {amount}
+            {`-$${amount}`}
           </Text>
           <Text style={tw`text-xs text-gray40 ml-3`}>{sentenceCase(status)}</Text>
         </View>
 
         <View
           style={tw.style(
-            'h-9 w-9 items-center justify-center rounded-lg ml-3 mr-1 border border-gray95',
-            isReceiptLinked ? 'bg-white' : 'bg-gray95',
+            'h-9 w-9 items-center justify-center rounded-full ml-3 mr-1 border border-gray95',
           )}
         >
           {isReceiptLinked ? (
@@ -84,7 +82,6 @@ export const TransactionRow = ({
             <NoReceiptIcon color={tw.color('gray70')} size={26} />
           )}
         </View>
-        <ChevronIcon color={tw.color('gray70')} />
       </View>
     </TouchableOpacity>
   );

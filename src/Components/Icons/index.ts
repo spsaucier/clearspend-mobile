@@ -5,6 +5,7 @@ export { BackArrowIcon } from './backArrowIcon';
 export { CardFrozenIcon } from './cardFrozenIcon';
 export { CardSettingsIcon } from './cardSettingsIcon';
 export { CheckCircleIcon } from './checkCircleIcon';
+export { CheckMarkIcon } from './checkmarkIcon';
 export { ChevronIcon } from './chevronIcon';
 export { ClockCircleIcon } from './clockCircleIcon';
 export { CloseIcon } from './closeIcon';

@@ -29,7 +29,6 @@ type Props = {
   width?: any;
 } & CardType;
 
-const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
 
 export const Card = ({
@@ -74,15 +73,11 @@ export const Card = ({
       onPress={onPress}
       disabled={disabled}
     >
-      <ImageBackground
-        source={isDisposable ? cardBGImageLight : cardBGImageDark}
-        resizeMode="cover"
-        style={tw`flex-1`}
-      >
+      <ImageBackground source={cardBGImageDark} resizeMode="cover" style={tw`flex-1`}>
         <View
           style={tw.style(
-            'flex-1 justify-between px-5 pt-3 pb-2',
-            showSensitiveInformation ? 'pb-5' : 'pb-2',
+            'flex-1 justify-between px-5 pt-3',
+            showSensitiveInformation ? 'pb-5' : 'pb-4',
           )}
         >
           {/* Top Row */}
@@ -107,7 +102,7 @@ export const Card = ({
             <View style={tw`flex-1 items-end`}>
               <Text
                 style={tw.style(
-                  'text-lg xxs:text-2xl font-card mt-3',
+                  'text-lg xxs:text-2xl mt-3',
                   darkContent ? 'text-black' : 'text-white',
                 )}
               >
@@ -127,7 +122,7 @@ export const Card = ({
               <View style={tw`flex `}>
                 <Text
                   style={tw.style(
-                    'text-lg xxs:text-2xl font-card',
+                    'text-base xxs:text-lg',
                     darkContent ? 'text-black' : 'text-white',
                   )}
                 >
@@ -147,35 +142,20 @@ export const Card = ({
                 {showSensitiveInformation && (
                   <View style={tw`flex-row mt-4`}>
                     <View>
-                      <Text
-                        style={tw.style(
-                          'text-white font-spacegrotesk text-opacity-60',
-                          darkContent ? 'text-black' : 'text-white',
-                        )}
-                      >
+                      <Text style={tw.style('text-2xs', darkContent ? 'text-black' : 'text-white')}>
                         {t('card.validThru').toUpperCase()}
                       </Text>
-                      <Text
-                        style={tw.style(
-                          'mt-1 font-card',
-                          darkContent ? 'text-black' : 'text-white',
-                        )}
-                      >
+                      <Text style={tw.style('mt-1', darkContent ? 'text-black' : 'text-white')}>
                         {expirationDateFormatted}
                       </Text>
                     </View>
                     <View style={tw`ml-4`}>
-                      <Text
-                        style={tw.style(
-                          'font-spacegrotesk text-opacity-60',
-                          darkContent ? 'text-black' : 'text-white',
-                        )}
-                      >
+                      <Text style={tw.style('text-2xs', darkContent ? 'text-black' : 'text-white')}>
                         {t('card.cvv').toUpperCase()}
                       </Text>
                       <Text
                         style={tw.style(
-                          'text-white mt-1 font-card',
+                          'text-white mt-1',
                           darkContent ? 'text-black' : 'text-white',
                         )}
                       >
@@ -207,13 +187,6 @@ export const Card = ({
                 />
               </View>
             </View>
-            {!disabled && (
-              <Text
-                style={tw.style('text-xs text-center', darkContent ? 'text-black' : 'text-white')}
-              >
-                {t('card.viewControls')}
-              </Text>
-            )}
           </View>
         </View>
       </ImageBackground>

@@ -30,7 +30,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <SafeAreaView style={tw`flex-1 bg-forest-green`} edges={['top']}>
-      <FocusAwareStatusBar backgroundColor={tw.color('primary')} barStyle="light-content" />
+      <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
       <KeyboardAwareScrollView
         enableOnAndroid
         keyboardShouldPersistTaps="handled"
