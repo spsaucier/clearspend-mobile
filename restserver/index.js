@@ -2,10 +2,11 @@ const express = require('express');
 const app = express();
 const port = 8000;
 const cards = require('./resources/cards.json');
+const usersCards = require('./resources/usersCards.json');
 const transactions = require('./resources/transactions.json');
 
 app.get('/users/cards', (req, res) => {
-  res.json(cards);
+  res.json(usersCards);
 });
 
 app.get('/cards/:id', (req, res) => {

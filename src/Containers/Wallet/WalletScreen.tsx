@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, ListRenderItemInfo } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { gql, useQuery } from '@apollo/client';
@@ -8,21 +8,23 @@ import tw from '@/Styles/tailwind';
 import { NotificationBell, Button, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
 import { EyeIcon } from '@/Components/Icons/eyeIcon';
 import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
-import { Card, CardType } from '@/Containers/Wallet/Components/Card';
+import { Card } from '@/Containers/Wallet/Components/Card';
 import { ProfileIcon } from '@/Components/Icons';
 import Transactions from './Transactions';
 
 const USER_CARDS_QUERY = gql`
   query UserCardsQuery {
-    cards @rest(type: "Card", path: "/users/cards") {
-      cardId
-      isVirtual
-      isDisposable
-      isFrozen
-      currency
-      balance
-      cardTitle
-      lastDigits
+    cards @rest(type: "Card", path: "/users/cards", endpoint: "dev") {
+      card {
+        cardId
+        lastDigits: lastFour
+        cardTitle: cardLine3
+        cardType
+      }
+      availableBalance {
+        currency
+        amount
+      }
     }
   }
 `;
@@ -102,21 +104,33 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           removeClippedSubviews={false}
           lockScrollWhileSnapping
           onSnapToItem={(index: any) => setSelectedCard(cardsData.cards[index])}
-          renderItem={({ item }: ListRenderItemInfo<CardType>) => (
-            <View style={[tw`p-2`, { width: cardWidth }]}>
-              <Card
-                key={item.cardId}
-                cardId={item.cardId}
-                balance={item.balance}
-                isFrozen={item.isFrozen}
-                isDisposable={item.isDisposable}
-                isVirtual={item.isVirtual}
-                lastDigits={item.lastDigits}
-                cardTitle={item.cardTitle}
-                onPress={() => navigation.navigate('Card Details', { cardId: item.cardId })}
-              />
-            </View>
-          )}
+          renderItem={({ item }: any) => {
+            const { card, availableBalance } = item;
+            const { cardId, lastDigits, cardTitle, cardType } = card;
+
+            const isFrozen = false;
+            const isDisposable = false;
+            const isVirtual = cardType === 'VIRTUAL'; // TODO: MAKE THIS A CONST?
+
+            const { amount } = availableBalance;
+            const balance = amount;
+
+            return (
+              <View style={[tw`p-2`, { width: cardWidth }]}>
+                <Card
+                  key={cardId}
+                  cardId={cardId}
+                  balance={balance}
+                  isFrozen={isFrozen}
+                  isDisposable={isDisposable}
+                  isVirtual={isVirtual}
+                  lastDigits={lastDigits}
+                  cardTitle={cardTitle}
+                  onPress={() => navigation.navigate('Card Details', { cardId })}
+                />
+              </View>
+            );
+          }}
         />
       </View>
 
