@@ -2,13 +2,26 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Switch, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import { useApolloClient } from '@apollo/client';
 import tw from '@/Styles/tailwind';
 import { nameToInitials } from '@/Helpers/StringHelpers';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { CloseIconButton } from '@/Components';
+import { killSession } from '@/Store/Session';
+import { persistor } from '@/Store';
 
 const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const apolloClient = useApolloClient();
+
+  const onLogout = async () => {
+    await apolloClient.cache.reset();
+    await persistor.purge();
+    dispatch(killSession());
+  };
+
   const user = {
     name: 'John Smith',
   };
@@ -82,7 +95,10 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
             }}
           />
 
-          <TouchableOpacity style={tw`flex-row items-center justify-between py-6`}>
+          <TouchableOpacity
+            style={tw`flex-row items-center justify-between py-6`}
+            onPress={onLogout}
+          >
             <Text style={tw`text-base text-primary`}>{t('profile.profileMenu.logOut')}</Text>
           </TouchableOpacity>
         </ScrollView>

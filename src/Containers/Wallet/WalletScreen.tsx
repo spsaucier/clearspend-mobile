@@ -10,11 +10,11 @@ import { EyeIcon } from '@/Components/Icons/eyeIcon';
 import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
 import { Card } from '@/Containers/Wallet/Components/Card';
 import { ProfileIcon } from '@/Components/Icons';
-import Transactions from './Transactions';
+// import Transactions from './Transactions';
 
 const USER_CARDS_QUERY = gql`
   query UserCardsQuery {
-    cards @rest(type: "Card", path: "/users/cards", endpoint: "dev") {
+    cards @rest(type: "Card", path: "/users/cards") {
       card {
         cardId
         lastDigits: lastFour
@@ -170,7 +170,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
         </Button>
       </View>
 
-      {selectedCard && <Transactions cardId={selectedCard!.cardId} />}
+      {/* {selectedCard && <Transactions cardId={selectedCard!.cardId} />} */}
     </SafeAreaView>
   );
 };

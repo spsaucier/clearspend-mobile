@@ -13,19 +13,19 @@ import {
 import { configureStore } from '@reduxjs/toolkit';
 
 import startup from './Startup';
-import user from './User';
 import theme from './Theme';
+import session from './Session';
 
 const reducers = combineReducers({
   startup,
-  user,
   theme,
+  session,
 });
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['theme'],
+  whitelist: ['theme', 'session'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

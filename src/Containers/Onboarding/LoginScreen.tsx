@@ -3,26 +3,60 @@ import { View, Text, TouchableOpacity, Keyboard } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useDispatch } from 'react-redux';
 import tw from '@/Styles/tailwind';
 import { Button, FocusAwareStatusBar } from '@/Components';
 import { TWTextInput } from '@/Components/TextInput';
 import { Logo } from '@/Components/Svg/Logo';
+import { login } from '@/Services/Auth';
+
+import { Session, updateSession } from '@/Store/Session';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginButtonDisabled, setLoginButtonDisabled] = useState(true);
+  const [processing, setProcessing] = useState(false);
+  const [authError, setError] = useState<string>();
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     Keyboard.dismiss();
-    // If not signed up
-    navigation.navigate('Select Organization');
+
+    setError(undefined);
+    setProcessing(true);
+    setLoginButtonDisabled(true);
+
+    login(email, password)
+      .then((res) => {
+        if (res) {
+          const sessionPayload = res as Session;
+          dispatch(updateSession(sessionPayload));
+        }
+      })
+      .catch((ex) => {
+        const {
+          data: { error, error_description: errorDescription },
+        } = ex;
+        const invalidRequest = error === 'invalid_request';
+        if (invalidRequest) {
+          throw Error(errorDescription);
+        }
+        const invalidCredentials = error === 'invalid_grant';
+        if (invalidCredentials) {
+          setError(t('login.invalidCredentials'));
+        }
+      })
+      .finally(() => {
+        setProcessing(false);
+        setLoginButtonDisabled(false);
+      });
   };
 
   useEffect(() => {
     if (!!email && !!password) {
-      setLoginButtonDisabled(false);
+      setLoginButtonDisabled(!email && !password);
     } else {
       setLoginButtonDisabled(true);
     }
@@ -30,7 +64,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <SafeAreaView style={tw`flex-1 bg-forest-green`} edges={['top']}>
-      <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
+      <FocusAwareStatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <KeyboardAwareScrollView
         enableOnAndroid
         keyboardShouldPersistTaps="handled"
@@ -59,14 +93,23 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
             // errorMessage="There was an error"
             placeholder={t('login.passwordPlaceholder')}
             keyboardType="default"
-            containerStyle={tw`mb-8`}
+            containerStyle={tw`mb-4`}
             onChangeText={(value) => setPassword(value)}
             value={password}
             secureTextEntry
           />
 
-          <Button textStyle={tw`font-bold`} onPress={handleLogin} disabled={loginButtonDisabled}>
-            {t('login.buttonCta')}
+          <View style={tw`items-center mb-4`}>
+            {authError && <Text style={tw`text-white `}>{authError}</Text>}
+          </View>
+
+          <Button
+            textStyle={tw`font-bold`}
+            onPress={handleLogin}
+            disabled={loginButtonDisabled}
+            loading={processing}
+          >
+            {t('login.buttonLogin')}
           </Button>
           <TouchableOpacity
             onPress={() => {

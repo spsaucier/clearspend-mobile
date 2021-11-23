@@ -10,11 +10,13 @@ export default {
     passwordLabel: 'Password',
     passwordPlaceholder: 'Enter Password',
     buttonCta: 'Get Started',
+    buttonLogin: 'Log in',
     forgotPassword: 'Forgot Password?',
     businessSection: {
       copy: 'Interested in signing up your business with ClearSpend?',
       buttonCta: 'Explore ClearSpend Business',
     },
+    invalidCredentials: 'The user credentials are invalid.',
   },
   selectOrganization: {
     title: 'Select your organization',
