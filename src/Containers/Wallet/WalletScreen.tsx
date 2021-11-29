@@ -159,7 +159,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
       <View style={tw`flex-1 flex-row items-start justify-center self-center pt-3 pb-4 w-90`}>
         <Button
           containerStyle={tw`flex-1 mr-1`}
-          onPress={() => navigation.navigate('Card Info', { cardId: selectedCard?.cardId })}
+          onPress={() => navigation.navigate('Card Info', { cardId: selectedCard?.card.cardId })}
           small
           theme="dark"
         >

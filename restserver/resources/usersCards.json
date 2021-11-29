@@ -22,12 +22,12 @@
       "cardNumber": "5901885368919590",
       "lastFour": "9590",
       "address": {
-        "streetLine1": "",
+        "streetLine1": "23, Marion St",
         "streetLine2": "",
-        "locality": null,
-        "region": null,
-        "postalCode": "",
-        "country": null
+        "locality": "New York",
+        "region": "",
+        "postalCode": "123456",
+        "country": "USA"
       }
     },
     "ledgerBalance": {
