@@ -76,13 +76,29 @@ app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) 
   res.json(card.response);
 });
 
-app.get('/cards/:cardId/transactions/:transactionId', checkAuthorization, (req, res) => {
+app.get('/users/account-activity/:accountActivityId', checkAuthorization, (req, res) => {
   const { params } = req;
-  const { cardId, transactionId } = params;
+  // const { accountActivityId } = params;
 
-  const card = transactions.find((x) => x.cardId === cardId);
-  const transaction = card.transactions.find((x) => x.transactionId === transactionId);
-  res.json(transaction);
+  const mockedAccountActivity = {
+    activityTime: '2021-11-24T07:19:18.098Z',
+    accountName: 'string',
+    card: {
+      cardId: {},
+    },
+    merchant: {
+      merchantId: 123,
+      name: 'Kmart',
+      type: 'UTILITIES',
+    },
+    type: 'BANK_LINK',
+    amount: {
+      currency: 'USD',
+      amount: 100.99,
+    },
+    country: 'USA',
+  };
+  res.json(mockedAccountActivity);
 });
 
 app.listen(port, () => {

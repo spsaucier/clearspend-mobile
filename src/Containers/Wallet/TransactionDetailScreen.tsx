@@ -5,6 +5,7 @@ import { gql, useQuery } from '@apollo/client';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useRoute } from '@react-navigation/core';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import { format, parseISO } from 'date-fns';
 
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button } from '@/Components';
@@ -21,18 +22,19 @@ import { DashedLine } from '@/Components/DashedLine';
 import { NoteInput } from '@/Containers/Wallet/Components/NoteInput';
 
 const TRANSACTION_QUERY = gql`
-  query TransactionDetailQuery($cardId: ID!, $transactionId: ID!) {
-    transactionDetail(cardId: $cardId, transactionId: $transactionId)
-      @rest(type: "Transaction", path: "/cards/{args.cardId}/transactions/{args.transactionId}") {
-      merchantName
-      merchantId
-      merchantCategory
-      merchantLogoUrl
-      amount
-      status
-      date
-      time
-      isReceiptLinked
+  query TransactionDetailQuery($accountActivityId: ID!) {
+    transactionDetail(accountActivityId: $accountActivityId)
+      @rest(type: "Transaction", path: "/users/account-activity/{args.accountActivityId}") {
+      activityTime
+      merchant {
+        merchantId
+        name
+        type
+      }
+      amount {
+        currency
+        amount
+      }
       country
     }
   }
@@ -77,24 +79,17 @@ const TransactionDetailScreenContent = () => {
     );
   }
 
-  const {
-    merchantName,
-    merchantId,
-    merchantCategory,
-    merchantLogoUrl,
-    amount,
-    status,
-    date,
-    time,
-    isReceiptLinked,
-    country,
-  } = data.transactionDetail;
+  const { merchant, amount, status, activityTime, isReceiptLinked, country } =
+    data.transactionDetail;
+
   const statusFormatted = sentenceCase(status);
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';
   const statusApproved = status === 'APPROVED';
-  const categoryFormatted = sentenceCase(merchantCategory);
+  const categoryFormatted = sentenceCase(merchant?.type);
 
+  const transactionDateTime = format(parseISO(activityTime), 'MMM dd, yyyy hh:mm a');
+  const { amount: transactionAmount } = amount;
   return (
     <View style={tw`h-full`}>
       <View
@@ -143,10 +138,10 @@ const TransactionDetailScreenContent = () => {
                   { borderRadius: 16 },
                 ]}
               >
-                {merchantLogoUrl ? (
+                {merchant.urlLogo ? (
                   <Image
                     source={{
-                      uri: merchantLogoUrl,
+                      uri: merchant.urlLogo,
                     }}
                     style={tw`w-full h-full`}
                     resizeMode="contain"
@@ -159,12 +154,12 @@ const TransactionDetailScreenContent = () => {
           </View>
 
           <View style={tw`items-center`}>
-            <Text style={tw`font-bold text-black text-2xl`}>{`$${amount}`}</Text>
+            <Text style={tw`font-bold text-black text-2xl`}>{`$${transactionAmount}`}</Text>
             <Text style={tw`text-black text-xl my-2`}>
-              {merchantName}
-              {merchantCategory && ` • ${categoryFormatted}`}
+              {merchant.name}
+              {merchant.type && ` • ${categoryFormatted}`}
             </Text>
-            <Text style={tw`text-gray50 text-base`}>{`${date} ${time}`}</Text>
+            <Text style={tw`text-gray50 text-base`}>{transactionDateTime}</Text>
           </View>
 
           <View style={tw`p-6`}>
@@ -193,15 +188,15 @@ const TransactionDetailScreenContent = () => {
             </Text>
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantName')}
-              value={merchantName}
+              value={merchant.name}
             />
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantId')}
-              value={merchantId}
+              value={merchant.merchantId}
             />
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantCategory')}
-              value={merchantCategory}
+              value={merchant.type}
             />
 
             <Text style={tw`text-sm font-bold text-gray30 mt-6`}>
@@ -209,9 +204,12 @@ const TransactionDetailScreenContent = () => {
             </Text>
             <InfoRow
               label={t('wallet.transactionDetails.details.dateTime')}
-              value={`${date} ${time}`}
+              value={transactionDateTime}
             />
-            <InfoRow label={t('wallet.transactionDetails.details.amount')} value={`$${amount}`} />
+            <InfoRow
+              label={t('wallet.transactionDetails.details.amount')}
+              value={`$${transactionAmount}`}
+            />
             <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
 
             <Button small containerStyle={tw`mt-10 bg-gray95`}>
