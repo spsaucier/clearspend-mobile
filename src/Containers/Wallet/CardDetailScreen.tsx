@@ -21,13 +21,28 @@ const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
 
 const CARD_QUERY = gql`
   query CardDetailsQuery($cardId: String!) {
-    cardDetails(cardId: $cardId) @rest(type: "Card", path: "/cards/{args.cardId}") {
-      isFrozen
-      isDisposable
-      isVirtual
-      lastDigits
-      cardTitle
-      balance
+    cardDetails(cardId: $cardId) @rest(type: "Card", path: "/users/cards/{args.cardId}") {
+      card {
+        status
+        expirationDate
+        cardNumber
+        lastFour
+        cardLine3
+        cardLine4
+        type
+        address {
+          streetLine1
+          streetLine2
+          locality
+          region
+          postalCode
+          country
+        }
+      }
+      availableBalance {
+        currency
+        amount
+      }
     }
   }
 `;
@@ -54,7 +69,13 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
     );
   }
 
-  const { isVirtual, isDisposable, isFrozen, balance, lastDigits, cardTitle } = data.cardDetails;
+  const { card: cardData, availableBalance } = data?.cardDetails;
+  const { lastFour, cardLine3, type } = cardData;
+  const { amount: balanceAmount } = availableBalance;
+
+  const isVirtual = type === 'VIRTUAL';
+  const cardTitle = cardLine3; // TODO: CHECK if cardline3 is the correct one to be used
+  const isFrozen = false; // TODO: what is the card status for frozen?
 
   // TODO: CALCULATIONS WILL BE DONE PROPERLY WHEN API INTEGRATED
   const tempData = {
@@ -70,21 +91,16 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
   const monthlyRemaining = Math.abs(monthlySpendLimit - amountSpentCurrentMonth);
   const displayAppleWalletBtn = Platform.OS === 'ios';
 
-  const darkContent = !isDisposable;
+  const darkContent = true; // TODO: we will have dark content for card types?
 
   return (
     <View style={tw`flex-1 bg-white`}>
-      <FocusAwareStatusBar
-        barStyle={isDisposable ? 'light-content' : 'dark-content'}
-        translucent
-        backgroundColor="transparent"
-      />
+      <FocusAwareStatusBar translucent backgroundColor="transparent" />
       <View
         style={[
           tw.style(
             'flex bg-primary-new w-full rounded-b-3xl overflow-hidden z-30',
             isVirtual && 'bg-card-light',
-            isDisposable && 'bg-card-dark',
             { height: 150 },
           ),
         ]}
@@ -103,7 +119,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
             <View style={tw`flex-row w-full justify-between mb-4`}>
               <View style={tw`flex font-card`}>
                 <Text style={tw.style('text-xl', darkContent ? 'text-black' : 'text-white')}>
-                  {`**** ${lastDigits}`}
+                  {`**** ${lastFour}`}
                 </Text>
                 {!!cardTitle && (
                   <Text style={tw.style('text-base', darkContent ? 'text-black' : 'text-white')}>
@@ -158,7 +174,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
             <Text style={tw`font-spacegrotesk text-base text-white mt-2 mb-2`}>
               {t('cardProfile.cardBalance')}
             </Text>
-            <Text style={tw`text-2xl mt-1 mb-8 text-white`}>{`$${balance}`}</Text>
+            <Text style={tw`text-2xl mt-1 mb-8 text-white`}>{`$${balanceAmount.toFixed(2)}`}</Text>
 
             {isFrozen && (
               <TouchableOpacity

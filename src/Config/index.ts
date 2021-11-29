@@ -1,4 +1,5 @@
 // local rest server
+// use network IP address for Android testing
 export const Config = {
   FA_URL: 'http://localhost:8000',
   FA_CLIENT_ID: '',

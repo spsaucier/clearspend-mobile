@@ -1,7 +1,6 @@
 const express = require('express');
 
 const auth = require('./resources/auth.json');
-const cards = require('./resources/cards.json');
 const usersCards = require('./resources/usersCards.json');
 const transactions = require('./resources/transactions.json');
 
@@ -51,6 +50,7 @@ const checkAuthorization = (req, res, next) => {
   } else res.status(401).send('no token');
 };
 
+// wallet
 app.get('/users/cards', checkAuthorization, (req, res) => {
   const { userId } = res.locals;
 
@@ -58,15 +58,16 @@ app.get('/users/cards', checkAuthorization, (req, res) => {
   res.json(userCardsByUserId);
 });
 
-app.get('/cards/:id', checkAuthorization, (req, res) => {
+// card profile and card info
+app.get('/users/cards/:id', checkAuthorization, (req, res) => {
   const { params } = req;
   const { id } = params;
 
-  const card = cards.find((x) => x.cardId === id);
+  const card = usersCards.find((x) => x.card.cardId === id);
   res.json(card);
 });
 
-app.get('/users/cards/:cardId/account-activity', (req, res) => {
+app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) => {
   const { params, query } = req;
   const { cardId } = params;
   const { type, dateFrom, dateTo, pageRequest } = query;
