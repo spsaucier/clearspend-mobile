@@ -1,7 +1,8 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-
 import { useNavigation } from '@react-navigation/native';
+import { format, parseISO } from 'date-fns';
+
 import tw from '@/Styles/tailwind';
 import { NoReceiptIcon, ReceiptIcon } from '@/Components/Icons';
 import { EyeIcon } from '@/Components/Icons/eyeIcon';
@@ -38,6 +39,8 @@ export const TransactionRow = ({
   };
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';
+
+  const formatTime = format(parseISO(time), 'hh:mm a');
   return (
     <TouchableOpacity
       style={tw`flex-row justify-between pl-6 pr-3 py-3`}
@@ -54,7 +57,7 @@ export const TransactionRow = ({
         )}
         <View>
           <Text style={tw`text-sm text-copyDark ml-3 font-semibold`}>{merchantName}</Text>
-          <Text style={tw`text-xs text-gray50 ml-3`}>{time}</Text>
+          <Text style={tw`text-xs text-gray50 ml-3`}>{formatTime}</Text>
         </View>
       </View>
       <View style={tw`flex-row items-center`}>

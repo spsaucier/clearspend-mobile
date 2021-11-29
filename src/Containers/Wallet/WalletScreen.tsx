@@ -10,6 +10,7 @@ import { EyeIcon } from '@/Components/Icons/eyeIcon';
 import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
 import { Card } from '@/Containers/Wallet/Components/Card';
 import { ProfileIcon } from '@/Components/Icons';
+import Transactions from './Transactions';
 // import Transactions from './Transactions';
 
 const USER_CARDS_QUERY = gql`
@@ -116,7 +117,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
             const balance = amount;
 
             return (
-              <View style={[tw`p-2`, { width: cardWidth }]}>
+              <View style={[tw`p-2`, { width: cardWidth }]} key={cardId}>
                 <Card
                   key={cardId}
                   cardId={cardId}
@@ -137,19 +138,25 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
       {/* Slider dots */}
       <View style={tw`flex-row justify-center my-3`}>
         {cardsData.cards.length > 1 &&
-          cardsData.cards.map((card: { cardId: string }) => (
-            <View
-              style={tw.style(
-                'rounded-full bg-white mx-1',
-                card.cardId === selectedCard?.cardId ? 'opacity-90' : 'opacity-10',
-                { height: 6, width: 6 },
-              )}
-            />
-          ))}
+          cardsData.cards.map((item) => {
+            const {
+              card: { cardId },
+            } = item;
+            return (
+              <View
+                key={cardId}
+                style={tw.style(
+                  'rounded-full bg-white mx-1',
+                  cardId === selectedCard?.cardId ? 'opacity-90' : 'opacity-10',
+                  { height: 6, width: 6 },
+                )}
+              />
+            );
+          })}
       </View>
 
       {/* Buttons */}
-      <View style={tw`flex-row items-center justify-center self-center pt-3 pb-4 w-90`}>
+      <View style={tw`flex-1 flex-row items-start justify-center self-center pt-3 pb-4 w-90`}>
         <Button
           containerStyle={tw`flex-1 mr-1`}
           onPress={() => navigation.navigate('Card Info', { cardId: selectedCard?.cardId })}
@@ -170,7 +177,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
         </Button>
       </View>
 
-      {/* {selectedCard && <Transactions cardId={selectedCard!.cardId} />} */}
+      {selectedCard?.card && <Transactions cardId={selectedCard?.card.cardId} />}
     </SafeAreaView>
   );
 };

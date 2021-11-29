@@ -73,7 +73,6 @@ export default {
       allTransactions: 'Transactions',
       searchTransactions: 'Search transactions',
       noRecent: 'No recent transactions',
-      balance: 'Balance: ',
     },
     cardInfo: {
       title: 'Card Info',

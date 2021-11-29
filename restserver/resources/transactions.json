@@ -1,138 +1,232 @@
 [
   {
     "cardId": "1111",
-    "transactions": [
-      {
-        "transactionId": "234",
-        "merchantName": "Kmart",
-        "merchantID": 9890166625399430,
-        "merchantCategory": "Retail",
-        "merchantLogoUrl": "",
-        "merchantCategoryCode": 5200,
-        "amount": 55.88,
-        "currency": "USD",
-        "date": "05-02-2021",
-        "time": "2:08pm",
-        "receiptLink": "http://something.com",
-        "isReceiptLinked": false,
-        "notes": "Stationery for the office",
-        "status": "PENDING",
-        "location": "",
-        "country": "United States"
+    "response": {
+      "totalElements": 0,
+      "totalPages": 0,
+      "size": 0,
+      "content": [
+        {
+          "activityTime": "2021-11-24T07:19:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Kmart",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 100.99
+          }
+        },
+        {
+          "activityTime": "2021-11-24T09:19:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Zevoko",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 22.34
+          }
+        },
+        {
+          "activityTime": "2021-11-12T07:19:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Amazon.com",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 231.87
+          }
+        },
+        {
+          "activityTime": "2021-11-12T08:19:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "TopMax.co",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 45.22
+          }
+        },
+        {
+          "activityTime": "2021-11-10T05:19:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Countdown",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 99.2
+          }
+        },
+        {
+          "activityTime": "2021-11-05T02:19:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Leading",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 33.3
+          }
+        },
+        {
+          "activityTime": "2021-11-05T01:19:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Kmart",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 102.84
+          }
+        },
+        {
+          "activityTime": "2021-11-05T07:19:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "New World",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 220.22
+          }
+        },
+        {
+          "activityTime": "2021-11-02T07:29:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Typo",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 56.99
+          }
+        },
+        {
+          "activityTime": "2021-11-01T07:39:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Uber eats",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 88.75
+          }
+        },
+        {
+          "activityTime": "2021-11-01T07:49:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Amazon",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 0
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 334.28
+          }
+        }
+      ],
+      "number": 0,
+      "sort": {
+        "empty": true,
+        "sorted": true,
+        "unsorted": true
       },
-      {
-        "transactionId": "777",
-        "merchantName": "Countdown",
-        "merchantID": 6821842433192166,
-        "merchantCategory": "",
-        "merchantLogoUrl": "",
-        "merchantCategoryCode": 5300,
-        "amount": 12.22,
-        "currency": "USD",
-        "date": "05-01-2021",
-        "time": "3:12pm",
-        "receiptLink": "",
-        "isReceiptLinked": false,
-        "notes": "Groceries",
-        "status": "APPROVED",
-        "location": ""
+      "numberOfElements": 0,
+      "pageable": {
+        "offset": 0,
+        "sort": {
+          "empty": true,
+          "sorted": true,
+          "unsorted": true
+        },
+        "paged": true,
+        "pageNumber": 0,
+        "pageSize": 0,
+        "unpaged": true
       },
-      {
-        "transactionId": "4567",
-        "merchantName": "New World",
-        "merchantID": 3010258132654628,
-        "merchantCategory": "",
-        "merchantLogoUrl": "",
-        "merchantCategoryCode": 5300,
-        "amount": 45.09,
-        "currency": "USD",
-        "date": "05-01-2021",
-        "time": "12:12pm",
-        "receiptLink": "",
-        "isReceiptLinked": false,
-        "notes": "Groceries",
-        "status": "APPROVED",
-        "location": ""
-      },
-      {
-        "transactionId": "123",
-        "merchantName": "T Mobile",
-        "merchantID": 9890166625399447,
-        "merchantCategory": "Groceries",
-        "merchantLogoUrl": "",
-        "merchantCategoryCode": 4814,
-        "amount": 77.92,
-        "currency": "USD",
-        "date": "06-24-2021",
-        "time": "4:39pm",
-        "receiptLink": "",
-        "isReceiptLinked": true,
-        "notes": "Monthly mobile phone bill",
-        "status": "APPROVED",
-        "location": "",
-        "country": "United States"
-      }
-    ]
-  },
-  {
-    "cardId": "2222",
-    "transactions": [
-      {
-        "transactionId": "1",
-        "merchantName": "T Mobile",
-        "merchantID": 9890166625399447,
-        "merchantCategory": "groceries",
-        "merchantLogoUrl": "",
-        "merchantCategoryCode": 4814,
-        "amount": 77.92,
-        "currency": "USD",
-        "date": "06-24-2021",
-        "time": "4:39pm",
-        "receiptLink": "",
-        "isReceiptLinked": true,
-        "notes": "Monthly mobile phone bill",
-        "status": "APPROVED",
-        "location": "",
-        "country": "United States"
-      },
-      {
-        "transactionId": "2",
-        "merchantName": "Wallmart",
-        "merchantID": 9890166625399430,
-        "merchantCategory": "",
-        "merchantLogoUrl": "https://s3.amazonaws.com/www-inside-design/uploads/2018/04/walmart-square.jpg",
-        "merchantCategoryCode": 5200,
-        "amount": 12.88,
-        "currency": "USD",
-        "date": "05-01-2021",
-        "time": "2:08pm",
-        "receiptLink": "",
-        "isReceiptLinked": false,
-        "notes": "Stationery for the office",
-        "status": "PENDING",
-        "location": "",
-        "country": "United States"
-      },
-      {
-        "transactionId": "3",
-        "merchantName": "Adobe",
-        "merchantID": 9890112325399477,
-        "merchantCategory": "",
-        "merchantLogoUrl": "",
-        "merchantCategoryCode": 120,
-        "amount": 100.99,
-        "currency": "USD",
-        "date": "06-30-2021",
-        "time": "12:01am",
-        "receiptLink": "",
-        "isReceiptLinked": false,
-        "notes": "monthly subscription",
-        "status": "DECLINED",
-        "location": "",
-        "country": "United States"
-      }
-    ]
-  },
-  { "cardId": "3333", "transactions": [] },
-  { "cardId": "4444", "transactions": [] }
+      "first": true,
+      "last": true,
+      "empty": true
+    }
+  }
 ]

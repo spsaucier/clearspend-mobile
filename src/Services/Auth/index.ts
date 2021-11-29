@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 import { addSeconds } from 'date-fns';
 import { Config } from '@/Config';
 
+const qs = require('qs');
+
 const parseTokenResponse = (response: AxiosResponse) => {
   if (response.status === 200) {
     const {
@@ -22,13 +24,14 @@ const parseTokenResponse = (response: AxiosResponse) => {
 };
 
 const login = async (username: string, password: string) => {
-  const params = new URLSearchParams();
-  params.append('grant_type', 'password');
-  params.append('username', username);
-  params.append('password', password);
-  params.append('client_id', Config.FA_CLIENT_ID);
-  params.append('client_secret', Config.FA_CLIENT_SECRET);
-  params.append('scope', 'offline_access');
+  const params = qs.stringify({
+    grant_type: 'password',
+    username,
+    password,
+    client_id: Config.FA_CLIENT_ID,
+    client_secret: Config.FA_CLIENT_SECRET,
+    scope: 'offline_access',
+  });
 
   const response = await axios({
     method: 'POST',
@@ -41,12 +44,13 @@ const login = async (username: string, password: string) => {
 };
 
 const getNewAccessToken = async (refreshToken: string) => {
-  const params = new URLSearchParams();
-  params.append('grant_type', 'refresh_token');
-  params.append('refresh_token', refreshToken);
-  params.append('client_id', Config.FA_CLIENT_ID);
-  params.append('client_secret', Config.FA_CLIENT_SECRET);
-  params.append('scope', 'offline_access');
+  const params = qs.stringify({
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+    client_id: Config.FA_CLIENT_ID,
+    client_secret: Config.FA_CLIENT_SECRET,
+    scope: 'offline_access',
+  });
 
   const response = await axios({
     method: 'POST',

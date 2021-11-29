@@ -25,13 +25,11 @@ app.post('/oauth2/token', (req, res) => {
   if (authorized) {
     res.json(authorized.authorization);
   } else
-    res
-      .status(401)
-      .json({
-        error: 'invalid_grant',
-        error_description: 'The user credentials are invalid.',
-        error_reason: 'invalid_user_credentials',
-      });
+    res.status(401).json({
+      error: 'invalid_grant',
+      error_description: 'The user credentials are invalid.',
+      error_reason: 'invalid_user_credentials',
+    });
 });
 
 const checkAuthorization = (req, res, next) => {
@@ -68,12 +66,13 @@ app.get('/cards/:id', checkAuthorization, (req, res) => {
   res.json(card);
 });
 
-app.get('/cards/:id/transactions', checkAuthorization, (req, res) => {
-  const { params } = req;
-  const { id } = params;
+app.get('/users/cards/:cardId/account-activity', (req, res) => {
+  const { params, query } = req;
+  const { cardId } = params;
+  const { type, dateFrom, dateTo, pageRequest } = query;
 
-  const card = transactions.find((x) => x.cardId === id);
-  res.json(card.transactions);
+  const card = transactions.find((x) => x.cardId === cardId);
+  res.json(card.response);
 });
 
 app.get('/cards/:cardId/transactions/:transactionId', checkAuthorization, (req, res) => {
