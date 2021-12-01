@@ -11,7 +11,6 @@ import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
 import { Card } from '@/Containers/Wallet/Components/Card';
 import { ProfileIcon } from '@/Components/Icons';
 import Transactions from './Transactions';
-// import Transactions from './Transactions';
 
 const USER_CARDS_QUERY = gql`
   query UserCardsQuery {
@@ -81,14 +80,12 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
       <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
 
       {/* Header and icons */}
-      <View style={tw`px-9 py-5`}>
-        <View style={tw`flex-row items-center justify-end my-2`}>
-          <View style={tw`flex-row`}>
-            <NotificationBell onPress={() => navigation.navigate('Notifications')} />
-            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-              <ProfileIcon color={tw.color('white')} style={tw`ml-3`} size={26} />
-            </TouchableOpacity>
-          </View>
+      <View style={tw`flex-row items-center justify-end my-3 mr-9 `}>
+        <View style={tw`flex-row`}>
+          <NotificationBell onPress={() => navigation.navigate('Notifications')} />
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <ProfileIcon color={tw.color('white')} style={tw`ml-3`} size={26} />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -136,18 +133,20 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       {/* Slider dots */}
-      <View style={tw`flex-row justify-center my-3`}>
+      <View style={tw`flex-row justify-center my-1`}>
         {cardsData.cards.length > 1 &&
           cardsData.cards.map((item) => {
             const {
               card: { cardId },
             } = item;
+            const selected = cardId === selectedCard?.card.cardId;
+
             return (
               <View
                 key={cardId}
                 style={tw.style(
                   'rounded-full bg-white mx-1',
-                  cardId === selectedCard?.cardId ? 'opacity-90' : 'opacity-10',
+                  selected ? 'opacity-90' : 'opacity-10',
                   { height: 6, width: 6 },
                 )}
               />
@@ -156,7 +155,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       {/* Buttons */}
-      <View style={tw`flex-1 flex-row items-start justify-center self-center pt-3 pb-4 w-90`}>
+      <View style={tw`flex-1 flex-row items-start justify-center self-center py-2 px-4`}>
         <Button
           containerStyle={tw`flex-1 mr-1`}
           onPress={() => navigation.navigate('Card Info', { cardId: selectedCard?.card.cardId })}

@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { View, Text, ActivityIndicator, Platform } from 'react-native';
+import { View, Text, ActivityIndicator, Platform, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { gql, useQuery } from '@apollo/client';
@@ -17,6 +17,8 @@ import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
 import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
+
+const dimensions = Dimensions.get('screen');
 
 const CARD_TRANSACTIONS_QUERY = gql`
   query TransactionsQuery($cardId: String!, $pageNumber: Number!, $pageSize: Number!) {
@@ -179,7 +181,14 @@ const TransactionsContent = ({ cardId }: Props) => {
 };
 
 const Transactions = ({ cardId }: Props) => {
-  const snapPointMemo = useMemo(() => ['45%', Platform.select({ ios: '95%', default: '98%' })], []);
+  // (dimensions.height / dimensions.width) < 2 means the device is short and wider
+  // like old devices Pixel 2, iphone 5
+  const initialSnapPoint = dimensions.height / dimensions.width < 2 ? '40%' : '50%';
+
+  // android devices can expand a little bit further as they dont have notch
+  const expandedSnapPoint = Platform.select({ ios: '95%', default: '98%' });
+
+  const snapPointMemo = useMemo(() => [initialSnapPoint, expandedSnapPoint], []);
   const { handleContentLayout } = useBottomSheetDynamicSnapPoints(snapPointMemo);
   return (
     <BottomSheet

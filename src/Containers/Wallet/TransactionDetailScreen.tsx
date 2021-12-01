@@ -25,9 +25,10 @@ const TRANSACTION_QUERY = gql`
   query TransactionDetailQuery($accountActivityId: ID!) {
     transactionDetail(accountActivityId: $accountActivityId)
       @rest(type: "Transaction", path: "/users/account-activity/{args.accountActivityId}") {
+      accountActivityId
       activityTime
       merchant {
-        merchantId
+        merchantId: merchantNumber
         name
         type
       }
@@ -60,7 +61,7 @@ const TransactionDetailScreenContent = () => {
   const { params } = route;
 
   const { loading, error, data } = useQuery(TRANSACTION_QUERY, {
-    variables: { cardId: params.cardId, transactionId: params.transactionId },
+    variables: { cardId: params.cardId, accountActivityId: params.transactionId },
   });
 
   if (loading) {
@@ -154,7 +155,9 @@ const TransactionDetailScreenContent = () => {
           </View>
 
           <View style={tw`items-center`}>
-            <Text style={tw`font-bold text-black text-2xl`}>{`$${transactionAmount}`}</Text>
+            <Text style={tw`font-bold text-black text-2xl`}>
+              {`$${transactionAmount.toFixed(2)}`}
+            </Text>
             <Text style={tw`text-black text-xl my-2`}>
               {merchant.name}
               {merchant.type && ` • ${categoryFormatted}`}
@@ -208,7 +211,7 @@ const TransactionDetailScreenContent = () => {
             />
             <InfoRow
               label={t('wallet.transactionDetails.details.amount')}
-              value={`$${transactionAmount}`}
+              value={`$${transactionAmount.toFixed(2)}`}
             />
             <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
 

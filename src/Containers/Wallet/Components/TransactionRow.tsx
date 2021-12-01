@@ -14,7 +14,7 @@ type Props = {
   cardId: string;
   transactionId: string;
   merchantName: string;
-  amount: string;
+  amount: number;
   merchantImage?: string;
   category?: string;
   status: Status;
@@ -69,7 +69,7 @@ export const TransactionRow = ({
               statusDeclined && 'line-through',
             )}
           >
-            {`-$${amount}`}
+            {`-$${amount.toFixed(2)}`}
           </Text>
           <Text style={tw`text-xs text-gray40 ml-3`}>{sentenceCase(status)}</Text>
         </View>
