@@ -12,7 +12,7 @@ type Props = {
   size?: string | number;
 };
 
-export const WarningIcon = ({
+export const ExclamationIcon = ({
   color = tw.color('white'),
   bgColor = tw.color('black'),
   style,

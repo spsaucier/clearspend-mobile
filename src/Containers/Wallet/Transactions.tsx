@@ -12,7 +12,7 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
 
-import { TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
+import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
 import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
@@ -36,15 +36,26 @@ const CARD_TRANSACTIONS_QUERY = gql`
         merchant {
           name
           type
+          merchantIconUrl
         }
         amount {
           currency
           amount
         }
+        status
       }
     }
   }
 `;
+
+type TransactionType = {
+  accountActivityId: string;
+  merchant: { name: string; merchantIconUrl: string | undefined };
+  amount: { amount: number };
+  status: Status;
+  isReceiptLinked: boolean;
+  activityTime: string;
+};
 
 type Props = {
   cardId: string;
@@ -152,7 +163,7 @@ const TransactionsContent = ({ cardId }: Props) => {
                       {format(dateParsed, 'MMM dd, yyyy')}
                     </Text>
                   </View>
-                  {transactions.map((transaction) => (
+                  {transactions.map((transaction: TransactionType) => (
                     <TransactionRow
                       key={transaction.accountActivityId}
                       cardId={cardId}
@@ -162,6 +173,7 @@ const TransactionsContent = ({ cardId }: Props) => {
                       status={transaction.status}
                       isReceiptLinked={transaction.isReceiptLinked}
                       time={transaction.activityTime}
+                      merchantIconUrl={transaction.merchant.merchantIconUrl}
                     />
                   ))}
                 </View>

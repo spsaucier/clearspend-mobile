@@ -50,7 +50,7 @@ const checkAuthorization = (req, res, next) => {
   } else res.status(401).send('no token');
 };
 
-// wallet
+// Get all cards for this user - Wallet
 app.get('/users/cards', checkAuthorization, (req, res) => {
   const { userId } = res.locals;
 
@@ -58,7 +58,7 @@ app.get('/users/cards', checkAuthorization, (req, res) => {
   res.json(userCardsByUserId);
 });
 
-// card profile and card info
+// Get single card info - Card Details, Card Info
 app.get('/users/cards/:id', checkAuthorization, (req, res) => {
   const { params } = req;
   const { id } = params;
@@ -67,6 +67,7 @@ app.get('/users/cards/:id', checkAuthorization, (req, res) => {
   res.json(card);
 });
 
+// Get all transactions for given card
 app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) => {
   const { params, query } = req;
   const { cardId } = params;
@@ -76,29 +77,13 @@ app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) 
   res.json(card.response);
 });
 
+// Get single transaction info
 app.get('/users/account-activity/:accountActivityId', checkAuthorization, (req, res) => {
   const { params } = req;
-  // const { accountActivityId } = params;
-
-  const mockedAccountActivity = {
-    activityTime: '2021-11-24T07:19:18.098Z',
-    accountName: 'string',
-    card: {
-      cardId: {},
-    },
-    merchant: {
-      merchantId: 123,
-      name: 'Kmart',
-      type: 'UTILITIES',
-    },
-    type: 'BANK_LINK',
-    amount: {
-      currency: 'USD',
-      amount: 100.99,
-    },
-    country: 'USA',
-  };
-  res.json(mockedAccountActivity);
+  const { accountActivityId } = params;
+  const trxns = transactions[0].response.content;
+  const transaction = trxns.find((x) => x.accountActivityId === accountActivityId);
+  res.json(transaction);
 });
 
 app.listen(port, () => {

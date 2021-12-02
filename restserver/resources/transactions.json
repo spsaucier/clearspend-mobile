@@ -17,13 +17,15 @@
             "name": "Kmart",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": "https://variety.com/wp-content/uploads/2013/09/kmart-logo.jpg"
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 100.99
-          }
+          },
+          "status": "PENDING"
         },
         {
           "accountActivityId": "d985b139-1833-4533-aacd-df11aeb566c1",
@@ -36,13 +38,15 @@
             "name": "Zevoko",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 22.34
-          }
+          },
+          "status": "APPROVED"
         },
         {
           "accountActivityId": "77ffeb4a-fe86-461e-8c9c-ad7ce0ffe66f",
@@ -55,13 +59,15 @@
             "name": "Amazon.com",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 231.87
-          }
+          },
+          "status": "DECLINED"
         },
         {
           "accountActivityId": "204445f5-0634-4277-9f84-ce539b9562ff",
@@ -74,13 +80,15 @@
             "name": "TopMax.co",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 45.22
-          }
+          },
+          "status": "PENDING"
         },
         {
           "accountActivityId": "c415108e-e35c-4b37-b424-fe29c04840b2",
@@ -93,13 +101,15 @@
             "name": "Countdown",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 99.2
-          }
+          },
+          "status": "PENDING"
         },
         {
           "accountActivityId": "1f12d7c1-ae56-427a-93fd-c500a9d1ceb3",
@@ -112,13 +122,15 @@
             "name": "Leading",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 33.3
-          }
+          },
+          "status": "PENDING"
         },
         {
           "accountActivityId": "aeaf655a-bdc6-4ac9-9e5a-833911a34562",
@@ -131,13 +143,15 @@
             "name": "Kmart",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 102.84
-          }
+          },
+          "status": "APPROVED"
         },
         {
           "accountActivityId": "f8bc92d7-820e-44ca-8686-420e526977e3",
@@ -150,13 +164,15 @@
             "name": "New World",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": "https://s3.amazonaws.com/www-inside-design/uploads/2018/04/walmart-square.jpg"
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 220.22
-          }
+          },
+          "status": "PENDING"
         },
         {
           "accountActivityId": "7bf20429-5a31-496b-ad96-c1e5cd6dffae",
@@ -169,13 +185,15 @@
             "name": "Typo",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 56.99
-          }
+          },
+          "status": "PENDING"
         },
         {
           "accountActivityId": "1b41fbb5-ac7f-4dce-bdc6-6ae268018e27",
@@ -188,13 +206,15 @@
             "name": "Uber eats",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 88.75
-          }
+          },
+          "status": "PENDING"
         },
         {
           "accountActivityId": "80b6dad8-f699-4264-b158-9fbc430c015e",
@@ -207,13 +227,15 @@
             "name": "Amazon",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0
+            "merchantCategoryCode": 0,
+            "merchantIconUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 334.28
-          }
+          },
+          "status": "PENDING"
         }
       ],
       "number": 0,

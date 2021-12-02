@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { View, Text, Image, Platform } from 'react-native';
+import { View, Text, Image, Platform, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -10,15 +10,13 @@ import { format, parseISO } from 'date-fns';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button } from '@/Components';
 import {
-  AddReceiptIcon,
-  CheckCircleIcon,
-  ClockCircleIcon,
-  DeclinedCircleIcon,
+  CheckCircleIconFilled,
+  EditIcon,
+  ExclamationIcon,
   ReceiptIcon,
   WarningIcon,
 } from '@/Components/Icons';
 import { sentenceCase } from '@/Helpers/StringHelpers';
-import { DashedLine } from '@/Components/DashedLine';
 import { NoteInput } from '@/Containers/Wallet/Components/NoteInput';
 
 const TRANSACTION_QUERY = gql`
@@ -31,7 +29,9 @@ const TRANSACTION_QUERY = gql`
         merchantId: merchantNumber
         name
         type
+        merchantIconUrl
       }
+      status
       amount {
         currency
         amount
@@ -48,9 +48,9 @@ type InfoRowProps = {
 };
 
 const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
-  <View style={tw`flex-row justify-between items-center`}>
-    <Text style={tw`text-sm text-gray50 mt-4`}>{label}</Text>
-    {!!value && <Text style={tw`text-sm text-copyDark mt-4`}>{value}</Text>}
+  <View style={tw`flex-row justify-between items-center mt-1`}>
+    <Text style={tw`text-sm text-gray50`}>{label}</Text>
+    {value ? <Text style={tw`text-sm text-copyDark mt-4`}>{value}</Text> : null}
     {!!children && children}
   </View>
 );
@@ -93,22 +93,23 @@ const TransactionDetailScreenContent = () => {
   const { amount: transactionAmount } = amount;
   return (
     <View style={tw`h-full`}>
+      {/* Status Banner */}
       <View
         style={tw.style(
           'flex-row items-center justify-center p-2 bg-gray95 rounded-t-2xl',
-          statusApproved && 'bg-success',
+          statusApproved && 'bg-primary-new',
           statusDeclined && 'bg-error',
           statusPending && 'bg-pending',
         )}
       >
         {statusApproved ? (
-          <CheckCircleIcon />
+          <CheckCircleIconFilled color={tw.color('primary-new')} bgColor={tw.color('black')} />
         ) : statusDeclined ? (
-          <DeclinedCircleIcon />
+          <ExclamationIcon color={tw.color('error')} bgColor={tw.color('white')} />
         ) : statusPending ? (
-          <ClockCircleIcon />
+          <ExclamationIcon color={tw.color('pending')} bgColor={tw.color('black')} />
         ) : null}
-        <Text style={tw`ml-2 text-base text-white`}>
+        <Text style={tw.style('ml-2 text-base text-black', statusDeclined && 'text-white')}>
           {t('wallet.transactionDetails.status', { status: statusFormatted })}
         </Text>
       </View>
@@ -130,65 +131,53 @@ const TransactionDetailScreenContent = () => {
 
           {/* Merchant logo */}
           <View style={[tw`flex-row justify-center -top-7`]}>
-            <View
-              style={[tw`bg-white justify-center items-center h-18 w-18`, { borderRadius: 18 }]}
-            >
+            <View style={[tw`bg-white justify-center items-center h-18 w-18 rounded-full`]}>
               <View
                 style={[
-                  tw`bg-primary h-16 w-16 overflow-hidden items-center justify-center`,
-                  { borderRadius: 16 },
+                  tw`bg-primary-new h-16 w-16 overflow-hidden items-center justify-center rounded-full`,
                 ]}
               >
-                {merchant.urlLogo ? (
+                {merchant.merchantIconUrl ? (
                   <Image
                     source={{
-                      uri: merchant.urlLogo,
+                      uri: merchant.merchantIconUrl,
                     }}
                     style={tw`w-full h-full`}
-                    resizeMode="contain"
+                    resizeMode="cover"
                   />
                 ) : (
-                  <ReceiptIcon style={tw`h-8`} color={tw.color('white')} />
+                  <ReceiptIcon style={tw`h-6`} color={tw.color('black')} />
                 )}
               </View>
             </View>
           </View>
 
           <View style={tw`items-center`}>
-            <Text style={tw`font-bold text-black text-2xl`}>
-              {`$${transactionAmount.toFixed(2)}`}
-            </Text>
-            <Text style={tw`text-black text-xl my-2`}>
+            <Text style={tw`text-black text-3xl`}>{`$${transactionAmount.toFixed(2)}`}</Text>
+            <Text style={tw`text-black text-lg my-2`}>
               {merchant.name}
               {merchant.type && ` • ${categoryFormatted}`}
             </Text>
-            <Text style={tw`text-gray50 text-base`}>{transactionDateTime}</Text>
+            <Text style={tw`text-black text-xs`}>{transactionDateTime}</Text>
           </View>
 
           <View style={tw`p-6`}>
-            {isReceiptLinked ? (
-              <Button onPress={() => {}} small containerStyle={tw`bg-primary`}>
-                <ReceiptIcon color={tw.color('white')} />
-                <Text style={tw`text-base font-bold text-white ml-2`}>
-                  {t('wallet.transactionDetails.viewReceipt')}
-                </Text>
-              </Button>
-            ) : (
-              <Button onPress={() => {}} small containerStyle={tw`bg-primary`}>
-                <AddReceiptIcon color={tw.color('white')} />
-                <Text style={tw`text-base font-bold text-white ml-2`}>
-                  {t('wallet.transactionDetails.addReceipt')}
-                </Text>
-              </Button>
-            )}
-
-            <DashedLine style={tw`my-6 w-full`} />
-
             <NoteInput />
 
-            <Text style={tw`text-sm font-bold text-gray30 mt-6`}>
-              {t('wallet.transactionDetails.merchant.title').toUpperCase()}
-            </Text>
+            <Button onPress={() => {}} small containerStyle={tw`bg-black mt-5`}>
+              <ReceiptIcon color={tw.color('primary-new')} />
+              <Text style={tw`text-base text-white ml-3`}>
+                {isReceiptLinked
+                  ? t('wallet.transactionDetails.viewReceipt')
+                  : t('wallet.transactionDetails.addReceipt')}
+              </Text>
+            </Button>
+          </View>
+
+          <Text style={tw`text-xs text-black mt-6 bg-gray90 py-2 pl-6`}>
+            {t('wallet.transactionDetails.merchant.title').toUpperCase()}
+          </Text>
+          <View style={tw`px-6`}>
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantName')}
               value={merchant.name}
@@ -197,14 +186,21 @@ const TransactionDetailScreenContent = () => {
               label={t('wallet.transactionDetails.merchant.merchantId')}
               value={merchant.merchantId}
             />
-            <InfoRow
-              label={t('wallet.transactionDetails.merchant.merchantCategory')}
-              value={merchant.type}
-            />
+            <InfoRow label={t('wallet.transactionDetails.merchant.merchantCategory')}>
+              <TouchableOpacity
+                onPress={() => {}}
+                style={tw`flex-row justify-center items-center bg-black rounded-1 py-1 pl-2 pr-1`}
+              >
+                <Text style={tw`text-primary-new mr-1`}>{sentenceCase(merchant.type)}</Text>
+                <EditIcon color={tw.color('primary-new')} size={18} />
+              </TouchableOpacity>
+            </InfoRow>
+          </View>
 
-            <Text style={tw`text-sm font-bold text-gray30 mt-6`}>
-              {t('wallet.transactionDetails.details.title').toUpperCase()}
-            </Text>
+          <Text style={tw`text-xs text-black mt-6 bg-gray90 py-2 pl-6`}>
+            {t('wallet.transactionDetails.details.title').toUpperCase()}
+          </Text>
+          <View style={tw`px-6`}>
             <InfoRow
               label={t('wallet.transactionDetails.details.dateTime')}
               value={transactionDateTime}
@@ -214,8 +210,10 @@ const TransactionDetailScreenContent = () => {
               value={`$${transactionAmount.toFixed(2)}`}
             />
             <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
+          </View>
 
-            <Button small containerStyle={tw`mt-10 bg-gray95`}>
+          <View style={tw`px-6`}>
+            <Button small containerStyle={tw`my-10 bg-gray95`}>
               <Text style={tw`mr-1 text-base font-semibold text-gray50`}>
                 {t('wallet.transactionDetails.report')}
               </Text>

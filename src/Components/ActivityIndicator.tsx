@@ -11,7 +11,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export const ActivityIndicator = ({ color = tw.color('primary'), style }: Props) => {
+export const ActivityIndicator = ({ color = tw.color('primary-new'), style }: Props) => {
   const [interpolatedRotate] = useRotateAnimation();
 
   const loadingCircle = () => (

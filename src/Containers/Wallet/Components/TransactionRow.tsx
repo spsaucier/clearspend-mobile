@@ -1,11 +1,11 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, parseISO } from 'date-fns';
 
+import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
-import { NoReceiptIcon, ReceiptIcon } from '@/Components/Icons';
-import { EyeIcon } from '@/Components/Icons/eyeIcon';
+import { ReceiptIcon } from '@/Components/Icons';
 import { sentenceCase } from '@/Helpers/StringHelpers';
 
 export type Status = 'PENDING' | 'DECLINED' | 'APPROVED';
@@ -15,8 +15,8 @@ type Props = {
   transactionId: string;
   merchantName: string;
   amount: number;
-  merchantImage?: string;
-  category?: string;
+  merchantIconUrl?: string;
+  // category?: string;
   status: Status;
   isReceiptLinked: boolean;
   time: string;
@@ -27,8 +27,8 @@ export const TransactionRow = ({
   transactionId,
   merchantName,
   amount,
-  merchantImage,
-  category,
+  merchantIconUrl,
+  // category,
   status,
   isReceiptLinked = false,
   time = '',
@@ -37,53 +37,58 @@ export const TransactionRow = ({
   const handleOnPress = () => {
     navigation.navigate('Transaction Details', { cardId, transactionId });
   };
-  const statusPending = status === 'PENDING';
+  const { t } = useTranslation();
   const statusDeclined = status === 'DECLINED';
+  const statusFormatted = sentenceCase(status);
 
   const formatTime = format(parseISO(time), 'hh:mm a');
   return (
     <TouchableOpacity
-      style={tw`flex-row justify-between pl-6 pr-3 py-3`}
+      style={tw`flex-row justify-between px-6 py-3`}
       key={transactionId}
       onPress={handleOnPress}
     >
-      <View style={tw`flex-row items-center`}>
-        {merchantImage || category ? (
-          <View style={tw`p-1 bg-primary-new rounded-full h-9 w-9`} />
-        ) : (
-          <View style={tw`p-1 bg-primary-new rounded-full h-9 w-9 items-center justify-center`}>
-            <EyeIcon color={tw.color('black')} />
-          </View>
-        )}
-        <View>
-          <Text style={tw`text-sm text-copyDark ml-3 font-semibold`}>{merchantName}</Text>
-          <Text style={tw`text-xs text-gray50 ml-3`}>{formatTime}</Text>
-        </View>
-      </View>
-      <View style={tw`flex-row items-center`}>
-        <View style={tw`items-end`}>
-          <Text
-            style={tw.style(
-              'text-sm text-black font-bold',
-              (statusPending || statusDeclined) && 'text-gray60',
-              statusDeclined && 'line-through',
-            )}
-          >
-            {`-$${amount.toFixed(2)}`}
-          </Text>
-          <Text style={tw`text-xs text-gray40 ml-3`}>{sentenceCase(status)}</Text>
+      <View style={tw`flex-row`}>
+        <View
+          style={[
+            tw`bg-primary-new h-8 w-8 rounded-full overflow-hidden items-center justify-center`,
+          ]}
+        >
+          {merchantIconUrl ? (
+            <Image
+              source={{
+                uri: merchantIconUrl,
+              }}
+              style={tw`w-full h-full rounded-full`}
+              resizeMode="cover"
+            />
+          ) : (
+            // TODO Add Category Icons
+            <ReceiptIcon color={tw.color('black')} size={16} />
+          )}
         </View>
 
-        <View
-          style={tw.style(
-            'h-9 w-9 items-center justify-center rounded-full ml-3 mr-1 border border-gray95',
+        <View>
+          <Text style={tw`text-base text-black ml-3 mb-1`}>{merchantName}</Text>
+          <Text style={tw`text-xs text-black ml-3`}>{formatTime}</Text>
+        </View>
+      </View>
+
+      <View style={tw`flex-row`}>
+        <View>
+          {!isReceiptLinked && (
+            <TouchableOpacity style={tw`bg-black py-1 px-2 rounded-1`} onPress={() => {}}>
+              <Text style={tw`text-primary-new text-xs`}>
+                {t('wallet.transactions.addReceipt')}
+              </Text>
+            </TouchableOpacity>
           )}
-        >
-          {isReceiptLinked ? (
-            <ReceiptIcon color={tw.color('primary-new')} size={26} />
-          ) : (
-            <NoReceiptIcon color={tw.color('gray70')} size={26} />
-          )}
+        </View>
+        <View style={tw`w-20 items-end`}>
+          <Text style={tw.style('text-base text-black', statusDeclined && 'text-error')}>
+            {`$${amount.toFixed(2)}`}
+          </Text>
+          <Text style={tw`text-xs text-black ml-3`}>{statusFormatted}</Text>
         </View>
       </View>
     </TouchableOpacity>

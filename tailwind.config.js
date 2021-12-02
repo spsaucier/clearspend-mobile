@@ -1,5 +1,3 @@
-// Important: After editing this file, run npx trnc-create-styles - See README.md
-
 module.exports = {
   theme: {
     extend: {
@@ -84,16 +82,16 @@ module.exports = {
       secondary: '#4EF8C1',
       'secondary-light': '#A5FFE0',
       tertiary: '#04A7DA',
-      copyDark: '#111827',
+      copyDark: '#000000',
       copyLight: '#BFDBFE',
 
       // Background Colours
       lightBG: '#F1F7FF',
 
       // Functional
-      error: '#DC2626',
+      error: '#FF2F2F',
       success: '#059669',
-      pending: '#D97706',
+      pending: '#AFFFC6',
       warning: '#FBEFEE',
       'warning-highlight': '#FEE2E2',
 
