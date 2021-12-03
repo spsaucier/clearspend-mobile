@@ -1,7 +1,6 @@
 export { AlarmIcon } from './alarmIcon';
 export { AppleWalletIcon } from './appleWalletIcon';
 export { BackArrowIcon } from './backArrowIcon';
-export { CardFrozenIcon } from './cardFrozenIcon';
 export { CardSettingsIcon } from './cardSettingsIcon';
 export { CheckCircleIcon } from './checkCircleIcon';
 export { CheckCircleIconFilled } from './checkCircleIconFilled';

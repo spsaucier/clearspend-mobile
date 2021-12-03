@@ -18,13 +18,15 @@ const USER_CARDS_QUERY = gql`
       card {
         cardId
         lastDigits: lastFour
-        cardTitle: cardLine3
-        cardType
+        cardLine3
+        type
+        status
       }
       availableBalance {
         currency
         amount
       }
+      allocationName
     }
   }
 `;
@@ -33,6 +35,7 @@ const { width: screenWidth } = Dimensions.get('screen');
 
 const WalletScreen = ({ navigation }: { navigation: any }) => {
   const [selectedCard, setSelectedCard] = useState<any>();
+  const isFrozen = selectedCard?.card.status === 'BLOCKED';
 
   const { t } = useTranslation();
 
@@ -103,24 +106,21 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           lockScrollWhileSnapping
           onSnapToItem={(index: any) => setSelectedCard(cardsData.cards[index])}
           renderItem={({ item }: any) => {
-            const { card, availableBalance } = item;
-            const { cardId, lastDigits, cardTitle, cardType } = card;
+            const { card, availableBalance, allocationName } = item;
+            const { cardId, lastDigits, cardLine3, type } = card;
 
-            const isFrozen = false;
-            const isDisposable = false;
-            const isVirtual = cardType === 'VIRTUAL'; // TODO: MAKE THIS A CONST?
+            const isVirtual = type === 'VIRTUAL';
+            const cardTitle = cardLine3 || allocationName;
 
             const { amount } = availableBalance;
-            const balance = amount;
 
             return (
               <View style={[tw`p-2`, { width: cardWidth }]} key={cardId}>
                 <Card
                   key={cardId}
                   cardId={cardId}
-                  balance={balance}
+                  balance={amount}
                   isFrozen={isFrozen}
-                  isDisposable={isDisposable}
                   isVirtual={isVirtual}
                   lastDigits={lastDigits}
                   cardTitle={cardTitle}
@@ -135,7 +135,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
       {/* Slider dots */}
       <View style={tw`flex-row justify-center my-1`}>
         {cardsData.cards.length > 1 &&
-          cardsData.cards.map((item) => {
+          cardsData.cards.map((item: { card: { cardId: any } }) => {
             const {
               card: { cardId },
             } = item;
@@ -166,10 +166,13 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           <Text style={tw`text-base text-white`}>{t('card.showCardInfo')}</Text>
         </Button>
 
-        <Button containerStyle={tw`flex-1 ml-1`} small theme="dark">
-          <SnowflakeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
-          {!cardsLoading && selectedCard?.isFrozen ? (
-            <Text style={tw`text-base text-white`}>{t('card.unfreezeCard')}</Text>
+        <Button containerStyle={tw.style('flex-1 ml-1', isFrozen && 'bg-white')} small theme="dark">
+          <SnowflakeIcon
+            style={tw`mr-2`}
+            color={isFrozen ? tw.color('black') : tw.color('primary-new')}
+          />
+          {!cardsLoading && isFrozen ? (
+            <Text style={tw`text-base text-black`}>{t('card.unfreezeCard')}</Text>
           ) : (
             <Text style={tw`text-base text-white`}>{t('card.freezeCard')}</Text>
           )}

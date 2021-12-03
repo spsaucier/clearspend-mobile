@@ -15,9 +15,11 @@ const CARD_QUERY = gql`
   query CardInfoQuery($cardId: String!) {
     cardInfo(cardId: $cardId) @rest(type: "Card", path: "/users/cards/{args.cardId}") {
       card {
+        status
         cardLine3
         cardNumber
         expirationDate
+        type
         address {
           streetLine1
           streetLine2
@@ -30,24 +32,29 @@ const CARD_QUERY = gql`
       availableBalance {
         amount
       }
+      allocationName
     }
   }
 `;
 
 const CardInfoContent = ({ cardData }: any) => {
   const { t } = useTranslation();
-  const { card, availableBalance } = cardData;
+  const { card, availableBalance, allocationName } = cardData;
 
-  const { cardId, cardLine3, lastFour: lastDigits, type, expirationDate, cardNumber } = card;
+  const { cardId, cardLine3, lastDigits, type, expirationDate, cardNumber, status } = card;
   const { amount: balanceAmount } = availableBalance;
   const { streetLine1, streetLine2, locality, region, postalCode, country } = card?.address;
+
+  const isFrozen = status === 'BLOCKED';
+  const isVirtual = type === 'VIRTUAL';
+  const cardTitle = cardLine3 || allocationName;
 
   const copyCardNumberToClipboard = () => {
     Clipboard.setString(cardNumber);
   };
 
   const copyCVV = () => {
-    // Clipboard.setString(cvv); // TODO: Need more info how to retrieve this number
+    // Clipboard.setString(cvv);
   };
 
   return (
@@ -56,13 +63,11 @@ const CardInfoContent = ({ cardData }: any) => {
         cardId={cardId}
         cardNumber={cardNumber}
         expirationDate={expirationDate}
-        cvv="000"
-        cardTitle={cardLine3}
+        cardTitle={cardTitle}
         balance={balanceAmount}
         lastDigits={lastDigits}
-        isVirtual={type === 'VIRTUAL'}
-        isDisposable={false}
-        isFrozen={false}
+        isVirtual={isVirtual}
+        isFrozen={isFrozen}
         showSensitiveInformation
       />
       <View style={tw`m-2`}>

@@ -8,14 +8,12 @@ import { ActivityIndicator, Button, FocusAwareStatusBar, LinearProgressBar } fro
 import {
   AlarmIcon,
   AppleWalletIcon,
-  CardFrozenIcon,
   CardSettingsIcon,
   ChevronIcon,
   EyeIcon,
   SnowflakeIcon,
   SuspensionPointsIcon,
 } from '@/Components/Icons';
-import { Visa } from '@/Components/Svg/Visa';
 
 const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
 
@@ -23,7 +21,6 @@ const CARD_QUERY = gql`
   query CardDetailsQuery($cardId: String!) {
     cardDetails(cardId: $cardId) @rest(type: "Card", path: "/users/cards/{args.cardId}") {
       card {
-        status
         expirationDate
         cardNumber
         lastFour
@@ -38,11 +35,13 @@ const CARD_QUERY = gql`
           postalCode
           country
         }
+        status
       }
       availableBalance {
         currency
         amount
       }
+      allocationName
     }
   }
 `;
@@ -69,13 +68,12 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
     );
   }
 
-  const { card: cardData, availableBalance } = data?.cardDetails;
-  const { lastFour, cardLine3, type } = cardData;
+  const { card, availableBalance } = data?.cardDetails;
+  const { type, status } = card;
   const { amount: balanceAmount } = availableBalance;
 
   const isVirtual = type === 'VIRTUAL';
-  const cardTitle = cardLine3; // TODO: CHECK if cardline3 is the correct one to be used
-  const isFrozen = false; // TODO: what is the card status for frozen?
+  const isFrozen = status === 'BLOCKED';
 
   // TODO: CALCULATIONS WILL BE DONE PROPERLY WHEN API INTEGRATED
   const tempData = {
@@ -91,8 +89,6 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
   const monthlyRemaining = Math.abs(monthlySpendLimit - amountSpentCurrentMonth);
   const displayAppleWalletBtn = Platform.OS === 'ios';
 
-  const darkContent = true; // TODO: we will have dark content for card types?
-
   return (
     <View style={tw`flex-1 bg-white`}>
       <FocusAwareStatusBar translucent backgroundColor="transparent" />
@@ -101,7 +97,8 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
           tw.style(
             'flex bg-primary-new w-full rounded-b-3xl overflow-hidden z-30',
             isVirtual && 'bg-card-light',
-            { height: 150 },
+            isFrozen && 'bg-card-dark',
+            { height: 120 },
           ),
         ]}
       >
@@ -116,41 +113,24 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
                 Platform.select({ ios: tw`mt-8` }),
               ]}
             />
-            <View style={tw`flex-row w-full justify-between mb-4`}>
-              <View style={tw`flex font-card`}>
-                <Text style={tw.style('text-xl', darkContent ? 'text-black' : 'text-white')}>
-                  {`**** ${lastFour}`}
-                </Text>
-                {!!cardTitle && (
-                  <Text style={tw.style('text-base', darkContent ? 'text-black' : 'text-white')}>
-                    {cardTitle}
+            <View style={tw`flex-row w-full items-end justify-end mb-4`}>
+              {isFrozen && (
+                <View style={tw.style('flex-row items-center mt-1')}>
+                  <SnowflakeIcon color={tw.color('primary-new')} />
+                  <Text style={tw.style('text-sm ml-2 text-white font-semibold')}>
+                    {t('card.frozen').toUpperCase()}
                   </Text>
-                )}
-              </View>
-              <View>
-                <Visa
-                  style={tw`h-10 mt-1`}
-                  color={darkContent ? tw.color('black') : tw.color('white')}
-                />
-              </View>
+                </View>
+              )}
             </View>
           </View>
         </ImageBackground>
       </View>
 
-      <ScrollView style={tw`bg-forest-green -mt-5`}>
-        {isFrozen && (
-          <View
-            style={tw`flex-row items-center rounded-b-3xl bg-warning border-1 border-warning-highlight overflow-hidden z-20 -mt-6 pl-6 pb-2 pt-8`}
-          >
-            <CardFrozenIcon />
-            <Text style={tw`ml-1 text-error`}>{t('cardProfile.cardIsFrozenForSecurity')}</Text>
-          </View>
-        )}
-
-        <View style={tw`bg-forest-green rounded-b-3xl overflow-hidden z-10 p-6 pt-8`}>
-          {/* Show Card Info & Frozen Buttons */}
+      <ScrollView style={tw`bg-forest-green -mt-6`}>
+        <View style={tw.style('bg-forest-green rounded-b-3xl z-10 p-6 pt-8')}>
           <View style={tw`flex-row items-center justify-evenly pt-3 pb-6`}>
+            {/* Show Card Info Button */}
             <Button
               containerStyle={tw`flex-1 mr-1`}
               onPress={() => navigation.navigate('Card Info', { cardId })}
@@ -160,10 +140,19 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               <EyeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
               <Text style={tw`text-base text-white`}>{t('card.showCardInfo')}</Text>
             </Button>
-            <Button containerStyle={tw`flex-1 ml-1`} small theme="dark">
-              <SnowflakeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
+
+            {/* Freeze/Unfreeze Button */}
+            <Button
+              containerStyle={tw.style('flex-1 ml-1', isFrozen && 'bg-white')}
+              small
+              theme="dark"
+            >
+              <SnowflakeIcon
+                style={tw`mr-2`}
+                color={isFrozen ? tw.color('black') : tw.color('primary-new')}
+              />
               {isFrozen ? (
-                <Text style={tw`text-base text-white`}>{t('card.unfreezeCard')}</Text>
+                <Text style={tw`text-base text-black`}>{t('card.unfreezeCard')}</Text>
               ) : (
                 <Text style={tw`text-base text-white`}>{t('card.freezeCard')}</Text>
               )}
@@ -175,21 +164,6 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               {t('cardProfile.cardBalance')}
             </Text>
             <Text style={tw`text-2xl mt-1 mb-8 text-white`}>{`$${balanceAmount.toFixed(2)}`}</Text>
-
-            {isFrozen && (
-              <TouchableOpacity
-                style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
-                onPress={() => navigation.navigate('Card Lost Stolen')}
-              >
-                <View style={tw`rounded p-2 bg-card-dark`}>
-                  <AlarmIcon />
-                </View>
-                <Text style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
-                  {t('cardProfile.reportCardLostOrStolen')}
-                </Text>
-                <ChevronIcon color={tw.color('white')} />
-              </TouchableOpacity>
-            )}
 
             <TouchableOpacity
               style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
@@ -217,6 +191,19 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
                 </Text>
                 <Text style={tw`text-xs text-white`}>{t('cardProfile.moreSettingsSubtitle')}</Text>
               </View>
+              <ChevronIcon color={tw.color('white')} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
+              onPress={() => navigation.navigate('Card Lost Stolen')}
+            >
+              <View style={tw`rounded p-2 bg-card-dark`}>
+                <AlarmIcon />
+              </View>
+              <Text style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
+                {t('cardProfile.reportCardLostOrStolen')}
+              </Text>
               <ChevronIcon color={tw.color('white')} />
             </TouchableOpacity>
 
@@ -277,7 +264,6 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               </Text>
             </View>
           </View>
-
           <View style={tw`h-20`} />
         </View>
       </ScrollView>
