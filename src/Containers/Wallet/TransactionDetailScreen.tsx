@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useRoute } from '@react-navigation/core';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
+import MapView, { Marker } from 'react-native-maps';
 
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button } from '@/Components';
@@ -91,6 +92,11 @@ const TransactionDetailScreenContent = () => {
 
   const transactionDateTime = format(parseISO(activityTime), 'MMM dd, yyyy hh:mm a');
   const { amount: transactionAmount } = amount;
+
+  // TODO: use the backend response instead
+  const latitude = 37.78825;
+  const longitude = -122.4324;
+
   return (
     <View style={tw`h-full`}>
       {/* Status Banner */}
@@ -126,7 +132,19 @@ const TransactionDetailScreenContent = () => {
 
           {/* Map/banner area */}
           <View style={tw`bg-gray90 h-38`}>
-            <View style={tw`flex-row items-end justify-end px-4 pt-3`} />
+            <MapView
+              style={tw`h-full`}
+              loadingEnabled
+              scrollEnabled={false}
+              initialRegion={{
+                latitude,
+                longitude,
+                latitudeDelta: 0.002,
+                longitudeDelta: 0.002,
+              }}
+            >
+              <Marker key={0} coordinate={{ latitude, longitude }} image={{ uri: 'marker' }} />
+            </MapView>
           </View>
 
           {/* Merchant logo */}
