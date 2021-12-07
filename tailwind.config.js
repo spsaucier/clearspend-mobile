@@ -2,8 +2,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        card: ['kredit', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
         spacegrotesk: ['SpaceGrotesk-Regular', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        montreal: ['PPNeueMontrealTT-Regular', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        telegraf: ['PPTelegraf-Regular', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
       },
       height: {
         '13': '3.25rem',

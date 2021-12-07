@@ -8,22 +8,37 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ClearSpendMobileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ClearSpendMobileTests.m */; };
+		02858ADA350B442A8270B7B1 /* PPNeueMontreal-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9CCC5F3667C42619C2FE54C /* PPNeueMontreal-Book.ttf */; };
+		0CD2AD8068BD4517A8637AE8 /* PPNeueMontreal-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC195522ED6C453ABA8F359C /* PPNeueMontreal-Medium.ttf */; };
+		0DA735E70BEF4072AA2B86DD /* PPNeueMontreal-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E2C8A57DFBB424CA6553C7A /* PPNeueMontreal-Regular.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		38BA5D62DB934B1A853B9FEE /* SpaceGrotesk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4046B7C3CB04C34A8F1A1D3 /* SpaceGrotesk-Regular.ttf */; };
-		3B3054DCCD394D6CB57BF7F0 /* kredit_embossed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C52CCE69D7E4CF0A67725F1 /* kredit_embossed.ttf */; };
-		4206B675381142CDAF183D36 /* kredit_back.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 039D823F21734DFE8FED81C0 /* kredit_back.ttf */; };
-		4244C200D19E455994C2A5EA /* SpaceGrotesk-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C58D545898F4D619B80E734 /* SpaceGrotesk-Light.ttf */; };
+		13FB8C36AD0B49AA97DBE4C4 /* PPNeueMontreal-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 71018FA8739B4597AEB11603 /* PPNeueMontreal-BoldItalic.ttf */; };
+		1E450C06480644EABA6A9479 /* PPNeueMontreal-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5DB793C6E384284BB055B1A /* PPNeueMontreal-MediumItalic.ttf */; };
+		40709B87E0584C138808F101 /* PPNeueMontreal-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D08645A16A54D56AB47974D /* PPNeueMontreal-Bold.ttf */; };
 		431103B0273D085C0009F367 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 431103AF273D085C0009F367 /* AppCenter-Config.plist */; };
-		7B23BD4804E747D18F8056A0 /* SpaceGrotesk-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D5C8EAD4DC140C7AE286B0E /* SpaceGrotesk-Bold.ttf */; };
+		46C98FE072B24FA28BBEF469 /* PPNeueMontreal-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB59EF2C7CBD44E4A958FB77 /* PPNeueMontreal-Thin.ttf */; };
+		5A895FEB4C114560851E6A34 /* PPNeueMontrealVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0023905671B74FDF9A46C383 /* PPNeueMontrealVariable.ttf */; };
+		68330F31C41843D7A0B34DEF /* PPNeueMontreal-BookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 236F0195D4E04677BE171B1D /* PPNeueMontreal-BookItalic.ttf */; };
+		728DB79EC5B34D198F392B80 /* PPTelegraf-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3677E433CB2F46878BE575BB /* PPTelegraf-Light.ttf */; };
+		80A6639EA6DD4EB89FCAA634 /* PPNeueMontreal-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CDEE2624C8F44329BC28ABA3 /* PPNeueMontreal-SemiBoldItalic.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		9E2BBBA3FF1D43DCABE3F15D /* SpaceGrotesk-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 721D1E1A8F0347C6908A5CD2 /* SpaceGrotesk-Medium.ttf */; };
+		84222FF7EC264693984774E1 /* PPNeueMontreal-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E641DD26CF30403EA10045E2 /* PPNeueMontreal-ThinItalic.ttf */; };
+		9B3841B1B2494151BA85DC3C /* PPTelegraf-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1DD797DB42F4481B925B1A61 /* PPTelegraf-Regular.ttf */; };
+		9D85ABE8A9884C0BAA25EB1D /* PPTelegraf-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3899558196724D32866D93A3 /* PPTelegraf-SemiBold.ttf */; };
 		9EA2FD3E807C0BB2C0EE5428 /* libPods-ClearSpendMobile-ClearSpendMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A07999C3D928377FD42A96 /* libPods-ClearSpendMobile-ClearSpendMobileTests.a */; };
-		B8E48F18A0F847D69E17E5C6 /* kredit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12CEFB5CFD104312A3309649 /* kredit.ttf */; };
-		CD644D700ECD4DBE9304020F /* kredit_shine.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DC11B24EE664941BC49385F /* kredit_shine.ttf */; };
+		AAE23933FA1D49B19B5B45FA /* PPTelegraf-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56463ECA851245568DFF25B4 /* PPTelegraf-Bold.ttf */; };
+		ACF257FDBD33418FAC7E1141 /* PPNeueMontreal-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED6863F55E9D4DB789A63B67 /* PPNeueMontreal-Italic.ttf */; };
+		AD4219E815AD4D4CA87556F4 /* PPNeueMontreal-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF8940412444420D898149B3 /* PPNeueMontreal-LightItalic.ttf */; };
+		BA01EB7337A74DC48DAC3265 /* PPTelegraf-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F06B69D79A445C8DBF0CF8 /* PPTelegraf-Variable.ttf */; };
+		CDD0C4D4C51046EBACC50196 /* PPTelegraf-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D8A3C0F021E4D1E8DA19EB3 /* PPTelegraf-Black.ttf */; };
+		D0FDCE94B4D84DFD901433FE /* PPTelegraf-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB65BDE54EBD48F784EA3789 /* PPTelegraf-Medium.ttf */; };
 		D45B9D84896788117F0DE57E /* libPods-ClearSpendMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F243A0E93BD2FC643D2FBB25 /* libPods-ClearSpendMobile.a */; };
-		D6BF7718856645449FA1C699 /* SpaceGrotesk-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412D9E6158F74EB89ADEFA92 /* SpaceGrotesk-SemiBold.ttf */; };
+		E24E560E5D6E4A25B3B6C940 /* PPTelegraf-UltraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE7FECE3EC104740AB4D1D74 /* PPTelegraf-UltraBold.ttf */; };
+		E6D810D44FF94C8ABF3A66E6 /* PPNeueMontreal-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4BC80EE56F84D59BF1BA500 /* PPNeueMontreal-Light.ttf */; };
+		F091F3DA5E17490380B45FEF /* PPNeueMontreal-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2ED8FC2EF5514850AAFC1996 /* PPNeueMontreal-SemiBold.ttf */; };
+		F730633B269C422F98BE0D68 /* PPTelegraf-UltraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A0C60F5074748448D15D97C /* PPTelegraf-UltraLight.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,33 +52,48 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0023905671B74FDF9A46C383 /* PPNeueMontrealVariable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PPNeueMontrealVariable.ttf; path = ../src/Assets/Fonts/PPNeueMontrealVariable.ttf; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* ClearSpendMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClearSpendMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ClearSpendMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClearSpendMobileTests.m; sourceTree = "<group>"; };
-		039D823F21734DFE8FED81C0 /* kredit_back.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_back.ttf; path = ../src/Assets/Fonts/kredit_back.ttf; sourceTree = "<group>"; };
 		03A07999C3D928377FD42A96 /* libPods-ClearSpendMobile-ClearSpendMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClearSpendMobile-ClearSpendMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03F06B69D79A445C8DBF0CF8 /* PPTelegraf-Variable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Variable.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Variable.ttf"; sourceTree = "<group>"; };
 		0BB39BBBAF893E4937E8BDB2 /* Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile-ClearSpendMobileTests/Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
+		0D08645A16A54D56AB47974D /* PPNeueMontreal-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Bold.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Bold.ttf"; sourceTree = "<group>"; };
 		0DCCC7C3CBBD6A3C3AD35FB7 /* Pods-ClearSpendMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile.release.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile/Pods-ClearSpendMobile.release.xcconfig"; sourceTree = "<group>"; };
-		12CEFB5CFD104312A3309649 /* kredit.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = kredit.ttf; path = ../src/Assets/Fonts/kredit.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ClearSpendMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClearSpendMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ClearSpendMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ClearSpendMobile/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ClearSpendMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ClearSpendMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ClearSpendMobile/main.m; sourceTree = "<group>"; };
-		1C58D545898F4D619B80E734 /* SpaceGrotesk-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Light.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Light.ttf"; sourceTree = "<group>"; };
+		1DD797DB42F4481B925B1A61 /* PPTelegraf-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Regular.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Regular.ttf"; sourceTree = "<group>"; };
+		236F0195D4E04677BE171B1D /* PPNeueMontreal-BookItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-BookItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-BookItalic.ttf"; sourceTree = "<group>"; };
+		2ED8FC2EF5514850AAFC1996 /* PPNeueMontreal-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-SemiBold.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-SemiBold.ttf"; sourceTree = "<group>"; };
+		3677E433CB2F46878BE575BB /* PPTelegraf-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Light.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Light.ttf"; sourceTree = "<group>"; };
 		37F90DF01FFAF6ED4DC3881C /* Pods-ClearSpendMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile.debug.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile/Pods-ClearSpendMobile.debug.xcconfig"; sourceTree = "<group>"; };
-		412D9E6158F74EB89ADEFA92 /* SpaceGrotesk-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-SemiBold.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-SemiBold.ttf"; sourceTree = "<group>"; };
+		3899558196724D32866D93A3 /* PPTelegraf-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-SemiBold.ttf"; path = "../src/Assets/Fonts/PPTelegraf-SemiBold.ttf"; sourceTree = "<group>"; };
+		3A0C60F5074748448D15D97C /* PPTelegraf-UltraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-UltraLight.ttf"; path = "../src/Assets/Fonts/PPTelegraf-UltraLight.ttf"; sourceTree = "<group>"; };
 		431103AF273D085C0009F367 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
-		4DC11B24EE664941BC49385F /* kredit_shine.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_shine.ttf; path = ../src/Assets/Fonts/kredit_shine.ttf; sourceTree = "<group>"; };
-		5C52CCE69D7E4CF0A67725F1 /* kredit_embossed.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = kredit_embossed.ttf; path = ../src/Assets/Fonts/kredit_embossed.ttf; sourceTree = "<group>"; };
-		6D5C8EAD4DC140C7AE286B0E /* SpaceGrotesk-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Bold.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Bold.ttf"; sourceTree = "<group>"; };
-		721D1E1A8F0347C6908A5CD2 /* SpaceGrotesk-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Medium.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Medium.ttf"; sourceTree = "<group>"; };
+		56463ECA851245568DFF25B4 /* PPTelegraf-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Bold.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Bold.ttf"; sourceTree = "<group>"; };
+		5E2C8A57DFBB424CA6553C7A /* PPNeueMontreal-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Regular.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Regular.ttf"; sourceTree = "<group>"; };
+		71018FA8739B4597AEB11603 /* PPNeueMontreal-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-BoldItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-BoldItalic.ttf"; sourceTree = "<group>"; };
+		7D8A3C0F021E4D1E8DA19EB3 /* PPTelegraf-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Black.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Black.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClearSpendMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A4BC80EE56F84D59BF1BA500 /* PPNeueMontreal-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Light.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Light.ttf"; sourceTree = "<group>"; };
+		BB59EF2C7CBD44E4A958FB77 /* PPNeueMontreal-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Thin.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Thin.ttf"; sourceTree = "<group>"; };
+		BB65BDE54EBD48F784EA3789 /* PPTelegraf-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Medium.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Medium.ttf"; sourceTree = "<group>"; };
+		BC195522ED6C453ABA8F359C /* PPNeueMontreal-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Medium.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Medium.ttf"; sourceTree = "<group>"; };
 		C1101426D51910CF1247F0EE /* Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile-ClearSpendMobileTests/Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig"; sourceTree = "<group>"; };
-		E4046B7C3CB04C34A8F1A1D3 /* SpaceGrotesk-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceGrotesk-Regular.ttf"; path = "../src/Assets/Fonts/SpaceGrotesk-Regular.ttf"; sourceTree = "<group>"; };
+		C5DB793C6E384284BB055B1A /* PPNeueMontreal-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-MediumItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-MediumItalic.ttf"; sourceTree = "<group>"; };
+		CDEE2624C8F44329BC28ABA3 /* PPNeueMontreal-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-SemiBoldItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		D9CCC5F3667C42619C2FE54C /* PPNeueMontreal-Book.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Book.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Book.ttf"; sourceTree = "<group>"; };
+		E641DD26CF30403EA10045E2 /* PPNeueMontreal-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-ThinItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-ThinItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		ED6863F55E9D4DB789A63B67 /* PPNeueMontreal-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Italic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Italic.ttf"; sourceTree = "<group>"; };
+		EE7FECE3EC104740AB4D1D74 /* PPTelegraf-UltraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-UltraBold.ttf"; path = "../src/Assets/Fonts/PPTelegraf-UltraBold.ttf"; sourceTree = "<group>"; };
 		F243A0E93BD2FC643D2FBB25 /* libPods-ClearSpendMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClearSpendMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF8940412444420D898149B3 /* PPNeueMontreal-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-LightItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-LightItalic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,15 +136,30 @@
 		01D26F794C8D4DECBFF88A94 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				039D823F21734DFE8FED81C0 /* kredit_back.ttf */,
-				5C52CCE69D7E4CF0A67725F1 /* kredit_embossed.ttf */,
-				4DC11B24EE664941BC49385F /* kredit_shine.ttf */,
-				12CEFB5CFD104312A3309649 /* kredit.ttf */,
-				6D5C8EAD4DC140C7AE286B0E /* SpaceGrotesk-Bold.ttf */,
-				1C58D545898F4D619B80E734 /* SpaceGrotesk-Light.ttf */,
-				721D1E1A8F0347C6908A5CD2 /* SpaceGrotesk-Medium.ttf */,
-				E4046B7C3CB04C34A8F1A1D3 /* SpaceGrotesk-Regular.ttf */,
-				412D9E6158F74EB89ADEFA92 /* SpaceGrotesk-SemiBold.ttf */,
+				0D08645A16A54D56AB47974D /* PPNeueMontreal-Bold.ttf */,
+				71018FA8739B4597AEB11603 /* PPNeueMontreal-BoldItalic.ttf */,
+				D9CCC5F3667C42619C2FE54C /* PPNeueMontreal-Book.ttf */,
+				236F0195D4E04677BE171B1D /* PPNeueMontreal-BookItalic.ttf */,
+				ED6863F55E9D4DB789A63B67 /* PPNeueMontreal-Italic.ttf */,
+				A4BC80EE56F84D59BF1BA500 /* PPNeueMontreal-Light.ttf */,
+				FF8940412444420D898149B3 /* PPNeueMontreal-LightItalic.ttf */,
+				BC195522ED6C453ABA8F359C /* PPNeueMontreal-Medium.ttf */,
+				C5DB793C6E384284BB055B1A /* PPNeueMontreal-MediumItalic.ttf */,
+				5E2C8A57DFBB424CA6553C7A /* PPNeueMontreal-Regular.ttf */,
+				2ED8FC2EF5514850AAFC1996 /* PPNeueMontreal-SemiBold.ttf */,
+				CDEE2624C8F44329BC28ABA3 /* PPNeueMontreal-SemiBoldItalic.ttf */,
+				BB59EF2C7CBD44E4A958FB77 /* PPNeueMontreal-Thin.ttf */,
+				E641DD26CF30403EA10045E2 /* PPNeueMontreal-ThinItalic.ttf */,
+				0023905671B74FDF9A46C383 /* PPNeueMontrealVariable.ttf */,
+				7D8A3C0F021E4D1E8DA19EB3 /* PPTelegraf-Black.ttf */,
+				56463ECA851245568DFF25B4 /* PPTelegraf-Bold.ttf */,
+				3677E433CB2F46878BE575BB /* PPTelegraf-Light.ttf */,
+				BB65BDE54EBD48F784EA3789 /* PPTelegraf-Medium.ttf */,
+				1DD797DB42F4481B925B1A61 /* PPTelegraf-Regular.ttf */,
+				3899558196724D32866D93A3 /* PPTelegraf-SemiBold.ttf */,
+				EE7FECE3EC104740AB4D1D74 /* PPTelegraf-UltraBold.ttf */,
+				3A0C60F5074748448D15D97C /* PPTelegraf-UltraLight.ttf */,
+				03F06B69D79A445C8DBF0CF8 /* PPTelegraf-Variable.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -282,16 +327,31 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				4206B675381142CDAF183D36 /* kredit_back.ttf in Resources */,
-				3B3054DCCD394D6CB57BF7F0 /* kredit_embossed.ttf in Resources */,
-				CD644D700ECD4DBE9304020F /* kredit_shine.ttf in Resources */,
 				431103B0273D085C0009F367 /* AppCenter-Config.plist in Resources */,
-				B8E48F18A0F847D69E17E5C6 /* kredit.ttf in Resources */,
-				7B23BD4804E747D18F8056A0 /* SpaceGrotesk-Bold.ttf in Resources */,
-				4244C200D19E455994C2A5EA /* SpaceGrotesk-Light.ttf in Resources */,
-				9E2BBBA3FF1D43DCABE3F15D /* SpaceGrotesk-Medium.ttf in Resources */,
-				38BA5D62DB934B1A853B9FEE /* SpaceGrotesk-Regular.ttf in Resources */,
-				D6BF7718856645449FA1C699 /* SpaceGrotesk-SemiBold.ttf in Resources */,
+				40709B87E0584C138808F101 /* PPNeueMontreal-Bold.ttf in Resources */,
+				13FB8C36AD0B49AA97DBE4C4 /* PPNeueMontreal-BoldItalic.ttf in Resources */,
+				02858ADA350B442A8270B7B1 /* PPNeueMontreal-Book.ttf in Resources */,
+				68330F31C41843D7A0B34DEF /* PPNeueMontreal-BookItalic.ttf in Resources */,
+				ACF257FDBD33418FAC7E1141 /* PPNeueMontreal-Italic.ttf in Resources */,
+				E6D810D44FF94C8ABF3A66E6 /* PPNeueMontreal-Light.ttf in Resources */,
+				AD4219E815AD4D4CA87556F4 /* PPNeueMontreal-LightItalic.ttf in Resources */,
+				0CD2AD8068BD4517A8637AE8 /* PPNeueMontreal-Medium.ttf in Resources */,
+				1E450C06480644EABA6A9479 /* PPNeueMontreal-MediumItalic.ttf in Resources */,
+				0DA735E70BEF4072AA2B86DD /* PPNeueMontreal-Regular.ttf in Resources */,
+				F091F3DA5E17490380B45FEF /* PPNeueMontreal-SemiBold.ttf in Resources */,
+				80A6639EA6DD4EB89FCAA634 /* PPNeueMontreal-SemiBoldItalic.ttf in Resources */,
+				46C98FE072B24FA28BBEF469 /* PPNeueMontreal-Thin.ttf in Resources */,
+				84222FF7EC264693984774E1 /* PPNeueMontreal-ThinItalic.ttf in Resources */,
+				5A895FEB4C114560851E6A34 /* PPNeueMontrealVariable.ttf in Resources */,
+				CDD0C4D4C51046EBACC50196 /* PPTelegraf-Black.ttf in Resources */,
+				AAE23933FA1D49B19B5B45FA /* PPTelegraf-Bold.ttf in Resources */,
+				728DB79EC5B34D198F392B80 /* PPTelegraf-Light.ttf in Resources */,
+				D0FDCE94B4D84DFD901433FE /* PPTelegraf-Medium.ttf in Resources */,
+				9B3841B1B2494151BA85DC3C /* PPTelegraf-Regular.ttf in Resources */,
+				9D85ABE8A9884C0BAA25EB1D /* PPTelegraf-SemiBold.ttf in Resources */,
+				E24E560E5D6E4A25B3B6C940 /* PPTelegraf-UltraBold.ttf in Resources */,
+				F730633B269C422F98BE0D68 /* PPTelegraf-UltraLight.ttf in Resources */,
+				BA01EB7337A74DC48DAC3265 /* PPTelegraf-Variable.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

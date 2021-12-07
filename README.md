@@ -54,19 +54,10 @@ This project uses tailwind-react-native-classnames for styling: https://github.c
 
 - Restart metro and rebuild project
 
-## Fonts
-
-#### Add or modify fonts
-
-- Add (or remove) font files (.ttf or .otf) to the `src/Assets/Fonts` directory
-- Run `yarn react-native link` or `npx react-native link`
-- Restart metro and rebuild project
-
-#### Card font
-
-- Kredit font is used for the cards: Downloaded from https://fontmeme.com/fonts/kredit-font/
-
-- Space Grotesk font: https://fonts.google.com/specimen/Space+Grotesk
+#### Fonts
+- Fonts are located in the src/assets/fonts directory and linked in tailwind.config.js
+- Use custom fonts with e.g. 'font-montreal' or 'font-telegraf'
+- Set weight with e.g. 'font-bold'
 
 # Testing
 

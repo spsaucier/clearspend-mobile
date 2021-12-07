@@ -74,7 +74,14 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       >
         <View style={tw`flex-1 p-5 justify-center`}>
           <Logo style={tw`w-30 mb-3`} />
-          <Text style={tw`text-3xl text-white mb-10 mt-6`}>{t('login.heading')}</Text>
+          <Text
+            style={tw.style(
+              'text-4xl text-white mb-10 mt-6 font-montreal font-telegraf leading-10',
+              { fontWeight: '300' },
+            )}
+          >
+            {t('login.heading')}
+          </Text>
 
           {/* Work Email */}
           <TWTextInput
