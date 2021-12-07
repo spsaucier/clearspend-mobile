@@ -76,19 +76,15 @@ TBC
 
 Test new packages that are added with `snyk test packagename`
 
-# Apollo Server
+# Local Server
 
-## Run local Apollo Server
+## Setup
 
-1. Open terminal in `apolloserver` directory
-2. Install modules `npm install`
-3. Run `node index.js` from the `apolloserver` directory to start local server. Alternatively run the `yarn localserver` script from the main directory
-4. You should see output `Server ready at http://localhost:4000/`
-5. Follow the link to open the web server instance which will take you to https://studio.apollographql.com/sandbox/explorer. Here you can make test queries.
+1. Open terminal in `restserver` directory (`cd restserver`)
+2. Install modules with `npm install`
 
 ## Run local REST Server
+(Assumes the setup steps have been done)
 
-1. Open terminal in `restserver` directory
-2. Install modules `npm install`
-3. Run `node index.js` from the `restserver` directory to start local server. Alternatively run the `yarn restserver` script from the main directory
-4. You should see output `REST server listening on port 8000!`
+1. Run `node index.js` from the `restserver` directory to start local server. Alternatively run the `yarn restserver` script from the main directory
+2. You should see output `REST server listening on port 8000!`
