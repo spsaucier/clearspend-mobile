@@ -47,7 +47,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
   } = useQuery(USER_CARDS_QUERY);
 
   useEffect(() => {
-    if (cardsData?.cards.length > 0 && !selectedCard) {
+    if (cardsData?.cards?.length > 0 && !selectedCard) {
       setSelectedCard(cardsData.cards[0]);
     }
   }, [cardsData, selectedCard]);
@@ -134,7 +134,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
 
       {/* Slider dots */}
       <View style={tw`flex-row justify-center my-1`}>
-        {cardsData.cards.length > 1 &&
+        {cardsData.cards?.length > 1 &&
           cardsData.cards.map((item: { card: { cardId: any } }) => {
             const {
               card: { cardId },
