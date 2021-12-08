@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { gql, useQuery } from '@apollo/client';
 import Carousel from 'react-native-snap-carousel';
 import tw from '@/Styles/tailwind';
-import { NotificationBell, Button, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
+import {
+  NotificationBell,
+  Button,
+  FocusAwareStatusBar,
+  ActivityIndicator,
+  CSText,
+} from '@/Components';
 import { EyeIcon } from '@/Components/Icons/eyeIcon';
 import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
 import { Card } from '@/Containers/Wallet/Components/Card';
@@ -63,7 +69,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
   if (cardsError) {
     return (
       <View style={tw`flex-1 items-center justify-center p-6`}>
-        <Text style={tw`text-base text-error mb-2`}>{cardsError?.message}</Text>
+        <CSText style={tw`text-base text-error mb-2`}>{cardsError?.message}</CSText>
         <Button
           onPress={() => {
             refetchCards();
@@ -163,7 +169,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           theme="dark"
         >
           <EyeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
-          <Text style={tw`text-base text-white`}>{t('card.showCardInfo')}</Text>
+          <CSText style={tw`text-base text-white`}>{t('card.showCardInfo')}</CSText>
         </Button>
 
         <Button containerStyle={tw.style('flex-1 ml-1', isFrozen && 'bg-white')} small theme="dark">
@@ -172,9 +178,9 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
             color={isFrozen ? tw.color('black') : tw.color('primary-new')}
           />
           {!cardsLoading && isFrozen ? (
-            <Text style={tw`text-base text-black`}>{t('card.unfreezeCard')}</Text>
+            <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>
           ) : (
-            <Text style={tw`text-base text-white`}>{t('card.freezeCard')}</Text>
+            <CSText style={tw`text-base text-white`}>{t('card.freezeCard')}</CSText>
           )}
         </Button>
       </View>

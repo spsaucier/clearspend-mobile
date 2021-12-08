@@ -4,13 +4,13 @@ import {
   TextInputProps,
   View,
   ViewStyle,
-  Text,
   TouchableOpacity,
 } from 'react-native';
 import React, { useState } from 'react';
 
 import tw from '@/Styles/tailwind';
 import { EyeIcon, EyeOpenIcon } from '@/Components/Icons';
+import { CSText } from './Text';
 
 type Props = {
   label?: string;
@@ -19,7 +19,7 @@ type Props = {
   containerStyle?: StyleProp<ViewStyle>;
 } & TextInputProps;
 
-export const TWTextInput = ({
+export const CSTextInput = ({
   errorMessage,
   label,
   testID,
@@ -35,21 +35,15 @@ export const TWTextInput = ({
   secureTextEntry,
   value,
 }: Props) => {
-  const [isFocused, setIsFocused] = useState(false);
   const [showSecureInput, setShowSecureInput] = useState(secureTextEntry);
 
-  const onBlur = () => {
-    setIsFocused(false);
-  };
-
-  const onFocus = () => {
-    setIsFocused(true);
-  };
-
   const renderEye = () => (
-    <TouchableOpacity onPress={() => setShowSecureInput(!showSecureInput)}>
+    <TouchableOpacity
+      style={tw`h-10 w-10 items-center justify-center`}
+      onPress={() => setShowSecureInput(!showSecureInput)}
+    >
       {showSecureInput ? (
-        <EyeIcon color={tw.color('gray95')} />
+        <EyeIcon color={tw.color('white')} />
       ) : (
         <EyeOpenIcon color={tw.color('white')} />
       )}
@@ -58,26 +52,21 @@ export const TWTextInput = ({
 
   return (
     <View style={containerStyle}>
-      {label && <Text style={tw`text-white pl-1 mb-1`}>{label}</Text>}
-      <View
-        style={tw.style(
-          'flex-row items-center h-14 rounded border-white border px-5',
-          isFocused ? 'border-primary-new' : 'border-white',
-        )}
-      >
+      {label && <CSText style={tw`text-white pl-1 mb-3`}>{label}</CSText>}
+      <View style={tw.style('flex-row items-center h-16 px-5 bg-card-dark rounded-lg')}>
         <TextInput
           // ref={(e) => {
           //   this.inputField = e;
           // }}
           style={[tw.style('flex-1 rounded-2xl text-base text-white'), style]}
-          onBlur={onBlur}
-          onFocus={onFocus}
+          // onBlur={onBlur}
+          // onFocus={onFocus}
           autoFocus={autoFocus}
           autoCapitalize={autoCapitalize}
           autoCorrect={autoCorrect}
           underlineColorAndroid="rgba(0,0,0,0)"
           placeholder={placeholder}
-          placeholderTextColor={tw.color('white')}
+          placeholderTextColor={tw.color('gray95')}
           testID={testID}
           keyboardType={keyboardType}
           onChangeText={onChangeText}
@@ -86,7 +75,9 @@ export const TWTextInput = ({
         />
         {secureTextEntry && renderEye()}
       </View>
-      {errorMessage && <Text style={tw`text-sm text-white pl-1 mt-1 mb-1`}>{errorMessage}</Text>}
+      {errorMessage && (
+        <CSText style={tw`text-sm text-white pl-1 mt-1 mb-1`}>{errorMessage}</CSText>
+      )}
     </View>
   );
 };

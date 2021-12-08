@@ -2,7 +2,6 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        spacegrotesk: ['SpaceGrotesk-Regular', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
         montreal: ['PPNeueMontrealTT-Regular', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
         telegraf: ['PPTelegraf-Regular', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
       },
@@ -49,7 +48,7 @@ module.exports = {
       '2xs': '.65rem',
       xs: '.75rem',
       sm: '.875rem',
-      base: '1rem',
+      base: '1rem', // 14px
       lg: '1.125rem',
       xl: '1.25rem',
       '2xl': '1.5rem',
@@ -67,7 +66,7 @@ module.exports = {
       transparent: 'rgba(225,225,225,0)',
 
       // New Brand
-      'primary-new': '#5BEA83',
+      'primary-new': '#43FA76',
       'forest-green': '#10292C',
       'card-primary': '#5BEA83',
       'card-dark': '#1C3437',

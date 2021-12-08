@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, ScrollView, ImageBackground, Text, Platform } from 'react-native';
+import { View, ScrollView, ImageBackground, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { gql, useQuery } from '@apollo/client';
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator, Button, FocusAwareStatusBar, LinearProgressBar } from '@/Components';
+import {
+  ActivityIndicator,
+  Button,
+  CSText,
+  FocusAwareStatusBar,
+  LinearProgressBar,
+} from '@/Components';
 import {
   AlarmIcon,
   AppleWalletIcon,
@@ -117,9 +123,9 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               {isFrozen && (
                 <View style={tw.style('flex-row items-center mt-1')}>
                   <SnowflakeIcon color={tw.color('primary-new')} />
-                  <Text style={tw.style('text-sm ml-2 text-white font-semibold')}>
+                  <CSText style={tw.style('text-sm ml-2 text-white font-semibold')}>
                     {t('card.frozen').toUpperCase()}
-                  </Text>
+                  </CSText>
                 </View>
               )}
             </View>
@@ -138,7 +144,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               theme="dark"
             >
               <EyeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
-              <Text style={tw`text-base text-white`}>{t('card.showCardInfo')}</Text>
+              <CSText style={tw`text-base text-white`}>{t('card.showCardInfo')}</CSText>
             </Button>
 
             {/* Freeze/Unfreeze Button */}
@@ -152,18 +158,20 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
                 color={isFrozen ? tw.color('black') : tw.color('primary-new')}
               />
               {isFrozen ? (
-                <Text style={tw`text-base text-black`}>{t('card.unfreezeCard')}</Text>
+                <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>
               ) : (
-                <Text style={tw`text-base text-white`}>{t('card.freezeCard')}</Text>
+                <CSText style={tw`text-base text-white`}>{t('card.freezeCard')}</CSText>
               )}
             </Button>
           </View>
 
           <View>
-            <Text style={tw`font-spacegrotesk text-base text-white mt-2 mb-2`}>
+            <CSText style={tw`text-base text-white mt-2 mb-2`}>
               {t('cardProfile.cardBalance')}
-            </Text>
-            <Text style={tw`text-2xl mt-1 mb-8 text-white`}>{`$${balanceAmount.toFixed(2)}`}</Text>
+            </CSText>
+            <CSText style={tw`text-2xl mt-1 mb-8 text-white`}>
+              {`$${balanceAmount.toFixed(2)}`}
+            </CSText>
 
             <TouchableOpacity
               style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
@@ -172,9 +180,9 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               <View style={tw`rounded p-2 bg-card-dark`}>
                 <CardSettingsIcon color={tw.color('primary-new')} />
               </View>
-              <Text style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
+              <CSText style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
                 {t('cardProfile.spendControls')}
-              </Text>
+              </CSText>
               <ChevronIcon color={tw.color('white')} />
             </TouchableOpacity>
 
@@ -186,10 +194,12 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
                 <SuspensionPointsIcon color={tw.color('primary-new')} />
               </View>
               <View style={tw`flex-grow ml-2`}>
-                <Text style={tw`text-sm font-medium text-white`}>
+                <CSText style={tw`text-sm font-medium text-white`}>
                   {t('cardProfile.moreSettings')}
-                </Text>
-                <Text style={tw`text-xs text-white`}>{t('cardProfile.moreSettingsSubtitle')}</Text>
+                </CSText>
+                <CSText style={tw`text-xs text-white`}>
+                  {t('cardProfile.moreSettingsSubtitle')}
+                </CSText>
               </View>
               <ChevronIcon color={tw.color('white')} />
             </TouchableOpacity>
@@ -201,9 +211,9 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               <View style={tw`rounded p-2 bg-card-dark`}>
                 <AlarmIcon />
               </View>
-              <Text style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
+              <CSText style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
                 {t('cardProfile.reportCardLostOrStolen')}
-              </Text>
+              </CSText>
               <ChevronIcon color={tw.color('white')} />
             </TouchableOpacity>
 
@@ -216,9 +226,9 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
                 }}
               >
                 <AppleWalletIcon style={tw`mr-1`} />
-                <Text style={tw`text-white ml-1 text-base`}>
+                <CSText style={tw`text-white ml-1 text-base`}>
                   {t('cardProfile.addToAppleWallet')}
-                </Text>
+                </CSText>
               </TouchableOpacity>
             )}
           </View>
@@ -228,40 +238,42 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
           {/* Spent Today */}
           <View style={tw`mb-4 mt-4`}>
             <View style={tw`flex-row justify-between mt-2`}>
-              <Text style={tw`text-xs text-black uppercase`}>{t('cardProfile.spentToday')}</Text>
+              <CSText style={tw`text-xs text-black uppercase`}>
+                {t('cardProfile.spentToday')}
+              </CSText>
               <View style={tw`flex-row`}>
-                <Text style={tw`text-sm`}>
+                <CSText style={tw`text-sm`}>
                   {t('cardProfile.limit', { amount: `$${dailySpendLimit.toFixed(2)}` })}
-                </Text>
+                </CSText>
               </View>
             </View>
             <LinearProgressBar progress={(amountSpentToday / dailySpendLimit) * 100} />
             <View style={tw`flex-row justify-between items-start`}>
-              <Text style={tw`text-lg mt-1`}>{`$${amountSpentToday}`}</Text>
-              <Text style={tw`text-sm text-black mt-1`}>
+              <CSText style={tw`text-lg mt-1`}>{`$${amountSpentToday}`}</CSText>
+              <CSText style={tw`text-sm text-black mt-1`}>
                 {t('cardProfile.remaining', { amount: `$${dailyRemaining.toFixed(2)}` })}
-              </Text>
+              </CSText>
             </View>
           </View>
 
           {/* Spent this month */}
           <View style={tw`mb-4 mt-4`}>
             <View style={tw`flex-row justify-between mt-2`}>
-              <Text style={tw`text-xs text-black uppercase`}>
+              <CSText style={tw`text-xs text-black uppercase`}>
                 {t('cardProfile.spentCurrentMonth')}
-              </Text>
+              </CSText>
               <View style={tw`flex-row`}>
-                <Text style={tw`text-sm`}>
+                <CSText style={tw`text-sm`}>
                   {t('cardProfile.limit', { amount: `$${monthlySpendLimit.toFixed(2)}` })}
-                </Text>
+                </CSText>
               </View>
             </View>
             <LinearProgressBar progress={(amountSpentCurrentMonth / monthlySpendLimit) * 100} />
             <View style={tw`flex-row justify-between items-start`}>
-              <Text style={tw`text-lg mt-1`}>{`$${amountSpentCurrentMonth}`}</Text>
-              <Text style={tw`text-sm text-black mt-1`}>
+              <CSText style={tw`text-lg mt-1`}>{`$${amountSpentCurrentMonth}`}</CSText>
+              <CSText style={tw`text-sm text-black mt-1`}>
                 {t('cardProfile.remaining', { amount: `$${monthlyRemaining.toFixed(2)}` })}
-              </Text>
+              </CSText>
             </View>
           </View>
           <View style={tw`h-20`} />

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { useBottomSheet } from '@gorhom/bottom-sheet';
-import { CSBottomSheet, Button } from '@/Components';
+import { CSBottomSheet, Button, CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
 
 const CardSettingsContent = () => {
@@ -9,7 +9,7 @@ const CardSettingsContent = () => {
 
   return (
     <View style={tw`flex items-center h-full`}>
-      <Text>Card Settings Modal</Text>
+      <CSText>Card Settings Modal</CSText>
       <Button
         onPress={() => {
           close();

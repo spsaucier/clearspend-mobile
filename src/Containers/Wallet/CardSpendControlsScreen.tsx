@@ -1,14 +1,14 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useBottomSheet } from '@gorhom/bottom-sheet';
 import tw from '@/Styles/tailwind';
-import { CSBottomSheet, Button } from '@/Components';
+import { CSBottomSheet, Button, CSText } from '@/Components';
 
 const CardSpendControlsContent = () => {
   const { close } = useBottomSheet();
   return (
     <View style={tw`flex items-center h-full`}>
-      <Text>SpendControlsScreen</Text>
+      <CSText>SpendControlsScreen</CSText>
       <Button
         onPress={() => {
           close();

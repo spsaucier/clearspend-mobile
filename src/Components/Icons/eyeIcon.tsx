@@ -11,7 +11,7 @@ type Props = {
   size?: string | number;
 };
 
-export const EyeIcon = ({ color = tw.color('primary-new'), style, testID, size = 18 }: Props) => (
+export const EyeIcon = ({ color = tw.color('primary-new'), style, testID, size = 24 }: Props) => (
   <View style={[{ aspectRatio: 1, height: size, width: size }, style]} testID={testID}>
     <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
       <Path

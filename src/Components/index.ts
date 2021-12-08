@@ -4,6 +4,7 @@ export { Button } from './Button';
 export { CloseIconButton } from './CloseButton';
 export { FocusAwareStatusBar } from './FocusAwareStatusbar';
 export { NotificationBell } from './NotificationBell';
-export { TWTextInput } from './TextInput';
+export { CSTextInput } from './TextInput';
+export { CSText } from './Text';
 export { LinearProgressBar } from './LinearProgressBar';
 export { CSBottomSheet } from './CSBottomSheet';

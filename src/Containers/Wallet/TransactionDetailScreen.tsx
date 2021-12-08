@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { View, Text, Image, Platform, TouchableOpacity } from 'react-native';
+import { View, Image, Platform, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -9,7 +9,7 @@ import { format, parseISO } from 'date-fns';
 import MapView, { Marker } from 'react-native-maps';
 
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator, CSBottomSheet, Button } from '@/Components';
+import { ActivityIndicator, CSBottomSheet, Button, CSText } from '@/Components';
 import {
   CheckCircleIconFilled,
   EditIcon,
@@ -50,8 +50,8 @@ type InfoRowProps = {
 
 const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
   <View style={tw`flex-row justify-between items-center mt-1`}>
-    <Text style={tw`text-sm text-gray50`}>{label}</Text>
-    {value ? <Text style={tw`text-sm text-copyDark mt-4`}>{value}</Text> : null}
+    <CSText style={tw`text-sm text-gray50`}>{label}</CSText>
+    {value ? <CSText style={tw`text-sm text-copyDark mt-4`}>{value}</CSText> : null}
     {!!children && children}
   </View>
 );
@@ -76,7 +76,7 @@ const TransactionDetailScreenContent = () => {
   if (error) {
     return (
       <View style={tw`flex-1 items-center justify-center p-6`}>
-        <Text style={tw`text-base text-error mb-2`}>{error?.message}</Text>
+        <CSText style={tw`text-base text-error mb-2`}>{error?.message}</CSText>
       </View>
     );
   }
@@ -115,9 +115,9 @@ const TransactionDetailScreenContent = () => {
         ) : statusPending ? (
           <ExclamationIcon color={tw.color('pending')} bgColor={tw.color('black')} />
         ) : null}
-        <Text style={tw.style('ml-2 text-base text-black', statusDeclined && 'text-white')}>
+        <CSText style={tw.style('ml-2 text-base text-black', statusDeclined && 'text-white')}>
           {t('wallet.transactionDetails.status', { status: statusFormatted })}
-        </Text>
+        </CSText>
       </View>
 
       <NativeViewGestureHandler disallowInterruption>
@@ -171,12 +171,12 @@ const TransactionDetailScreenContent = () => {
           </View>
 
           <View style={tw`items-center`}>
-            <Text style={tw`text-black text-3xl`}>{`$${transactionAmount.toFixed(2)}`}</Text>
-            <Text style={tw`text-black text-lg my-2`}>
+            <CSText style={tw`text-black text-3xl`}>{`$${transactionAmount.toFixed(2)}`}</CSText>
+            <CSText style={tw`text-black text-lg my-2`}>
               {merchant.name}
               {merchant.type && ` • ${categoryFormatted}`}
-            </Text>
-            <Text style={tw`text-black text-xs`}>{transactionDateTime}</Text>
+            </CSText>
+            <CSText style={tw`text-black text-xs`}>{transactionDateTime}</CSText>
           </View>
 
           <View style={tw`p-6`}>
@@ -184,17 +184,17 @@ const TransactionDetailScreenContent = () => {
 
             <Button onPress={() => {}} small containerStyle={tw`bg-black mt-5`}>
               <ReceiptIcon color={tw.color('primary-new')} />
-              <Text style={tw`text-base text-white ml-3`}>
+              <CSText style={tw`text-base text-white ml-3`}>
                 {isReceiptLinked
                   ? t('wallet.transactionDetails.viewReceipt')
                   : t('wallet.transactionDetails.addReceipt')}
-              </Text>
+              </CSText>
             </Button>
           </View>
 
-          <Text style={tw`text-xs text-black mt-6 bg-gray90 py-2 pl-6`}>
+          <CSText style={tw`text-xs text-black mt-6 bg-gray90 py-2 pl-6`}>
             {t('wallet.transactionDetails.merchant.title').toUpperCase()}
-          </Text>
+          </CSText>
           <View style={tw`px-6`}>
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantName')}
@@ -209,15 +209,15 @@ const TransactionDetailScreenContent = () => {
                 onPress={() => {}}
                 style={tw`flex-row justify-center items-center bg-black rounded-1 py-1 pl-2 pr-1`}
               >
-                <Text style={tw`text-primary-new mr-1`}>{sentenceCase(merchant.type)}</Text>
+                <CSText style={tw`text-primary-new mr-1`}>{sentenceCase(merchant.type)}</CSText>
                 <EditIcon color={tw.color('primary-new')} size={18} />
               </TouchableOpacity>
             </InfoRow>
           </View>
 
-          <Text style={tw`text-xs text-black mt-6 bg-gray90 py-2 pl-6`}>
+          <CSText style={tw`text-xs text-black mt-6 bg-gray90 py-2 pl-6`}>
             {t('wallet.transactionDetails.details.title').toUpperCase()}
-          </Text>
+          </CSText>
           <View style={tw`px-6`}>
             <InfoRow
               label={t('wallet.transactionDetails.details.dateTime')}
@@ -232,9 +232,9 @@ const TransactionDetailScreenContent = () => {
 
           <View style={tw`px-6`}>
             <Button small containerStyle={tw`my-10 bg-gray95`}>
-              <Text style={tw`mr-1 text-base font-semibold text-gray50`}>
+              <CSText style={tw`mr-1 text-base font-semibold text-gray50`}>
                 {t('wallet.transactionDetails.report')}
-              </Text>
+              </CSText>
               <WarningIcon color={tw.color('gray50')} />
             </Button>
           </View>

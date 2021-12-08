@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { gql, useQuery } from '@apollo/client';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { BlurView } from '@react-native-community/blur';
-import { ActivityIndicator, FocusAwareStatusBar } from '@/Components';
+import { ActivityIndicator, CSText, FocusAwareStatusBar } from '@/Components';
 import { Card } from './Components/Card';
 import { CopyIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
@@ -72,22 +72,22 @@ const CardInfoContent = ({ cardData }: any) => {
       />
       <View style={tw`m-2`}>
         <View style={tw`flex-row justify-between py-4  items-center  border-b-1 border-gray60`}>
-          <Text style={tw`text-white font-spacegrotesk`}>{t('cardInfo.copyCardNumber')}</Text>
+          <CSText style={tw`text-white`}>{t('cardInfo.copyCardNumber')}</CSText>
           <TouchableOpacity onPress={copyCardNumberToClipboard}>
             <CopyIcon />
           </TouchableOpacity>
         </View>
         <View style={tw`flex-row justify-between items-center py-4 border-b-1 border-gray60`}>
-          <Text style={tw`text-white font-spacegrotesk`}>{t('cardInfo.copyCVV')}</Text>
+          <CSText style={tw`text-white`}>{t('cardInfo.copyCVV')}</CSText>
           <TouchableOpacity onPress={copyCVV}>
             <CopyIcon />
           </TouchableOpacity>
         </View>
         <View style={tw` py-4  border-b-1 border-gray60`}>
-          <Text style={tw`text-white font-spacegrotesk`}>{t('cardInfo.billingAddress')}</Text>
-          <Text style={tw`text-white mt-2`}>{`${streetLine1} ${streetLine2}`}</Text>
-          <Text style={tw`text-white mt-2`}>{`${locality}, ${region} ${postalCode}`}</Text>
-          <Text style={tw`text-white mt-2`}>{`${country}`}</Text>
+          <CSText style={tw`text-white`}>{t('cardInfo.billingAddress')}</CSText>
+          <CSText style={tw`text-white mt-2`}>{`${streetLine1} ${streetLine2}`}</CSText>
+          <CSText style={tw`text-white mt-2`}>{`${locality}, ${region} ${postalCode}`}</CSText>
+          <CSText style={tw`text-white mt-2`}>{`${country}`}</CSText>
         </View>
       </View>
     </View>
@@ -116,7 +116,7 @@ const CardInfoScreen = () => {
         )}
         {!loading && error && (
           <View style={tw`flex-1 items-center justify-center p-6`}>
-            <Text style={tw`text-base text-error mb-2`}>{error?.message}</Text>
+            <CSText style={tw`text-base text-error mb-2`}>{error?.message}</CSText>
           </View>
         )}
         {!loading && !error && data?.cardInfo && <CardInfoContent cardData={data?.cardInfo} />}
@@ -127,7 +127,7 @@ const CardInfoScreen = () => {
               navigation.goBack();
             }}
           >
-            <Text style={tw`text-white`}>{t('cardInfo.dismiss')}</Text>
+            <CSText style={tw`text-white`}>{t('cardInfo.dismiss')}</CSText>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

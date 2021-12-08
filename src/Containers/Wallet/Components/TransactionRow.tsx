@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, parseISO } from 'date-fns';
@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { ReceiptIcon } from '@/Components/Icons';
 import { sentenceCase } from '@/Helpers/StringHelpers';
+import { CSText } from '@/Components';
 
 export type Status = 'PENDING' | 'DECLINED' | 'APPROVED';
 
@@ -69,8 +70,8 @@ export const TransactionRow = ({
         </View>
 
         <View>
-          <Text style={tw`text-base text-black ml-3 mb-1`}>{merchantName}</Text>
-          <Text style={tw`text-xs text-black ml-3`}>{formatTime}</Text>
+          <CSText style={tw`text-base text-black ml-3 mb-1`}>{merchantName}</CSText>
+          <CSText style={tw`text-xs text-black ml-3`}>{formatTime}</CSText>
         </View>
       </View>
 
@@ -78,17 +79,17 @@ export const TransactionRow = ({
         <View>
           {!isReceiptLinked && (
             <TouchableOpacity style={tw`bg-black py-1 px-2 rounded-1`} onPress={() => {}}>
-              <Text style={tw`text-primary-new text-xs`}>
+              <CSText style={tw`text-primary-new text-xs`}>
                 {t('wallet.transactions.addReceipt')}
-              </Text>
+              </CSText>
             </TouchableOpacity>
           )}
         </View>
         <View style={tw`w-20 items-end`}>
-          <Text style={tw.style('text-base text-black', statusDeclined && 'text-error')}>
+          <CSText style={tw.style('text-base text-black', statusDeclined && 'text-error')}>
             {`$${amount.toFixed(2)}`}
-          </Text>
-          <Text style={tw`text-xs text-black ml-3`}>{statusFormatted}</Text>
+          </CSText>
+          <CSText style={tw`text-xs text-black ml-3`}>{statusFormatted}</CSText>
         </View>
       </View>
     </TouchableOpacity>

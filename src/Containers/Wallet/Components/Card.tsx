@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle, Text, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleProp, View, ViewStyle, TouchableOpacity, ImageBackground } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { parse, format } from 'date-fns';
 
@@ -8,6 +8,7 @@ import tw from '@/Styles/tailwind';
 import { Logo } from '@/Components/Svg/Logo';
 import { Visa } from '@/Components/Svg/Visa';
 import { SnowflakeIcon } from '@/Components/Icons';
+import { CSText } from '@/Components';
 
 export type CardType = {
   cardId: string;
@@ -91,9 +92,9 @@ export const Card = ({
               {isFrozen && (
                 <View style={tw.style('flex-row items-center justify-center mt-1')}>
                   <SnowflakeIcon color={tw.color('primary-new')} />
-                  <Text style={tw.style('text-sm ml-2 text-white font-semibold')}>
+                  <CSText style={tw.style('text-sm ml-2 text-white font-semibold')}>
                     {t('card.frozen').toUpperCase()}
-                  </Text>
+                  </CSText>
                 </View>
               )}
             </View>
@@ -105,18 +106,18 @@ export const Card = ({
                 color={tw.color(darkContent ? 'black' : 'white')}
                 iconColor={darkContent ? tw.color('black') : tw.color('primary-new')}
               />
-              <Text style={tw.style('text-base mr-2', darkContent ? 'text-black' : 'text-white')}>
+              <CSText style={tw.style('text-base mr-2', darkContent ? 'text-black' : 'text-white')}>
                 {showSensitiveInformation ? cardNumberFormatted : `•••• ${lastDigits}`}
-              </Text>
+              </CSText>
               {isVirtual && (
-                <Text
+                <CSText
                   style={tw.style(
                     'text-xs xxs:text-sm mr-2 mt-1',
                     darkContent ? 'text-black' : 'text-white',
                   )}
                 >
                   {t('card.virtual')}
-                </Text>
+                </CSText>
               )}
             </View>
           </View>
@@ -124,35 +125,35 @@ export const Card = ({
           {/* Bottom Row */}
           <View style={tw.style('flex flex-row items-end', isFrozen && 'opacity-30')}>
             <View>
-              <Text style={tw.style('text-xl mb-2', darkContent ? 'text-black' : 'text-white')}>
+              <CSText style={tw.style('text-xl mb-2', darkContent ? 'text-black' : 'text-white')}>
                 {cardTitle}
-              </Text>
+              </CSText>
 
               {!showSensitiveInformation && (
-                <Text style={tw.style('text-2xl', darkContent ? 'text-black' : 'text-white')}>
+                <CSText style={tw.style('text-2xl', darkContent ? 'text-black' : 'text-white')}>
                   {`$${balance.toFixed(2)}`}
-                </Text>
+                </CSText>
               )}
 
               {showSensitiveInformation && (
                 <View style={tw`flex-row mt-4`}>
                   <View>
-                    <Text style={tw.style('text-2xs', darkContent ? 'text-black' : 'text-white')}>
+                    <CSText style={tw.style('text-2xs', darkContent ? 'text-black' : 'text-white')}>
                       {t('card.validThru').toUpperCase()}
-                    </Text>
-                    <Text style={tw.style('mt-1', darkContent ? 'text-black' : 'text-white')}>
+                    </CSText>
+                    <CSText style={tw.style('mt-1', darkContent ? 'text-black' : 'text-white')}>
                       {expirationDateFormatted}
-                    </Text>
+                    </CSText>
                   </View>
                   <View style={tw`ml-4`}>
-                    <Text style={tw.style('text-2xs', darkContent ? 'text-black' : 'text-white')}>
+                    <CSText style={tw.style('text-2xs', darkContent ? 'text-black' : 'text-white')}>
                       {t('card.cvv').toUpperCase()}
-                    </Text>
-                    <Text
+                    </CSText>
+                    <CSText
                       style={tw.style('text-white mt-1', darkContent ? 'text-black' : 'text-white')}
                     >
                       {cvv}
-                    </Text>
+                    </CSText>
                   </View>
                 </View>
               )}

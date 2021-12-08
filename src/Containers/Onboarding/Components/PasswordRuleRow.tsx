@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import tw from '@/Styles/tailwind';
+import { CSText } from '@/Components';
 
 interface Props {
   label: string;
@@ -15,6 +16,6 @@ export const PasswordRuleRow = ({ isSelected, label }: Props) => (
         isSelected ? 'bg-white' : 'bg-forest-green',
       )}
     />
-    <Text style={tw`text-sm text-white`}>{label}</Text>
+    <CSText style={tw`text-sm text-white`}>{label}</CSText>
   </View>
 );

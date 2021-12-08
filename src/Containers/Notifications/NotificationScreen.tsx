@@ -1,24 +1,26 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { CloseIconButton } from '@/Components/CloseButton';
 import { NotificationRow } from '@/Containers/Notifications/NotificationRow';
+import { CSText, FocusAwareStatusBar } from '@/Components';
 
 const NotificationScreen = () => {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-lightBG`}>
-      <View style={tw`flex p-5`}>
+    <SafeAreaView style={tw`flex-1 bg-forest-green`}>
+      <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
+      <View style={tw`flex px-5 py-7`}>
         <View style={tw`flex-row items-center justify-between`}>
-          <Text style={tw`text-2xl font-bold text-copyDark`}>Notifications</Text>
-          <CloseIconButton />
+          <CSText style={tw`text-2xl text-white font-telegraf`}>Notifications</CSText>
+          <CloseIconButton color={tw.color('white')} />
         </View>
-        <Text style={tw`text-sm text-primary mt-2`}>
+        <CSText style={tw`text-sm text-white mt-2`}>
           {t('notifications.youHaveNew', { newNotifications: '3' })}
-        </Text>
+        </CSText>
       </View>
 
       {/* Bottom white area */}

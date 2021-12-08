@@ -1,16 +1,10 @@
-import {
-  LayoutChangeEvent,
-  StyleProp,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  ViewStyle,
-} from 'react-native';
+import { LayoutChangeEvent, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import React, { ReactNode } from 'react';
 import _ from 'lodash';
 
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator } from '@/Components/ActivityIndicator';
+import { ActivityIndicator } from './ActivityIndicator';
+import { CSText } from './Text';
 
 type Props = {
   label?: string;
@@ -56,7 +50,7 @@ export const Button = ({
 
     if (_.isString(children) || label) {
       return (
-        <Text
+        <CSText
           style={[
             tw.style(
               isPrimaryTheme && 'text-black',
@@ -68,7 +62,7 @@ export const Button = ({
           ]}
         >
           {label || children}
-        </Text>
+        </CSText>
       );
     }
     return children;

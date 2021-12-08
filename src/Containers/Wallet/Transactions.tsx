@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { View, Text, ActivityIndicator, Platform, Dimensions } from 'react-native';
+import { View, ActivityIndicator, Platform, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { gql, useQuery } from '@apollo/client';
@@ -17,6 +17,7 @@ import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
 import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
+import { CSText } from '@/Components';
 
 const dimensions = Dimensions.get('screen');
 
@@ -144,7 +145,7 @@ const TransactionsContent = ({ cardId }: Props) => {
           </View>
         ) : error ? (
           <View style={tw`h-full items-center`}>
-            <Text>{error?.message}</Text>
+            <CSText>{error?.message}</CSText>
           </View>
         ) : transactionsGroupedByDate.length > 0 ? (
           <FlatList
@@ -159,9 +160,9 @@ const TransactionsContent = ({ cardId }: Props) => {
               return (
                 <View style={tw`pb-2`}>
                   <View style={tw`flex-row justify-between bg-gray95 px-6 py-2 mb-2`}>
-                    <Text style={tw`text-sm text-gray50`}>
+                    <CSText style={tw`text-sm text-gray50`}>
                       {format(dateParsed, 'MMM dd, yyyy')}
-                    </Text>
+                    </CSText>
                   </View>
                   {transactions.map((transaction: TransactionType) => (
                     <TransactionRow
@@ -184,7 +185,7 @@ const TransactionsContent = ({ cardId }: Props) => {
         ) : (
           <View style={tw`items-center justify-center`}>
             <NoTransactionsSvg />
-            <Text style={tw`mt-3 font-semibold`}>{t('wallet.transactions.noRecent')}</Text>
+            <CSText style={tw`mt-3 font-semibold`}>{t('wallet.transactions.noRecent')}</CSText>
           </View>
         )}
       </Animated.View>

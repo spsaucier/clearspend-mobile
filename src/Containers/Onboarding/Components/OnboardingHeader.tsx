@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import tw from '@/Styles/tailwind';
 import { BackArrowButton } from '@/Components/BackArrowButton';
 import { EyeIcon } from '@/Components/Icons/eyeIcon';
-import { FocusAwareStatusBar } from '@/Components';
+import { CSText, FocusAwareStatusBar } from '@/Components';
 
 interface Props {
   title: string;
@@ -18,7 +18,7 @@ export const OnboardingHeader = ({ title, subTitle, icon }: Props) => (
     <View style={tw`p-1 rounded-lg h-10 w-10 items-center justify-center border border-white`}>
       {icon || <EyeIcon color={tw.color('white')} />}
     </View>
-    <Text style={tw`text-3xl text-white font-semibold mb-3 mt-6`}>{title}</Text>
-    <Text style={tw`text-sm text-white mb-6`}>{subTitle}</Text>
+    <CSText style={tw`text-3xl text-white font-semibold mb-3 mt-6`}>{title}</CSText>
+    <CSText style={tw`text-sm text-white mb-6`}>{subTitle}</CSText>
   </View>
 );

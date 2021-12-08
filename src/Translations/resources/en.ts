@@ -13,8 +13,8 @@ export default {
     buttonLogin: 'Log in',
     forgotPassword: 'Forgot Password?',
     businessSection: {
-      copy: 'Interested in signing up your business with ClearSpend?',
-      buttonCta: 'Explore ClearSpend Business',
+      copy: 'Interested in signing up your business with ClearSpend? ',
+      buttonCta: 'Open an account today.',
     },
     invalidCredentials: 'The user credentials are invalid.',
   },

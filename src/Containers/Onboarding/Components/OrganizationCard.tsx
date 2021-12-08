@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Image, TouchableWithoutFeedback, Text } from 'react-native';
+import { View, Image, TouchableWithoutFeedback } from 'react-native';
 import tw from '@/Styles/tailwind';
+import { CSText } from '@/Components';
 
 interface Props {
   onPress: () => void;
@@ -36,11 +37,11 @@ export const OrganizationCard = ({
           <View style={tw`bg-primary-new rounded-full h-14 w-14 items-center justify-center`} />
         )}
         <View style={tw`ml-7`}>
-          <Text style={tw`text-base text-black font-bold mb-2`}>{companyName}</Text>
-          <Text style={tw`text-sm text-gray50`}>
+          <CSText style={tw`text-base text-black font-bold mb-2`}>{companyName}</CSText>
+          <CSText style={tw`text-sm text-gray50`}>
             Member Since
             {memberSinceDate}
-          </Text>
+          </CSText>
         </View>
       </View>
       {/* Toggle Dot */}

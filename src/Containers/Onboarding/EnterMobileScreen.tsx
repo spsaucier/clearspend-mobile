@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
 import { Button } from '@/Components';
-import { TWTextInput } from '@/Components/TextInput';
+import { CSTextInput } from '@/Components/TextInput';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
 import { PhoneIcon } from '@/Components/Icons/phoneIcon';
 
@@ -29,7 +29,7 @@ const EnterMobileScreen = () => {
           subTitle={t('enterMobile.subTitle')}
           icon={<PhoneIcon />}
         />
-        <TWTextInput
+        <CSTextInput
           label={t('enterMobile.mobileInputLabel')}
           // errorMessage="There was an error"
           placeholder={t('enterMobile.mobileInputPlaceholder')}

@@ -7,14 +7,15 @@ import { CloseIcon } from '@/Components/Icons';
 type Props = {
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
+  color?: string;
 };
 
-export const CloseIconButton = ({ onPress, style }: Props) => {
+export const CloseIconButton = ({ onPress, style, color = tw.color('black') }: Props) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity style={style} onPress={onPress || (() => navigation.goBack())}>
-      <CloseIcon color={tw.color('black')} />
+      <CloseIcon color={color} />
     </TouchableOpacity>
   );
 };

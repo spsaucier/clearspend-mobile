@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import tw from '@/Styles/tailwind';
 import { Button } from '@/Components';
-import { TWTextInput } from '@/Components/TextInput';
+import { CSTextInput } from '@/Components/TextInput';
 import { PasswordRuleRow } from '@/Containers/Onboarding/Components/PasswordRuleRow';
 import { KeyIcon } from '@/Components/Icons';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
@@ -39,7 +39,7 @@ const SetPasswordScreen = () => {
             subTitle={t('setPassword.subTitle')}
             icon={<KeyIcon />}
           />
-          <TWTextInput
+          <CSTextInput
             // errorMessage="There was an error"
             placeholder={t('setPassword.passwordInputPlaceholder')}
             keyboardType="default"

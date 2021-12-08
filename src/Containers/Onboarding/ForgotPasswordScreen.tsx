@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { Button } from '@/Components';
-import { TWTextInput } from '@/Components/TextInput';
+import { CSTextInput } from '@/Components/TextInput';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
 import { EmailIcon } from '@/Components/Icons';
 
@@ -23,7 +23,7 @@ const ForgotPasswordScreen = () => {
             subTitle={t('forgotPassword.enterEmail.subTitle')}
             icon={<EmailIcon />}
           />
-          <TWTextInput
+          <CSTextInput
             label={t('forgotPassword.enterEmail.emailInputLabel')}
             // errorMessage="There was an error"
             placeholder={t('forgotPassword.enterEmail.emailInputPlaceholder')}
