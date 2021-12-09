@@ -26,11 +26,13 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
     name: 'John Smith',
   };
   return (
-    <SafeAreaView style={tw`flex-1 bg-forest-green`} edges={['top']}>
-      <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
+    <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
+      <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
       <View style={tw`flex-row justify-between p-5`}>
         <View>
-          <View style={tw`flex items-center justify-center bg-card-dark rounded-full h-12 w-12`}>
+          <View
+            style={tw`flex items-center justify-center bg-secondary-light rounded-full h-12 w-12`}
+          >
             <CSText style={tw`text-white text-xl font-telegraf`}>
               {nameToInitials(user.name)}
             </CSText>
@@ -50,7 +52,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
           <TouchableOpacity
             style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
           >
-            <CSText style={tw`text-base text-copyDark`}>{t('profile.profileMenu.faceId')}</CSText>
+            <CSText style={tw`text-base`}>{t('profile.profileMenu.faceId')}</CSText>
             <Switch
               onValueChange={() => {}}
               value

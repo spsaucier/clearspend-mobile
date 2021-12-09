@@ -16,7 +16,7 @@ const SelectOrganizationScreen = () => {
     navigation.navigate('Enter Mobile');
   };
   return (
-    <SafeAreaView style={tw`flex-1 bg-forest-green`}>
+    <SafeAreaView style={tw`flex-1 bg-secondary`}>
       <View style={tw`flex-1`}>
         <View style={tw`p-6`}>
           <OnboardingHeader

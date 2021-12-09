@@ -10,6 +10,6 @@ interface Props {
 export const LinearProgressBar = ({ progress, style }: Props) => (
   <View style={[tw`mt-2 mb-2`, style]}>
     <View style={tw`h-1 bg-black`} />
-    <View style={[tw`h-1 bg-primary-new -mt-1`, { width: `${progress}%` }]} />
+    <View style={[tw`h-1 bg-primary -mt-1`, { width: `${progress}%` }]} />
   </View>
 );

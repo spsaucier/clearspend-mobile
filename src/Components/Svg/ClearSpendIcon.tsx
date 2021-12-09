@@ -12,8 +12,8 @@ type Props = {
 };
 
 export const ClearSpendIcon = ({
-  color = tw.color('primary-new'),
-  bgColor = tw.color('card-dark'),
+  color = tw.color('primary'),
+  bgColor = tw.color('secondary-light'),
   style,
   testID,
 }: Props) => (

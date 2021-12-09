@@ -12,7 +12,7 @@ type BoxProps = {
   value: string;
 };
 const Box = ({ value }: BoxProps) => (
-  <View style={tw`items-center justify-center h-12 w-12 rounded-2xl bg-card-dark m-1`}>
+  <View style={tw`items-center justify-center h-12 w-12 rounded-2xl bg-secondary-light m-1`}>
     <CSText style={tw`text-base text-white font-bold`}>{value || ''}</CSText>
   </View>
 );
@@ -25,7 +25,7 @@ const VerifyAccountScreen = () => {
   };
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-forest-green`}>
+    <SafeAreaView style={tw`flex-1 bg-secondary`}>
       <KeyboardAvoidingView style={tw`flex-1 p-6`} behavior="padding">
         <OnboardingHeader
           title={t('verifyAccount.title')}
@@ -43,7 +43,7 @@ const VerifyAccountScreen = () => {
         </View>
 
         <View style={tw`items-center my-6`}>
-          <CSText style={tw`text-sm text-copyLight mb-6`}>{t('verifyAccount.resendCta')}</CSText>
+          <CSText style={tw`text-sm text-white mb-6`}>{t('verifyAccount.resendCta')}</CSText>
         </View>
         <Button containerStyle={tw`mt-auto mb-4`} onPress={handleSubmit}>
           {t('verifyAccount.buttonCta')}

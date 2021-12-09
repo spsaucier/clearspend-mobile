@@ -85,8 +85,8 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
   const cardWidth = 0.95 * screenWidth;
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-forest-green`} edges={['top']}>
-      <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
+    <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
+      <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
 
       {/* Header and icons */}
       <View style={tw`flex-row items-center justify-end my-3 mr-9 `}>
@@ -168,14 +168,14 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           small
           theme="dark"
         >
-          <EyeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
+          <EyeIcon style={tw`mr-2`} color={tw.color('primary')} />
           <CSText style={tw`text-base text-white`}>{t('card.showCardInfo')}</CSText>
         </Button>
 
         <Button containerStyle={tw.style('flex-1 ml-1', isFrozen && 'bg-white')} small theme="dark">
           <SnowflakeIcon
             style={tw`mr-2`}
-            color={isFrozen ? tw.color('black') : tw.color('primary-new')}
+            color={isFrozen ? tw.color('black') : tw.color('primary')}
           />
           {!cardsLoading && isFrozen ? (
             <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>

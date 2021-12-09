@@ -11,7 +11,7 @@ type Props = {
 export const NotificationRow = ({ id }: Props) => (
   <View style={tw`flex-row justify-between items-start py-3`} key={id}>
     {/* Merchant Icon or Category Icon */}
-    <View style={tw`bg-primary-new rounded-full h-9 w-9 items-center justify-center`} />
+    <View style={tw`bg-primary rounded-full h-9 w-9 items-center justify-center`} />
 
     {/* Notification Info */}
     <View style={tw`flex-1 ml-3`}>

@@ -13,7 +13,7 @@ export const PasswordRuleRow = ({ isSelected, label }: Props) => (
     <View
       style={tw.style(
         'rounded-full h-4 w-4 border-1 border-white mr-3',
-        isSelected ? 'bg-white' : 'bg-forest-green',
+        isSelected ? 'bg-white' : 'bg-secondary',
       )}
     />
     <CSText style={tw`text-sm text-white`}>{label}</CSText>

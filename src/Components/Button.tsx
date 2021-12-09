@@ -75,9 +75,8 @@ export const Button = ({
         tw.style(
           'flex-row p-3 rounded items-center justify-center',
           small ? 'h-12' : 'h-16 flex w-full',
-          isPrimaryTheme && 'bg-primary-new',
-          isDarkTheme && 'bg-card-dark',
-          // disabled && 'bg-primary-light' : 'bg-white', // TODO Disabled design
+          isPrimaryTheme && 'bg-primary',
+          isDarkTheme && 'bg-secondary-light',
         ),
         containerStyle,
       ]}

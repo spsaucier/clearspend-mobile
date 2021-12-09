@@ -53,7 +53,7 @@ export const CSTextInput = ({
   return (
     <View style={containerStyle}>
       {label && <CSText style={tw`text-white pl-1 mb-3`}>{label}</CSText>}
-      <View style={tw.style('flex-row items-center h-16 px-5 bg-card-dark rounded-lg')}>
+      <View style={tw.style('flex-row items-center h-16 px-5 bg-secondary-light rounded-lg')}>
         <TextInput
           // ref={(e) => {
           //   this.inputField = e;

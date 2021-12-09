@@ -11,8 +11,8 @@ const NotificationScreen = () => {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-forest-green`}>
-      <FocusAwareStatusBar backgroundColor={tw.color('forest-green')} barStyle="light-content" />
+    <SafeAreaView style={tw`flex-1 bg-secondary`}>
+      <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
       <View style={tw`flex px-5 py-7`}>
         <View style={tw`flex-row items-center justify-between`}>
           <CSText style={tw`text-2xl text-white font-telegraf`}>Notifications</CSText>

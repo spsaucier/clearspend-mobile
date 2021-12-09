@@ -13,7 +13,7 @@ type Props = {
 
 export const Logo = ({
   color = tw.color('white'),
-  iconColor = tw.color('primary-new'),
+  iconColor = tw.color('primary'),
   style,
   testID,
 }: Props) => (

@@ -65,37 +65,23 @@ module.exports = {
       white: '#FFFFFF',
       transparent: 'rgba(225,225,225,0)',
 
-      // New Brand
-      'primary-new': '#43FA76',
-      'forest-green': '#10292C',
-      'card-primary': '#5BEA83',
-      'card-dark': '#1C3437',
-      'card-light': '#F3F2EF',
-
       // Brand
-      primary: '#1D4ED8',
-      'primary-dark': '#1E40AF',
-      'primary-light': '#2563EB',
-      'primary-light-light': '#366FED',
-      'primary-highlight': '#60A5FA',
+      'primary': '#43FA76',
+      'secondary': '#10292C',
+      'secondary-light': '#1C3437',
 
-      secondary: '#4EF8C1',
-      'secondary-light': '#A5FFE0',
-      tertiary: '#04A7DA',
-      copyDark: '#000000',
-      copyLight: '#BFDBFE',
-
-      // Background Colours
-      lightBG: '#F1F7FF',
+      // Cards
+      'card-light': '#F3F2EF',
+      'card-dark': '#10292C',
+      'card-primary': '#43FA76',
 
       // Functional
       error: '#FF2F2F',
       success: '#059669',
       pending: '#AFFFC6',
-      warning: '#FBEFEE',
-      'warning-highlight': '#FEE2E2',
 
-      // Wallet flow
+      // Apple Wallet mock flow
+      lightBG: '#F1F7FF',
       'ios-link': '#008de1',
       'ios-gray-bg': '#F7F7F6',
 

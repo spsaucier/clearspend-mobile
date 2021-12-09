@@ -14,7 +14,7 @@ export const ProfileMenuRow = ({ label, onPress }: Props) => (
     style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
     onPress={onPress}
   >
-    <CSText style={tw`text-base text-copyDark`}>{label}</CSText>
+    <CSText style={tw`text-base`}>{label}</CSText>
     <ChevronIcon />
   </TouchableOpacity>
 );

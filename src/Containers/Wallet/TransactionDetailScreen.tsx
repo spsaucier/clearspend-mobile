@@ -51,7 +51,7 @@ type InfoRowProps = {
 const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
   <View style={tw`flex-row justify-between items-center mt-1`}>
     <CSText style={tw`text-sm text-gray50`}>{label}</CSText>
-    {value ? <CSText style={tw`text-sm text-copyDark mt-4`}>{value}</CSText> : null}
+    {value ? <CSText style={tw`text-sm mt-4`}>{value}</CSText> : null}
     {!!children && children}
   </View>
 );
@@ -100,25 +100,27 @@ const TransactionDetailScreenContent = () => {
   return (
     <View style={tw`h-full`}>
       {/* Status Banner */}
-      <View
-        style={tw.style(
-          'flex-row items-center justify-center p-2 bg-gray95 rounded-t-2xl',
-          statusApproved && 'bg-primary-new',
-          statusDeclined && 'bg-error',
-          statusPending && 'bg-pending',
-        )}
-      >
-        {statusApproved ? (
-          <CheckCircleIconFilled color={tw.color('primary-new')} bgColor={tw.color('black')} />
-        ) : statusDeclined ? (
-          <ExclamationIcon color={tw.color('error')} bgColor={tw.color('white')} />
-        ) : statusPending ? (
-          <ExclamationIcon color={tw.color('pending')} bgColor={tw.color('black')} />
-        ) : null}
-        <CSText style={tw.style('ml-2 text-base text-black', statusDeclined && 'text-white')}>
-          {t('wallet.transactionDetails.status', { status: statusFormatted })}
-        </CSText>
-      </View>
+      {!!status && (
+        <View
+          style={tw.style(
+            'flex-row items-center justify-center p-2 bg-gray95 rounded-t-2xl',
+            statusApproved && 'bg-primary',
+            statusDeclined && 'bg-error',
+            statusPending && 'bg-pending',
+          )}
+        >
+          {statusApproved ? (
+            <CheckCircleIconFilled color={tw.color('primary')} bgColor={tw.color('black')} />
+          ) : statusDeclined ? (
+            <ExclamationIcon color={tw.color('error')} bgColor={tw.color('white')} />
+          ) : statusPending ? (
+            <ExclamationIcon color={tw.color('pending')} bgColor={tw.color('black')} />
+          ) : null}
+          <CSText style={tw.style('ml-2 text-base text-black', statusDeclined && 'text-white')}>
+            {t('wallet.transactionDetails.status', { status: statusFormatted })}
+          </CSText>
+        </View>
+      )}
 
       <NativeViewGestureHandler disallowInterruption>
         <KeyboardAwareScrollView
@@ -153,7 +155,7 @@ const TransactionDetailScreenContent = () => {
             <View style={[tw`bg-white justify-center items-center h-18 w-18 rounded-full`]}>
               <View
                 style={[
-                  tw`bg-primary-new h-16 w-16 overflow-hidden items-center justify-center rounded-full`,
+                  tw`bg-primary h-16 w-16 overflow-hidden items-center justify-center rounded-full`,
                 ]}
               >
                 {merchant.merchantIconUrl ? (
@@ -184,7 +186,7 @@ const TransactionDetailScreenContent = () => {
             <NoteInput />
 
             <Button onPress={() => {}} small containerStyle={tw`bg-black mt-5`}>
-              <ReceiptIcon color={tw.color('primary-new')} />
+              <ReceiptIcon color={tw.color('primary')} />
               <CSText style={tw`text-base text-white ml-3`}>
                 {isReceiptLinked
                   ? t('wallet.transactionDetails.viewReceipt')
@@ -210,8 +212,8 @@ const TransactionDetailScreenContent = () => {
                 onPress={() => {}}
                 style={tw`flex-row justify-center items-center bg-black rounded-1 py-1 pl-2 pr-1`}
               >
-                <CSText style={tw`text-primary-new mr-1`}>{sentenceCase(merchant.type)}</CSText>
-                <EditIcon color={tw.color('primary-new')} size={18} />
+                <CSText style={tw`text-primary mr-1`}>{sentenceCase(merchant.type)}</CSText>
+                <EditIcon color={tw.color('primary')} size={18} />
               </TouchableOpacity>
             </InfoRow>
           </View>

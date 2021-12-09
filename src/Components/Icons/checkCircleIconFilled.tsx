@@ -14,7 +14,7 @@ type Props = {
 
 export const CheckCircleIconFilled = ({
   color = tw.color('black'),
-  bgColor = tw.color('primary-new'),
+  bgColor = tw.color('primary'),
   style,
   testID,
   size = 24,

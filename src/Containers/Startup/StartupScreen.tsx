@@ -14,7 +14,7 @@ const StartupScreen = () => {
   }, [dispatch]);
 
   return (
-    <View style={tw`flex-1 flex-col justify-center items-center bg-forest-green`}>
+    <View style={tw`flex-1 flex-col justify-center items-center bg-secondary`}>
       <FocusAwareStatusBar barStyle="light-content" />
       <View style={tw`flex flex-row p-6`}>
         <Logo style={tw`w-8/12`} />

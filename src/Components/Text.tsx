@@ -37,7 +37,7 @@ export const CSText = ({
   textBreakStrategy,
 }: Props) => (
   <Text
-    style={[tw`font-montreal`, style]}
+    style={[tw`font-montreal text-black`, style]}
     onPress={onPress}
     numberOfLines={numberOfLines}
     testID={testID}

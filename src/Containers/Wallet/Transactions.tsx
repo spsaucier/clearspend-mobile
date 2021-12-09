@@ -120,10 +120,7 @@ const TransactionsContent = ({ cardId }: Props) => {
     <View style={tw`h-full`}>
       <View style={[tw`flex m-6 mt-2 content-start`]}>
         <Animated.Text
-          style={[
-            tw`text-base text-copyDark font-bold self-start`,
-            transactionsTitleScaleAnimatedStyle,
-          ]}
+          style={[tw`text-base font-bold self-start`, transactionsTitleScaleAnimatedStyle]}
         >
           {t('wallet.transactions.recentTransactions')}
         </Animated.Text>

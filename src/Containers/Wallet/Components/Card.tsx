@@ -91,7 +91,7 @@ export const Card = ({
             <View style={tw`flex mt-4`}>
               {isFrozen && (
                 <View style={tw.style('flex-row items-center justify-center mt-1')}>
-                  <SnowflakeIcon color={tw.color('primary-new')} />
+                  <SnowflakeIcon color={tw.color('primary')} />
                   <CSText style={tw.style('text-sm ml-2 text-white font-semibold')}>
                     {t('card.frozen').toUpperCase()}
                   </CSText>
@@ -104,7 +104,7 @@ export const Card = ({
               <Logo
                 style={tw`w-28 mt-1 mb-2`}
                 color={tw.color(darkContent ? 'black' : 'white')}
-                iconColor={darkContent ? tw.color('black') : tw.color('primary-new')}
+                iconColor={darkContent ? tw.color('black') : tw.color('primary')}
               />
               <CSText style={tw.style('text-base mr-2', darkContent ? 'text-black' : 'text-white')}>
                 {showSensitiveInformation ? cardNumberFormatted : `•••• ${lastDigits}`}

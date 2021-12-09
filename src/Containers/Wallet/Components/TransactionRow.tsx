@@ -51,9 +51,7 @@ export const TransactionRow = ({
     >
       <View style={tw`flex-row`}>
         <View
-          style={[
-            tw`bg-primary-new h-8 w-8 rounded-full overflow-hidden items-center justify-center`,
-          ]}
+          style={[tw`bg-primary h-8 w-8 rounded-full overflow-hidden items-center justify-center`]}
         >
           {merchantIconUrl ? (
             <Image
@@ -79,7 +77,7 @@ export const TransactionRow = ({
         <View>
           {!isReceiptLinked && (
             <TouchableOpacity style={tw`bg-black py-1 px-2 rounded-1`} onPress={() => {}}>
-              <CSText style={tw`text-primary-new text-xs`}>
+              <CSText style={tw`text-primary text-xs`}>
                 {t('wallet.transactions.addReceipt')}
               </CSText>
             </TouchableOpacity>

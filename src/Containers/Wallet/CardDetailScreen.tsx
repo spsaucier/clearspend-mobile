@@ -68,8 +68,8 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
 
   if (loading) {
     return (
-      <View style={tw`flex-1 justify-center items-center bg-lightBG`}>
-        <ActivityIndicator />
+      <View style={tw`flex-1 justify-center items-center bg-secondary`}>
+        <ActivityIndicator color={tw.color('white')} />
       </View>
     );
   }
@@ -101,7 +101,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
       <View
         style={[
           tw.style(
-            'flex bg-primary-new w-full rounded-b-3xl overflow-hidden z-30',
+            'flex bg-card-primary w-full rounded-b-3xl overflow-hidden z-30',
             isVirtual && 'bg-card-light',
             isFrozen && 'bg-card-dark',
             { height: 120 },
@@ -122,7 +122,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
             <View style={tw`flex-row w-full items-end justify-end mb-4`}>
               {isFrozen && (
                 <View style={tw.style('flex-row items-center mt-1')}>
-                  <SnowflakeIcon color={tw.color('primary-new')} />
+                  <SnowflakeIcon color={tw.color('primary')} />
                   <CSText style={tw.style('text-sm ml-2 text-white font-semibold')}>
                     {t('card.frozen').toUpperCase()}
                   </CSText>
@@ -133,8 +133,8 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
         </ImageBackground>
       </View>
 
-      <ScrollView style={tw`bg-forest-green -mt-6`}>
-        <View style={tw.style('bg-forest-green rounded-b-3xl z-10 p-6 pt-8')}>
+      <ScrollView style={tw`bg-secondary -mt-6`}>
+        <View style={tw.style('bg-secondary rounded-b-3xl z-10 p-6 pt-8')}>
           <View style={tw`flex-row items-center justify-evenly pt-3 pb-6`}>
             {/* Show Card Info Button */}
             <Button
@@ -143,7 +143,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               small
               theme="dark"
             >
-              <EyeIcon style={tw`mr-2`} color={tw.color('primary-new')} />
+              <EyeIcon style={tw`mr-2`} color={tw.color('primary')} />
               <CSText style={tw`text-base text-white`}>{t('card.showCardInfo')}</CSText>
             </Button>
 
@@ -155,7 +155,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
             >
               <SnowflakeIcon
                 style={tw`mr-2`}
-                color={isFrozen ? tw.color('black') : tw.color('primary-new')}
+                color={isFrozen ? tw.color('black') : tw.color('primary')}
               />
               {isFrozen ? (
                 <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>
@@ -177,8 +177,8 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
               onPress={() => navigation.navigate('Card Spend Controls')}
             >
-              <View style={tw`rounded p-2 bg-card-dark`}>
-                <CardSettingsIcon color={tw.color('primary-new')} />
+              <View style={tw`rounded p-2 bg-secondary-light`}>
+                <CardSettingsIcon color={tw.color('primary')} />
               </View>
               <CSText style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
                 {t('cardProfile.spendControls')}
@@ -190,8 +190,8 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
               onPress={() => navigation.navigate('Card Settings')}
             >
-              <View style={tw`rounded p-2 bg-card-dark`}>
-                <SuspensionPointsIcon color={tw.color('primary-new')} />
+              <View style={tw`rounded p-2 bg-secondary-light`}>
+                <SuspensionPointsIcon color={tw.color('primary')} />
               </View>
               <View style={tw`flex-grow ml-2`}>
                 <CSText style={tw`text-sm font-medium text-white`}>
@@ -208,7 +208,7 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
               onPress={() => navigation.navigate('Card Lost Stolen')}
             >
-              <View style={tw`rounded p-2 bg-card-dark`}>
+              <View style={tw`rounded p-2 bg-secondary-light`}>
                 <AlarmIcon />
               </View>
               <CSText style={tw`flex-grow ml-2 text-sm font-medium text-white`}>

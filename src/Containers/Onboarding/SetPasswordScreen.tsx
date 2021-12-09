@@ -25,7 +25,7 @@ const SetPasswordScreen = () => {
   }, [password]);
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-forest-green p-6`}>
+    <SafeAreaView style={tw`flex-1 bg-secondary p-6`}>
       <KeyboardAwareScrollView
         enableOnAndroid
         keyboardShouldPersistTaps="handled"

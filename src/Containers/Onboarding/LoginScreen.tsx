@@ -64,7 +64,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   }, [email, password]);
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-forest-green`} edges={['top', 'bottom']}>
+    <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top', 'bottom']}>
       <FocusAwareStatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <KeyboardAwareScrollView
         enableOnAndroid
@@ -119,7 +119,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
               navigation.navigate('Forgot Password');
             }}
           >
-            <CSText style={tw`text-base text-primary-new mt-6 self-center`}>
+            <CSText style={tw`text-base text-primary mt-6 self-center`}>
               {t('login.forgotPassword')}
             </CSText>
           </TouchableOpacity>
@@ -130,7 +130,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           <View style={tw`flex-1 ml-3`}>
             <CSText style={tw`text-base text-white`}>
               {t('login.businessSection.copy')}
-              <CSText style={tw`text-base text-primary-new`} onPress={() => {}}>
+              <CSText style={tw`text-base text-primary`} onPress={() => {}}>
                 {t('login.businessSection.buttonCta')}
               </CSText>
             </CSText>
