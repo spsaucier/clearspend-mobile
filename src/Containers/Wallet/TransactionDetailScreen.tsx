@@ -135,6 +135,7 @@ const TransactionDetailScreenContent = () => {
             <MapView
               style={tw`h-full`}
               loadingEnabled
+              showsUserLocation={false}
               scrollEnabled={false}
               initialRegion={{
                 latitude,
