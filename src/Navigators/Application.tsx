@@ -16,6 +16,7 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { RestLink } from 'apollo-link-rest';
 
+import Config from 'react-native-config';
 import AuthNavigator from '@/Navigators/AuthNavigator';
 import MainNavigator from '@/Navigators/MainNavigator';
 import { navigateAndSimpleReset, navigationRef } from '@/Navigators/Root';
@@ -24,7 +25,6 @@ import StartupScreen from '@/Containers/Startup/StartupScreen';
 import { killSession, Session, updateSession } from '@/Store/Session';
 import { store } from '@/Store';
 import { getNewAccessToken } from '@/Services/Auth';
-import { Config } from '@/Config';
 
 const Stack = createStackNavigator();
 
@@ -104,7 +104,7 @@ const tokenMiddleware = new ApolloLink((operation, forward) => {
 });
 
 const restLink = new RestLink({
-  uri: Config.API_URL,
+  uri: Config.CS_API_URL,
 });
 
 const cache = new InMemoryCache();

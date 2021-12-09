@@ -14,6 +14,10 @@ Follow general React Native setup: (React Native CLI Quickstart): https://reactn
   - Alternatively, open the workspace in Xcode and build & run the app from there
 - Run the Android app (remember to start a simulator or connect a device): `yarn android`
 
+### Set up .env file
+Create an .env file and copy the contents of .env.example into it
+Get the missing vars from 1password and paste into respective fields
+
 ## Setup Issues
 
 M1 Macs:
@@ -25,7 +29,6 @@ M1 Macs:
   - Failed to create sdcard in the AVD folder.
     - Go to AVD > Show advanced settings > Memory and Storage > No SD Card
 
-#### TBC
 
 # Styling
 

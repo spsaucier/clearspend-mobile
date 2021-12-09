@@ -1,9 +1,9 @@
 import axios from 'axios';
+import Config from 'react-native-config';
 import handleError from '@/Services/utils/handleError';
-import { Config } from '@/Config';
 
 const instance = axios.create({
-  baseURL: Config.API_URL,
+  baseURL: Config.CS_API_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
