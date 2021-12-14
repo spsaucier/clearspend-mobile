@@ -1,7 +1,7 @@
 const express = require('express');
 
 const auth = require('./resources/auth.json');
-const usersCards = require('./resources/usersCards.json');
+var usersCards = require('./resources/usersCards.json');
 const transactions = require('./resources/transactions.json');
 
 const app = express();
@@ -71,10 +71,10 @@ app.get('/users/cards/:id', checkAuthorization, (req, res) => {
 app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) => {
   const { params, query } = req;
   const { cardId } = params;
-  const { type, dateFrom, dateTo, pageRequest } = query;
+  // const { type, dateFrom, dateTo, pageRequest } = query;
 
   const card = transactions.find((x) => x.cardId === cardId);
-  res.json(card.response);
+  res.json(card?.response);
 });
 
 // Get single transaction info
@@ -84,6 +84,36 @@ app.get('/users/account-activity/:accountActivityId', checkAuthorization, (req, 
   const trxns = transactions[0].response.content;
   const transaction = trxns.find((x) => x.accountActivityId === accountActivityId);
   res.json(transaction);
+});
+
+// Block (freeze) card
+app.patch('/users/cards/:cardId/block', (req, res) => {
+  const { params } = req;
+  const { cardId } = params;
+
+  const idx = usersCards.findIndex((c) => c.card.cardId === cardId);
+  const cardItem = usersCards[idx];
+  const { card } = cardItem;
+
+  const modifiedCard = { ...cardItem, card: { ...card, ...{ status: 'BLOCKED' } } };
+
+  usersCards[idx] = modifiedCard;
+  res.json(modifiedCard);
+});
+
+// Unblock (unfreeze) card
+app.patch('/users/cards/:cardId/unblock', (req, res, next) => {
+  const { params } = req;
+  const { cardId } = params;
+
+  const idx = usersCards.findIndex((c) => c.card.cardId === cardId);
+  const cardItem = usersCards[idx];
+  const { card } = cardItem;
+
+  const modifiedCard = { ...cardItem, card: { ...card, ...{ status: 'OPEN' } } };
+
+  usersCards[idx] = modifiedCard;
+  res.json(modifiedCard);
 });
 
 app.listen(port, () => {

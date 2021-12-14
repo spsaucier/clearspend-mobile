@@ -52,6 +52,7 @@
     "react-native": "0.65.1",
     "react-native-config": "^1.4.5",
     "react-native-flipper": "^0.120.0",
+    "react-native-flipper-apollo-devtools": "^0.0.2",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "^0.29.4",

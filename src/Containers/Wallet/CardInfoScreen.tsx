@@ -13,7 +13,7 @@ import tw from '@/Styles/tailwind';
 
 const CARD_QUERY = gql`
   query CardInfoQuery($cardId: String!) {
-    cardInfo(cardId: $cardId) @rest(type: "Card", path: "/users/cards/{args.cardId}") {
+    cardInfo(cardId: $cardId) @rest(type: "CardInfo", path: "/users/cards/{args.cardId}") {
       card {
         status
         cardLine3

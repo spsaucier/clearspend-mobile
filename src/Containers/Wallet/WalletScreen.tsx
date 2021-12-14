@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import Carousel from 'react-native-snap-carousel';
 import tw from '@/Styles/tailwind';
 import {
@@ -12,36 +12,19 @@ import {
   ActivityIndicator,
   CSText,
 } from '@/Components';
-import { EyeIcon } from '@/Components/Icons/eyeIcon';
-import { SnowflakeIcon } from '@/Components/Icons/snowflakeIcon';
+import { SnowflakeIcon, ProfileIcon, EyeIcon } from '@/Components/Icons';
 import { Card } from '@/Containers/Wallet/Components/Card';
-import { ProfileIcon } from '@/Components/Icons';
 import Transactions from './Transactions';
-
-const USER_CARDS_QUERY = gql`
-  query UserCardsQuery {
-    cards @rest(type: "Card", path: "/users/cards") {
-      card {
-        cardId
-        lastDigits: lastFour
-        cardLine3
-        type
-        status
-      }
-      availableBalance {
-        currency
-        amount
-      }
-      allocationName
-    }
-  }
-`;
+import { useFreezeCard } from '@/Hooks';
+import { USER_CARDS_QUERY } from '@/Queries';
 
 const { width: screenWidth } = Dimensions.get('screen');
 
 const WalletScreen = ({ navigation }: { navigation: any }) => {
+  const cardWidth = 0.95 * screenWidth;
   const [selectedCard, setSelectedCard] = useState<any>();
-  const isFrozen = selectedCard?.card.status === 'BLOCKED';
+  const cardStatus = selectedCard?.card.status;
+  const isFrozen = cardStatus === 'BLOCKED';
 
   const { t } = useTranslation();
 
@@ -50,13 +33,27 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
     loading: cardsLoading,
     refetch: refetchCards,
     error: cardsError,
-  } = useQuery(USER_CARDS_QUERY);
+  } = useQuery(USER_CARDS_QUERY, { fetchPolicy: 'cache-first' });
 
-  useEffect(() => {
-    if (cardsData?.cards?.length > 0 && !selectedCard) {
-      setSelectedCard(cardsData.cards[0]);
+  const {
+    freeze,
+    unfreeze,
+    loading: freezingOrUnfreezing,
+  } = useFreezeCard({
+    cardId: selectedCard?.card.cardId,
+  });
+
+  useMemo(() => {
+    if (cardsData?.cards.length) {
+      if (!selectedCard) {
+        const [first] = cardsData.cards;
+        setSelectedCard(first);
+      } else {
+        const card = cardsData.cards.find((x: any) => x.card.cardId === selectedCard?.card.cardId);
+        setSelectedCard(card);
+      }
     }
-  }, [cardsData, selectedCard]);
+  }, [cardsData]);
 
   if (cardsLoading) {
     return (
@@ -82,8 +79,6 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
     );
   }
 
-  const cardWidth = 0.95 * screenWidth;
-
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
       <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
@@ -107,13 +102,14 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           sliderWidth={screenWidth}
           itemWidth={cardWidth}
           inactiveSlideScale={1}
+          extraData={cardsData.cards}
           inactiveSlideOpacity={0.1}
           removeClippedSubviews={false}
           lockScrollWhileSnapping
           onSnapToItem={(index: any) => setSelectedCard(cardsData.cards[index])}
           renderItem={({ item }: any) => {
             const { card, availableBalance, allocationName } = item;
-            const { cardId, lastDigits, cardLine3, type } = card;
+            const { cardId, lastFour, cardLine3, type } = card;
 
             const isVirtual = type === 'VIRTUAL';
             const cardTitle = cardLine3 || allocationName;
@@ -128,7 +124,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
                   balance={amount}
                   isFrozen={isFrozen}
                   isVirtual={isVirtual}
-                  lastDigits={lastDigits}
+                  lastDigits={lastFour}
                   cardTitle={cardTitle}
                   onPress={() => navigation.navigate('Card Details', { cardId })}
                 />
@@ -172,15 +168,30 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
           <CSText style={tw`text-base text-white`}>{t('card.showCardInfo')}</CSText>
         </Button>
 
-        <Button containerStyle={tw.style('flex-1 ml-1', isFrozen && 'bg-white')} small theme="dark">
-          <SnowflakeIcon
-            style={tw`mr-2`}
-            color={isFrozen ? tw.color('black') : tw.color('primary')}
-          />
-          {!cardsLoading && isFrozen ? (
-            <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>
+        <Button
+          containerStyle={tw.style('flex-1 ml-1', isFrozen && 'bg-white')}
+          small
+          disabled={freezingOrUnfreezing}
+          theme="dark"
+          onPress={() => {
+            if (!isFrozen) freeze();
+            else unfreeze();
+          }}
+        >
+          {freezingOrUnfreezing ? (
+            <ActivityIndicator style={tw`h-5 w-5`} />
           ) : (
-            <CSText style={tw`text-base text-white`}>{t('card.freezeCard')}</CSText>
+            <View style={tw`flex-row`}>
+              <SnowflakeIcon
+                style={tw`mr-2`}
+                color={isFrozen ? tw.color('black') : tw.color('primary')}
+              />
+              {!cardsLoading && isFrozen ? (
+                <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>
+              ) : (
+                <CSText style={tw`text-base text-white`}>{t('card.freezeCard')}</CSText>
+              )}
+            </View>
           )}
         </Button>
       </View>

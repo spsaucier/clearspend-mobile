@@ -17,6 +17,7 @@ import { onError } from '@apollo/client/link/error';
 import { RestLink } from 'apollo-link-rest';
 
 import Config from 'react-native-config';
+import { enableFlipperApolloDevtools } from 'react-native-flipper-apollo-devtools';
 import AuthNavigator from '@/Navigators/AuthNavigator';
 import MainNavigator from '@/Navigators/MainNavigator';
 import { navigateAndSimpleReset, navigationRef } from '@/Navigators/Root';
@@ -107,12 +108,22 @@ const restLink = new RestLink({
   uri: Config.CS_API_URL,
 });
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  typePolicies: {
+    Card: {
+      keyFields: ['card', ['cardId']],
+    },
+  },
+});
 const apolloClient = new ApolloClient({
   cache,
   link: from([errorLink, tokenMiddleware, restLink]),
   defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
 });
+
+if (__DEV__) {
+  enableFlipperApolloDevtools(apolloClient);
+}
 
 const ApplicationNavigator = () => {
   const applicationIsLoading = useSelector(

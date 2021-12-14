@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView, ImageBackground, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import tw from '@/Styles/tailwind';
 import {
   ActivityIndicator,
@@ -20,37 +20,10 @@ import {
   SnowflakeIcon,
   SuspensionPointsIcon,
 } from '@/Components/Icons';
+import { useFreezeCard } from '@/Hooks';
+import { CARD_QUERY } from '@/Queries';
 
 const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
-
-const CARD_QUERY = gql`
-  query CardDetailsQuery($cardId: String!) {
-    cardDetails(cardId: $cardId) @rest(type: "Card", path: "/users/cards/{args.cardId}") {
-      card {
-        expirationDate
-        cardNumber
-        lastFour
-        cardLine3
-        cardLine4
-        type
-        address {
-          streetLine1
-          streetLine2
-          locality
-          region
-          postalCode
-          country
-        }
-        status
-      }
-      availableBalance {
-        currency
-        amount
-      }
-      allocationName
-    }
-  }
-`;
 
 type Props = {
   route: any;
@@ -64,6 +37,14 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
 
   const { data, loading } = useQuery(CARD_QUERY, {
     variables: { cardId },
+  });
+
+  const {
+    freeze,
+    unfreeze,
+    loading: freezingOrUnfreezing,
+  } = useFreezeCard({
+    cardId,
   });
 
   if (loading) {
@@ -152,15 +133,26 @@ const CardDetailScreen = ({ navigation, route }: Props) => {
               containerStyle={tw.style('flex-1 ml-1', isFrozen && 'bg-white')}
               small
               theme="dark"
+              disabled={freezingOrUnfreezing}
+              onPress={() => {
+                if (!isFrozen) freeze();
+                else unfreeze();
+              }}
             >
-              <SnowflakeIcon
-                style={tw`mr-2`}
-                color={isFrozen ? tw.color('black') : tw.color('primary')}
-              />
-              {isFrozen ? (
-                <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>
+              {freezingOrUnfreezing ? (
+                <ActivityIndicator style={tw`h-5 w-5`} />
               ) : (
-                <CSText style={tw`text-base text-white`}>{t('card.freezeCard')}</CSText>
+                <View style={tw`flex-row`}>
+                  <SnowflakeIcon
+                    style={tw`mr-2`}
+                    color={isFrozen ? tw.color('black') : tw.color('primary')}
+                  />
+                  {isFrozen ? (
+                    <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>
+                  ) : (
+                    <CSText style={tw`text-base text-white`}>{t('card.freezeCard')}</CSText>
+                  )}
+                </View>
               )}
             </Button>
           </View>
