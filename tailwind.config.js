@@ -96,6 +96,7 @@ module.exports = {
       gray80: '#CCCCCC',
       gray90: '#E5E5E5',
       gray95: '#F9FAFB',
+      gray98: '#F3F2EF',
     },
     borderWidth: {
       DEFAULT: '1px',

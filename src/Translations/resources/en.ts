@@ -162,4 +162,23 @@ export default {
     title: 'Notifications',
     youHaveNew: 'You have {{newNotifications}} new notifications',
   },
+  spendControls: {
+    back: 'BACK',
+    title: 'Spend Controls',
+    limits: 'Limits',
+    howMuchSpent: 'Configure how much can be spent on this card',
+    limitSection: {
+      dailyLimit: 'Daily Limit',
+      monthlyLimit: 'Monthly Limit',
+    },
+    channelsTitle: 'Channels',
+    howOftenCardUsed: 'Configure where and how often this card can be used',
+    channelsSection: {
+      atm: 'ATM',
+      validUntil: 'Valid until:',
+      cardLimit: 'Limit: $100.00',
+      cardValidity: 'Card Validity',
+      oneTimeUse: 'One time use',
+    },
+  },
 };
