@@ -12,6 +12,7 @@ import { login } from '@/Services/Auth';
 
 import { Session, updateSession } from '@/Store/Session';
 import { ClearSpendIcon } from '@/Components/Svg/ClearSpendIcon';
+import { mixpanel } from '@/Services/utils/analytics';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     login(email, password)
       .then((res) => {
         if (res) {
+          mixpanel.track('Login');
           const sessionPayload = res as Session;
           dispatch(updateSession(sessionPayload));
         }

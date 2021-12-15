@@ -80,6 +80,7 @@
 		71018FA8739B4597AEB11603 /* PPNeueMontreal-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-BoldItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-BoldItalic.ttf"; sourceTree = "<group>"; };
 		7D8A3C0F021E4D1E8DA19EB3 /* PPTelegraf-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Black.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Black.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClearSpendMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A02DEFAF2762BAE700A7018F /* ClearSpendMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ClearSpendMobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		A4BC80EE56F84D59BF1BA500 /* PPNeueMontreal-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Light.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Light.ttf"; sourceTree = "<group>"; };
 		BB59EF2C7CBD44E4A958FB77 /* PPNeueMontreal-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Thin.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Thin.ttf"; sourceTree = "<group>"; };
 		BB65BDE54EBD48F784EA3789 /* PPTelegraf-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Medium.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Medium.ttf"; sourceTree = "<group>"; };
@@ -173,6 +174,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				A02DEFAF2762BAE700A7018F /* ClearSpendMobile-Bridging-Header.h */,
 			);
 			name = ClearSpendMobile;
 			sourceTree = "<group>";
@@ -290,7 +292,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1310;
 					};
 				};
 			};
@@ -619,6 +621,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ClearSpendMobile;
+				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -649,6 +652,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ClearSpendMobile;
+				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -710,7 +714,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -768,7 +771,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;

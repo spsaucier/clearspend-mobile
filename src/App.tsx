@@ -1,15 +1,20 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { useDeviceContext } from 'twrnc';
 import { store, persistor } from '@/Store';
 import { ApplicationNavigator } from '@/Navigators';
+import { mixpanel } from '@/Services/utils/analytics';
 import './Translations';
 
 import tw from '@/Styles/tailwind';
 
 const App = () => {
+  useEffect(() => {
+    mixpanel.init();
+  }, []);
+
   useDeviceContext(tw);
   return (
     <Provider store={store}>

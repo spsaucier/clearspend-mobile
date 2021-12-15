@@ -10,6 +10,7 @@ import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { CloseIconButton, CSText, FocusAwareStatusBar } from '@/Components';
 import { killSession } from '@/Store/Session';
 import { persistor } from '@/Store';
+import { mixpanel } from '@/Services/utils/analytics';
 
 const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
@@ -19,6 +20,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const onLogout = async () => {
     await apolloClient.cache.reset();
     await persistor.purge();
+    mixpanel.track('Logout');
     dispatch(killSession());
   };
 

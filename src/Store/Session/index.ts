@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { mixpanel } from '../../Services/utils/analytics';
 
 export interface Session {
   userId?: string;
@@ -20,6 +21,7 @@ const sessionSlice = createSlice({
   reducers: {
     updateSession(state, action: PayloadAction<Session>) {
       const { accessToken, expiresAt, refreshToken, userId } = action.payload;
+      mixpanel.identify(userId || '');
       return {
         ...state,
         accessToken,

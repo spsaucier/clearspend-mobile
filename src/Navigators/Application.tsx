@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
@@ -26,6 +26,7 @@ import StartupScreen from '@/Containers/Startup/StartupScreen';
 import { killSession, Session, updateSession } from '@/Store/Session';
 import { store } from '@/Store';
 import { getNewAccessToken } from '@/Services/Auth';
+import { mixpanel } from '@/Services/utils/analytics';
 
 const Stack = createStackNavigator();
 
@@ -126,11 +127,22 @@ if (__DEV__) {
 }
 
 const ApplicationNavigator = () => {
+  const routeNameRef = useRef('');
   const applicationIsLoading = useSelector(
     (state: { startup: StartupState }) => state.startup.loading,
   );
 
   const session = useSelector((state: { session: Session }) => state.session);
+
+  const onStateChange = async () => {
+    const previousRouteName = routeNameRef.current || '';
+    const currentRouteName = navigationRef?.current?.getCurrentRoute()?.name || '';
+    if (previousRouteName !== currentRouteName) {
+      mixpanel.track('Navigation', { previousRouteName, currentRouteName });
+    }
+    // Save the current route name for later comparison
+    routeNameRef.current = currentRouteName || '';
+  };
 
   useEffect(() => {
     if (!applicationIsLoading && navigationRef.current) {
@@ -143,7 +155,13 @@ const ApplicationNavigator = () => {
   return (
     <ApolloProvider client={apolloClient}>
       <SafeAreaProvider>
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer
+          ref={navigationRef}
+          onReady={() => {
+            routeNameRef.current = navigationRef?.current?.getCurrentRoute()?.name || '';
+          }}
+          onStateChange={onStateChange}
+        >
           <StatusBar barStyle="dark-content" />
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Startup" component={StartupScreen} />

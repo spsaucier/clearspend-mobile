@@ -10,6 +10,7 @@ import { ActivityIndicator, CSText, FocusAwareStatusBar } from '@/Components';
 import { Card } from './Components/Card';
 import { CopyIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
+import { mixpanel } from '@/Services/utils/analytics';
 
 const CARD_QUERY = gql`
   query CardInfoQuery($cardId: String!) {
@@ -50,10 +51,12 @@ const CardInfoContent = ({ cardData }: any) => {
   const cardTitle = cardLine3 || allocationName;
 
   const copyCardNumberToClipboard = () => {
+    mixpanel.track('Copy Card Number');
     Clipboard.setString(cardNumber);
   };
 
   const copyCVV = () => {
+    mixpanel.track('Copy CVV');
     // Clipboard.setString(cvv);
   };
 
