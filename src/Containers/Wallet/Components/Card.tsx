@@ -30,6 +30,13 @@ type Props = {
 
 const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
 
+export const formatCardNumber = (cardNo: string | undefined) => {
+  if (cardNo && cardNo.length > 0 && cardNo.length % 4 === 0) {
+    return cardNo.replace(/(.{4})/g, '$1 ');
+  }
+  return '';
+};
+
 export const Card = ({
   cardId,
   cardNumber,
@@ -54,12 +61,6 @@ export const Card = ({
     expirationDate &&
     format(parse(expirationDate!, 'yyyy-MM-dd', new Date()), 'MM/yy');
 
-  const formatCardNumber = (cardNo: string | undefined) => {
-    if (cardNo && cardNo.length > 0 && cardNo.length % 4 === 0) {
-      return cardNo.replace(/(.{4})/g, '$1 ');
-    }
-    return '';
-  };
   const cardNumberFormatted = formatCardNumber(cardNumber);
 
   const cvv = '000'; // TODO Get from I2C

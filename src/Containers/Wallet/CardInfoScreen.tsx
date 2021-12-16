@@ -5,10 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { gql, useQuery } from '@apollo/client';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { BlurView } from '@react-native-community/blur';
 import { ActivityIndicator, CSText, FocusAwareStatusBar } from '@/Components';
-import { Card } from './Components/Card';
-import { CopyIcon } from '@/Components/Icons';
+import { Card, formatCardNumber } from './Components/Card';
+import { CloseIcon, CopyIconLeft } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 import { mixpanel } from '@/Services/utils/analytics';
 
@@ -45,6 +44,7 @@ const CardInfoContent = ({ cardData }: any) => {
   const { cardId, cardLine3, lastDigits, type, expirationDate, cardNumber, status, address } = card;
   const { amount: balanceAmount } = availableBalance;
 
+  const isAddressEmpty = Object.keys(address).length === 0;
   const isFrozen = status === 'BLOCKED';
   const isVirtual = type === 'VIRTUAL';
   const cardTitle = cardLine3 || allocationName;
@@ -54,10 +54,7 @@ const CardInfoContent = ({ cardData }: any) => {
     Clipboard.setString(cardNumber);
   };
 
-  const copyCVV = () => {
-    mixpanel.track('Copy CVV');
-    // Clipboard.setString(cvv);
-  };
+  const cardNumberFormatted = formatCardNumber(cardNumber);
 
   return (
     <View style={tw`flex-1 justify-center m-4 mt-12`}>
@@ -72,28 +69,36 @@ const CardInfoContent = ({ cardData }: any) => {
         isFrozen={isFrozen}
         showSensitiveInformation
       />
-      <View style={tw`m-2`}>
-        <View style={tw`flex-row justify-between py-4  items-center  border-b-1 border-gray60`}>
-          <CSText style={tw`text-white`}>{t('cardInfo.copyCardNumber')}</CSText>
-          <TouchableOpacity onPress={copyCardNumberToClipboard}>
-            <CopyIcon />
+      <View>
+        <View style={tw`flex-col justify-between py-8 items-start border-gray60`}>
+          <CSText style={tw`text-white`}>{t('cardInfo.cardNumber')}</CSText>
+          <TouchableOpacity
+            style={tw`mt-5 w-90 h-18 bg-white rounded-md`}
+            onPress={copyCardNumberToClipboard}
+          >
+            <View style={tw`flex-row py-5 justify-between items-center`}>
+              <CSText style={tw`mt-2 text-center ml-5 text-base`}>{cardNumberFormatted}</CSText>
+              <CopyIconLeft style={tw`mr-5`} />
+            </View>
           </TouchableOpacity>
         </View>
-        <View style={tw`flex-row justify-between items-center py-4 border-b-1 border-gray60`}>
-          <CSText style={tw`text-white`}>{t('cardInfo.copyCVV')}</CSText>
-          <TouchableOpacity onPress={copyCVV}>
-            <CopyIcon />
-          </TouchableOpacity>
-        </View>
-        <View style={tw` py-4  border-b-1 border-gray60`}>
+        <View style={tw` py-2 border-gray60`}>
           <CSText style={tw`text-white`}>{t('cardInfo.billingAddress')}</CSText>
-          <CSText style={tw`text-white mt-2`}>
-            {`${address.streetLine1} ${address.streetLine2}`}
-          </CSText>
-          <CSText style={tw`text-white mt-2`}>
-            {`${address.locality}, ${address.region} ${address.postalCode}`}
-          </CSText>
-          <CSText style={tw`text-white mt-2`}>{`${address.country}`}</CSText>
+          <TouchableOpacity style={tw`mt-5 w-90 h-18 bg-white rounded-md`}>
+            <View style={tw`flex-row justify-between items-center`}>
+              <View style={tw`flex-col py-4 justify-between`}>
+                {!isAddressEmpty && (
+                  <View>
+                    <CSText style={tw`ml-5`}>{`${streetLine1} ${streetLine2}`}</CSText>
+                    <CSText style={tw`ml-5 mt-1`}>
+                      {`${locality}, ${region} ${postalCode}, ${country}`}
+                    </CSText>
+                  </View>
+                )}
+              </View>
+              <CopyIconLeft style={tw`mr-5`} />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -112,32 +117,34 @@ const CardInfoScreen = () => {
   });
 
   return (
-    <BlurView style={tw`flex-1`} blurAmount={50}>
-      <SafeAreaView style={tw`flex-1`}>
-        <FocusAwareStatusBar backgroundColor={tw.color('gray50')} barStyle="light-content" />
-        {loading && (
-          <View style={tw`flex-1 items-center justify-center p-6`}>
-            <ActivityIndicator />
-          </View>
-        )}
-        {!loading && error && (
-          <View style={tw`flex-1 items-center justify-center p-6`}>
-            <CSText style={tw`text-base text-error mb-2`}>{error?.message}</CSText>
-          </View>
-        )}
-        {!loading && !error && data?.cardInfo && <CardInfoContent cardData={data?.cardInfo} />}
-        <View style={tw`flex-initial m-6 pb-6`}>
-          <TouchableOpacity
-            style={tw`flex w-full rounded-xl items-center justify-center h-12 bg-gray50 bg-opacity-90`}
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <CSText style={tw`text-white`}>{t('cardInfo.dismiss')}</CSText>
-          </TouchableOpacity>
+    <SafeAreaView style={tw`flex-1 bg-secondary`}>
+      <FocusAwareStatusBar backgroundColor={tw.color('gray50')} barStyle="light-content" />
+      {loading && (
+        <View style={tw`flex-1 items-center justify-center p-6`}>
+          <ActivityIndicator />
         </View>
-      </SafeAreaView>
-    </BlurView>
+      )}
+      {!loading && error && (
+        <View style={tw`flex-1 items-center justify-center p-6`}>
+          <CSText style={tw`text-base text-error mb-2`}>{error?.message}</CSText>
+        </View>
+      )}
+      {!loading && !error && data?.cardInfo && <CardInfoContent cardData={data?.cardInfo} />}
+      <View style={tw`flex-initial m-6 pb-6`}>
+        <TouchableOpacity
+          style={tw`flex flex-row items-center justify-center`}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <CloseIcon
+            style={tw`mr-2 rounded-full border-1 border-white`}
+            color={tw.color('white')}
+          />
+          <CSText style={tw`text-base text-white`}>{t('cardInfo.dismiss')}</CSText>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 

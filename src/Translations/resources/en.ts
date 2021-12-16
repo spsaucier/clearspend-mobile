@@ -132,9 +132,9 @@ export default {
   },
   cardInfo: {
     dismiss: 'Dismiss',
-    copyCardNumber: 'Copy Card Number',
+    cardNumber: 'CARD NUMBER',
     copyCVV: 'Copy CVV',
-    billingAddress: 'Billing Address',
+    billingAddress: 'BILLING ADDRESS',
   },
   profile: {
     profileMenu: {

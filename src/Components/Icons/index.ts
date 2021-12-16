@@ -10,6 +10,7 @@ export { ChevronIconLeft } from './chevronIconLeft';
 export { CloseIcon } from './closeIcon';
 export { CopyIcon } from './copyIcon';
 export { CoinIcon } from './coinIcon';
+export { CopyIconLeft } from './copyIconLeft';
 export { EditIcon } from './editIcon';
 export { EmailIcon } from './emailIcon';
 export { EyeIcon } from './eyeIcon';
