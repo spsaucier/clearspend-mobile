@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { gql, useQuery } from '@apollo/client';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { BlurView } from '@react-native-community/blur';
 import { ActivityIndicator, CSText, FocusAwareStatusBar } from '@/Components';
 import { Card, formatCardNumber } from './Components/Card';
 import { CloseIcon, CopyIconLeft } from '@/Components/Icons';
@@ -44,7 +45,6 @@ const CardInfoContent = ({ cardData }: any) => {
   const { cardId, cardLine3, lastDigits, type, expirationDate, cardNumber, status, address } = card;
   const { amount: balanceAmount } = availableBalance;
 
-  const isAddressEmpty = Object.keys(address).length === 0;
   const isFrozen = status === 'BLOCKED';
   const isVirtual = type === 'VIRTUAL';
   const cardTitle = cardLine3 || allocationName;
@@ -57,7 +57,7 @@ const CardInfoContent = ({ cardData }: any) => {
   const cardNumberFormatted = formatCardNumber(cardNumber);
 
   return (
-    <View style={tw`flex-1 justify-center m-4 mt-12`}>
+    <View style={tw`flex-1 justify-center px-4`}>
       <Card
         cardId={cardId}
         cardNumber={cardNumber}
@@ -69,37 +69,36 @@ const CardInfoContent = ({ cardData }: any) => {
         isFrozen={isFrozen}
         showSensitiveInformation
       />
-      <View>
-        <View style={tw`flex-col justify-between py-8 items-start border-gray60`}>
-          <CSText style={tw`text-white`}>{t('cardInfo.cardNumber')}</CSText>
-          <TouchableOpacity
-            style={tw`mt-5 w-90 h-18 bg-white rounded-md`}
-            onPress={copyCardNumberToClipboard}
-          >
-            <View style={tw`flex-row py-5 justify-between items-center`}>
-              <CSText style={tw`mt-2 text-center ml-5 text-base`}>{cardNumberFormatted}</CSText>
-              <CopyIconLeft style={tw`mr-5`} />
+      {/* Card Number Section */}
+      <View style={tw`mt-12`}>
+        <CSText style={tw`text-white text-xs`}>{t('cardInfo.cardNumber')}</CSText>
+        <TouchableOpacity
+          style={tw`mt-5 h-18 bg-white rounded-md flex flex-row justify-between items-center px-5`}
+          onPress={copyCardNumberToClipboard}
+        >
+          <CSText style={tw`text-center text-base font-montreal`}>{cardNumberFormatted}</CSText>
+          <CopyIconLeft style={tw`h-8 w-8`} />
+        </TouchableOpacity>
+      </View>
+
+      {/* Address Section */}
+      <View style={tw`py-8`}>
+        <CSText style={tw`text-white text-xs mb-5`}>{t('cardInfo.billingAddress')}</CSText>
+        <TouchableOpacity
+          style={tw`h-18 bg-white rounded-md flex flex-row justify-between items-center px-5 py-4`}
+        >
+          {!!address && (
+            <View style={tw`flex`}>
+              <CSText style={tw`font-montreal`}>
+                {`${address.streetLine1} ${address.streetLine2}`}
+              </CSText>
+              <CSText style={tw`mt-1 font-montreal`}>
+                {`${address.locality}, ${address.region} ${address.postalCode}, ${address.country}`}
+              </CSText>
             </View>
-          </TouchableOpacity>
-        </View>
-        <View style={tw` py-2 border-gray60`}>
-          <CSText style={tw`text-white`}>{t('cardInfo.billingAddress')}</CSText>
-          <TouchableOpacity style={tw`mt-5 w-90 h-18 bg-white rounded-md`}>
-            <View style={tw`flex-row justify-between items-center`}>
-              <View style={tw`flex-col py-4 justify-between`}>
-                {!isAddressEmpty && (
-                  <View>
-                    <CSText style={tw`ml-5`}>{`${streetLine1} ${streetLine2}`}</CSText>
-                    <CSText style={tw`ml-5 mt-1`}>
-                      {`${locality}, ${region} ${postalCode}, ${country}`}
-                    </CSText>
-                  </View>
-                )}
-              </View>
-              <CopyIconLeft style={tw`mr-5`} />
-            </View>
-          </TouchableOpacity>
-        </View>
+          )}
+          <CopyIconLeft style={tw`h-8 w-8`} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -117,34 +116,38 @@ const CardInfoScreen = () => {
   });
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-secondary`}>
-      <FocusAwareStatusBar backgroundColor={tw.color('gray50')} barStyle="light-content" />
-      {loading && (
-        <View style={tw`flex-1 items-center justify-center p-6`}>
-          <ActivityIndicator />
+    <BlurView style={tw`flex-1`} blurAmount={25} overlayColor={tw.color('black')} blurType="dark">
+      <SafeAreaView style={tw.style('flex-1', { backgroundColor: 'rgba(0,0,0,0.8)' })}>
+        <FocusAwareStatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+        {loading && (
+          <View style={tw`flex-1 items-center justify-center p-6`}>
+            <ActivityIndicator />
+          </View>
+        )}
+        {!loading && error && (
+          <View style={tw`flex-1 items-center justify-center p-6`}>
+            <CSText style={tw`text-base text-error mb-2`}>{error?.message}</CSText>
+          </View>
+        )}
+        {!loading && !error && data?.cardInfo && <CardInfoContent cardData={data?.cardInfo} />}
+
+        {/* Dismiss button */}
+        <View style={tw`flex-initial m-6 pb-6`}>
+          <TouchableOpacity
+            style={tw`flex flex-row items-center justify-center p-3`}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <CloseIcon
+              style={tw`rounded-full border-2 border-white w-7 h-7`}
+              color={tw.color('white')}
+            />
+            <CSText style={tw`ml-3 text-lg text-white`}>{t('cardInfo.dismiss')}</CSText>
+          </TouchableOpacity>
         </View>
-      )}
-      {!loading && error && (
-        <View style={tw`flex-1 items-center justify-center p-6`}>
-          <CSText style={tw`text-base text-error mb-2`}>{error?.message}</CSText>
-        </View>
-      )}
-      {!loading && !error && data?.cardInfo && <CardInfoContent cardData={data?.cardInfo} />}
-      <View style={tw`flex-initial m-6 pb-6`}>
-        <TouchableOpacity
-          style={tw`flex flex-row items-center justify-center`}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <CloseIcon
-            style={tw`mr-2 rounded-full border-1 border-white`}
-            color={tw.color('white')}
-          />
-          <CSText style={tw`text-base text-white`}>{t('cardInfo.dismiss')}</CSText>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </BlurView>
   );
 };
 

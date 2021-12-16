@@ -24,7 +24,7 @@
         "streetLine1": "23, Marion St",
         "streetLine2": "",
         "locality": "New York",
-        "region": "",
+        "region": "NY",
         "postalCode": "123456",
         "country": "USA"
       }
@@ -64,7 +64,7 @@
         "streetLine1": "23, Marion St",
         "streetLine2": "",
         "locality": "New York",
-        "region": "",
+        "region": "NY",
         "postalCode": "123456",
         "country": "USA"
       }
@@ -104,7 +104,7 @@
         "streetLine1": "23, Marion St",
         "streetLine2": "",
         "locality": "New York",
-        "region": "",
+        "region": "NY",
         "postalCode": "123456",
         "country": "USA"
       }
