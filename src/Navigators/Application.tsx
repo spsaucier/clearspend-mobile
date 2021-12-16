@@ -17,7 +17,6 @@ import { onError } from '@apollo/client/link/error';
 import { RestLink } from 'apollo-link-rest';
 
 import Config from 'react-native-config';
-import { enableFlipperApolloDevtools } from 'react-native-flipper-apollo-devtools';
 import AuthNavigator from '@/Navigators/AuthNavigator';
 import MainNavigator from '@/Navigators/MainNavigator';
 import { navigateAndSimpleReset, navigationRef } from '@/Navigators/Root';
@@ -121,10 +120,6 @@ const apolloClient = new ApolloClient({
   link: from([errorLink, tokenMiddleware, restLink]),
   defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
 });
-
-if (__DEV__) {
-  enableFlipperApolloDevtools(apolloClient);
-}
 
 const ApplicationNavigator = () => {
   const routeNameRef = useRef('');

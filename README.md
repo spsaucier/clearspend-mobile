@@ -62,7 +62,7 @@ Test new packages that are added with `snyk test packagename`
 ## Setup
 
 1. Open terminal in `restserver` directory (`cd restserver`)
-2. Install modules with `npm install`
+2. Install modules with `yarn install`
 
 ## Run local REST Server
 (Assumes the setup steps have been done)
