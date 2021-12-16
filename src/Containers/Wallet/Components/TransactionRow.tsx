@@ -5,9 +5,9 @@ import { format, parseISO } from 'date-fns';
 
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
-import { ReceiptIcon } from '@/Components/Icons';
 import { sentenceCase } from '@/Helpers/StringHelpers';
 import { CSText } from '@/Components';
+import { CategoryIcon } from '@/Components/CategoryIcon';
 
 export type Status = 'PENDING' | 'DECLINED' | 'APPROVED';
 
@@ -16,8 +16,8 @@ type Props = {
   transactionId: string;
   merchantName: string;
   amount: number;
-  merchantIconUrl?: string;
-  // category?: string;
+  merchantLogoUrl?: string;
+  merchantCategoryCode: number;
   status: Status;
   isReceiptLinked: boolean;
   time: string;
@@ -28,8 +28,8 @@ export const TransactionRow = ({
   transactionId,
   merchantName,
   amount,
-  merchantIconUrl,
-  // category,
+  merchantLogoUrl,
+  merchantCategoryCode,
   status,
   isReceiptLinked = false,
   time = '',
@@ -53,17 +53,16 @@ export const TransactionRow = ({
         <View
           style={[tw`bg-primary h-8 w-8 rounded-full overflow-hidden items-center justify-center`]}
         >
-          {merchantIconUrl ? (
+          {merchantLogoUrl ? (
             <Image
               source={{
-                uri: merchantIconUrl,
+                uri: merchantLogoUrl,
               }}
               style={tw`w-full h-full rounded-full`}
               resizeMode="cover"
             />
           ) : (
-            // TODO Add Category Icons
-            <ReceiptIcon color={tw.color('black')} size={16} />
+            <CategoryIcon style={tw`w-5 h-5`} code={merchantCategoryCode} />
           )}
         </View>
 

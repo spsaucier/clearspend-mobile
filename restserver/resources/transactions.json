@@ -17,8 +17,8 @@
             "name": "Kmart",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": "https://variety.com/wp-content/uploads/2013/09/kmart-logo.jpg"
+            "merchantCategoryCode": 1,
+            "merchantLogoUrl": "https://variety.com/wp-content/uploads/2013/09/kmart-logo.jpg"
           },
           "type": "BANK_LINK",
           "amount": {
@@ -38,8 +38,8 @@
             "name": "Zevoko",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 3000,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
@@ -59,8 +59,8 @@
             "name": "Amazon.com",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 3300,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
@@ -80,8 +80,8 @@
             "name": "TopMax.co",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 3500,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
@@ -101,8 +101,8 @@
             "name": "Countdown",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 4000,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
@@ -122,8 +122,8 @@
             "name": "Leading",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 4800,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
@@ -143,8 +143,8 @@
             "name": "Kmart",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 5000,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
@@ -164,8 +164,8 @@
             "name": "New World",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": "https://s3.amazonaws.com/www-inside-design/uploads/2018/04/walmart-square.jpg"
+            "merchantCategoryCode": 5600,
+            "merchantLogoUrl": "https://s3.amazonaws.com/www-inside-design/uploads/2018/04/walmart-square.jpg"
           },
           "type": "BANK_LINK",
           "amount": {
@@ -185,8 +185,8 @@
             "name": "Typo",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 5700,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
@@ -206,8 +206,8 @@
             "name": "Uber eats",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 7300,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
@@ -227,13 +227,34 @@
             "name": "Amazon",
             "type": "UTILITIES",
             "merchantNumber": "string",
-            "merchantCategoryCode": 0,
-            "merchantIconUrl": ""
+            "merchantCategoryCode": 8000,
+            "merchantLogoUrl": ""
           },
           "type": "BANK_LINK",
           "amount": {
             "currency": "USD",
             "amount": 334.28
+          },
+          "status": "PENDING"
+        },
+        {
+          "accountActivityId": "81b6dad8-f699-4264-b158-9fbc430c015e",
+          "activityTime": "2021-10-01T07:49:18.098Z",
+          "accountName": "string",
+          "card": {
+            "cardId": {}
+          },
+          "merchant": {
+            "name": "Amazon",
+            "type": "UTILITIES",
+            "merchantNumber": "string",
+            "merchantCategoryCode": 9000,
+            "merchantLogoUrl": ""
+          },
+          "type": "BANK_LINK",
+          "amount": {
+            "currency": "USD",
+            "amount": 34.28
           },
           "status": "PENDING"
         }

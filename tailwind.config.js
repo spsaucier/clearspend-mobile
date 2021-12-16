@@ -72,7 +72,7 @@ module.exports = {
 
       // Cards
       'card-light': '#F3F2EF',
-      'card-dark': '#10292C',
+      'card-dark': '#1C3437',
       'card-primary': '#43FA76',
 
       // Functional

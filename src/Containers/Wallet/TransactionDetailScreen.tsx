@@ -19,6 +19,7 @@ import {
 } from '@/Components/Icons';
 import { sentenceCase } from '@/Helpers/StringHelpers';
 import { NoteInput } from '@/Containers/Wallet/Components/NoteInput';
+import { CategoryIcon } from '@/Components/CategoryIcon';
 
 const TRANSACTION_QUERY = gql`
   query TransactionDetailQuery($accountActivityId: ID!) {
@@ -30,7 +31,8 @@ const TRANSACTION_QUERY = gql`
         merchantId: merchantNumber
         name
         type
-        merchantIconUrl
+        merchantLogoUrl
+        merchantCategoryCode
       }
       status
       amount {
@@ -158,16 +160,16 @@ const TransactionDetailScreenContent = () => {
                   tw`bg-primary h-16 w-16 overflow-hidden items-center justify-center rounded-full`,
                 ]}
               >
-                {merchant.merchantIconUrl ? (
+                {merchant.merchantLogoUrl ? (
                   <Image
                     source={{
-                      uri: merchant.merchantIconUrl,
+                      uri: merchant.merchantLogoUrl,
                     }}
                     style={tw`w-full h-full`}
                     resizeMode="cover"
                   />
                 ) : (
-                  <ReceiptIcon style={tw`h-6`} color={tw.color('black')} />
+                  <CategoryIcon style={tw`w-9 h-9`} code={merchant.merchantCategoryCode} />
                 )}
               </View>
             </View>

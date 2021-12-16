@@ -42,9 +42,8 @@ const CardInfoContent = ({ cardData }: any) => {
   const { t } = useTranslation();
   const { card, availableBalance, allocationName } = cardData;
 
-  const { cardId, cardLine3, lastDigits, type, expirationDate, cardNumber, status } = card;
+  const { cardId, cardLine3, lastDigits, type, expirationDate, cardNumber, status, address } = card;
   const { amount: balanceAmount } = availableBalance;
-  const { streetLine1, streetLine2, locality, region, postalCode, country } = card?.address;
 
   const isFrozen = status === 'BLOCKED';
   const isVirtual = type === 'VIRTUAL';
@@ -88,9 +87,13 @@ const CardInfoContent = ({ cardData }: any) => {
         </View>
         <View style={tw` py-4  border-b-1 border-gray60`}>
           <CSText style={tw`text-white`}>{t('cardInfo.billingAddress')}</CSText>
-          <CSText style={tw`text-white mt-2`}>{`${streetLine1} ${streetLine2}`}</CSText>
-          <CSText style={tw`text-white mt-2`}>{`${locality}, ${region} ${postalCode}`}</CSText>
-          <CSText style={tw`text-white mt-2`}>{`${country}`}</CSText>
+          <CSText style={tw`text-white mt-2`}>
+            {`${address.streetLine1} ${address.streetLine2}`}
+          </CSText>
+          <CSText style={tw`text-white mt-2`}>
+            {`${address.locality}, ${address.region} ${address.postalCode}`}
+          </CSText>
+          <CSText style={tw`text-white mt-2`}>{`${address.country}`}</CSText>
         </View>
       </View>
     </View>

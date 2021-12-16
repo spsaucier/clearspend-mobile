@@ -37,7 +37,8 @@ const CARD_TRANSACTIONS_QUERY = gql`
         merchant {
           name
           type
-          merchantIconUrl
+          merchantLogoUrl
+          merchantCategoryCode
         }
         amount {
           currency
@@ -51,7 +52,7 @@ const CARD_TRANSACTIONS_QUERY = gql`
 
 type TransactionType = {
   accountActivityId: string;
-  merchant: { name: string; merchantIconUrl: string | undefined };
+  merchant: { name: string; merchantLogoUrl: string | undefined; merchantCategoryCode: number };
   amount: { amount: number };
   status: Status;
   isReceiptLinked: boolean;
@@ -171,7 +172,8 @@ const TransactionsContent = ({ cardId }: Props) => {
                       status={transaction.status}
                       isReceiptLinked={transaction.isReceiptLinked}
                       time={transaction.activityTime}
-                      merchantIconUrl={transaction.merchant.merchantIconUrl}
+                      merchantLogoUrl={transaction.merchant.merchantLogoUrl}
+                      merchantCategoryCode={transaction.merchant.merchantCategoryCode}
                     />
                   ))}
                 </View>
