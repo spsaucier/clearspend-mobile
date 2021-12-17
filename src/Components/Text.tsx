@@ -32,7 +32,7 @@ export const CSText = ({
   minimumFontScale,
   nativeID,
   selectable,
-  selectionColor,
+  selectionColor = tw.color('black'),
   suppressHighlighting,
   textBreakStrategy,
 }: Props) => (

@@ -24,7 +24,6 @@ export const CSTextInput = ({
   label,
   testID,
   containerStyle,
-  // TextInputProps
   autoCapitalize = 'none',
   autoCorrect = false,
   style,
@@ -72,6 +71,7 @@ export const CSTextInput = ({
           onChangeText={onChangeText}
           value={value}
           secureTextEntry={showSecureInput}
+          selectionColor={tw.color('black')}
         />
         {secureTextEntry && renderEye()}
       </View>
