@@ -104,8 +104,23 @@ const tokenMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
+// serializer for uploading files (like upload receipt)
+const formDataSerializer = (data: any, headers: Headers) => {
+  const formData = new FormData();
+  Object.keys(data).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      formData.append(key, data[key]);
+    }
+  });
+  headers.set('Content-Type', 'multipart/form-data');
+  return { body: formData, headers };
+};
+
 const restLink = new RestLink({
   uri: Config.CS_API_URL,
+  bodySerializers: {
+    formData: formDataSerializer,
+  },
 });
 
 const cache = new InMemoryCache({

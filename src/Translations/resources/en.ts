@@ -81,6 +81,14 @@ export default {
     cardDetails: {
       title: 'Card Details',
     },
+    receipt: {
+      takeAPhoto: 'Take a photo of your receipt',
+      uploadingReceipt: 'Uploading receipt',
+      uploadingReceiptTime: 'This shouldn’t take too long',
+      useThisPhoto: 'Use this photo',
+      retakePhoto: 'Re-take photo',
+      notAuthorizedCameraAccess: 'ClearSpend needs access to your camera to take receipt photos',
+    },
     transactionDetails: {
       title: 'Transaction Details',
       status: 'Transaction {{status}}',

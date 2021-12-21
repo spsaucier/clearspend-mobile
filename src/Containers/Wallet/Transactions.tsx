@@ -1,8 +1,8 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { View, ActivityIndicator, Platform, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 import { chain } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
 import BottomSheet, {
@@ -11,6 +11,7 @@ import BottomSheet, {
   useBottomSheetInternal,
 } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/core';
 
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
@@ -19,9 +20,7 @@ import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 
-const dimensions = Dimensions.get('screen');
-
-const CARD_TRANSACTIONS_QUERY = gql`
+export const CARD_TRANSACTIONS_QUERY = gql`
   query TransactionsQuery($cardId: String!, $pageNumber: Number!, $pageSize: Number!) {
     transactions(cardId: $cardId, pageNumber: $pageNumber, pageSize: $pageSize)
       @rest(
@@ -45,17 +44,22 @@ const CARD_TRANSACTIONS_QUERY = gql`
           amount
         }
         status
+        receipt {
+          receiptId
+        }
       }
     }
   }
 `;
+
+const dimensions = Dimensions.get('screen');
 
 type TransactionType = {
   accountActivityId: string;
   merchant: { name: string; merchantLogoUrl: string | undefined; merchantCategoryCode: number };
   amount: { amount: number };
   status: Status;
-  isReceiptLinked: boolean;
+  receipt: { receiptId: string };
   activityTime: string;
 };
 
@@ -67,11 +71,17 @@ const TransactionsContent = ({ cardId }: Props) => {
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const searchContainerRef = useRef<View>(null);
   const { t } = useTranslation();
+  const isFocused = useIsFocused();
 
-  // data handling
-  const { data, loading, error } = useQuery(CARD_TRANSACTIONS_QUERY, {
+  const [fetchTransactions, { data, loading, error }] = useLazyQuery(CARD_TRANSACTIONS_QUERY, {
     variables: { cardId, pageNumber: 0, pageSize: 20 },
   });
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchTransactions();
+    }
+  }, [isFocused]);
 
   const content = data?.transactions?.content;
 
@@ -170,7 +180,7 @@ const TransactionsContent = ({ cardId }: Props) => {
                       merchantName={transaction.merchant.name}
                       amount={transaction.amount.amount}
                       status={transaction.status}
-                      isReceiptLinked={transaction.isReceiptLinked}
+                      receiptId={transaction.receipt?.receiptId}
                       time={transaction.activityTime}
                       merchantLogoUrl={transaction.merchant.merchantLogoUrl}
                       merchantCategoryCode={transaction.merchant.merchantCategoryCode}

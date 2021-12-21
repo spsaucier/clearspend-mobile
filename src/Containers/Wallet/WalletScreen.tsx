@@ -1,17 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { View, TouchableOpacity, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@apollo/client';
 import Carousel from 'react-native-snap-carousel';
 import tw from '@/Styles/tailwind';
-import {
-  NotificationBell,
-  Button,
-  FocusAwareStatusBar,
-  ActivityIndicator,
-  CSText,
-} from '@/Components';
+import { NotificationBell, Button, ActivityIndicator, CSText } from '@/Components';
 import { SnowflakeIcon, ProfileIcon, EyeIcon } from '@/Components/Icons';
 import { Card } from '@/Containers/Wallet/Components/Card';
 import Transactions from './Transactions';
@@ -81,7 +75,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
-      <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
+      <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
 
       {/* Header and icons */}
       <View style={tw`flex-row items-center justify-end my-3 mr-9 `}>

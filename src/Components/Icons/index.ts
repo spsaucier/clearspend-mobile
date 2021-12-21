@@ -30,3 +30,5 @@ export { SnowflakeIcon } from './snowflakeIcon';
 export { SuspensionPointsIcon } from './suspensionPointsIcon';
 export { WalletIcon } from './walletIcon';
 export { WarningIcon } from './warningIcon';
+export { LightningIcon } from './lightningIcon';
+export { LightningOffIcon } from './lightningOffIcon';

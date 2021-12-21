@@ -19,6 +19,7 @@ import CardLostStolen from '@/Containers/Wallet/CardLostStolen';
 import AddCardScreen from '@/Containers/Wallet/AppleWallet/AddCardScreen';
 import WalletTermsScreen from '@/Containers/Wallet/AppleWallet/WalletTermsScreen';
 import SetCardAsDefaultScreen from '@/Containers/Wallet/AppleWallet/SetCardAsDefaultScreen';
+import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
 
 type MainStackParamTypes = {
   Home: undefined;
@@ -45,6 +46,7 @@ type MainStackParamTypes = {
   'Add Card To Apple Wallet': { cardId: string; termsAccepted: boolean };
   'Wallet Terms': { cardId: string };
   'Set Card As Default': { cardId: string };
+  'Add Receipt': { accountActivityId: string };
 };
 
 const Stack = createStackNavigator<MainStackParamTypes>();
@@ -91,11 +93,7 @@ const WalletStack = () => (
       component={CardSpendControlsScreen}
       options={transparentBottomSheet}
     />
-    <Stack.Screen
-      name="Card Settings"
-      component={CardSettingsScreen}
-      options={transparentBottomSheet}
-    />
+    <Stack.Screen name="Card Settings" component={CardSettingsScreen} />
     <Stack.Screen name="Card Lost Stolen" component={CardLostStolen} />
 
     {/* Apple Wallet Mock UI Screens */}
@@ -106,6 +104,11 @@ const WalletStack = () => (
       options={{ presentation: 'modal' }}
     />
     <Stack.Screen name="Set Card As Default" component={SetCardAsDefaultScreen} />
+    <Stack.Screen
+      name="Add Receipt"
+      component={AddReceiptScreen}
+      options={transparentBottomSheet}
+    />
   </Stack.Navigator>
 );
 

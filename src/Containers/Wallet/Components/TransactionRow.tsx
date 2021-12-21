@@ -19,7 +19,7 @@ type Props = {
   merchantLogoUrl?: string;
   merchantCategoryCode: number;
   status: Status;
-  isReceiptLinked: boolean;
+  receiptId: string;
   time: string;
 };
 
@@ -31,13 +31,18 @@ export const TransactionRow = ({
   merchantLogoUrl,
   merchantCategoryCode,
   status,
-  isReceiptLinked = false,
+  receiptId,
   time = '',
 }: Props) => {
   const navigation = useNavigation<any>(); // TODO Add type
-  const handleOnPress = () => {
+  const handleItemOnPress = () => {
     navigation.navigate('Transaction Details', { cardId, transactionId });
   };
+
+  const handleAddReceiptOnPress = () => {
+    navigation.navigate('Add Receipt', { accountActivityId: transactionId });
+  };
+
   const { t } = useTranslation();
   const statusDeclined = status === 'DECLINED';
   const statusFormatted = sentenceCase(status);
@@ -47,7 +52,7 @@ export const TransactionRow = ({
     <TouchableOpacity
       style={tw`flex-row justify-between px-6 py-3`}
       key={transactionId}
-      onPress={handleOnPress}
+      onPress={handleItemOnPress}
     >
       <View style={tw`flex-row`}>
         <View
@@ -74,8 +79,11 @@ export const TransactionRow = ({
 
       <View style={tw`flex-row`}>
         <View>
-          {!isReceiptLinked && (
-            <TouchableOpacity style={tw`bg-black py-1 px-2 rounded-1`} onPress={() => {}}>
+          {!receiptId && (
+            <TouchableOpacity
+              style={tw`bg-black py-1 px-2 rounded-1`}
+              onPress={handleAddReceiptOnPress}
+            >
               <CSText style={tw`text-primary text-xs`}>
                 {t('wallet.transactions.addReceipt')}
               </CSText>

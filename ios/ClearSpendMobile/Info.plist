@@ -78,5 +78,11 @@
 		<string>PPTelegraf-UltraLight.ttf</string>
 		<string>PPTelegraf-Variable.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>ClearSpend needs access to your camera to take receipt photos</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ClearSpend needs access to your photo library to save receipt photos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ClearSpend needs access to your photo library to select a receipt photo</string>
 </dict>
 </plist>

@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { View, Image, Platform, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useRoute } from '@react-navigation/core';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/core';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
 import MapView, { Marker } from 'react-native-maps';
@@ -21,7 +21,7 @@ import { sentenceCase } from '@/Helpers/StringHelpers';
 import { NoteInput } from '@/Containers/Wallet/Components/NoteInput';
 import { CategoryIcon } from '@/Components/CategoryIcon';
 
-const TRANSACTION_QUERY = gql`
+export const TRANSACTION_QUERY = gql`
   query TransactionDetailQuery($accountActivityId: ID!) {
     transactionDetail(accountActivityId: $accountActivityId)
       @rest(type: "Transaction", path: "/users/account-activity/{args.accountActivityId}") {
@@ -40,6 +40,9 @@ const TRANSACTION_QUERY = gql`
         amount
       }
       country
+      receipt {
+        receiptId
+      }
     }
   }
 `;
@@ -60,14 +63,22 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
 
 const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
+  const isFocused = useIsFocused();
+  const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { params } = route;
 
-  const { loading, error, data } = useQuery(TRANSACTION_QUERY, {
-    variables: { cardId: params.cardId, accountActivityId: params.transactionId },
+  const [fetchTransactions, { loading, error, data }] = useLazyQuery(TRANSACTION_QUERY, {
+    variables: { accountActivityId: params.transactionId },
   });
 
-  if (loading) {
+  useEffect(() => {
+    if (isFocused) {
+      fetchTransactions();
+    }
+  }, [isFocused]);
+
+  if (loading || !data) {
     return (
       <View style={tw`flex-1 items-center justify-center p-6`}>
         <ActivityIndicator />
@@ -83,7 +94,7 @@ const TransactionDetailScreenContent = () => {
     );
   }
 
-  const { merchant, amount, status, activityTime, isReceiptLinked, country } =
+  const { accountActivityId, merchant, amount, status, activityTime, receipt, country } =
     data.transactionDetail;
 
   const statusFormatted = sentenceCase(status);
@@ -98,6 +109,16 @@ const TransactionDetailScreenContent = () => {
   // TODO: use the backend response instead
   const latitude = 37.78825;
   const longitude = -122.4324;
+
+  const handleOnReceiptPress = () => {
+    if (receipt?.receiptId) {
+      // TODO: view receipt
+    } else {
+      navigation.navigate('Add Receipt', {
+        accountActivityId,
+      });
+    }
+  };
 
   return (
     <View style={tw`h-full`}>
@@ -187,10 +208,10 @@ const TransactionDetailScreenContent = () => {
           <View style={tw`p-6`}>
             <NoteInput />
 
-            <Button onPress={() => {}} small containerStyle={tw`bg-black mt-5`}>
+            <Button onPress={handleOnReceiptPress} small containerStyle={tw`bg-black mt-5`}>
               <ReceiptIcon color={tw.color('primary')} />
               <CSText style={tw`text-base text-white ml-3`}>
-                {isReceiptLinked
+                {receipt?.receiptId
                   ? t('wallet.transactionDetails.viewReceipt')
                   : t('wallet.transactionDetails.addReceipt')}
               </CSText>

@@ -17,6 +17,7 @@ target 'ClearSpendMobile' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
   target 'ClearSpendMobileTests' do
     inherit! :complete
