@@ -5,9 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { useApolloClient } from '@apollo/client';
 import tw from '@/Styles/tailwind';
-import { nameToInitials } from '@/Helpers/StringHelpers';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
-import { CloseIconButton, CSText, FocusAwareStatusBar } from '@/Components';
+import { CSText, FocusAwareStatusBar, Button } from '@/Components';
 import { killSession } from '@/Store/Session';
 import { persistor } from '@/Store';
 import { mixpanel } from '@/Services/utils/analytics';
@@ -30,31 +29,20 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
       <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
-      <View style={tw`flex-row justify-between p-5`}>
-        <View>
-          <View
-            style={tw`flex items-center justify-center bg-secondary-light rounded-full h-12 w-12`}
-          >
-            <CSText style={tw`text-white text-xl font-telegraf`}>
-              {nameToInitials(user.name)}
-            </CSText>
-          </View>
-          <CSText style={tw`text-2xl text-white py-4`}>{user.name}</CSText>
-        </View>
-        <CloseIconButton color={tw.color('white')} />
+      <View style={tw`flex-col justify-between pl-4 pr-20 pt-20 pb-28`}>
+        <CSText style={tw`text-xl text-white`}>{user.name}</CSText>
+        <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
       </View>
 
       {/* Bottom white area */}
-      <View style={tw`flex-1 bg-white py-7 px-6 shadow-xl rounded-t-3xl`}>
-        <CSText style={tw`text-sm text-gray50 pb-6`}>
-          {t('profile.profileMenu.manageAccount').toUpperCase()}
+      <View style={tw`flex-1 bg-white py-7 px-6 shadow-xl`}>
+        <CSText style={tw`text-base text-black pb-6 mt-4`}>
+          {t('profile.profileMenu.manageAccount')}
         </CSText>
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TouchableOpacity
-            style={tw`flex-row items-center justify-between py-6 border-b border-gray90`}
-          >
-            <CSText style={tw`text-base`}>{t('profile.profileMenu.faceId')}</CSText>
+          <TouchableOpacity style={tw`flex-row items-center justify-between py-2 mt-3`}>
+            <CSText style={tw`text-sm`}>{t('profile.profileMenu.faceId')}</CSText>
             <Switch
               onValueChange={() => {}}
               value
@@ -66,13 +54,6 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
               thumbColor={tw.color('white')}
             />
           </TouchableOpacity>
-
-          <ProfileMenuRow
-            label={t('profile.profileMenu.biometrics')}
-            onPress={() => {
-              navigation.navigate('Profile');
-            }}
-          />
 
           <ProfileMenuRow
             label={t('profile.profileMenu.changePassword')}
@@ -94,20 +75,15 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
               navigation.navigate('Audit Log');
             }}
           />
-
-          <ProfileMenuRow
-            label={t('profile.profileMenu.changeCompany')}
-            onPress={() => {
-              navigation.navigate('Profile');
-            }}
-          />
-
-          <TouchableOpacity
-            style={tw`flex-row items-center justify-between py-6`}
-            onPress={onLogout}
-          >
-            <CSText style={tw`text-base text-primary`}>{t('profile.profileMenu.logOut')}</CSText>
-          </TouchableOpacity>
+          <View style={tw`mt-10`}>
+            <Button
+              containerStyle={tw`mt-auto bg-secondary`}
+              textStyle={tw`text-white`}
+              onPress={onLogout}
+            >
+              {t('profile.profileMenu.logOut')}
+            </Button>
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>

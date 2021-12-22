@@ -145,6 +145,7 @@ export default {
     billingAddress: 'BILLING ADDRESS',
   },
   profile: {
+    profileInfo: 'View profile info',
     profileMenu: {
       manageAccount: 'Manage Account',
       biometrics: 'Biometrics',
