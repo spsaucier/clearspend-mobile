@@ -88,6 +88,7 @@ export default {
       useThisPhoto: 'Use this photo',
       retakePhoto: 'Re-take photo',
       notAuthorizedCameraAccess: 'ClearSpend needs access to your camera to take receipt photos',
+      uploadNewReceipt: 'Upload a new receipt',
     },
     transactionDetails: {
       title: 'Transaction Details',

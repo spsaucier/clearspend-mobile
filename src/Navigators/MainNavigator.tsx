@@ -20,6 +20,7 @@ import AddCardScreen from '@/Containers/Wallet/AppleWallet/AddCardScreen';
 import WalletTermsScreen from '@/Containers/Wallet/AppleWallet/WalletTermsScreen';
 import SetCardAsDefaultScreen from '@/Containers/Wallet/AppleWallet/SetCardAsDefaultScreen';
 import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
+import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
 
 type MainStackParamTypes = {
   Home: undefined;
@@ -47,11 +48,12 @@ type MainStackParamTypes = {
   'Wallet Terms': { cardId: string };
   'Set Card As Default': { cardId: string };
   'Add Receipt': { accountActivityId: string };
+  'View Receipt': { accountActivityId: string; receiptId: string };
 };
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
-const transparentBottomSheet: StackNavigationOptions = {
+const transparentModal: StackNavigationOptions = {
   presentation: 'transparentModal',
   gestureEnabled: false,
 };
@@ -69,15 +71,11 @@ const WalletStack = () => (
   <Stack.Navigator initialRouteName="Wallet" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Wallet" component={WalletScreen} />
     <Stack.Screen name="Notifications" component={NotificationScreen} />
-    <Stack.Screen
-      name="Card Info"
-      component={CardInfoScreen}
-      options={{ presentation: 'transparentModal' }}
-    />
+    <Stack.Screen name="Card Info" component={CardInfoScreen} options={transparentModal} />
     <Stack.Screen
       name="Transaction Details"
       component={TransactionDetailScreen}
-      options={transparentBottomSheet}
+      options={transparentModal}
     />
     <Stack.Screen name="Profile" component={ProfileStack} />
 
@@ -91,7 +89,7 @@ const WalletStack = () => (
     <Stack.Screen
       name="Card Spend Controls"
       component={CardSpendControlsScreen}
-      options={transparentBottomSheet}
+      options={transparentModal}
     />
     <Stack.Screen name="Card Settings" component={CardSettingsScreen} />
     <Stack.Screen name="Card Lost Stolen" component={CardLostStolen} />
@@ -104,11 +102,8 @@ const WalletStack = () => (
       options={{ presentation: 'modal' }}
     />
     <Stack.Screen name="Set Card As Default" component={SetCardAsDefaultScreen} />
-    <Stack.Screen
-      name="Add Receipt"
-      component={AddReceiptScreen}
-      options={transparentBottomSheet}
-    />
+    <Stack.Screen name="Add Receipt" component={AddReceiptScreen} options={transparentModal} />
+    <Stack.Screen name="View Receipt" component={ViewReceiptScreen} options={transparentModal} />
   </Stack.Navigator>
 );
 

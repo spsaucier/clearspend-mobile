@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { View, ActivityIndicator, Platform, Dimensions } from 'react-native';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { View, ActivityIndicator, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { chain } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
 import BottomSheet, {
@@ -11,7 +11,7 @@ import BottomSheet, {
   useBottomSheetInternal,
 } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
-import { useIsFocused } from '@react-navigation/core';
+import { useFocusEffect } from '@react-navigation/core';
 
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
@@ -71,17 +71,16 @@ const TransactionsContent = ({ cardId }: Props) => {
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const searchContainerRef = useRef<View>(null);
   const { t } = useTranslation();
-  const isFocused = useIsFocused();
 
-  const [fetchTransactions, { data, loading, error }] = useLazyQuery(CARD_TRANSACTIONS_QUERY, {
+  const { data, loading, error, refetch } = useQuery(CARD_TRANSACTIONS_QUERY, {
     variables: { cardId, pageNumber: 0, pageSize: 20 },
   });
 
-  useEffect(() => {
-    if (isFocused) {
-      fetchTransactions();
-    }
-  }, [isFocused]);
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
 
   const content = data?.transactions?.content;
 
@@ -206,9 +205,7 @@ const Transactions = ({ cardId }: Props) => {
   // (dimensions.height / dimensions.width) < 2 means the device is short and wider
   // like old devices Pixel 2, iphone 5
   const initialSnapPoint = dimensions.height / dimensions.width < 2 ? '40%' : '50%';
-
-  // android devices can expand a little bit further as they dont have notch
-  const expandedSnapPoint = Platform.select({ ios: '95%', default: '98%' });
+  const expandedSnapPoint = '95%';
 
   const snapPointMemo = useMemo(() => [initialSnapPoint, expandedSnapPoint], []);
   const { handleContentLayout } = useBottomSheetDynamicSnapPoints(snapPointMemo);

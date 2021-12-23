@@ -40,6 +40,7 @@ module.exports = {
     'react/default-props-match-prop-types': ['error'],
     'react/sort-prop-types': ['error'],
     'operator-linebreak': ['error', 'before', { overrides: { '=': 'after', '&&': 'after' } }],
+    'implicit-arrow-linebreak': ['off'],
   },
   settings: {
     'import/resolver': {

@@ -1930,7 +1930,7 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apollo-link-rest@^0.8.0-beta.0:
+apollo-link-rest@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/apollo-link-rest/-/apollo-link-rest-0.8.0.tgz#c61df3a795e1509a01a86e87472a9ad8425d4bef"
   integrity sha512-jSpcp2KsWaCqkCw+B0vzfgghsbfKBhftgDuvxkdDAQYVW4Vcst8tm9qNgUXiyRdQcfcd19kEFCEk7w2AcB6dUg==

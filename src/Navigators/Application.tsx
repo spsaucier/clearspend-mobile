@@ -15,6 +15,7 @@ import {
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { RestLink } from 'apollo-link-rest';
+import { includes } from 'lodash';
 
 import Config from 'react-native-config';
 import AuthNavigator from '@/Navigators/AuthNavigator';
@@ -116,10 +117,32 @@ const formDataSerializer = (data: any, headers: Headers) => {
   return { body: formData, headers };
 };
 
+const blobToData = (blob: Blob) =>
+  new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+
+const blobResponseTransformer = (response: any) =>
+  response
+    .blob()
+    .then((blob: any) => blobToData(blob))
+    .then((base64: string) => ({
+      data: base64,
+    }));
+
 const restLink = new RestLink({
   uri: Config.CS_API_URL,
   bodySerializers: {
     formData: formDataSerializer,
+  },
+  responseTransformer: async (response) => {
+    const contentType = response.headers.map['content-type'];
+    if (includes(contentType, 'application/json')) return response.json();
+    if (includes(contentType, 'application/octet-stream')) return blobResponseTransformer(response);
+
+    return response;
   },
 });
 

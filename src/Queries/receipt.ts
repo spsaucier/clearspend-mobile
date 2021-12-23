@@ -27,3 +27,12 @@ export const LINK_RECEIPT_MUTATION = gql`
     }
   }
 `;
+
+export const VIEW_RECEIPT_QUERY = gql`
+  query ViewReceiptQuery($receiptId: String!) {
+    viewReceipt(receiptId: $receiptId)
+      @rest(type: "Receipt", path: "/images/receipts/{args.receiptId}") {
+      data
+    }
+  }
+`;

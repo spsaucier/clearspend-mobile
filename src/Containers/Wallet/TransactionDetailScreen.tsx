@@ -1,9 +1,9 @@
-import React, { ReactNode, useEffect } from 'react';
-import { View, Image, Platform, TouchableOpacity } from 'react-native';
+import React, { ReactNode, useCallback } from 'react';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useIsFocused, useNavigation, useRoute } from '@react-navigation/core';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
 import MapView, { Marker } from 'react-native-maps';
@@ -63,20 +63,19 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
 
 const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
-  const isFocused = useIsFocused();
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { params } = route;
 
-  const [fetchTransactions, { loading, error, data }] = useLazyQuery(TRANSACTION_QUERY, {
+  const { loading, error, data, refetch } = useQuery(TRANSACTION_QUERY, {
     variables: { accountActivityId: params.transactionId },
   });
 
-  useEffect(() => {
-    if (isFocused) {
-      fetchTransactions();
-    }
-  }, [isFocused]);
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
 
   if (loading || !data) {
     return (
@@ -112,7 +111,7 @@ const TransactionDetailScreenContent = () => {
 
   const handleOnReceiptPress = () => {
     if (receipt?.receiptId) {
-      // TODO: view receipt
+      navigation.navigate('View Receipt', { accountActivityId, receiptId: receipt.receiptId });
     } else {
       navigation.navigate('Add Receipt', {
         accountActivityId,
@@ -271,10 +270,7 @@ const TransactionDetailScreenContent = () => {
 };
 
 const TransactionDetailScreen = () => (
-  <CSBottomSheet
-    snapPoints={[Platform.select({ ios: '95%', default: '100%' })]}
-    translucidBackground
-  >
+  <CSBottomSheet snapPoints={['95%']} translucidBackground>
     <TransactionDetailScreenContent />
   </CSBottomSheet>
 );

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -37,7 +37,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
     cardId: selectedCard?.card.cardId,
   });
 
-  useMemo(() => {
+  useEffect(() => {
     if (cardsData?.cards.length) {
       if (!selectedCard) {
         const [first] = cardsData.cards;
@@ -75,7 +75,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
-      <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
+      <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" translucent />
 
       {/* Header and icons */}
       <View style={tw`flex-row items-center justify-end my-3 mr-9 `}>

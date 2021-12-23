@@ -2,6 +2,7 @@ const express = require('express');
 const uuid = require('uuid');
 const router = express.Router();
 
+const uploadPath = __dirname + '/uploads/';
 var uploadedReceipts = [];
 
 router.post('/receipts', (req, res) => {
@@ -9,8 +10,7 @@ router.post('/receipts', (req, res) => {
   const { receipt } = files;
   const { name } = receipt;
 
-  const uploadPath = __dirname + '/uploads/' + name;
-  receipt.mv(uploadPath, (err) => {
+  receipt.mv(`${uploadPath}${name}`, (err) => {
     if (err) return res.status(500).send(err);
 
     const receiptId = uuid.v4();
@@ -32,7 +32,11 @@ router.get('/receipts/:receiptId', (req, res) => {
   const { params } = req;
   const { receiptId } = params;
 
-  return res.json(uploadedReceipts.find((x) => x.receiptId === receiptId));
+  const receipt = uploadedReceipts.find((x) => x.receiptId === receiptId);
+  const { fileName } = receipt;
+
+  res.set('Content-Type', 'image/application/octet-stream');
+  return res.sendFile(`${uploadPath}${fileName}`);
 });
 
 module.exports = router;
