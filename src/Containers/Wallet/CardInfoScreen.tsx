@@ -70,10 +70,10 @@ const CardInfoContent = ({ cardData }: any) => {
         showSensitiveInformation
       />
       {/* Card Number Section */}
-      <View style={tw`mt-12`}>
+      <View style={tw`mt-6`}>
         <CSText style={tw`text-white text-xs`}>{t('cardInfo.cardNumber')}</CSText>
         <TouchableOpacity
-          style={tw`mt-5 h-18 bg-white rounded-md flex flex-row justify-between items-center px-5`}
+          style={tw`mt-2 p-4 bg-white rounded-md flex flex-row justify-between items-center`}
           onPress={copyCardNumberToClipboard}
         >
           <CSText style={tw`text-center text-base font-montreal`}>{cardNumberFormatted}</CSText>
@@ -82,10 +82,10 @@ const CardInfoContent = ({ cardData }: any) => {
       </View>
 
       {/* Address Section */}
-      <View style={tw`py-8`}>
-        <CSText style={tw`text-white text-xs mb-5`}>{t('cardInfo.billingAddress')}</CSText>
+      <View style={tw`mt-6`}>
+        <CSText style={tw`text-white text-xs`}>{t('cardInfo.billingAddress')}</CSText>
         <TouchableOpacity
-          style={tw`h-18 bg-white rounded-md flex flex-row justify-between items-center px-5 py-4`}
+          style={tw`mt-2 p-4 bg-white rounded-md flex flex-row justify-between items-center`}
         >
           {!!address && (
             <View style={tw`flex`}>
@@ -117,8 +117,10 @@ const CardInfoScreen = () => {
 
   return (
     <BlurView style={tw`flex-1`} blurAmount={25} overlayColor={tw.color('black')} blurType="dark">
-      <SafeAreaView style={tw.style('flex-1', { backgroundColor: 'rgba(0,0,0,0.8)' })}>
-        <FocusAwareStatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+      <FocusAwareStatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+      <SafeAreaView
+        style={tw.style('flex-1 justify-between', { backgroundColor: 'rgba(0,0,0,0.5)' })}
+      >
         {loading && (
           <View style={tw`flex-1 items-center justify-center p-6`}>
             <ActivityIndicator />
@@ -132,7 +134,7 @@ const CardInfoScreen = () => {
         {!loading && !error && data?.cardInfo && <CardInfoContent cardData={data?.cardInfo} />}
 
         {/* Dismiss button */}
-        <View style={tw`flex-initial m-6 pb-6`}>
+        <View style={tw`flex-initial mb-6`}>
           <TouchableOpacity
             style={tw`flex flex-row items-center justify-center p-3`}
             onPress={() => {

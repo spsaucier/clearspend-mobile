@@ -72,16 +72,15 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         enableOnAndroid
         keyboardShouldPersistTaps="handled"
         enableResetScrollToCoords={false}
-        contentContainerStyle={tw`flex-1`}
+        style={tw`flex-1`}
         showsVerticalScrollIndicator={false}
       >
         <View style={tw`flex-1 p-5 justify-center`}>
           <Logo style={tw`w-30 mb-3`} />
           <CSText
-            style={tw.style(
-              'text-4xl text-white mb-10 mt-6 font-montreal font-telegraf leading-10',
-              { fontWeight: '300' },
-            )}
+            style={tw.style('text-3xl text-white mb-10 mt-6 font-telegraf leading-10', {
+              fontWeight: '300',
+            })}
           >
             {t('login.heading')}
           </CSText>

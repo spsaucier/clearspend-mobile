@@ -26,56 +26,66 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const user = {
     name: 'John Smith',
   };
+
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
       <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
-      <View style={tw`flex-col justify-between pl-4 pr-20 pt-20 pb-28`}>
-        <CSText style={tw`text-xl text-white`}>{user.name}</CSText>
-        <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
+
+      <View style={[tw`flex-col justify-center aspect2x1 bg-secondary`]}>
+        <View style={tw`pl-5`}>
+          <CSText style={tw`text-2xl text-white`}>{user.name}</CSText>
+          <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
+        </View>
       </View>
 
-      {/* Bottom white area */}
-      <View style={tw`flex-1 bg-white py-7 px-6 shadow-xl`}>
-        <CSText style={tw`text-base text-black pb-6 mt-4`}>
-          {t('profile.profileMenu.manageAccount')}
-        </CSText>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={tw`flex-1 bg-white`}
+        contentContainerStyle={tw`flex-grow bg-white`}
+      >
+        {/* Bottom white area */}
+        <View style={tw`bg-white py-7 px-6 flex-1 justify-between`}>
+          <View>
+            <CSText style={tw`text-base text-black pb-6 mt-4`}>
+              {t('profile.profileMenu.manageAccount')}
+            </CSText>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <TouchableOpacity style={tw`flex-row items-center justify-between py-2 mt-3`}>
-            <CSText style={tw`text-sm`}>{t('profile.profileMenu.faceId')}</CSText>
-            <Switch
-              onValueChange={() => {}}
-              value
-              trackColor={{
-                true: tw.color('black'),
-                false: tw.color('gray80'),
+            <TouchableOpacity style={tw`flex-row items-center justify-between py-2 mt-3`}>
+              <CSText style={tw`text-sm`}>{t('profile.profileMenu.faceId')}</CSText>
+              <Switch
+                onValueChange={() => {}}
+                value
+                trackColor={{
+                  true: tw.color('black'),
+                  false: tw.color('gray80'),
+                }}
+                ios_backgroundColor={tw.color('white')}
+                thumbColor={tw.color('white')}
+              />
+            </TouchableOpacity>
+
+            <ProfileMenuRow
+              label={t('profile.profileMenu.changePassword')}
+              onPress={() => {
+                navigation.navigate('Change Password');
               }}
-              ios_backgroundColor={tw.color('white')}
-              thumbColor={tw.color('white')}
             />
-          </TouchableOpacity>
 
-          <ProfileMenuRow
-            label={t('profile.profileMenu.changePassword')}
-            onPress={() => {
-              navigation.navigate('Change Password');
-            }}
-          />
+            <ProfileMenuRow
+              label={t('profile.profileMenu.notificationSettings')}
+              onPress={() => {
+                navigation.navigate('Notification Settings');
+              }}
+            />
 
-          <ProfileMenuRow
-            label={t('profile.profileMenu.notificationSettings')}
-            onPress={() => {
-              navigation.navigate('Notification Settings');
-            }}
-          />
-
-          <ProfileMenuRow
-            label={t('profile.profileMenu.viewAuditLog')}
-            onPress={() => {
-              navigation.navigate('Audit Log');
-            }}
-          />
-          <View style={tw`mt-10`}>
+            <ProfileMenuRow
+              label={t('profile.profileMenu.viewAuditLog')}
+              onPress={() => {
+                navigation.navigate('Audit Log');
+              }}
+            />
+          </View>
+          <View style={tw`my-5`}>
             <Button
               containerStyle={tw`mt-auto bg-secondary`}
               textStyle={tw`text-white`}
@@ -84,8 +94,8 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
               {t('profile.profileMenu.logOut')}
             </Button>
           </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
