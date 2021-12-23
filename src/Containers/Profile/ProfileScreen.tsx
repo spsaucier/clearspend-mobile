@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useApolloClient } from '@apollo/client';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
-import { CSText, FocusAwareStatusBar, Button } from '@/Components';
+import { CSText, FocusAwareStatusBar, Button, CloseIconButton } from '@/Components';
 import { killSession } from '@/Store/Session';
 import { persistor } from '@/Store';
 import { mixpanel } from '@/Services/utils/analytics';
@@ -30,12 +30,12 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
       <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
-
-      <View style={[tw`flex-col justify-center aspect2x1 bg-secondary`]}>
-        <View style={tw`pl-5`}>
-          <CSText style={tw`text-2xl text-white`}>{user.name}</CSText>
-          <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
-        </View>
+      <View style={tw`flex-row items-center justify-end pr-6 pt-6`}>
+        <CloseIconButton color={tw.color('white')} />
+      </View>
+      <View style={[tw`h-1/4 flex-col justify-center bg-secondary px-5 pt-12 pb-16`]}>
+        <CSText style={tw`text-2xl text-white`}>{user.name}</CSText>
+        <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
       </View>
 
       <ScrollView

@@ -49,18 +49,30 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
     }
   }, [cardsData]);
 
+  const HeaderIcons = () => (
+    <View style={tw`w-full flex-row items-center justify-end my-3 mr-9`}>
+      <View style={tw`flex-row`}>
+        <NotificationBell onPress={() => navigation.navigate('Notifications')} />
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <ProfileIcon color={tw.color('white')} style={tw`ml-3`} size={26} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
   if (cardsLoading) {
     return (
-      <View style={tw`flex-1 justify-center items-center bg-lightBG`}>
+      <SafeAreaView style={tw`flex-1 justify-center items-center bg-secondary`}>
+        <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
         <ActivityIndicator />
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (cardsError) {
     return (
-      <View style={tw`flex-1 items-center justify-center p-6`}>
-        <CSText style={tw`text-base text-error mb-2`}>{cardsError?.message}</CSText>
+      <SafeAreaView style={tw`flex-1 justify-center items-center bg-secondary p-6`}>
+        <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
+        <CSText style={tw`text-base text-white mb-4`}>{cardsError?.message}</CSText>
         <Button
           onPress={() => {
             refetchCards();
@@ -69,23 +81,46 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
         >
           {t('general.reload')}
         </Button>
-      </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (!cardsData.cards || cardsData.cards.length === 0) {
+    return (
+      <SafeAreaView style={tw`flex-1 justify-center items-center bg-secondary`} edges={['top']}>
+        <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
+        <HeaderIcons />
+        <View style={tw`flex-1 justify-center items-center`}>
+          <CSText style={tw`text-white text-lg text-center mb-5`}>{t('wallet.empty.title')}</CSText>
+          <CSText style={tw`text-white text-base text-center w-70`}>
+            {t('wallet.empty.subTitle')}
+          </CSText>
+        </View>
+        <View
+          style={tw.style('h-1/4 w-90 w-full absolute bottom-0 justify-center items-center -z-10')}
+        >
+          <Card
+            style={tw.style('w-9/10 ml-3', { transform: [{ rotateZ: '-10deg' }] })}
+            isVirtual={false}
+            isFrozen={false}
+            balance={0}
+            lastDigits="1234"
+            cardId="1234"
+            cardTitle="John Smith"
+          />
+        </View>
+        <SafeAreaView
+          style={tw`shadow-xl bg-secondary-light h-1/5 w-full z-10`}
+          edges={['bottom']}
+        />
+      </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
       <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" translucent />
-
-      {/* Header and icons */}
-      <View style={tw`flex-row items-center justify-end my-3 mr-9 `}>
-        <View style={tw`flex-row`}>
-          <NotificationBell onPress={() => navigation.navigate('Notifications')} />
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-            <ProfileIcon color={tw.color('white')} style={tw`ml-3`} size={26} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <HeaderIcons />
 
       {/* Card Carousel w. buttons */}
       <View>

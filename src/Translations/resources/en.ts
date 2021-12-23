@@ -68,6 +68,10 @@ export default {
   },
   wallet: {
     header: 'Hey {{name}}!',
+    empty: {
+      title: "Looks like you don't have any cards.",
+      subTitle: 'When you’re assigned a card, you’ll be able to view and control it from here.',
+    },
     transactions: {
       recentTransactions: 'Recent Transactions',
       allTransactions: 'Transactions',
