@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Keyboard } from 'react-native';
+import { View, TouchableOpacity, Keyboard, Linking } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -131,7 +131,14 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           <View style={tw`flex-1 ml-3`}>
             <CSText style={tw`text-base text-white`}>
               {t('login.businessSection.copy')}
-              <CSText style={tw`text-base text-primary`} onPress={() => {}}>
+              <CSText
+                style={tw`text-base text-primary`}
+                onPress={() => {
+                  Linking.openURL('https://www.clearspend.com/').catch((err) => {
+                    console.error('Failed to open ClearSpend website: ', err);
+                  });
+                }}
+              >
                 {t('login.businessSection.buttonCta')}
               </CSText>
             </CSText>

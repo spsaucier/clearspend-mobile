@@ -71,7 +71,7 @@ export const CSTextInput = ({
           onChangeText={onChangeText}
           value={value}
           secureTextEntry={showSecureInput}
-          selectionColor={tw.color('black')}
+          selectionColor={tw.color('white')}
         />
         {secureTextEntry && renderEye()}
       </View>

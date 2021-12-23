@@ -15,7 +15,7 @@ const ForgotPasswordScreen = () => {
   };
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-primary`}>
+    <SafeAreaView style={tw`flex-1 bg-secondary`}>
       <KeyboardAvoidingView style={tw`flex-1 p-6`} behavior="padding">
         <View>
           <OnboardingHeader
