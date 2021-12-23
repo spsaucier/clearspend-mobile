@@ -87,7 +87,9 @@ app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) 
   // const { type, dateFrom, dateTo, pageRequest } = query;
 
   const card = transactions.find((x) => x.cardId === cardId);
-  res.json(card?.response);
+  const response = card?.response;
+
+  res.json(response || []);
 });
 
 // Get single transaction info
