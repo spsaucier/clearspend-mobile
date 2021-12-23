@@ -69,6 +69,7 @@ module.exports = {
       'primary': '#43FA76',
       'secondary': '#10292C',
       'secondary-light': '#1C3437',
+      'tan': '#F3F2EF',
 
       // Cards
       'card-light': '#F3F2EF',

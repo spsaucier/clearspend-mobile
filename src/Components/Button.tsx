@@ -42,7 +42,7 @@ export const Button = ({
     if (loading) {
       return (
         <ActivityIndicator
-          color={isPrimaryTheme ? tw.color('black') : tw.color('white')}
+          color={isPrimaryTheme ? tw.color('secondary') : tw.color('white')}
           style={tw`w-6`}
         />
       );
@@ -53,7 +53,7 @@ export const Button = ({
         <CSText
           style={[
             tw.style(
-              isPrimaryTheme && 'text-black',
+              isPrimaryTheme && 'text-secondary',
               isDarkTheme && 'text-white',
               // disabled && isPrimaryTheme && 'text-black', // TODO Disabled design
               // disabled && isPrimaryTheme && 'text-white' // TODO Disabled design
@@ -76,6 +76,7 @@ export const Button = ({
           'flex-row p-3 rounded items-center justify-center',
           small ? 'h-12' : 'h-16 flex w-full',
           isPrimaryTheme && 'bg-primary',
+          isPrimaryTheme && disabled && 'bg-tan',
           isDarkTheme && 'bg-secondary-light',
         ),
         containerStyle,

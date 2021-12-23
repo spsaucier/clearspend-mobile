@@ -24,6 +24,7 @@ export { NoReceiptIcon } from './noReceiptIcon';
 export { NoteIcon } from './noteIcon';
 export { NotificationIcon } from './notificationIcon';
 export { PhoneIcon } from './phoneIcon';
+export { PlusIcon } from './plusIcon';
 export { ProfileIcon } from './profileIcon';
 export { ReceiptIcon } from './receiptIcon';
 export { SnowflakeIcon } from './snowflakeIcon';

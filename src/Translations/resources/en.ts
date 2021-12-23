@@ -114,7 +114,9 @@ export default {
       },
       report: 'Report an issue',
       notes: {
-        placeholder: 'Add transaction notes...',
+        addANote: 'Add a note',
+        setNote: 'Set Note',
+        cancel: 'Cancel',
       },
     },
   },

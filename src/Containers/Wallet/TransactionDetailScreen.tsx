@@ -18,7 +18,7 @@ import {
   WarningIcon,
 } from '@/Components/Icons';
 import { sentenceCase } from '@/Helpers/StringHelpers';
-import { NoteInput } from '@/Containers/Wallet/Components/NoteInput';
+import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
 import { CategoryIcon } from '@/Components/CategoryIcon';
 
 export const TRANSACTION_QUERY = gql`
@@ -43,6 +43,7 @@ export const TRANSACTION_QUERY = gql`
       receipt {
         receiptId
       }
+      note
     }
   }
 `;
@@ -93,7 +94,7 @@ const TransactionDetailScreenContent = () => {
     );
   }
 
-  const { accountActivityId, merchant, amount, status, activityTime, receipt, country } =
+  const { accountActivityId, merchant, amount, status, activityTime, receipt, country, note } =
     data.transactionDetail;
 
   const statusFormatted = sentenceCase(status);
@@ -205,7 +206,7 @@ const TransactionDetailScreenContent = () => {
           </View>
 
           <View style={tw`p-6`}>
-            <NoteInput />
+            <TransactionNote note={note} transactionId={accountActivityId} />
 
             <Button onPress={handleOnReceiptPress} small containerStyle={tw`bg-black mt-5`}>
               <ReceiptIcon color={tw.color('primary')} />
@@ -217,7 +218,7 @@ const TransactionDetailScreenContent = () => {
             </Button>
           </View>
 
-          <CSText style={tw`text-xs text-black mt-6 bg-gray90 py-2 pl-6`}>
+          <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
             {t('wallet.transactionDetails.merchant.title').toUpperCase()}
           </CSText>
           <View style={tw`px-6`}>
@@ -240,7 +241,7 @@ const TransactionDetailScreenContent = () => {
             </InfoRow>
           </View>
 
-          <CSText style={tw`text-xs text-black mt-6 bg-gray90 py-2 pl-6`}>
+          <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
             {t('wallet.transactionDetails.details.title').toUpperCase()}
           </CSText>
           <View style={tw`px-6`}>

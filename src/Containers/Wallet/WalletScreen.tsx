@@ -50,7 +50,7 @@ const WalletScreen = ({ navigation }: { navigation: any }) => {
   }, [cardsData]);
 
   const HeaderIcons = () => (
-    <View style={tw`w-full flex-row items-center justify-end my-3 mr-9`}>
+    <View style={tw`w-full flex-row items-center justify-end my-3 pr-6`}>
       <View style={tw`flex-row`}>
         <NotificationBell onPress={() => navigation.navigate('Notifications')} />
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>

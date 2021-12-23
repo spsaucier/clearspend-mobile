@@ -26,7 +26,8 @@
             "amount": 100.99
           },
           "status": "PENDING",
-          "receipt": null
+          "receipt": null,
+          "note": "Office stationery"
         },
         {
           "accountActivityId": "d985b139-1833-4533-aacd-df11aeb566c1",
@@ -48,7 +49,8 @@
             "amount": 22.34
           },
           "status": "APPROVED",
-          "receipt": null
+          "receipt": null,
+          "note": ""
         },
         {
           "accountActivityId": "77ffeb4a-fe86-461e-8c9c-ad7ce0ffe66f",
@@ -70,7 +72,8 @@
             "amount": 231.87
           },
           "status": "DECLINED",
-          "receipt": null
+          "receipt": null,
+          "note": null
         },
         {
           "accountActivityId": "204445f5-0634-4277-9f84-ce539b9562ff",
@@ -92,7 +95,8 @@
             "amount": 45.22
           },
           "status": "PENDING",
-          "receipt": null
+          "receipt": null,
+          "note": null
         },
         {
           "accountActivityId": "c415108e-e35c-4b37-b424-fe29c04840b2",
@@ -114,7 +118,8 @@
             "amount": 99.2
           },
           "status": "PENDING",
-          "receipt": null
+          "receipt": null,
+          "note": null
         },
         {
           "accountActivityId": "1f12d7c1-ae56-427a-93fd-c500a9d1ceb3",
@@ -136,7 +141,8 @@
             "amount": 33.3
           },
           "status": "PENDING",
-          "receipt": null
+          "receipt": null,
+          "note": null
         },
         {
           "accountActivityId": "aeaf655a-bdc6-4ac9-9e5a-833911a34562",
@@ -158,7 +164,8 @@
             "amount": 102.84
           },
           "status": "APPROVED",
-          "receipt": null
+          "receipt": null,
+          "note": null
         },
         {
           "accountActivityId": "f8bc92d7-820e-44ca-8686-420e526977e3",
@@ -180,7 +187,8 @@
             "amount": 220.22
           },
           "status": "PENDING",
-          "receipt": null
+          "receipt": null,
+          "note": null
         },
         {
           "accountActivityId": "7bf20429-5a31-496b-ad96-c1e5cd6dffae",
@@ -202,7 +210,8 @@
             "amount": 56.99
           },
           "status": "PENDING",
-          "receipt": null
+          "receipt": null,
+          "note": null
         },
         {
           "accountActivityId": "1b41fbb5-ac7f-4dce-bdc6-6ae268018e27",
@@ -224,7 +233,8 @@
             "amount": 88.75
           },
           "status": "PENDING",
-          "receipt": null
+          "receipt": null,
+          "note": null
         },
         {
           "accountActivityId": "80b6dad8-f699-4264-b158-9fbc430c015e",
@@ -267,7 +277,8 @@
             "amount": 34.28
           },
           "status": "PENDING",
-          "receipt": null
+          "receipt": null,
+          "note": null
         }
       ],
       "number": 0,

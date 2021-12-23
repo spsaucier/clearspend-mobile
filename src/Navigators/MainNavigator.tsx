@@ -20,6 +20,7 @@ import AddCardScreen from '@/Containers/Wallet/AppleWallet/AddCardScreen';
 import WalletTermsScreen from '@/Containers/Wallet/AppleWallet/WalletTermsScreen';
 import SetCardAsDefaultScreen from '@/Containers/Wallet/AppleWallet/SetCardAsDefaultScreen';
 import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
+import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
 import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
 
 type MainStackParamTypes = {
@@ -38,6 +39,7 @@ type MainStackParamTypes = {
   'Card Details': { cardId: string };
   'Card Info': { cardId: string };
   'Transaction Details': { cardId: string; transactionId: string };
+  'Note Input': { cardId: string; transactionId: string; note: string };
   'Card Spend Controls': { cardId: string };
   'Card Settings': { cardId: string };
   'Card Lost Stolen': { cardId: string };
@@ -77,6 +79,7 @@ const WalletStack = () => (
       component={TransactionDetailScreen}
       options={transparentModal}
     />
+    <Stack.Screen name="Note Input" component={NoteInputScreen} />
     <Stack.Screen name="Profile" component={ProfileStack} />
 
     <Stack.Screen
