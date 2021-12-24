@@ -33,6 +33,8 @@ export const TRANSACTION_QUERY = gql`
         type
         merchantLogoUrl
         merchantCategoryCode
+        merchantLatitude
+        merchantLongitude
       }
       status
       amount {
@@ -61,6 +63,8 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
     {!!children && children}
   </View>
 );
+
+const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 
 const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
@@ -106,9 +110,8 @@ const TransactionDetailScreenContent = () => {
   const transactionDateTime = format(parseISO(activityTime), 'MMM dd, yyyy hh:mm a');
   const { amount: transactionAmount } = amount;
 
-  // TODO: use the backend response instead
-  const latitude = 37.78825;
-  const longitude = -122.4324;
+  const latitude = merchant.merchantLatitude;
+  const longitude = merchant.merchantLongitude;
 
   const handleOnReceiptPress = () => {
     if (receipt?.receiptId) {
@@ -153,24 +156,30 @@ const TransactionDetailScreenContent = () => {
           showsVerticalScrollIndicator={false}
           style={tw`bg-white`}
         >
-          {/* Transaction Status */}
-
           {/* Map/banner area */}
-          <View style={tw`bg-gray90 h-38`}>
-            <MapView
-              style={tw`h-full`}
-              loadingEnabled
-              showsUserLocation={false}
-              scrollEnabled={false}
-              initialRegion={{
-                latitude,
-                longitude,
-                latitudeDelta: 0.002,
-                longitudeDelta: 0.002,
-              }}
-            >
-              <Marker key={0} coordinate={{ latitude, longitude }} image={{ uri: 'marker' }} />
-            </MapView>
+          <View style={tw`bg-secondary h-38`}>
+            {!!merchant.merchantLatitude && !!merchant.merchantLongitude ? (
+              <MapView
+                style={tw`h-full`}
+                loadingEnabled
+                showsUserLocation={false}
+                scrollEnabled={false}
+                initialRegion={{
+                  latitude,
+                  longitude,
+                  latitudeDelta: 0.002,
+                  longitudeDelta: 0.002,
+                }}
+              >
+                <Marker key={0} coordinate={{ latitude, longitude }} image={{ uri: 'marker' }} />
+              </MapView>
+            ) : (
+              <Image
+                source={cardBGImageLight}
+                resizeMode="cover"
+                style={tw`flex-1 opacity-40 w-2/3 self-end`}
+              />
+            )}
           </View>
 
           {/* Merchant logo */}

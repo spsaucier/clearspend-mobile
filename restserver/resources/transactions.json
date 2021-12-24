@@ -41,7 +41,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 3000,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 37.78825,
+            "merchantLongitude": -122.4324
           },
           "type": "BANK_LINK",
           "amount": {
@@ -87,7 +89,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 3500,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
@@ -110,7 +114,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 4000,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
@@ -133,7 +139,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 4800,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
@@ -156,7 +164,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 5000,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
@@ -179,7 +189,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 5600,
-            "merchantLogoUrl": "https://s3.amazonaws.com/www-inside-design/uploads/2018/04/walmart-square.jpg"
+            "merchantLogoUrl": "https://s3.amazonaws.com/www-inside-design/uploads/2018/04/walmart-square.jpg",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
@@ -202,7 +214,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 5700,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
@@ -225,7 +239,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 7300,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
@@ -248,7 +264,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 8000,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
@@ -269,7 +287,9 @@
             "type": "UTILITIES",
             "merchantNumber": "string",
             "merchantCategoryCode": 9000,
-            "merchantLogoUrl": ""
+            "merchantLogoUrl": "",
+            "merchantLatitude": 0,
+            "merchantLongitude": 0
           },
           "type": "BANK_LINK",
           "amount": {
