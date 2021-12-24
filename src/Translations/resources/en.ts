@@ -165,6 +165,23 @@ export default {
     },
     changePassword: {
       title: 'Change Password',
+      currPass: 'Current Password',
+      next: 'Next',
+    },
+    backNav: 'Back',
+    newPassword: {
+      title: 'New Password',
+      changePassword: 'Change Password',
+    },
+    rules: {
+      minLength: 'Must be a minimum of 10 characters',
+      maxLength: 'Must be less than 30 characters',
+    },
+    message: {
+      passwordUpdated: 'Your password has been updated',
+      signInUsingNewPassword:
+        'You will be able to sign in using your new password the next time you open the clearspend app',
+      confirmation: 'Ok, got it',
     },
     notificationSettings: {
       title: 'Notification Settings',

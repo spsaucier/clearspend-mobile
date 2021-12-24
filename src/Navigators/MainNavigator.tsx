@@ -22,6 +22,8 @@ import SetCardAsDefaultScreen from '@/Containers/Wallet/AppleWallet/SetCardAsDef
 import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
 import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
 import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
+import NewPasswordScreen from '@/Containers/Profile/NewPasswordScreen';
+import ChangePasswordMessage from '@/Containers/Profile/ChangePasswordMessage';
 
 type MainStackParamTypes = {
   Home: undefined;
@@ -30,6 +32,8 @@ type MainStackParamTypes = {
   Profile: undefined;
   'Profile Screen': undefined;
   'Change Password': undefined;
+  'New Password': undefined;
+  'Change Password Message': undefined;
   'Notification Settings': undefined;
   'Audit Log': undefined;
 
@@ -64,6 +68,8 @@ const ProfileStack = () => (
   <Stack.Navigator initialRouteName="Profile Screen" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Profile Screen" component={ProfileScreen} />
     <Stack.Screen name="Change Password" component={ChangePasswordScreen} />
+    <Stack.Screen name="New Password" component={NewPasswordScreen} />
+    <Stack.Screen name="Change Password Message" component={ChangePasswordMessage} />
     <Stack.Screen name="Notification Settings" component={NotificationSettingScreen} />
     <Stack.Screen name="Audit Log" component={AuditLogScreen} />
   </Stack.Navigator>
