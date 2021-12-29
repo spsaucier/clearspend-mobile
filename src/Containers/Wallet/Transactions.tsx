@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { View, ActivityIndicator, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { chain } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
 import BottomSheet, {
@@ -19,38 +19,7 @@ import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
-
-export const CARD_TRANSACTIONS_QUERY = gql`
-  query TransactionsQuery($cardId: String!, $pageNumber: Number!, $pageSize: Number!) {
-    transactions(cardId: $cardId, pageNumber: $pageNumber, pageSize: $pageSize)
-      @rest(
-        type: "Transactions"
-        path: "/users/cards/{args.cardId}/account-activity?pageNumber={args.pageNumber}&pageSize={args.pageSize}"
-      ) {
-      totalElements
-      totalPages
-      size
-      content {
-        accountActivityId
-        activityTime
-        merchant {
-          name
-          type
-          merchantLogoUrl
-          merchantCategoryCode
-        }
-        amount {
-          currency
-          amount
-        }
-        status
-        receipt {
-          receiptId
-        }
-      }
-    }
-  }
-`;
+import { CARD_TRANSACTIONS_QUERY } from '@/Queries';
 
 const dimensions = Dimensions.get('screen');
 

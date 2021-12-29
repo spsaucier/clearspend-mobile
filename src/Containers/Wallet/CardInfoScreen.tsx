@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { BlurView } from '@react-native-community/blur';
@@ -11,32 +11,7 @@ import { Card, formatCardNumber } from './Components/Card';
 import { CloseIcon, CopyIconLeft } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 import { mixpanel } from '@/Services/utils/analytics';
-
-const CARD_QUERY = gql`
-  query CardInfoQuery($cardId: String!) {
-    cardInfo(cardId: $cardId) @rest(type: "CardInfo", path: "/users/cards/{args.cardId}") {
-      card {
-        status
-        cardLine3
-        cardNumber
-        expirationDate
-        type
-        address {
-          streetLine1
-          streetLine2
-          locality
-          region
-          postalCode
-          country
-        }
-      }
-      availableBalance {
-        amount
-      }
-      allocationName
-    }
-  }
-`;
+import { CARD_QUERY } from '@/Queries';
 
 const CardInfoContent = ({ cardData }: any) => {
   const { t } = useTranslation();

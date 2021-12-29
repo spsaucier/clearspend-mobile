@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
@@ -20,35 +20,7 @@ import {
 import { sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
 import { CategoryIcon } from '@/Components/CategoryIcon';
-
-export const TRANSACTION_QUERY = gql`
-  query TransactionDetailQuery($accountActivityId: ID!) {
-    transactionDetail(accountActivityId: $accountActivityId)
-      @rest(type: "Transaction", path: "/users/account-activity/{args.accountActivityId}") {
-      accountActivityId
-      activityTime
-      merchant {
-        merchantId: merchantNumber
-        name
-        type
-        merchantLogoUrl
-        merchantCategoryCode
-        merchantLatitude
-        merchantLongitude
-      }
-      status
-      amount {
-        currency
-        amount
-      }
-      country
-      receipt {
-        receiptId
-      }
-      note
-    }
-  }
-`;
+import { TRANSACTION_QUERY } from '@/Queries';
 
 type InfoRowProps = {
   label: string;
