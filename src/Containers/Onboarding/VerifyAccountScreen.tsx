@@ -7,6 +7,7 @@ import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
 import { PhoneIcon } from '@/Components/Icons';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
+import { AuthScreens } from '../../Navigators/NavigatorTypes';
 
 type BoxProps = {
   value: string;
@@ -19,9 +20,9 @@ const Box = ({ value }: BoxProps) => (
 
 const VerifyAccountScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const { navigate } = useNavigation();
   const handleSubmit = () => {
-    navigation.navigate('Set Password');
+    navigate(AuthScreens.SetPassword);
   };
 
   return (

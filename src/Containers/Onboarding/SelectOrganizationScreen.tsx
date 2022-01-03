@@ -8,12 +8,13 @@ import { Button } from '@/Components';
 import { OrganizationCard } from '@/Containers/Onboarding/Components/OrganizationCard';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
 import { MerchantIcon } from '@/Components/Icons';
+import { AuthScreens } from '../../Navigators/NavigatorTypes';
 
 const SelectOrganizationScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const { navigate } = useNavigation();
   const handleSubmit = () => {
-    navigation.navigate('Enter Mobile');
+    navigate(AuthScreens.EnterMobile);
   };
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`}>

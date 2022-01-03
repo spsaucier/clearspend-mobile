@@ -24,38 +24,7 @@ import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
 import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
 import NewPasswordScreen from '@/Containers/Profile/NewPasswordScreen';
 import ChangePasswordMessage from '@/Containers/Profile/ChangePasswordMessage';
-
-type MainStackParamTypes = {
-  Home: undefined;
-
-  // Profile & Settings
-  Profile: undefined;
-  'Profile Screen': undefined;
-  'Change Password': undefined;
-  'New Password': undefined;
-  'Change Password Message': undefined;
-  'Notification Settings': undefined;
-  'Audit Log': undefined;
-
-  // Wallet and Cards
-  Wallet: undefined;
-  Notifications: undefined;
-  'Card Details': { cardId: string };
-  'Card Info': { cardId: string };
-  'Transaction Details': { cardId: string; transactionId: string };
-  'Note Input': { cardId: string; transactionId: string; note: string };
-  'Card Spend Controls': { cardId: string };
-  'Card Settings': { cardId: string };
-  'Card Lost Stolen': { cardId: string };
-
-  // Apple Wallet Mock UI Screens
-  'Apple Wallet': { cardId: string; termsAccepted: boolean };
-  'Add Card To Apple Wallet': { cardId: string; termsAccepted: boolean };
-  'Wallet Terms': { cardId: string };
-  'Set Card As Default': { cardId: string };
-  'Add Receipt': { accountActivityId: string };
-  'View Receipt': { accountActivityId: string; receiptId: string };
-};
+import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -65,60 +34,75 @@ const transparentModal: StackNavigationOptions = {
 };
 
 const ProfileStack = () => (
-  <Stack.Navigator initialRouteName="Profile Screen" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Profile Screen" component={ProfileScreen} />
-    <Stack.Screen name="Change Password" component={ChangePasswordScreen} />
-    <Stack.Screen name="New Password" component={NewPasswordScreen} />
-    <Stack.Screen name="Change Password Message" component={ChangePasswordMessage} />
-    <Stack.Screen name="Notification Settings" component={NotificationSettingScreen} />
-    <Stack.Screen name="Audit Log" component={AuditLogScreen} />
+  <Stack.Navigator
+    initialRouteName={MainScreens.ProfileScreen}
+    screenOptions={{ headerShown: false }}
+  >
+    <Stack.Screen name={MainScreens.ProfileScreen} component={ProfileScreen} />
+    <Stack.Screen name={MainScreens.ChangePassword} component={ChangePasswordScreen} />
+    <Stack.Screen name={MainScreens.NewPassword} component={NewPasswordScreen} />
+    <Stack.Screen name={MainScreens.ChangePasswordMessage} component={ChangePasswordMessage} />
+    <Stack.Screen name={MainScreens.NotificationSettings} component={NotificationSettingScreen} />
+    <Stack.Screen name={MainScreens.AuditLog} component={AuditLogScreen} />
   </Stack.Navigator>
 );
 
 const WalletStack = () => (
-  <Stack.Navigator initialRouteName="Wallet" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Wallet" component={WalletScreen} />
-    <Stack.Screen name="Notifications" component={NotificationScreen} />
-    <Stack.Screen name="Card Info" component={CardInfoScreen} options={transparentModal} />
+  <Stack.Navigator initialRouteName={MainScreens.Wallet} screenOptions={{ headerShown: false }}>
+    <Stack.Screen name={MainScreens.Wallet} component={WalletScreen} />
+    <Stack.Screen name={MainScreens.Notifications} component={NotificationScreen} />
     <Stack.Screen
-      name="Transaction Details"
+      name={MainScreens.CardInfo}
+      component={CardInfoScreen}
+      options={transparentModal}
+    />
+    <Stack.Screen
+      name={MainScreens.TransactionDetails}
       component={TransactionDetailScreen}
       options={transparentModal}
     />
-    <Stack.Screen name="Note Input" component={NoteInputScreen} />
-    <Stack.Screen name="Profile" component={ProfileStack} />
+    <Stack.Screen name={MainScreens.NoteInput} component={NoteInputScreen} />
+    <Stack.Screen name={MainScreens.Profile} component={ProfileStack} />
 
     <Stack.Screen
-      name="Card Details"
+      name={MainScreens.CardDetails}
       component={CardDetailScreen}
       options={{
         ...TransitionPresets.ModalSlideFromBottomIOS,
       }}
     />
     <Stack.Screen
-      name="Card Spend Controls"
+      name={MainScreens.CardSpendControls}
       component={CardSpendControlsScreen}
       options={transparentModal}
     />
-    <Stack.Screen name="Card Settings" component={CardSettingsScreen} />
-    <Stack.Screen name="Card Lost Stolen" component={CardLostStolen} />
+    <Stack.Screen name={MainScreens.CardSettings} component={CardSettingsScreen} />
+    <Stack.Screen name={MainScreens.CardLostStolen} component={CardLostStolen} />
 
     {/* Apple Wallet Mock UI Screens */}
-    <Stack.Screen name="Add Card To Apple Wallet" component={AddCardScreen} />
+    <Stack.Screen name={MainScreens.AddCardToAppleWallet} component={AddCardScreen} />
     <Stack.Screen
-      name="Wallet Terms"
+      name={MainScreens.WalletTerms}
       component={WalletTermsScreen}
       options={{ presentation: 'modal' }}
     />
-    <Stack.Screen name="Set Card As Default" component={SetCardAsDefaultScreen} />
-    <Stack.Screen name="Add Receipt" component={AddReceiptScreen} options={transparentModal} />
-    <Stack.Screen name="View Receipt" component={ViewReceiptScreen} options={transparentModal} />
+    <Stack.Screen name={MainScreens.SetCardAsDefault} component={SetCardAsDefaultScreen} />
+    <Stack.Screen
+      name={MainScreens.AddReceipt}
+      component={AddReceiptScreen}
+      options={transparentModal}
+    />
+    <Stack.Screen
+      name={MainScreens.ViewReceipt}
+      component={ViewReceiptScreen}
+      options={transparentModal}
+    />
   </Stack.Navigator>
 );
 
 const MainNavigator = () => (
-  <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Home" component={WalletStack} />
+  <Stack.Navigator initialRouteName={MainScreens.Home} screenOptions={{ headerShown: false }}>
+    <Stack.Screen name={MainScreens.Home} component={WalletStack} />
   </Stack.Navigator>
 );
 

@@ -1,7 +1,6 @@
 import React, { ReactNode, useCallback } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@apollo/client';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
@@ -17,10 +16,11 @@ import {
   ReceiptIcon,
   WarningIcon,
 } from '@/Components/Icons';
-import { sentenceCase } from '@/Helpers/StringHelpers';
+import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
 import { CategoryIcon } from '@/Components/CategoryIcon';
-import { TRANSACTION_QUERY } from '@/Queries';
+import { useTransaction } from '@/Queries';
+import { MainScreens } from '../../Navigators/NavigatorTypes';
 
 type InfoRowProps = {
   label: string;
@@ -40,13 +40,11 @@ const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 
 const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const { navigate } = useNavigation();
   const route = useRoute<any>();
   const { params } = route;
 
-  const { loading, error, data, refetch } = useQuery(TRANSACTION_QUERY, {
-    variables: { accountActivityId: params.transactionId },
-  });
+  const { isLoading, error, data, refetch } = useTransaction(params.transactionId);
 
   useFocusEffect(
     useCallback(() => {
@@ -54,7 +52,7 @@ const TransactionDetailScreenContent = () => {
     }, []),
   );
 
-  if (loading || !data) {
+  if (isLoading || !data) {
     return (
       <View style={tw`flex-1 items-center justify-center p-6`}>
         <ActivityIndicator />
@@ -70,28 +68,45 @@ const TransactionDetailScreenContent = () => {
     );
   }
 
-  const { accountActivityId, merchant, amount, status, activityTime, receipt, country, note } =
-    data.transactionDetail;
+  const {
+    accountActivityId,
+    merchant,
+    amount,
+    status,
+    activityTime,
+    receipt,
+    // country, note
+  } = data;
+  // TODO: Delete once API supports it
+  const note = '';
+  const country = 'USA';
 
-  const statusFormatted = sentenceCase(status);
+  const statusFormatted = sentenceCase(status!);
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';
   const statusApproved = status === 'APPROVED';
-  const categoryFormatted = sentenceCase(merchant?.type);
+  const categoryFormatted = sentenceCase(merchant?.type!);
 
-  const transactionDateTime = format(parseISO(activityTime), 'MMM dd, yyyy hh:mm a');
-  const { amount: transactionAmount } = amount;
+  const transactionDateTime = format(parseISO(activityTime!), 'MMM dd, yyyy hh:mm a');
+  const transactionAmount = amount?.amount;
 
-  const latitude = merchant.merchantLatitude;
-  const longitude = merchant.merchantLongitude;
+  const latitude = merchant?.merchantLatitude;
+  const longitude = merchant?.merchantLongitude;
 
   const handleOnReceiptPress = () => {
-    if (receipt?.receiptId) {
-      navigation.navigate('View Receipt', { accountActivityId, receiptId: receipt.receiptId });
-    } else {
-      navigation.navigate('Add Receipt', {
-        accountActivityId,
-      });
+    if (accountActivityId) {
+      if (receipt?.receiptId) {
+        navigate(MainScreens.ViewReceipt, {
+          accountActivityId,
+          receiptId: receipt.receiptId,
+          cardId: params.cardId,
+        });
+      } else {
+        navigate(MainScreens.AddReceipt, {
+          accountActivityId,
+          cardId: params.cardId,
+        });
+      }
     }
   };
 
@@ -130,7 +145,7 @@ const TransactionDetailScreenContent = () => {
         >
           {/* Map/banner area */}
           <View style={tw`bg-secondary h-38`}>
-            {!!merchant.merchantLatitude && !!merchant.merchantLongitude ? (
+            {!!latitude && !!longitude ? (
               <MapView
                 style={tw`h-full`}
                 loadingEnabled
@@ -162,7 +177,7 @@ const TransactionDetailScreenContent = () => {
                   tw`bg-primary h-16 w-16 overflow-hidden items-center justify-center rounded-full`,
                 ]}
               >
-                {merchant.merchantLogoUrl ? (
+                {merchant?.merchantLogoUrl ? (
                   <Image
                     source={{
                       uri: merchant.merchantLogoUrl,
@@ -171,23 +186,23 @@ const TransactionDetailScreenContent = () => {
                     resizeMode="cover"
                   />
                 ) : (
-                  <CategoryIcon style={tw`w-9 h-9`} code={merchant.merchantCategoryCode} />
+                  <CategoryIcon style={tw`w-9 h-9`} code={merchant?.merchantCategoryCode!} />
                 )}
               </View>
             </View>
           </View>
 
           <View style={tw`items-center`}>
-            <CSText style={tw`text-black text-3xl`}>{`$${transactionAmount.toFixed(2)}`}</CSText>
+            <CSText style={tw`text-black text-3xl`}>{formatCurrency(transactionAmount)}</CSText>
             <CSText style={tw`text-black text-lg my-2`}>
-              {merchant.name}
-              {merchant.type && ` • ${categoryFormatted}`}
+              {merchant?.name}
+              {merchant?.type && ` • ${categoryFormatted}`}
             </CSText>
             <CSText style={tw`text-black text-xs`}>{transactionDateTime}</CSText>
           </View>
 
           <View style={tw`p-6`}>
-            <TransactionNote note={note} transactionId={accountActivityId} />
+            <TransactionNote note={note} transactionId={accountActivityId!} />
 
             <Button onPress={handleOnReceiptPress} small containerStyle={tw`bg-black mt-5`}>
               <ReceiptIcon color={tw.color('primary')} />
@@ -205,18 +220,18 @@ const TransactionDetailScreenContent = () => {
           <View style={tw`px-6`}>
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantName')}
-              value={merchant.name}
+              value={merchant?.name}
             />
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantId')}
-              value={merchant.merchantId}
+              value={merchant?.merchantNumber}
             />
             <InfoRow label={t('wallet.transactionDetails.merchant.merchantCategory')}>
               <TouchableOpacity
                 onPress={() => {}}
                 style={tw`flex-row justify-center items-center bg-black rounded-1 py-1 pl-2 pr-1`}
               >
-                <CSText style={tw`text-primary mr-1`}>{sentenceCase(merchant.type)}</CSText>
+                <CSText style={tw`text-primary mr-1`}>{sentenceCase(merchant?.type!)}</CSText>
                 <EditIcon color={tw.color('primary')} size={18} />
               </TouchableOpacity>
             </InfoRow>
@@ -232,7 +247,7 @@ const TransactionDetailScreenContent = () => {
             />
             <InfoRow
               label={t('wallet.transactionDetails.details.amount')}
-              value={`$${transactionAmount.toFixed(2)}`}
+              value={formatCurrency(transactionAmount)}
             />
             <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
           </View>

@@ -1,14 +1,16 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackActions, useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
+import { MainScreens } from '../../../Navigators/NavigatorTypes';
 
 type Props = {
   route: any;
-  navigation: any;
 };
 
-const WalletTermsScreen = ({ route, navigation }: Props) => {
+const WalletTermsScreen = ({ route }: Props) => {
+  const navigation = useNavigation();
   const { cardId } = route.params;
   const termsAccepted = true;
   return (
@@ -25,7 +27,13 @@ const WalletTermsScreen = ({ route, navigation }: Props) => {
         </Text>
         <Text
           style={tw`text-sm text-ios-link`}
-          onPress={() => navigation.push('Add Card To Apple Wallet', { cardId, termsAccepted })}
+          onPress={() => {
+            const pushAction = StackActions.push(MainScreens.AddCardToAppleWallet, {
+              cardId,
+              termsAccepted,
+            });
+            navigation.dispatch(pushAction);
+          }}
         >
           Agree
         </Text>

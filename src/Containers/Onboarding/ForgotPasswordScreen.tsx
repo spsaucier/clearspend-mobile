@@ -11,7 +11,7 @@ import { EmailIcon } from '@/Components/Icons';
 const ForgotPasswordScreen = () => {
   const { t } = useTranslation();
   const handleSubmit = () => {
-    // navigation.navigate('Set Password');
+    // navigation.navigate(AuthScreens.SetPassword);
   };
 
   return (

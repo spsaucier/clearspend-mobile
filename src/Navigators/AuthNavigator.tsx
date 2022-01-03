@@ -6,34 +6,24 @@ import EnterMobileScreen from '@/Containers/Onboarding/EnterMobileScreen';
 import VerifyAccountScreen from '@/Containers/Onboarding/VerifyAccountScreen';
 import SetPasswordScreen from '@/Containers/Onboarding/SetPasswordScreen';
 import ForgotPasswordScreen from '@/Containers/Onboarding/ForgotPasswordScreen';
-
-type AuthStackParamTypes = {
-  LoginStack: undefined;
-  Auth: undefined;
-  Login: undefined;
-  'Select Organization': undefined;
-  'Enter Mobile': undefined;
-  'Verify Account': undefined;
-  'Set Password': undefined;
-  'Forgot Password': undefined;
-};
+import { AuthScreens, AuthStackParamTypes } from './NavigatorTypes';
 
 const Stack = createStackNavigator<AuthStackParamTypes>();
 
 const LoginStack = () => (
-  <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="Select Organization" component={SelectOrganizationScreen} />
-    <Stack.Screen name="Enter Mobile" component={EnterMobileScreen} />
-    <Stack.Screen name="Verify Account" component={VerifyAccountScreen} />
-    <Stack.Screen name="Set Password" component={SetPasswordScreen} />
-    <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen} />
+  <Stack.Navigator initialRouteName={AuthScreens.Login} screenOptions={{ headerShown: false }}>
+    <Stack.Screen name={AuthScreens.Login} component={LoginScreen} />
+    <Stack.Screen name={AuthScreens.SelectOrganization} component={SelectOrganizationScreen} />
+    <Stack.Screen name={AuthScreens.EnterMobile} component={EnterMobileScreen} />
+    <Stack.Screen name={AuthScreens.VerifyAccount} component={VerifyAccountScreen} />
+    <Stack.Screen name={AuthScreens.SetPassword} component={SetPasswordScreen} />
+    <Stack.Screen name={AuthScreens.ForgotPassword} component={ForgotPasswordScreen} />
   </Stack.Navigator>
 );
 
 const AuthNavigator = () => (
-  <Stack.Navigator initialRouteName="Auth" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="LoginStack" component={LoginStack} />
+  <Stack.Navigator initialRouteName={AuthScreens.Landing} screenOptions={{ headerShown: false }}>
+    <Stack.Screen name={AuthScreens.LoginStack} component={LoginStack} />
     {/* Add screens here that are outside the login/signin flow */}
   </Stack.Navigator>
 );

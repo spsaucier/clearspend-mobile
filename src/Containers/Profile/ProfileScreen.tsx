@@ -3,26 +3,27 @@ import { View, TouchableOpacity, Switch, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-import { useApolloClient } from '@apollo/client';
+import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { CSText, FocusAwareStatusBar, Button, CloseIconButton } from '@/Components';
 import { killSession } from '@/Store/Session';
 import { persistor } from '@/Store';
 import { mixpanel } from '@/Services/utils/analytics';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 
-const ProfileScreen = ({ navigation }: { navigation: any }) => {
+const ProfileScreen = () => {
+  const { navigate } = useNavigation();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const apolloClient = useApolloClient();
 
   const onLogout = async () => {
-    await apolloClient.cache.reset();
     await persistor.purge();
     mixpanel.track('Logout');
     dispatch(killSession());
   };
 
+  // TODO: use real user name
   const user = {
     name: 'John Smith',
   };
@@ -67,21 +68,21 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
             <ProfileMenuRow
               label={t('profile.profileMenu.changePassword')}
               onPress={() => {
-                navigation.navigate('Change Password');
+                navigate(MainScreens.ChangePassword);
               }}
             />
 
             <ProfileMenuRow
               label={t('profile.profileMenu.notificationSettings')}
               onPress={() => {
-                navigation.navigate('Notification Settings');
+                navigate(MainScreens.NotificationSettings);
               }}
             />
 
             <ProfileMenuRow
               label={t('profile.profileMenu.viewAuditLog')}
               onPress={() => {
-                navigation.navigate('Audit Log');
+                navigate(MainScreens.AuditLog);
               }}
             />
           </View>

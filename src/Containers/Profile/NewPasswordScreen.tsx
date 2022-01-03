@@ -9,10 +9,11 @@ import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { CSTextField } from '@/Components/TextField';
 import { PasswordRuleCheck } from './PasswordRuleCheck';
+import { MainScreens } from '../../Navigators/NavigatorTypes';
 
 const NewPasswordScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const { navigate } = useNavigation();
   const [newPassword, setNewPassword] = useState('');
 
   return (
@@ -49,7 +50,7 @@ const NewPasswordScreen = () => {
           disabled={!(newPassword.length >= 10 && newPassword.length <= 30)}
           label={t('profile.changePassword.title')}
           onPress={() => {
-            navigation.navigate('Change Password Message');
+            navigate(MainScreens.ChangePasswordMessage);
           }}
         />
       </KeyboardAvoidingView>

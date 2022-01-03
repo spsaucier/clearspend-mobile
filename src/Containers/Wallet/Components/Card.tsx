@@ -9,6 +9,7 @@ import { Logo } from '@/Components/Svg/Logo';
 import { Visa } from '@/Components/Svg/Visa';
 import { SnowflakeIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
+import { formatCurrency } from '@/Helpers/StringHelpers';
 
 export type CardType = {
   cardId: string;
@@ -132,7 +133,7 @@ export const Card = ({
 
               {!showSensitiveInformation && (
                 <CSText style={tw.style('text-2xl', darkContent ? 'text-black' : 'text-white')}>
-                  {`$${balance.toFixed(2)}`}
+                  {formatCurrency(balance)}
                 </CSText>
               )}
 

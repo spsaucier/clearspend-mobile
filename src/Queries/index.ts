@@ -1,3 +1,3 @@
-export { TRANSACTION_QUERY, CARD_TRANSACTIONS_QUERY } from './transaction';
-export { CARD_QUERY, USER_CARDS_QUERY, FREEZE_CARD_MUTATION, UNFREEZE_CARD_MUTATION } from './card';
-export { UPLOAD_RECEIPT_MUTATION, LINK_RECEIPT_MUTATION, VIEW_RECEIPT_QUERY } from './receipt';
+export { useCardTransactions, useTransaction } from './transaction';
+export { useCard, useFreezeCard, useUnFreezeCard, useUserCards } from './card';
+export { linkReceiptAsync, useUploadReceipt, useReceiptUri } from './receipt';

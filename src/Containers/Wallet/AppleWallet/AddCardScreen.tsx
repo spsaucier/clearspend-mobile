@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { FocusAwareStatusBar } from '@/Components';
 import { CheckMarkIcon } from '@/Components/Icons';
+import { MainScreens } from '../../../Navigators/NavigatorTypes';
 
 const icon = require('@/Assets/Images/wallet-demo-icon.png');
 
 type Props = {
   route: any;
-  navigation: any;
 };
 
-const AddCardScreen = ({ navigation, route }: Props) => {
+const AddCardScreen = ({ route }: Props) => {
+  const navigation = useNavigation();
   const { cardId, termsAccepted } = route.params;
   const [loading, setLoading] = useState(termsAccepted);
   const [cardAdded, setCardAdded] = useState(termsAccepted);
@@ -42,14 +45,20 @@ const AddCardScreen = ({ navigation, route }: Props) => {
           {cardAdded ? (
             <Text
               style={tw`text-base text-ios-link`}
-              onPress={() => navigation.push('Set Card As Default', { cardId })}
+              onPress={() => {
+                const pushAction = StackActions.push(MainScreens.SetCardAsDefault, { cardId });
+                navigation.dispatch(pushAction);
+              }}
             >
               Done
             </Text>
           ) : (
             <Text
               style={tw`text-base text-ios-link`}
-              onPress={() => navigation.push('Wallet Terms', { cardId })}
+              onPress={() => {
+                const pushAction = StackActions.push(MainScreens.WalletTerms, { cardId });
+                navigation.dispatch(pushAction);
+              }}
             >
               Next
             </Text>

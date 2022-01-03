@@ -1,45 +1,43 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { VIEW_RECEIPT_QUERY } from '@/Queries';
 import tw from '@/Styles/tailwind';
 import { CloseIcon } from '@/Components/Icons';
 import { DarkToLightGradient } from '@/Components/Svg/DarkToLightGradient';
 import { ActivityIndicator, Button, CSText } from '@/Components';
+import { useReceiptUri } from '@/Queries';
+import { MainScreens } from '../../../Navigators/NavigatorTypes';
 
 const ViewReceiptScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const route = useRoute();
   const { params } = route;
-  const { accountActivityId, receiptId } = params as any;
+  const { accountActivityId, receiptId, cardId } = params as any;
 
-  const { data, loading } = useQuery(VIEW_RECEIPT_QUERY, {
-    variables: { receiptId },
-  });
+  const { data, isLoading } = useReceiptUri(receiptId);
 
   const handleUploadNewReceipt = () => {
-    navigation.navigate('Add Receipt', { accountActivityId });
+    navigation.navigate(MainScreens.AddReceipt, { accountActivityId, cardId });
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <View style={tw`flex-1 justify-center items-center`}>
+      <SafeAreaView style={tw`flex-1 justify-center items-center bg-black/75`}>
         <ActivityIndicator color={tw.color('black')} />
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={tw`h-full`}>
+    <View style={tw`h-full bg-black/75`}>
       <Image
-        style={[tw`absolute w-full h-full`, { resizeMode: 'cover' }]}
-        source={{ uri: data?.viewReceipt.data }}
+        style={[tw`absolute w-full h-full`, { resizeMode: 'contain' }]}
+        source={{ uri: data }}
       />
       <DarkToLightGradient style={tw`absolute`} />
       <DarkToLightGradient style={tw`absolute bottom-0`} inverted />

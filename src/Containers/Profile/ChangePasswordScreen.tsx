@@ -8,10 +8,11 @@ import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSe
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextField } from '@/Components/TextField';
+import { MainScreens } from '../../Navigators/NavigatorTypes';
 
 const ChangePasswordScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const { navigate } = useNavigation();
   const [currPassword, setCurrPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
@@ -44,7 +45,7 @@ const ChangePasswordScreen = () => {
           label={t('profile.changePassword.next')}
           disabled={buttonDisabled}
           onPress={() => {
-            navigation.navigate('New Password');
+            navigate(MainScreens.NewPassword);
           }}
         />
       </KeyboardAvoidingView>

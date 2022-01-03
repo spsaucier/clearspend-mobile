@@ -7,18 +7,19 @@ import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { NoteIcon, PlusIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
+import { MainScreens } from '../../../Navigators/NavigatorTypes';
 
 type Props = {
   note: string | null | undefined;
   transactionId: string;
 };
 
-export const TransactionNote = ({ note, transactionId }: Props) => {
+export const TransactionNote = ({ note = '', transactionId }: Props) => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const { navigate } = useNavigation();
 
   const navToNoteInput = () => {
-    navigation.navigate('Note Input', { transactionId, note });
+    navigate(MainScreens.NoteInput, { transactionId, note });
   };
 
   const Triangle = () => (

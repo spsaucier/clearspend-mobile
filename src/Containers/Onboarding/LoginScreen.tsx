@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
@@ -13,9 +14,11 @@ import { login } from '@/Services/Auth';
 import { Session, updateSession } from '@/Store/Session';
 import { ClearSpendIcon } from '@/Components/Svg/ClearSpendIcon';
 import { mixpanel } from '@/Services/utils/analytics';
+import { AuthScreens } from '@/Navigators/NavigatorTypes';
 
-const LoginScreen = ({ navigation }: { navigation: any }) => {
+const LoginScreen = () => {
   const { t } = useTranslation();
+  const { navigate } = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginButtonDisabled, setLoginButtonDisabled] = useState(true);
@@ -117,7 +120,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           </Button>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Forgot Password');
+              navigate(AuthScreens.VerifyAccount);
             }}
           >
             <CSText style={tw`text-base text-primary mt-6 self-center`}>

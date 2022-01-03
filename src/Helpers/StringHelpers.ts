@@ -11,3 +11,6 @@ export const sentenceCase = (str: string): string => {
   }
   return str[0].toUpperCase() + str.slice(1).toLowerCase();
 };
+
+export const formatCurrency = (num = 0) =>
+  num.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });

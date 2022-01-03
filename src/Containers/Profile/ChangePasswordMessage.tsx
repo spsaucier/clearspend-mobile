@@ -4,10 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
+import { MainScreens } from '../../Navigators/NavigatorTypes';
 
 const ChangePasswordMessage = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const { navigate } = useNavigation();
 
   return (
     <SafeAreaView style={tw`bg-white flex-1 p-5`}>
@@ -19,7 +20,7 @@ const ChangePasswordMessage = () => {
         containerStyle={tw`mt-96 mb-10`}
         label={t('profile.message.confirmation')}
         onPress={() => {
-          navigation.navigate('Profile Screen');
+          navigate(MainScreens.Profile);
         }}
       />
     </SafeAreaView>

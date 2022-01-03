@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { View, ActivityIndicator, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { useQuery } from '@apollo/client';
 import { chain } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
 import BottomSheet, {
@@ -19,7 +18,7 @@ import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
-import { CARD_TRANSACTIONS_QUERY } from '@/Queries';
+import { useCardTransactions } from '@/Queries';
 
 const dimensions = Dimensions.get('screen');
 
@@ -41,9 +40,7 @@ const TransactionsContent = ({ cardId }: Props) => {
   const searchContainerRef = useRef<View>(null);
   const { t } = useTranslation();
 
-  const { data, loading, error, refetch } = useQuery(CARD_TRANSACTIONS_QUERY, {
-    variables: { cardId, pageNumber: 0, pageSize: 20 },
-  });
+  const { data, isLoading, error, refetch } = useCardTransactions(cardId);
 
   useFocusEffect(
     useCallback(() => {
@@ -51,7 +48,7 @@ const TransactionsContent = ({ cardId }: Props) => {
     }, []),
   );
 
-  const content = data?.transactions?.content;
+  const content = data?.content;
 
   const transactionsWithDate = content?.map((x: any) => {
     const activityTimeISO = parseISO(x.activityTime);
@@ -115,7 +112,7 @@ const TransactionsContent = ({ cardId }: Props) => {
       </View>
 
       <Animated.View style={[tw`flex-1 bg-white`, transactionsContainerAnimatedStyle]}>
-        {loading ? (
+        {isLoading ? (
           <View style={tw`items-center justify-center`}>
             <ActivityIndicator style={tw`w-5`} />
           </View>

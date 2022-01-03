@@ -8,15 +8,16 @@ import { Button } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
 import { PhoneIcon } from '@/Components/Icons/phoneIcon';
+import { AuthScreens } from '../../Navigators/NavigatorTypes';
 
 const EnterMobileScreen = () => {
   const [mobile, setMobile] = useState('');
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const { navigate } = useNavigation();
   const handleSubmit = () => {
-    navigation.navigate('Verify Account');
+    navigate(AuthScreens.VerifyAccount);
   };
   useEffect(() => {
     setSubmitButtonDisabled(!mobile);

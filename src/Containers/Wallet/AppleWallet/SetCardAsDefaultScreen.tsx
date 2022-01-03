@@ -1,22 +1,24 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { Button } from '@/Components';
+import { MainScreens } from '../../../Navigators/NavigatorTypes';
 
 const card = require('@/Assets/Images/wallet-demo-card.png');
 
 type Props = {
   route: any;
-  navigation: any;
 };
 
-const SetCardAsDefaultScreen = ({ navigation, route }: Props) => {
+const SetCardAsDefaultScreen = ({ route }: Props) => {
+  const { navigate } = useNavigation();
   const { cardId } = route.params;
 
   const handleOnPress = () => {
     // Change state
-    navigation.navigate('Card Details', { cardId });
+    navigate(MainScreens.CardDetails, { cardId });
   };
 
   return (

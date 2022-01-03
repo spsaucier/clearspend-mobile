@@ -5,9 +5,10 @@ import { format, parseISO } from 'date-fns';
 
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
-import { sentenceCase } from '@/Helpers/StringHelpers';
+import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { CSText } from '@/Components';
 import { CategoryIcon } from '@/Components/CategoryIcon';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 export type Status = 'PENDING' | 'DECLINED' | 'APPROVED';
 
@@ -34,13 +35,13 @@ export const TransactionRow = ({
   receiptId,
   time = '',
 }: Props) => {
-  const navigation = useNavigation<any>(); // TODO Add type
+  const { navigate } = useNavigation();
   const handleItemOnPress = () => {
-    navigation.navigate('Transaction Details', { cardId, transactionId });
+    navigate(MainScreens.TransactionDetails, { cardId, transactionId });
   };
 
   const handleAddReceiptOnPress = () => {
-    navigation.navigate('Add Receipt', { accountActivityId: transactionId });
+    navigate(MainScreens.AddReceipt, { accountActivityId: transactionId, cardId });
   };
 
   const { t } = useTranslation();
@@ -92,7 +93,7 @@ export const TransactionRow = ({
         </View>
         <View style={tw`w-20 items-end`}>
           <CSText style={tw.style('text-base text-black', statusDeclined && 'text-error')}>
-            {`$${amount.toFixed(2)}`}
+            {formatCurrency(amount)}
           </CSText>
           <CSText style={tw`text-xs text-black ml-3`}>{statusFormatted}</CSText>
         </View>

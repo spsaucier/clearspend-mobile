@@ -8,7 +8,7 @@ import tw from '@/Styles/tailwind';
 
 const NoteInputScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const route = useRoute<any>();
   const { params } = route;
 
@@ -25,7 +25,7 @@ const NoteInputScreen = () => {
   };
 
   const submitNote = () => {
-    // TODO Add tracking
+    // TODO Submit Note to API
     navigation.goBack();
   };
 
