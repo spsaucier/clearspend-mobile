@@ -9,22 +9,23 @@ export const uploadReceipt = (data: any) => {
       formData.append(key, data[key]);
     }
   });
-  return apiClient.post('/images/receipts', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-  .then((r) => r.data);
+  return apiClient
+    .post('/images/receipts', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then((r) => r.data);
 };
-export const useUploadReceipt = () => useMutation<ReceiptDetails, Error>(
-  (data: any) => uploadReceipt(data),
-);
+export const useUploadReceipt = () =>
+  useMutation<ReceiptDetails, Error>((data: any) => uploadReceipt(data));
 
 export const linkReceiptAsync = (receiptId: string, accountActivityId: string) =>
-  apiClient.post(`/users/account-activity/${accountActivityId}/receipts/${receiptId}/link`)
+  apiClient
+    .post(`/users/account-activity/${accountActivityId}/receipts/${receiptId}/link`)
     .then((r) => r.data);
 
-const blobToUri = (res: any) =>
+const blobToUri = (res: { data: Blob }) =>
   new Promise((resolve) => {
     const reader = new FileReader();
     reader.onloadend = () => resolve(reader.result);
@@ -32,9 +33,11 @@ const blobToUri = (res: any) =>
   });
 
 const viewReceipt = (receiptId: string) =>
-  apiClient.get(`/images/receipts/${receiptId}`, {
-    responseType: 'blob',
-  })
-  .then(blobToUri);
+  apiClient
+    .get<Blob>(`/images/receipts/${receiptId}`, {
+      responseType: 'blob',
+    })
+    .then(blobToUri);
 
-export const useReceiptUri = (receiptId = '') => useQuery<any, Error>(['receipt', receiptId], () => viewReceipt(receiptId));
+export const useReceiptUri = (receiptId = '') =>
+  useQuery<any, Error>(['receipt', receiptId], () => viewReceipt(receiptId));
