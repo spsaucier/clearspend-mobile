@@ -1,5 +1,5 @@
 import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
-import { Card, CardDetailsResponse } from '@/generated/capital';
+import { Card, CardDetailsResponse, RevealCardRequest, RevealCardResponse } from '@/generated/capital';
 import apiClient from '@/Services';
 
 const getCards = () => apiClient.get('/users/cards').then((res) => res.data);
@@ -62,3 +62,7 @@ export const useUnFreezeCard = (cardId = '', status = 'ACTIVE', statusReason = '
     },
   );
 };
+
+export async function revealCardKey(params: Readonly<RevealCardRequest>) {
+  return (await apiClient.post<Readonly<RevealCardResponse>>('/cards/reveal', params)).data;
+}

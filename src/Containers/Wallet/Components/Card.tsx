@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleProp, View, ViewStyle, TouchableOpacity, ImageBackground } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { parse, format } from 'date-fns';
 
 import tw from '@/Styles/tailwind';
 
@@ -15,8 +14,7 @@ export type CardType = {
   cardId: string;
   cardNumber?: string;
   lastDigits: string;
-  cardTitle: string;
-  expirationDate?: string;
+  cardTitle?: string;
   balance: number;
   isFrozen: boolean;
   isVirtual: boolean;
@@ -43,7 +41,6 @@ export const Card = ({
   cardNumber,
   lastDigits,
   cardTitle,
-  expirationDate,
   balance,
   isFrozen,
   isVirtual,
@@ -57,14 +54,7 @@ export const Card = ({
   const disabled = !onPress;
   const darkContent = !isFrozen;
 
-  const expirationDateFormatted =
-    showSensitiveInformation &&
-    expirationDate &&
-    format(parse(expirationDate!, 'yyyy-MM-dd', new Date()), 'MM/yy');
-
   const cardNumberFormatted = formatCardNumber(cardNumber);
-
-  const cvv = '000'; // TODO Get from I2C
 
   return (
     <TouchableOpacity
@@ -137,28 +127,6 @@ export const Card = ({
                 </CSText>
               )}
 
-              {showSensitiveInformation && (
-                <View style={tw`flex-row mt-4`}>
-                  <View>
-                    <CSText style={tw.style('text-2xs', darkContent ? 'text-black' : 'text-white')}>
-                      {t('card.validThru').toUpperCase()}
-                    </CSText>
-                    <CSText style={tw.style('mt-1', darkContent ? 'text-black' : 'text-white')}>
-                      {expirationDateFormatted}
-                    </CSText>
-                  </View>
-                  <View style={tw`ml-4`}>
-                    <CSText style={tw.style('text-2xs', darkContent ? 'text-black' : 'text-white')}>
-                      {t('card.cvv').toUpperCase()}
-                    </CSText>
-                    <CSText
-                      style={tw.style('text-white mt-1', darkContent ? 'text-black' : 'text-white')}
-                    >
-                      {cvv}
-                    </CSText>
-                  </View>
-                </View>
-              )}
             </View>
 
             <View style={tw`flex-1 items-end`}>

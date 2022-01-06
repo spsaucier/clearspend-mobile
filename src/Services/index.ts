@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import Config from 'react-native-config';
 import { getNewAccessToken } from './Auth';
 import { store } from '@/Store';
@@ -21,26 +22,16 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor for API calls
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    const { refreshToken } = store.getState().session;
-    if (
-      [403, 401].includes(error.response.status) &&
-      !originalRequest._retry &&
-      refreshToken
-    ) {
-      originalRequest._retry = true;
-      const sessionPayload = await getNewAccessToken(refreshToken);
-      store.dispatch(updateSession(sessionPayload));
-      axios.defaults.headers.common.Authorization = `Bearer ${sessionPayload.accessToken}`;
-      return apiClient(originalRequest);
-    }
-    store.dispatch(killSession());
-    return Promise.reject(error);
-  },
-);
+const refreshAuthToken = async () => {
+  const { refreshToken } = store.getState().session;
+  const sessionPayload = await getNewAccessToken(refreshToken!)
+    .catch((e) => {
+      store.dispatch(killSession());
+      return Promise.reject(e);
+    });
+  store.dispatch(updateSession(sessionPayload));
+};
+
+createAuthRefreshInterceptor(apiClient, refreshAuthToken, { statusCodes: [401, 403] });
 
 export default apiClient;

@@ -138,6 +138,7 @@ const LoginScreen = () => {
                 style={tw`text-base text-primary`}
                 onPress={() => {
                   Linking.openURL('https://www.clearspend.com/').catch((err) => {
+                    // eslint-disable-next-line no-console
                     console.error('Failed to open ClearSpend website: ', err);
                   });
                 }}
