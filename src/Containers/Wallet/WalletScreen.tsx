@@ -20,7 +20,7 @@ const WalletScreen = () => {
   const { navigate } = useNavigation();
   const cardWidth = 0.95 * screenWidth;
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
-  const cardStatus = selectedCard?.card.status;
+  const cardStatus = selectedCard?.card?.status;
   const isFrozen = cardStatus === 'INACTIVE';
 
   const { t } = useTranslation();
@@ -32,8 +32,10 @@ const WalletScreen = () => {
     error: cardsError,
   } = useUserCards();
 
-  const { mutate: freeze, isLoading: isFreezing } = useFreezeCard(selectedCard?.card.cardId!);
-  const { mutate: unfreeze, isLoading: isUnfreezing } = useUnFreezeCard(selectedCard?.card.cardId!);
+  const { mutate: freeze, isLoading: isFreezing } = useFreezeCard(selectedCard?.card?.cardId!);
+  const { mutate: unfreeze, isLoading: isUnfreezing } = useUnFreezeCard(
+    selectedCard?.card?.cardId!,
+  );
   const freezingOrUnfreezing = isUnfreezing || isFreezing;
 
   useEffect(() => {
@@ -42,9 +44,7 @@ const WalletScreen = () => {
         const [first] = cardsData;
         setSelectedCard(first);
       } else {
-        const card = cardsData.find(
-          (x) => x.card.cardId === selectedCard?.card.cardId,
-        );
+        const card = cardsData.find((x) => x.card.cardId === selectedCard?.card?.cardId);
         setSelectedCard(card);
       }
     }
@@ -129,27 +129,30 @@ const WalletScreen = () => {
           onSnapToItem={(index: any) => setSelectedCard(cardsData?.[index])}
           renderItem={({ item }: any) => {
             const { card, availableBalance, allocationName } = item;
-            const { cardId, lastFour, cardLine3, type } = card;
+            if (card) {
+              const { cardId, lastFour, cardLine3, type } = card;
 
-            const isVirtual = type === 'VIRTUAL';
-            const cardTitle = cardLine3 || allocationName;
+              const isVirtual = type === 'VIRTUAL';
+              const cardTitle = cardLine3 || allocationName;
 
-            const { amount } = availableBalance;
+              const { amount } = availableBalance;
 
-            return (
-              <View style={[tw`p-2`, { width: cardWidth }]} key={cardId}>
-                <Card
-                  key={cardId}
-                  cardId={cardId}
-                  balance={amount}
-                  isFrozen={isFrozen}
-                  isVirtual={isVirtual}
-                  lastDigits={lastFour}
-                  cardTitle={cardTitle}
-                  onPress={() => navigate(MainScreens.CardDetails, { cardId })}
-                />
-              </View>
-            );
+              return (
+                <View style={[tw`p-2`, { width: cardWidth }]} key={cardId}>
+                  <Card
+                    key={cardId}
+                    cardId={cardId}
+                    balance={amount}
+                    isFrozen={isFrozen}
+                    isVirtual={isVirtual}
+                    lastDigits={lastFour}
+                    cardTitle={cardTitle}
+                    onPress={() => navigate(MainScreens.CardDetails, { cardId })}
+                  />
+                </View>
+              );
+            }
+            return null;
           }}
         />
       </View>
@@ -157,8 +160,9 @@ const WalletScreen = () => {
       {/* Slider dots */}
       <View style={tw`flex-row justify-center my-1`}>
         {cardsData?.length > 1 &&
-          cardsData.map(({ card: { cardId } }) => {
-            const selected = cardId === selectedCard?.card.cardId;
+          cardsData.map(({ card }) => {
+            const cardId = card?.cardId;
+            const selected = cardId === selectedCard?.card?.cardId;
 
             return (
               <View
@@ -177,8 +181,8 @@ const WalletScreen = () => {
       <View style={tw`flex-1 flex-row items-start justify-center self-center py-2 px-4`}>
         <Button
           containerStyle={tw`flex-1 mr-1`}
-          disabled={!selectedCard?.card.cardId}
-          onPress={() => navigate(MainScreens.CardInfo, { cardId: selectedCard?.card.cardId! })}
+          disabled={!selectedCard?.card?.cardId}
+          onPress={() => navigate(MainScreens.CardInfo, { cardId: selectedCard?.card?.cardId! })}
           small
           theme="dark"
         >
@@ -214,7 +218,7 @@ const WalletScreen = () => {
         </Button>
       </View>
 
-      {selectedCard?.card?.cardId && <Transactions cardId={selectedCard?.card.cardId} />}
+      {selectedCard?.card?.cardId && <Transactions cardId={selectedCard?.card?.cardId} />}
     </SafeAreaView>
   );
 };
