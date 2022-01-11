@@ -75,10 +75,10 @@ const TransactionDetailScreenContent = () => {
     status,
     activityTime,
     receipt,
-    // country, note
+    notes,
+    // country
   } = data;
   // TODO: Delete once API supports it
-  const note = '';
   const country = 'USA';
 
   const statusFormatted = sentenceCase(status!);
@@ -98,7 +98,7 @@ const TransactionDetailScreenContent = () => {
       if (receipt?.receiptId) {
         navigate(MainScreens.ViewReceipt, {
           accountActivityId,
-          receiptId: receipt.receiptId,
+          receiptId: receipt.receiptId?.[0],
           cardId: params.cardId,
         });
       } else {
@@ -202,7 +202,7 @@ const TransactionDetailScreenContent = () => {
           </View>
 
           <View style={tw`p-6`}>
-            <TransactionNote note={note} transactionId={accountActivityId!} />
+            <TransactionNote note={notes} transactionId={accountActivityId!} />
 
             <Button onPress={handleOnReceiptPress} small containerStyle={tw`bg-black mt-5`}>
               <ReceiptIcon color={tw.color('primary')} />

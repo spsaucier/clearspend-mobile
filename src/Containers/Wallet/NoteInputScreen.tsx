@@ -13,7 +13,7 @@ const NoteInputScreen = () => {
   const { params } = route;
 
   const [note, setNote] = useState(params.note || '');
-  const [charCount, setCharCount] = useState(params.note.length || 0);
+  const [charCount, setCharCount] = useState(note.length || 0);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const maxCharCount = 300;

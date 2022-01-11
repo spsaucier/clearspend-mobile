@@ -886,6 +886,7 @@ export interface AccountActivityResponse {
   status?: "PENDING" | "DECLINED" | "APPROVED" | "PROCESSED";
   amount?: Amount;
   receipt?: ReceiptDetails;
+  notes?: string;
 }
 
 export interface Merchant {
@@ -1201,8 +1202,7 @@ export interface PagedDataAccountActivityResponse {
 }
 
 export interface ReceiptDetails {
-  /** @format uuid */
-  receiptId?: string;
+  receiptId?: string[];
 }
 
 export interface GraphDataRequest {
