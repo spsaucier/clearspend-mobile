@@ -2,14 +2,13 @@ import { Image, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, parseISO } from 'date-fns';
-
+import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { AnimatedCSText, CSText } from '@/Components';
 import { CategoryIcon } from '@/Components/CategoryIcon';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
-import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 
 export type Status = 'PENDING' | 'DECLINED' | 'APPROVED';
 
@@ -56,9 +55,7 @@ export const TransactionRow = ({
   const formatTime = format(parseISO(time), 'hh:mm a');
 
   // ANIMATIONS
-  const derivedAnimatedIndex = useDerivedValue(() => {
-    return animatedIndex.value;
-  }, [animatedPosition.value]);
+  const derivedAnimatedIndex = useDerivedValue(() => animatedIndex.value, [animatedPosition.value]);
 
   const merchantAnimatedStyle = useAnimatedStyle(() => ({
     transform: [

@@ -45,7 +45,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   useFocusEffect(
     useCallback(() => {
       refetch();
-    }, []),
+    }, [refetch]),
   );
 
   useEffect(() => {
@@ -182,7 +182,10 @@ const Transactions = ({ cardId }: TransactionProps) => {
   const initialSnapPoint = dimensions.height / dimensions.width < 2 ? '40%' : '50%';
   const expandedSnapPoint = '95%';
 
-  const snapPointMemo = useMemo(() => [initialSnapPoint, expandedSnapPoint], []);
+  const snapPointMemo = useMemo(
+    () => [initialSnapPoint, expandedSnapPoint],
+    [initialSnapPoint, expandedSnapPoint],
+  );
   const { handleContentLayout } = useBottomSheetDynamicSnapPoints(snapPointMemo);
   const [expanded, setExpanded] = useState(false);
 

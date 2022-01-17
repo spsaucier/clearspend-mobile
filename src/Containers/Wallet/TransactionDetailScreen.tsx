@@ -49,7 +49,7 @@ const TransactionDetailScreenContent = () => {
   useFocusEffect(
     useCallback(() => {
       refetch();
-    }, []),
+    }, [refetch]),
   );
 
   if (isLoading || !data) {

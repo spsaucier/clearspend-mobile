@@ -48,7 +48,7 @@ const WalletScreen = () => {
         setSelectedCard(card);
       }
     }
-  }, [cardsData]);
+  }, [cardsData, selectedCard]);
 
   if (cardsLoading) {
     return (
