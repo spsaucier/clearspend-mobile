@@ -78,7 +78,6 @@ export default {
       searchTransactions: 'Search transactions',
       noRecent: 'No recent transactions',
       addReceipt: 'Add receipt',
-      loadMore: 'Load more',
     },
     cardInfo: {
       title: 'Card Info',

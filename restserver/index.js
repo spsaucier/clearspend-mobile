@@ -90,9 +90,7 @@ app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) 
   const { cardId } = params;
   const { pageNumber, pageSize, pNumber = +pageNumber, pSize = +pageSize } = query;
 
-  const card = transactions.find((x) => x.cardId === cardId);
-  const cardTransactions = card?.transactions || [];
-
+  const cardTransactions = transactions.filter((t) => t.card?.cardId === cardId) || [];
   const totalElements = cardTransactions.length || 0;
   const pagedTransactions = paginate(cardTransactions, pNumber, pSize);
 
@@ -110,10 +108,10 @@ app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) 
 app.get('/users/account-activity/:accountActivityId', checkAuthorization, (req, res) => {
   const { params } = req;
   const { accountActivityId } = params;
-  const trxns = transactions[0].response.content; //FIXIT, this is wrong
 
-  const transaction = trxns.find((x) => x.accountActivityId === accountActivityId);
-  res.json(transaction);
+  const cardTransaction = transactions.find((t) => t.accountActivityId === accountActivityId);
+
+  res.json(cardTransaction);
 });
 
 // Block (freeze) card

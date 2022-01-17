@@ -1,12 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, ActivityIndicator, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import Animated, {
-  interpolate,
-  useAnimatedProps,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { chain } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
 import BottomSheet, {
@@ -14,7 +9,7 @@ import BottomSheet, {
   useBottomSheetDynamicSnapPoints,
   useBottomSheetInternal,
 } from '@gorhom/bottom-sheet';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/core';
 
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
@@ -22,7 +17,7 @@ import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
 import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
-import { Button, CSText } from '@/Components';
+import { CSText } from '@/Components';
 import { useCardTransactions } from '@/Queries';
 
 const dimensions = Dimensions.get('screen');
@@ -38,14 +33,16 @@ type TransactionType = {
 
 type Props = {
   cardId: string;
+  expanded: boolean;
 };
 
-const TransactionsContent = ({ cardId }: Props) => {
+const TransactionsContent = ({ cardId, expanded }: Props) => {
   const { t } = useTranslation();
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
-  const searchContainerRef = useRef<View>(null);
-  const [page, setPage] = useState(0);
+  // @ts-ignore
+  const transactionsListRef = useRef<FlatList>(null);
 
+  const searchContainerRef = useRef<View>(null);
   const { data, isLoading, error, refetch } = useCardTransactions(cardId, 0, 10);
 
   useFocusEffect(
@@ -98,6 +95,12 @@ const TransactionsContent = ({ cardId }: Props) => {
     [animatedPosition],
   );
 
+  useEffect(() => {
+    if (!expanded) {
+      transactionsListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    }
+  }, [expanded]);
+
   return (
     <View style={tw`h-full`}>
       <View style={[tw`flex m-6 mt-2 content-start`]}>
@@ -128,15 +131,10 @@ const TransactionsContent = ({ cardId }: Props) => {
           </View>
         ) : transactionsGroupedByDate.length > 0 ? (
           <FlatList
-            ListFooterComponent={
-              // <TouchableOpacity style={tw`w-full items-center p-10`}>
-              //   <CSText>{t('wallet.transactions.loadMore')}</CSText>
-              // </TouchableOpacity>
-              <Button>{t('wallet.transactions.loadMore')}</Button>
-            }
-            scrollEnabled
+            scrollEnabled={expanded}
             data={transactionsGroupedByDate}
             showsVerticalScrollIndicator={false}
+            ref={transactionsListRef}
             renderItem={({ item }) => {
               const { date, transactions } = item;
               const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
@@ -188,15 +186,21 @@ const Transactions = ({ cardId }: Props) => {
 
   const snapPointMemo = useMemo(() => [initialSnapPoint, expandedSnapPoint], []);
   const { handleContentLayout } = useBottomSheetDynamicSnapPoints(snapPointMemo);
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <BottomSheet
       enableHandlePanningGesture
       snapPoints={snapPointMemo}
       handleStyle={[tw`flex self-center bg-transparent w-12 rounded-full mt-3`]}
       handleIndicatorStyle={tw`bg-gray80`}
+      onChange={(e) => {
+        const _expanded = e === 1;
+        setExpanded(_expanded);
+      }}
     >
       <BottomSheetView onLayout={handleContentLayout}>
-        <TransactionsContent cardId={cardId} />
+        <TransactionsContent cardId={cardId} expanded={expanded} />
       </BottomSheetView>
     </BottomSheet>
   );
