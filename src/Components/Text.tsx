@@ -2,7 +2,7 @@ import { Text, TextProps } from 'react-native';
 import React from 'react';
 import tw from '@/Styles/tailwind';
 
-type Props = { children: any } & TextProps;
+export type CSTextProps = { children: any } & TextProps;
 
 export const CSText = ({
   children,
@@ -35,7 +35,7 @@ export const CSText = ({
   selectionColor = tw.color('black'),
   suppressHighlighting,
   textBreakStrategy,
-}: Props) => (
+}: CSTextProps) => (
   <Text
     style={[tw`font-montreal text-black text-base`, style]}
     onPress={onPress}

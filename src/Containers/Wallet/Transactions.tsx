@@ -1,7 +1,12 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, ActivityIndicator, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+  interpolate,
+  useAnimatedProps,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { chain } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
 import BottomSheet, {
@@ -9,7 +14,7 @@ import BottomSheet, {
   useBottomSheetDynamicSnapPoints,
   useBottomSheetInternal,
 } from '@gorhom/bottom-sheet';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/core';
 
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
@@ -17,7 +22,7 @@ import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
 import { TWSearchInput } from '@/Components/SearchInput';
 import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
-import { CSText } from '@/Components';
+import { Button, CSText } from '@/Components';
 import { useCardTransactions } from '@/Queries';
 
 const dimensions = Dimensions.get('screen');
@@ -36,11 +41,12 @@ type Props = {
 };
 
 const TransactionsContent = ({ cardId }: Props) => {
+  const { t } = useTranslation();
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const searchContainerRef = useRef<View>(null);
-  const { t } = useTranslation();
+  const [page, setPage] = useState(0);
 
-  const { data, isLoading, error, refetch } = useCardTransactions(cardId);
+  const { data, isLoading, error, refetch } = useCardTransactions(cardId, 0, 10);
 
   useFocusEffect(
     useCallback(() => {
@@ -122,7 +128,12 @@ const TransactionsContent = ({ cardId }: Props) => {
           </View>
         ) : transactionsGroupedByDate.length > 0 ? (
           <FlatList
-            // contentContainerStyle={tw`pb-6`}
+            ListFooterComponent={
+              // <TouchableOpacity style={tw`w-full items-center p-10`}>
+              //   <CSText>{t('wallet.transactions.loadMore')}</CSText>
+              // </TouchableOpacity>
+              <Button>{t('wallet.transactions.loadMore')}</Button>
+            }
             scrollEnabled
             data={transactionsGroupedByDate}
             showsVerticalScrollIndicator={false}
@@ -149,6 +160,8 @@ const TransactionsContent = ({ cardId }: Props) => {
                       time={transaction.activityTime}
                       merchantLogoUrl={transaction.merchant.merchantLogoUrl}
                       merchantCategoryCode={transaction.merchant.merchantCategoryCode}
+                      animatedIndex={animatedIndex}
+                      animatedPosition={animatedPosition}
                     />
                   ))}
                 </View>

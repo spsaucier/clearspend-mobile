@@ -80,23 +80,38 @@ app.get('/users/cards/:id', checkAuthorization, (req, res) => {
   res.json(card);
 });
 
+const paginate = (array, pageNumber, pageSize) => {
+  return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+};
+
 // Get all transactions for given card
 app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) => {
   const { params, query } = req;
   const { cardId } = params;
-  // const { type, dateFrom, dateTo, pageRequest } = query;
+  const { pageNumber, pageSize, pNumber = +pageNumber, pSize = +pageSize } = query;
 
   const card = transactions.find((x) => x.cardId === cardId);
-  const response = card?.response;
+  const cardTransactions = card?.transactions || [];
 
-  res.json(response || []);
+  const totalElements = cardTransactions.length || 0;
+  const pagedTransactions = paginate(cardTransactions, pNumber, pSize);
+
+  const response = {
+    pageNumber: pNumber,
+    pageSize: pSize,
+    totalElements,
+    content: pagedTransactions || [],
+  };
+
+  res.json(response);
 });
 
 // Get single transaction info
 app.get('/users/account-activity/:accountActivityId', checkAuthorization, (req, res) => {
   const { params } = req;
   const { accountActivityId } = params;
-  const trxns = transactions[0].response.content;
+  const trxns = transactions[0].response.content; //FIXIT, this is wrong
+
   const transaction = trxns.find((x) => x.accountActivityId === accountActivityId);
   res.json(transaction);
 });
