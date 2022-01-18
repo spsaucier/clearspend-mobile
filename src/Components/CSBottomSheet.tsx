@@ -31,7 +31,7 @@ export const CSBottomSheet = ({
 }: CSBottomSheetProps) => {
   const navigation = useNavigation();
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPointMemo = useMemo(() => snapPoints, []);
+  const snapPointMemo = useMemo(() => snapPoints, [snapPoints]);
 
   const { handleContentLayout } = useBottomSheetDynamicSnapPoints(snapPointMemo);
 
@@ -39,18 +39,21 @@ export const CSBottomSheet = ({
     if (navigation?.canGoBack()) navigation.goBack();
   };
 
-  const renderBackdrop = useCallback((props: BackdropProps) => {
-    const { animatedIndex, animatedPosition } = props;
-    return (
-      <BottomSheetBackdrop
-        animatedIndex={animatedIndex}
-        animatedPosition={animatedPosition}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        pressBehavior={closeOnBackdropTap ? 'close' : 'none'}
-      />
-    );
-  }, []);
+  const renderBackdrop = useCallback(
+    (props: BackdropProps) => {
+      const { animatedIndex, animatedPosition } = props;
+      return (
+        <BottomSheetBackdrop
+          animatedIndex={animatedIndex}
+          animatedPosition={animatedPosition}
+          disappearsOnIndex={-1}
+          appearsOnIndex={0}
+          pressBehavior={closeOnBackdropTap ? 'close' : 'none'}
+        />
+      );
+    },
+    [closeOnBackdropTap],
+  );
 
   return (
     <BottomSheet

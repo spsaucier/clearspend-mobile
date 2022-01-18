@@ -2,11 +2,11 @@ import { Image, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, parseISO } from 'date-fns';
-
+import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
-import { CSText } from '@/Components';
+import { AnimatedCSText, CSText } from '@/Components';
 import { CategoryIcon } from '@/Components/CategoryIcon';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 
@@ -22,6 +22,8 @@ type Props = {
   status: Status;
   receiptId: string;
   time: string;
+  animatedIndex?: any;
+  animatedPosition?: any;
 };
 
 export const TransactionRow = ({
@@ -34,6 +36,8 @@ export const TransactionRow = ({
   status,
   receiptId,
   time = '',
+  animatedIndex,
+  animatedPosition,
 }: Props) => {
   const { navigate } = useNavigation();
   const handleItemOnPress = () => {
@@ -49,9 +53,41 @@ export const TransactionRow = ({
   const statusFormatted = sentenceCase(status);
 
   const formatTime = format(parseISO(time), 'hh:mm a');
+
+  // ANIMATIONS
+  const derivedAnimatedIndex = useDerivedValue(() => animatedIndex.value, [animatedPosition.value]);
+
+  const merchantAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY: interpolate(derivedAnimatedIndex.value, [0, 1], [8, -4]),
+      },
+    ],
+  }));
+
+  const timeAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(derivedAnimatedIndex.value, [0.5, 1], [0, 1]),
+  }));
+
+  const amountAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY: interpolate(derivedAnimatedIndex.value, [0, 1], [8, -4]),
+      },
+    ],
+  }));
+
+  const statusAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(derivedAnimatedIndex.value, [0.5, 1], [0, 1]),
+  }));
+
+  const addReceiptAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(derivedAnimatedIndex.value, [0.5, 1], [0, 1]),
+  }));
+
   return (
     <TouchableOpacity
-      style={tw`flex-row justify-between px-6 py-3`}
+      style={tw`flex-row justify-between px-6 py-2`}
       key={transactionId}
       onPress={handleItemOnPress}
     >
@@ -72,14 +108,18 @@ export const TransactionRow = ({
           )}
         </View>
 
-        <View>
-          <CSText style={tw`text-base text-black ml-3 mb-1`}>{merchantName}</CSText>
-          <CSText style={tw`text-xs text-black ml-3`}>{formatTime}</CSText>
+        <View style={tw`flex justify-center`}>
+          <AnimatedCSText style={[tw`text-base text-black ml-3 z-1`, merchantAnimatedStyle]}>
+            {merchantName}
+          </AnimatedCSText>
+          <AnimatedCSText style={[tw`text-xs text-black ml-3`, timeAnimatedStyle]}>
+            {formatTime}
+          </AnimatedCSText>
         </View>
       </View>
 
       <View style={tw`flex-row`}>
-        <View>
+        <Animated.View style={addReceiptAnimatedStyle}>
           {!receiptId && (
             <TouchableOpacity
               style={tw`bg-black py-1 px-2 rounded-1`}
@@ -90,12 +130,20 @@ export const TransactionRow = ({
               </CSText>
             </TouchableOpacity>
           )}
-        </View>
+        </Animated.View>
         <View style={tw`w-20 items-end`}>
-          <CSText style={tw.style('text-base text-black', statusDeclined && 'text-error')}>
+          <AnimatedCSText
+            style={tw.style(
+              'text-base text-black z-1',
+              statusDeclined && 'text-error',
+              amountAnimatedStyle,
+            )}
+          >
             {formatCurrency(amount)}
-          </CSText>
-          <CSText style={tw`text-xs text-black ml-3`}>{statusFormatted}</CSText>
+          </AnimatedCSText>
+          <AnimatedCSText style={[tw`text-xs text-black ml-3`, statusAnimatedStyle]}>
+            {statusFormatted}
+          </AnimatedCSText>
         </View>
       </View>
     </TouchableOpacity>

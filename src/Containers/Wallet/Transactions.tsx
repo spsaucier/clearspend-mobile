@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, ActivityIndicator, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
@@ -31,22 +31,28 @@ type TransactionType = {
   activityTime: string;
 };
 
-type Props = {
+type TransactionsContentProps = {
   cardId: string;
+  expanded: boolean;
 };
 
-const TransactionsContent = ({ cardId }: Props) => {
-  const { animatedPosition, animatedIndex } = useBottomSheetInternal();
-  const searchContainerRef = useRef<View>(null);
+const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => {
   const { t } = useTranslation();
-
-  const { data, isLoading, error, refetch } = useCardTransactions(cardId);
+  const { animatedPosition, animatedIndex } = useBottomSheetInternal();
+  const transactionsListRef = useRef<any>(null);
+  const { data, isLoading, error, refetch } = useCardTransactions(cardId, 0, 10);
 
   useFocusEffect(
     useCallback(() => {
       refetch();
-    }, []),
+    }, [refetch]),
   );
+
+  useEffect(() => {
+    if (!expanded) {
+      transactionsListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    }
+  }, [expanded]);
 
   const content = data?.content;
 
@@ -70,15 +76,12 @@ const TransactionsContent = ({ cardId }: Props) => {
         .value()
     : [];
 
-  // animations
-  // as fontSize interpolation does not use native driver,
-  // transform scale combined with translateX achieve the same effect
   const transactionsTitleScaleAnimatedStyle = useAnimatedStyle(
     () => ({
       transform: [
         { scale: interpolate(animatedIndex.value, [0, 1], [1, 1.25]) },
         {
-          translateX: interpolate(Math.abs(animatedIndex.value), [0, 1], [1, 16]),
+          translateX: interpolate(animatedIndex.value, [0, 1], [1, 16]),
         },
       ],
     }),
@@ -101,7 +104,7 @@ const TransactionsContent = ({ cardId }: Props) => {
           {t('wallet.transactions.recentTransactions')}
         </Animated.Text>
 
-        <View style={[tw`flex-row mt-4 justify-between`]} ref={searchContainerRef}>
+        <View style={[tw`flex-row mt-4 justify-between`]}>
           <View style={tw`flex-grow pr-2`}>
             <TWSearchInput placeholder={t('wallet.transactions.searchTransactions')} />
           </View>
@@ -122,10 +125,10 @@ const TransactionsContent = ({ cardId }: Props) => {
           </View>
         ) : transactionsGroupedByDate.length > 0 ? (
           <FlatList
-            // contentContainerStyle={tw`pb-6`}
-            scrollEnabled
+            scrollEnabled={expanded}
             data={transactionsGroupedByDate}
             showsVerticalScrollIndicator={false}
+            ref={transactionsListRef}
             renderItem={({ item }) => {
               const { date, transactions } = item;
               const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
@@ -149,6 +152,8 @@ const TransactionsContent = ({ cardId }: Props) => {
                       time={transaction.activityTime}
                       merchantLogoUrl={transaction.merchant.merchantLogoUrl}
                       merchantCategoryCode={transaction.merchant.merchantCategoryCode}
+                      animatedIndex={animatedIndex}
+                      animatedPosition={animatedPosition}
                     />
                   ))}
                 </View>
@@ -167,23 +172,35 @@ const TransactionsContent = ({ cardId }: Props) => {
   );
 };
 
-const Transactions = ({ cardId }: Props) => {
+type TransactionProps = {
+  cardId: string;
+};
+
+const Transactions = ({ cardId }: TransactionProps) => {
   // (dimensions.height / dimensions.width) < 2 means the device is short and wider
   // like old devices Pixel 2, iphone 5
   const initialSnapPoint = dimensions.height / dimensions.width < 2 ? '40%' : '50%';
   const expandedSnapPoint = '95%';
 
-  const snapPointMemo = useMemo(() => [initialSnapPoint, expandedSnapPoint], []);
+  const snapPointMemo = useMemo(
+    () => [initialSnapPoint, expandedSnapPoint],
+    [initialSnapPoint, expandedSnapPoint],
+  );
   const { handleContentLayout } = useBottomSheetDynamicSnapPoints(snapPointMemo);
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <BottomSheet
       enableHandlePanningGesture
       snapPoints={snapPointMemo}
       handleStyle={[tw`flex self-center bg-transparent w-12 rounded-full mt-3`]}
       handleIndicatorStyle={tw`bg-gray80`}
+      onChange={(e) => {
+        setExpanded(e === 1);
+      }}
     >
       <BottomSheetView onLayout={handleContentLayout}>
-        <TransactionsContent cardId={cardId} />
+        <TransactionsContent cardId={cardId} expanded={expanded} />
       </BottomSheetView>
     </BottomSheet>
   );

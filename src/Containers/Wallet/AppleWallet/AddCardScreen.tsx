@@ -27,7 +27,7 @@ const AddCardScreen = ({ route }: Props) => {
         setCardAdded(true);
       }, 1500);
     }
-  }, []);
+  }, [termsAccepted]);
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`} edges={['top', 'bottom']}>
