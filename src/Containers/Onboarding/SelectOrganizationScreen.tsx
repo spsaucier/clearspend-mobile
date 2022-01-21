@@ -7,7 +7,6 @@ import tw from '@/Styles/tailwind';
 import { Button } from '@/Components';
 import { OrganizationCard } from '@/Containers/Onboarding/Components/OrganizationCard';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
-import { MerchantIcon } from '@/Components/Icons';
 import { AuthScreens } from '../../Navigators/NavigatorTypes';
 
 const SelectOrganizationScreen = () => {
@@ -23,7 +22,6 @@ const SelectOrganizationScreen = () => {
           <OnboardingHeader
             title={t('selectOrganization.title')}
             subTitle={t('selectOrganization.subTitle')}
-            icon={<MerchantIcon />}
           />
         </View>
 

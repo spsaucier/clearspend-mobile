@@ -7,7 +7,6 @@ import tw from '@/Styles/tailwind';
 import { Button } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
-import { PhoneIcon } from '@/Components/Icons/phoneIcon';
 import { AuthScreens } from '../../Navigators/NavigatorTypes';
 
 const EnterMobileScreen = () => {
@@ -28,7 +27,6 @@ const EnterMobileScreen = () => {
         <OnboardingHeader
           title={t('enterMobile.title')}
           subTitle={t('enterMobile.subTitle')}
-          icon={<PhoneIcon />}
         />
         <CSTextInput
           label={t('enterMobile.mobileInputLabel')}

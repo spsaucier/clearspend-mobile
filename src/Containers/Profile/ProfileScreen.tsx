@@ -2,26 +2,17 @@ import React from 'react';
 import { View, TouchableOpacity, Switch, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { CSText, FocusAwareStatusBar, Button, CloseIconButton } from '@/Components';
-import { killSession } from '@/Store/Session';
-import { persistor } from '@/Store';
-import { mixpanel } from '@/Services/utils/analytics';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { useAuthentication } from '@/Hooks/useAuthentication';
 
 const ProfileScreen = () => {
   const { navigate } = useNavigation();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const onLogout = async () => {
-    await persistor.purge();
-    mixpanel.track('Logout');
-    dispatch(killSession());
-  };
+  const { logout } = useAuthentication();
 
   // TODO: use real user name
   const user = {
@@ -90,7 +81,7 @@ const ProfileScreen = () => {
             <Button
               containerStyle={tw`mt-auto bg-secondary`}
               textStyle={tw`text-white`}
-              onPress={onLogout}
+              onPress={logout}
             >
               {t('profile.profileMenu.logOut')}
             </Button>

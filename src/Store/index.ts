@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from 'redux';
 import {
   persistReducer,
@@ -11,6 +10,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { configureStore } from '@reduxjs/toolkit';
+import createSensitiveStorage from 'redux-persist-sensitive-storage';
 
 import startup from './Startup';
 import theme from './Theme';
@@ -22,9 +22,14 @@ const reducers = combineReducers({
   session,
 });
 
+const storage = createSensitiveStorage({
+  keychainService: 'ClearSpendKeychain',
+  sharedPreferencesName: 'ClearSpendSharedPrefs',
+});
+
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  storage,
   whitelist: ['theme', 'session'],
 };
 

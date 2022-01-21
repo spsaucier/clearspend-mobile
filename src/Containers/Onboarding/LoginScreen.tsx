@@ -15,6 +15,7 @@ import { Session, updateSession } from '@/Store/Session';
 import { ClearSpendIcon } from '@/Components/Svg/ClearSpendIcon';
 import { mixpanel } from '@/Services/utils/analytics';
 import { AuthScreens } from '@/Navigators/NavigatorTypes';
+import { useAuthentication } from '@/Hooks/useAuthentication';
 
 const LoginScreen = () => {
   const { t } = useTranslation();
@@ -25,6 +26,7 @@ const LoginScreen = () => {
   const [processing, setProcessing] = useState(false);
   const [authError, setError] = useState<string>();
   const dispatch = useDispatch();
+  const { setLoggedIn } = useAuthentication();
 
   const handleLogin = () => {
     Keyboard.dismiss();
@@ -38,6 +40,9 @@ const LoginScreen = () => {
         if (res) {
           mixpanel.track('Login');
           const sessionPayload = res as Session;
+          setLoggedIn(true);
+          setProcessing(false);
+          setLoginButtonDisabled(false);
           dispatch(updateSession(sessionPayload));
         }
       })
@@ -53,8 +58,6 @@ const LoginScreen = () => {
         if (invalidCredentials) {
           setError(t('login.invalidCredentials'));
         }
-      })
-      .finally(() => {
         setProcessing(false);
         setLoginButtonDisabled(false);
       });

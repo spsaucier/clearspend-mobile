@@ -7,7 +7,6 @@ import tw from '@/Styles/tailwind';
 import { Button } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
 import { PasswordRuleRow } from '@/Containers/Onboarding/Components/PasswordRuleRow';
-import { KeyIcon } from '@/Components/Icons';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
 
 const SetPasswordScreen = () => {
@@ -37,7 +36,6 @@ const SetPasswordScreen = () => {
           <OnboardingHeader
             title={t('setPassword.title')}
             subTitle={t('setPassword.subTitle')}
-            icon={<KeyIcon />}
           />
           <CSTextInput
             // errorMessage="There was an error"

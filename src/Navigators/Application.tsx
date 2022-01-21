@@ -14,6 +14,7 @@ import StartupScreen from '@/Containers/Startup/StartupScreen';
 import { Session } from '@/Store/Session';
 import { mixpanel } from '@/Services/utils/analytics';
 import { TopParams, TopScreens } from './NavigatorTypes';
+import AuthProvider from '@/Services/Auth/AuthProvider';
 
 const Stack = createStackNavigator<TopParams>();
 
@@ -51,28 +52,30 @@ const ApplicationNavigator = () => {
         <NavigationContainer
           ref={navigationRef}
           onReady={() => {
-          routeNameRef.current = navigationRef?.current?.getCurrentRoute()?.name || '';
-        }}
+            routeNameRef.current = navigationRef?.current?.getCurrentRoute()?.name || '';
+          }}
           onStateChange={onStateChange}
         >
-          <StatusBar barStyle="dark-content" />
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name={TopScreens.Startup} component={StartupScreen} />
-            <Stack.Screen
-              name={TopScreens.Auth}
-              component={AuthNavigator}
-              options={{
-              animationEnabled: false,
-            }}
-            />
-            <Stack.Screen
-              name={TopScreens.Main}
-              component={MainNavigator}
-              options={{
-              animationEnabled: false,
-            }}
-            />
-          </Stack.Navigator>
+          <AuthProvider>
+            <StatusBar barStyle="dark-content" />
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name={TopScreens.Startup} component={StartupScreen} />
+              <Stack.Screen
+                name={TopScreens.Auth}
+                component={AuthNavigator}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
+              <Stack.Screen
+                name={TopScreens.Main}
+                component={MainNavigator}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
+            </Stack.Navigator>
+          </AuthProvider>
         </NavigationContainer>
       </SafeAreaProvider>
     </QueryClientProvider>

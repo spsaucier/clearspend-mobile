@@ -15,6 +15,7 @@ export enum AuthScreens {
   ForgotPassword = 'Forgot Password',
   Landing = 'Landing',
   Login = 'Login',
+  LoginShortcut = 'Login with Biometric or PIN',
   LoginStack = 'Login Stack',
   SelectOrganization = 'Select Organization',
   SetPassword = 'Set Password',
@@ -34,6 +35,12 @@ export type AuthStackParamTypes = {
 
 export enum MainScreens {
   Home = 'Home',
+
+  // Prompt before confirming logged in status
+  LoginShortcut = 'Login With Biometrics or PIN',
+
+  // Onboarding post-auth
+  SetBiometricsOrPin = 'SetBiometricsOrPin',
 
   // Profile & Settings
   AuditLog = 'Audit Log',
@@ -66,6 +73,12 @@ export enum MainScreens {
 
 export type MainStackParamTypes = {
   [MainScreens.Home]: undefined;
+
+  // Prompt before confirming logged in status
+  [MainScreens.LoginShortcut]: undefined,
+
+  // Onboarding post-auth
+  [MainScreens.SetBiometricsOrPin]: undefined;
 
   // Profile & Settings
   [MainScreens.AuditLog]: undefined;

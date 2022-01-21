@@ -35,6 +35,12 @@
 			</dict>
 		</dict>
 	</dict>
+  <key>NSFaceIDUsageDescription</key>
+  <string>Use Face ID to log in securely</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Use your camera to take photos of receipts</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Use your photo library to upload receipts</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location is not required to use this app.</string>
 	<key>UILaunchStoryboardName</key>

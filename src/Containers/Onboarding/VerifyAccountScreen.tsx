@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
-import { PhoneIcon } from '@/Components/Icons';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
 import { AuthScreens } from '../../Navigators/NavigatorTypes';
 
@@ -31,7 +30,6 @@ const VerifyAccountScreen = () => {
         <OnboardingHeader
           title={t('verifyAccount.title')}
           subTitle={t('verifyAccount.subTitle')}
-          icon={<PhoneIcon />}
         />
 
         <View style={tw`flex-row justify-center px-3`}>

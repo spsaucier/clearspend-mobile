@@ -13,17 +13,28 @@ import { useFreezeCard, useUnFreezeCard, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens } from '../../Navigators/NavigatorTypes';
+import { useAuthentication } from '../../Hooks/useAuthentication';
+import { useAvailableBioMethod } from '../../Hooks/useAvailableBioMethod';
 
 const { width: screenWidth } = Dimensions.get('screen');
 
 const WalletScreen = () => {
   const { navigate } = useNavigation();
+  const { t } = useTranslation();
+  const { biometricsEnabled, passcodeActive } = useAuthentication();
+  const { methodAvailable } = useAvailableBioMethod();
   const cardWidth = 0.95 * screenWidth;
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
   const cardStatus = selectedCard?.card?.status;
   const isFrozen = cardStatus === 'INACTIVE';
 
-  const { t } = useTranslation();
+  useEffect(() => {
+    // TODO: when PIN is added, remove methodAvailable from below
+    if (!biometricsEnabled && !passcodeActive && methodAvailable) {
+      navigate(MainScreens.SetBiometricsOrPin);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const {
     data: cardsData,

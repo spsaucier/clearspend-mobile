@@ -1,3 +1,5 @@
+import { AuthenticationMethods } from '@/Hooks/useAvailableBioMethod';
+
 export default {
   general: {
     continue: 'Continue',
@@ -17,6 +19,10 @@ export default {
       buttonCta: 'Open an account today.',
     },
     invalidCredentials: 'The user credentials are invalid.',
+    shortcut: {
+      havingTroubleLoggingIn: 'Having trouble logging in?',
+      loginWithEmailPassword: 'Log in using your email and password',
+    },
   },
   selectOrganization: {
     title: 'Select your organization',
@@ -35,6 +41,34 @@ export default {
     subTitle: 'Enter the verification code send to your mobile number',
     resendCta: "Didn't receive a code? Resend Code (in 15 seconds)",
     buttonCta: 'Verify',
+  },
+  loginOptions: {
+    title: 'Login options',
+    subTitle: 'You’ll need to enable Face ID or set up a PIN as a faster, more secure way of logging in next time.',
+    [AuthenticationMethods.FACE]: {
+      android: {
+        title: 'Trusted Face',
+        description: 'Enable Trusted Face to log in to ClearSpend',
+      },
+      ios: {
+        title: 'Face ID',
+        description: 'Enable Face ID to log in to ClearSpend',
+      },
+    },
+    [AuthenticationMethods.FINGERPRINT]: {
+      ios: {
+        title: 'Touch ID',
+        description: 'Enable Touch ID to log in to ClearSpend',
+      },
+    },
+    [AuthenticationMethods.FINGERPRINT_ANDROID]: {
+      android: {
+        title: 'Fingerprint',
+        description: 'Enable Fingerprint to log in to ClearSpend',
+      },
+    },
+    pin: 'PIN',
+    pinDescription: 'Create a 4-digit PIN to log in to ClearSpend',
   },
   setPassword: {
     title: 'Set your own password',

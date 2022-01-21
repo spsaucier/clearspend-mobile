@@ -6861,6 +6861,11 @@ react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-biometrics@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-biometrics/-/react-native-biometrics-2.1.4.tgz#e201e9f18baeb560eeaba8d41fbd4f90d04152fe"
+  integrity sha512-Ek7NmzgHB4rot2DdzV9Q3pzxFjnEFipGSFsmWZw5vcM9vkMoebhz8d8UYgsp0efroyeLITDNHwcFGEzq8XW9Kg==
+
 react-native-camera@^4.2.1:
   version "4.2.1"
   resolved "https://registry.npmjs.org/react-native-camera/-/react-native-camera-4.2.1.tgz"
@@ -6918,6 +6923,11 @@ react-native-maps@^0.29.4:
   dependencies:
     "@types/geojson" "^7946.0.7"
 
+react-native-permissions@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-3.2.0.tgz#2199a49e96bac633016955d36142032d747d0d3e"
+  integrity sha512-UPXxf2twjYL9vPI4HP2kT15AOTY489MhsNuyAgp+wJM2IRkkSVW6rO3k4WuSRL9ZmPhwkWb9bYjf8EEwRzZcXg==
+
 react-native-reanimated@2.2.2:
   version "2.2.2"
   resolved "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.2.2.tgz"
@@ -6949,6 +6959,11 @@ react-native-screens@^3.7.2:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-sensitive-info@^5.5.8:
+  version "5.5.8"
+  resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-5.5.8.tgz#6ebb67eed83d1c2867bd435630ef2c41eef204ed"
+  integrity sha512-p99oaEW4QG1RdUNrkvd/c6Qdm856dQw/Rk81f9fA6Y3DlPs6ADNdU+jbPuTz3CcOUJwuKBDNenX6LR9KfmGFEg==
 
 react-native-snap-carousel@^3.9.1:
   version "3.9.1"
@@ -7131,6 +7146,11 @@ redux-flipper@^2.0.0:
   dependencies:
     cycle "^1.0.3"
     dayjs "^1.8.29"
+
+redux-persist-sensitive-storage@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/redux-persist-sensitive-storage/-/redux-persist-sensitive-storage-1.0.0.tgz#19f5e5bd8ce4c4a4bc852eec61d18360abe07b66"
+  integrity sha512-AD8JyDsTpj+H+ZOGcg1qs9MkdcNOmHsBu+QL2kq2aKDB5HaCjy15qP4eryz7RVhWBatu4WC51R//1bfKHNb6yg==
 
 redux-persist@^6.0.0:
   version "6.0.0"
