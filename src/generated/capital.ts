@@ -536,6 +536,36 @@ export interface RevealCardResponse {
   ephemeralKey?: string;
 }
 
+export interface CardStatementRequest {
+  /** @format uuid */
+  cardId?: string;
+
+  /** @format date-time */
+  startDate?: string;
+
+  /** @format date-time */
+  endDate?: string;
+}
+
+export interface BusinessReallocationRequest {
+  /** @format uuid */
+  allocationIdFrom?: string;
+
+  /** @format uuid */
+  allocationIdTo?: string;
+  amount?: Amount;
+}
+
+export interface BusinessFundAllocationResponse {
+  /** @format uuid */
+  adjustmentIdFrom?: string;
+  ledgerBalanceFrom?: Amount;
+
+  /** @format uuid */
+  adjustmentIdTo?: string;
+  ledgerBalanceTo?: Amount;
+}
+
 export interface SearchBusinessAllocationRequest {
   name: string;
 }
@@ -883,7 +913,13 @@ export interface AccountActivityResponse {
     | "REALLOCATE"
     | "NETWORK_AUTHORIZATION"
     | "NETWORK_CAPTURE";
-  status?: "PENDING" | "DECLINED" | "APPROVED" | "PROCESSED";
+  status?:
+    | "PENDING"
+    | "DECLINED"
+    | "APPROVED"
+    | "CANCELED"
+    | "CREDIT"
+    | "PROCESSED";
   amount?: Amount;
   receipt?: ReceiptDetails;
   notes?: string;
@@ -1921,9 +1957,6 @@ export interface UpdateUserResponse {
 }
 
 export interface UpdateCardStatusRequest {
-  /** @example BLOCKED */
-  status?: "ACTIVE" | "INACTIVE" | "CANCELLED";
-
   /** @example CARDHOLDER_REQUESTED */
   statusReason?: "NONE" | "CARDHOLDER_REQUESTED";
 }
@@ -1961,6 +1994,14 @@ export interface Card {
   lastFour?: string;
   address?: Address;
   externalRef?: string;
+}
+
+export interface ActivateCardRequest {
+  /** @pattern ^\d{4}$ */
+  lastFour?: string;
+
+  /** @example CARDHOLDER_REQUESTED */
+  statusReason?: "NONE" | "CARDHOLDER_REQUESTED";
 }
 
 export interface UpdateAccountActivityRequest {
@@ -2082,6 +2123,21 @@ export interface Receipt {
   amount: Amount;
 }
 
+export interface UserAllocationRoleRecord {
+  /** @format uuid */
+  userAllocationRoleId?: string;
+
+  /** @format uuid */
+  allocationId: string;
+  user?: UserData;
+  role?: string;
+  inherited?: boolean;
+}
+
+export interface UserAllocationRolesResponse {
+  userAllocationRoleList: UserAllocationRoleRecord[];
+}
+
 export interface CreateTestDataResponse {
   businesses?: TestBusiness[];
 }
@@ -2161,4 +2217,26 @@ export interface BankAccount {
 
 export interface LinkTokenResponse {
   linkToken?: string;
+}
+
+export interface AllocationRolePermissionRecord {
+  /** @format uuid */
+  id?: string;
+
+  /** @format uuid */
+  businessId?: string;
+  role_name: string;
+  permissions: (
+    | "READ"
+    | "CATEGORIZE"
+    | "LINK_RECEIPTS"
+    | "MANAGE_FUNDS"
+    | "MANAGE_CARDS"
+    | "MANAGE_USERS"
+    | "MANAGE_PERMISSIONS"
+  )[];
+}
+
+export interface AllocationRolePermissionsResponse {
+  userAllocationRoleList: AllocationRolePermissionRecord[];
 }

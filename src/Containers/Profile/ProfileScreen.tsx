@@ -5,19 +5,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
-import { CSText, FocusAwareStatusBar, Button, CloseIconButton } from '@/Components';
+import { CSText, FocusAwareStatusBar, Button, CloseIconButton, ActivityIndicator } from '@/Components';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
+import { useUser } from '@/Queries';
 
 const ProfileScreen = () => {
   const { navigate } = useNavigation();
   const { t } = useTranslation();
+  const { isLoading, error, data: user } = useUser();
   const { logout } = useAuthentication();
-
-  // TODO: use real user name
-  const user = {
-    name: 'John Smith',
-  };
 
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
@@ -25,11 +22,15 @@ const ProfileScreen = () => {
       <View style={tw`flex-row items-center justify-end pr-6 pt-6`}>
         <CloseIconButton color={tw.color('white')} />
       </View>
-      <View style={[tw`h-1/4 flex-col justify-center bg-secondary px-5 pt-12 pb-16`]}>
-        <CSText style={tw`text-2xl text-white`}>{user.name}</CSText>
-        <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
-      </View>
-
+      {isLoading || error || !user ? (
+        <ActivityIndicator />
+      ) : (
+        <View style={[tw`h-1/4 flex-col justify-center bg-secondary px-5 pt-12 pb-16`]}>
+          <CSText style={tw`text-2xl text-white`}>{`${user.firstName} ${user.lastName}`}</CSText>
+          {/* TODO: Make this link go to a page with more user info */}
+          <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
+        </View>
+      )}
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={tw`flex-1 bg-white`}
