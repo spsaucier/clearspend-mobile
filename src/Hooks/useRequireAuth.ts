@@ -7,12 +7,11 @@ import {
   Platform,
 } from 'react-native';
 import { useEffect, useState } from 'react';
+import { MMKV } from 'react-native-mmkv';
 import { mixpanel } from '@/Services/utils/analytics';
-import useAsyncStorage from './useAsyncStorage';
+import { IS_AUTHED, LAST_ACTIVE_KEY } from '@/Store/keys';
 
-export const LAST_ACTIVE_KEY = 'LAST_ACTIVE_KEY';
-// export const REQUIRE_AUTH_TIMEOUT_MINUTES = 5;
-export const REQUIRE_AUTH_TIMEOUT_MINUTES = 0;
+export const REQUIRE_AUTH_TIMEOUT_MINUTES = 5;
 
 /**
  * When our application is put into the background for a certain amount of time (5 minutes at the
@@ -22,46 +21,43 @@ export const REQUIRE_AUTH_TIMEOUT_MINUTES = 0;
  * @param onRequireAuth Method to flag that the user must authenticate again.
  */
 export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void) => {
-  const [temporarilyDisabled, disableTimeoutAuth] = useState(false);
-  const {
-    value: lastActive,
-    setValue: setLastActive,
-    removeValue: removeLastActive,
-  } = useAsyncStorage<number | undefined>(LAST_ACTIVE_KEY, undefined);
+  const [temporarilyDisabled, setTemporarilyDisabled] = useState(false);
+  const storage = new MMKV();
+
+  const tooLongSinceLastActive = () => {
+    const currentDate = new Date().valueOf();
+    const lastActive = storage.getNumber(LAST_ACTIVE_KEY);
+    const diff = currentDate - lastActive;
+    const minutesSinceLastActive = Math.floor(diff / 1000 / 60);
+    return minutesSinceLastActive >= REQUIRE_AUTH_TIMEOUT_MINUTES;
+  };
 
   const onInactive = async () => {
-    if (temporarilyDisabled) {
-      return;
+    if (temporarilyDisabled) return;
+
+    mixpanel.track('App state changed to inactive/background');
+
+    if (storage.getBoolean(IS_AUTHED) && !tooLongSinceLastActive()) {
+      storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
     }
-    mixpanel.track('App state changed to background');
-    await setLastActive(new Date().valueOf());
   };
 
   const onActive = async () => {
     mixpanel.track('App state changed to active');
-    disableTimeoutAuth(false);
+    setTemporarilyDisabled(false);
 
-    if (typeof lastActive !== 'undefined') {
-      const currentDate = new Date().valueOf();
-
-      const diff = currentDate - lastActive;
-      const minutesSinceLastActive = Math.floor(diff / 1000 / 60);
-
-      if (minutesSinceLastActive >= REQUIRE_AUTH_TIMEOUT_MINUTES) {
-        onRequireAuth(true);
-        removeLastActive();
-      }
+    if (tooLongSinceLastActive()) {
+      storage.set(IS_AUTHED, false);
+      onRequireAuth(true);
+    } else {
+      storage.set(IS_AUTHED, true);
     }
   };
 
   const handleAppStateChange = async (newAppState: AppStateStatus) => {
-    // we'll wait a short time and then execute the lock,
-    // this is just in case that the user opens the task switcher by mistake,
-    // so if it returns rapidly to the app we'll keep the session
     if (['background', 'inactive'].includes(newAppState)) {
       await onInactive();
     } else if (newAppState === 'active') {
-      // the user got back to the app, so we'll avoid the lock
       await onActive();
     }
   };
@@ -80,19 +76,7 @@ export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void
     };
   }, []);
 
-  /**
-   * Delete the last active key if the user reaches the splash screen. This key serves two
-   * purposes.
-   *
-   * 1) Indicate the app has been backgrounded (but not terminated) by the user.
-   *
-   * 2) Save the time when the background occurred to be compared later.
-   *
-   * Since we can't detect force closures of the application (where we would prefer to remove
-   * this flag), we remove it at the screen the app first opens when coming from a force close.
-   */
   return {
-    setAutoLockTempDisabled: disableTimeoutAuth,
-    clearLastStoredBackgroundTime: removeLastActive,
+    setAutoLockTempDisabled: setTemporarilyDisabled,
   };
 };

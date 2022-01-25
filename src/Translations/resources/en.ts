@@ -44,7 +44,8 @@ export default {
   },
   loginOptions: {
     title: 'Login options',
-    subTitle: 'You’ll need to enable Face ID or set up a PIN as a faster, more secure way of logging in next time.',
+    subTitle:
+      'You’ll need to enable Face ID or set up a PIN as a faster, more secure way of logging in next time.',
     [AuthenticationMethods.FACE]: {
       android: {
         title: 'Trusted Face',

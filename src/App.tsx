@@ -9,8 +9,10 @@ import { mixpanel } from '@/Services/utils/analytics';
 import './Translations';
 
 import tw from '@/Styles/tailwind';
+import { useAvailableBioMethod } from './Hooks/useAvailableBioMethod';
 
 const App = () => {
+  useAvailableBioMethod();
   useEffect(() => {
     mixpanel.init();
   }, []);

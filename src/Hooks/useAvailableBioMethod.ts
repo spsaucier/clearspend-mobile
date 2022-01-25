@@ -1,6 +1,8 @@
 import SInfo from 'react-native-sensitive-info';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
+import { useMMKVString } from 'react-native-mmkv';
+import { AVAILABLE_BIO_KEY } from '@/Store/keys';
 
 export enum AuthenticationMethods {
   FINGERPRINT = 'Touch ID',
@@ -8,41 +10,31 @@ export enum AuthenticationMethods {
   FACE = 'Face ID',
 }
 
-type ReturnUseAvailableBioMethod = {
-  loading: boolean;
-  methodAvailable: AuthenticationMethods | false;
-  reload: () => void;
-};
-
-export const useAvailableBioMethod = (): ReturnUseAvailableBioMethod => {
-  const [loading, setLoading] = useState(true);
-  const [methodAvailable, setMethodAvailable] = useState<AuthenticationMethods | false>(false);
-
+export const useAvailableBioMethod = (): void => {
+  const [, setAvailableBio] = useMMKVString(AVAILABLE_BIO_KEY);
   const setMethodAvailableIos = (availability: string) => {
     if (availability === AuthenticationMethods.FACE) {
-      setMethodAvailable(AuthenticationMethods.FACE);
+      setAvailableBio(AuthenticationMethods.FACE);
     } else if (availability === AuthenticationMethods.FINGERPRINT) {
-      setMethodAvailable(AuthenticationMethods.FINGERPRINT);
+      setAvailableBio(AuthenticationMethods.FINGERPRINT);
     } else {
-      setMethodAvailable(false);
+      setAvailableBio('');
     }
   };
 
-  const handleMethodAvailable = async () => {
+  const handleMethodAvailable = useCallback(async () => {
     const availability = await SInfo.isSensorAvailable();
     if (Platform.OS === 'ios') {
       setMethodAvailableIos(availability as string);
     } else if (Platform.OS === 'android' && availability) {
-      setMethodAvailable(AuthenticationMethods.FINGERPRINT_ANDROID);
+      setAvailableBio(AuthenticationMethods.FINGERPRINT_ANDROID);
     } else {
-      setMethodAvailable(false);
+      setAvailableBio('');
     }
-    setLoading(false);
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     handleMethodAvailable();
-  });
-
-  return { loading, methodAvailable, reload: handleMethodAvailable };
+  }, [handleMethodAvailable]);
 };

@@ -16,6 +16,7 @@ const LoginShortcutScreen = () => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const { setLoggedIn, logout } = useAuthentication();
+
   useBiometricLogin(() => {
     setLoggedIn(true);
     navigate(MainScreens.Home);

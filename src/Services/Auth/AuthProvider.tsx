@@ -1,15 +1,14 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
-
 import { useNavigation } from '@react-navigation/native';
-import { useRequireAuth } from '@/Hooks/useRequireAuth';
+import { MMKV, useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
 import { persistor, store } from '@/Store';
 import { killSession } from '@/Store/Session';
 import { ReturnUseBiometrics, useBiometrics } from '@/Hooks/useBiometrics';
 import { usePasscode } from '@/Hooks/usePasscode';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
 import { mixpanel } from '../utils/analytics';
-import useAsyncStorage from '../../Hooks/useAsyncStorage';
-import { IS_BIOMETRIC_ENABLED, IS_PASSCODE_ENABLED } from '@/Store/keys';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { AVAILABLE_BIO_KEY, IS_AUTHED, IS_PASSCODE_ENABLED, LAST_ACTIVE_KEY } from '../../Store/keys';
+import { useRequireAuth } from '@/Hooks/useRequireAuth';
 
 /*
 The AuthProvider provides a means to work with stateful values/effects/custom
@@ -34,7 +33,6 @@ interface AuthContextInterface
 }
 
 export const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
-const LAST_SIGNED_IN = 'LAST_SIGNED_IN';
 
 const AuthProvider: FC = ({ children }) => {
   const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true);
@@ -42,32 +40,52 @@ const AuthProvider: FC = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [hasCancelledAndSignedOut, setHasCancelledAndSignedOut] = useState(false);
   const [isWelcomeBack, setWelcomeBack] = useState(false);
-  const { navigate } = useNavigation();
-  const { removeValue: clearStoredBiometric } = useAsyncStorage(IS_BIOMETRIC_ENABLED, false);
-  const { removeValue: clearStoredPasscode } = useAsyncStorage(IS_PASSCODE_ENABLED, false);
-  const { value: lastLoggedIn, setValue: setLastSignedIn } = useAsyncStorage(LAST_SIGNED_IN, 0);
+  const { reset } = useNavigation();
+  const bioProps = useBiometrics(setLoggedIn);
+  const [, setIsPasscodeEnabled] = useMMKVBoolean(IS_PASSCODE_ENABLED);
+  const [, setLastSignedIn] = useMMKVNumber(LAST_ACTIVE_KEY);
+  const [, setAuthed] = useMMKVBoolean(IS_AUTHED);
+  const storage = new MMKV();
+
+  const onRequireAuth = (loggedInStatus = false) => {
+    // TODO: Also trigger if PIN enabled, log out if neither
+    if (storage.getString(AVAILABLE_BIO_KEY)) {
+      setLoggedIn(loggedInStatus);
+      setShowLoadingPlaceholder(true);
+      reset({
+        index: 0,
+        routes: [{ name: MainScreens.LoginShortcut }],
+      });
+    }
+  };
+
+  const { setAutoLockTempDisabled } = useRequireAuth(onRequireAuth);
 
   const passcodeProps = usePasscode();
-  const bioProps = useBiometrics(setLoggedIn);
 
   const logout = async () => {
     mixpanel.track('Logout');
     mixpanel.flush();
+    setAutoLockTempDisabled(true);
     setLoggedIn(false);
-    await bioProps.enableBiometrics(false);
-    await passcodeProps.removePasscode();
-    await clearStoredBiometric();
-    await clearStoredPasscode();
-    await persistor.purge();
+    setAuthed(false);
+    setLastSignedIn(new Date().valueOf());
+    persistor.purge();
+    bioProps.disableBiometrics();
+    passcodeProps.removePasscode();
+    setIsPasscodeEnabled(false);
     store.dispatch(killSession());
   };
 
   useEffect(() => {
     (async () => {
+      const lastSignedIn = storage.getNumber(LAST_ACTIVE_KEY);
       if (loggedIn) {
+        await setAuthed(true);
         await setLastSignedIn(new Date().valueOf());
-      } else if (lastLoggedIn) {
-        const diffMs = new Date().valueOf() - lastLoggedIn;
+        setAutoLockTempDisabled(false);
+      } else if (lastSignedIn) {
+        const diffMs = new Date().valueOf() - lastSignedIn;
         const diffDays = diffMs / 86400000;
         const noLoginWithin30Days = diffDays >= 30;
         if (noLoginWithin30Days) {
@@ -76,18 +94,12 @@ const AuthProvider: FC = ({ children }) => {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedIn, lastLoggedIn]);
-
-  const onRequireAuth = (loggedInStatus = false) => {
-    setLoggedIn(loggedInStatus);
-    setShowLoadingPlaceholder(true);
-    navigate(MainScreens.LoginShortcut);
-  };
+  }, [loggedIn]);
 
   const context = {
     ...bioProps,
-    ...useRequireAuth(onRequireAuth),
     ...passcodeProps,
+    setAutoLockTempDisabled,
     loading: bioProps.loading || passcodeProps.loading,
     setLoggedIn,
     loggedIn,
