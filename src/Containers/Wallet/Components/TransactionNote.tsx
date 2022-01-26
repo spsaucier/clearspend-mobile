@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Path, Svg } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
-import { NoteIcon, PlusIcon } from '@/Components/Icons';
+import { NoteIcon, PlusCircleFilledIcon, PlusIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
 import { MainScreens } from '../../../Navigators/NavigatorTypes';
 
@@ -37,7 +37,7 @@ export const TransactionNote = ({ note = '', transactionId }: Props) => {
           onPress={navToNoteInput}
           style={tw`flex-row justify-center items-center py-2 px-4 rounded-full bg-tan`}
         >
-          <PlusIcon />
+          <PlusCircleFilledIcon />
           <CSText style={tw`ml-2 text-secondary`}>
             {t('wallet.transactionDetails.notes.addANote')}
           </CSText>

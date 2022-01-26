@@ -20,7 +20,7 @@ export const uploadReceipt = (data: any) => {
 export const useUploadReceipt = () =>
   useMutation<ReceiptDetails, Error>((data: any) => uploadReceipt(data));
 
-export const linkReceiptAsync = (receiptId: string, accountActivityId: string) =>
+export const linkReceiptAsync = (accountActivityId: string, receiptId: string) =>
   apiClient
     .post(`/users/account-activity/${accountActivityId}/receipts/${receiptId}/link`)
     .then((r) => r.data);

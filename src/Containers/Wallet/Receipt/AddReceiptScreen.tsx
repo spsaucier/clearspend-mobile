@@ -59,6 +59,7 @@ const AddReceiptScreen = () => {
       // TODO: TS freakout
     } as unknown as void).then((data) => {
       const { receiptId } = data;
+
       queryClient.invalidateQueries(['receipt', receiptId], {
         refetchInactive: true,
       });
@@ -75,7 +76,7 @@ const AddReceiptScreen = () => {
   useEffect(() => {
     if (receiptId && !linked) {
       const linkReceipt = async () => {
-        await linkReceiptAsync(receiptId, accountActivityId);
+        await linkReceiptAsync(accountActivityId, receiptId);
       };
       linkReceipt().then(() => setUploadReceiptState({ ...uploadReceiptState, linked: true }));
     }

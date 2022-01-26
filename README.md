@@ -15,6 +15,7 @@ Follow general React Native setup: (React Native CLI Quickstart): https://reactn
 - Run the Android app (remember to start a simulator or connect a device): `yarn android`
 
 ### Set up .env file
+
 Create an .env file and copy the contents of .env.example into it
 Get the missing vars from 1password and paste into respective fields
 
@@ -28,7 +29,6 @@ M1 Macs:
   - Emulator appearing offline on M1 Mac after the last update of arm64-v8a (https://stackoverflow.com/a/67261231/1118721)
   - Failed to create sdcard in the AVD folder.
     - Go to AVD > Show advanced settings > Memory and Storage > No SD Card
-
 
 # Styling
 
@@ -45,6 +45,7 @@ This project uses tailwind-react-native-classnames for styling: https://github.c
 - Restart metro and rebuild project
 
 #### Fonts
+
 - Fonts are located in the src/assets/fonts directory and linked in tailwind.config.js
 - Use custom fonts with e.g. 'font-montreal' or 'font-telegraf'
 - Set weight with e.g. 'font-bold'
@@ -57,6 +58,12 @@ TBC
 
 Test new packages that are added with `snyk test packagename`
 
+# Backend types mapping
+
+## Generate a new capital.ts file
+
+1. Terminal > `yarn generate`
+
 # Local Server
 
 ## Setup
@@ -65,6 +72,7 @@ Test new packages that are added with `snyk test packagename`
 2. Install modules with `yarn install`
 
 ## Run local REST Server
+
 (Assumes the setup steps have been done)
 
 1. Run the `yarn restserver` script from the main directory. Alternately, run `node index.js` from the `restserver` directory to start local server.

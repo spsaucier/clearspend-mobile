@@ -16,7 +16,7 @@ export const DarkToLightGradient = ({ style, testID, inverted }: Props) => {
   const bottom = inverted ? lighter : darker;
 
   return (
-    <View style={[{ width: '100%' }, style]}>
+    <View style={[{ width: '100%' }, style]} pointerEvents="none">
       <Svg width="100%" height="207" fill="none" testID={testID}>
         <Rect opacity={0.8} width="100%" height="207" fill="url(#paint0_linear_976_10116)" />
         <Defs>

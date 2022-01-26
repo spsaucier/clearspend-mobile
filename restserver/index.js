@@ -148,29 +148,34 @@ app.post('/users/account-activity/:accountActivityId/receipts/:receiptId/link', 
   const { params } = req;
   const { accountActivityId, receiptId } = params;
 
-  const cardIdx = transactions.findIndex((t) =>
-    t.response.content.find((x) => x.accountActivityId === accountActivityId),
-  );
+  const transactionIdx = transactions.findIndex((x) => x.accountActivityId === accountActivityId);
+  const transaction = transactions[transactionIdx];
 
-  const transactionIdx = transactions[cardIdx].response.content.findIndex(
-    (t) => t.accountActivityId === accountActivityId,
-  );
+  let receiptIds = transaction.receipt?.receiptId;
 
-  const currentTransaction = transactions[cardIdx].response.content[transactionIdx];
+  if (receiptIds?.find((x) => x === receiptId)) {
+    return res.status(500).send('ReceiptId already linked to this transaction');
+  }
+
+  if (!receiptIds) {
+    receiptIds = [];
+  }
+
+  receiptIds.push(receiptId);
 
   const newTransactionWithReceiptUpdated = {
-    ...currentTransaction,
+    ...transaction,
     receipt: {
-      receiptId,
+      receiptId: receiptIds,
     },
   };
 
-  transactions[cardIdx].response.content[transactionIdx] = newTransactionWithReceiptUpdated;
+  transactions[transactionIdx] = newTransactionWithReceiptUpdated;
 
   res.json(newTransactionWithReceiptUpdated);
 });
 
-app.post('/users/account-activity/:accountActivityId/receipts/:receiptId/link', (req, res) => {
+app.post('/users/account-activity/:accountActivityId/receipts/:receiptId/unlink', (req, res) => {
   const { params } = req;
   const { accountActivityId, receiptId } = params;
 

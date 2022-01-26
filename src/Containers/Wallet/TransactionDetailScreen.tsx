@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback, useRef } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -6,6 +6,7 @@ import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core'
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
 import MapView, { Marker } from 'react-native-maps';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button, CSText } from '@/Components';
@@ -13,14 +14,15 @@ import {
   CheckCircleIconFilled,
   EditIcon,
   ExclamationIcon,
-  ReceiptIcon,
+  PlusCircleFilledIcon,
   WarningIcon,
 } from '@/Components/Icons';
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
 import { CategoryIcon } from '@/Components/CategoryIcon';
-import { useTransaction } from '@/Queries';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
+import { useReceiptUri, useTransaction } from '@/Queries';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
+import AddReceiptPanel from './Components/AddReceiptPanel';
 
 type InfoRowProps = {
   label: string;
@@ -38,12 +40,34 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
 
 const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 
+const ReceiptPreview = ({ receiptIds }: { receiptIds: string[] }) => {
+  const { data: imageData, isLoading } = useReceiptUri(receiptIds[0]);
+
+  if (isLoading)
+    return (
+      <View style={tw`justify-center items-center`}>
+        <ActivityIndicator color="black" />
+      </View>
+    );
+
+  return (
+    <View style={tw`flex`}>
+      <Image source={{ uri: imageData }} style={tw`w-full h-full `} resizeMode="cover"></Image>
+      <View
+        style={tw`rounded-full bg-white h-6 w-6 justify-center items-center absolute right-2 top-2`}
+      >
+        <CSText>{receiptIds.length}</CSText>
+      </View>
+    </View>
+  );
+};
+
 const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const route = useRoute<any>();
   const { params } = route;
-
+  const addReceiptPanelRef = useRef<BottomSheetModal>(null);
   const { isLoading, error, data, refetch } = useTransaction(params.transactionId);
 
   useFocusEffect(
@@ -93,20 +117,15 @@ const TransactionDetailScreenContent = () => {
   const latitude = merchant?.merchantLatitude;
   const longitude = merchant?.merchantLongitude;
 
-  const handleOnReceiptPress = () => {
-    if (accountActivityId) {
-      if (receipt?.receiptId) {
-        navigate(MainScreens.ViewReceipt, {
-          accountActivityId,
-          receiptId: receipt.receiptId?.[0],
-          cardId: params.cardId,
-        });
-      } else {
-        navigate(MainScreens.AddReceipt, {
-          accountActivityId,
-          cardId: params.cardId,
-        });
-      }
+  const onReceiptModalPress = () => {
+    if (receipt?.receiptId) {
+      navigate(MainScreens.ViewReceipt, {
+        accountActivityId: accountActivityId!,
+        receiptIds: receipt.receiptId,
+        cardId: params.cardId,
+      });
+    } else {
+      addReceiptPanelRef.current?.present();
     }
   };
 
@@ -201,17 +220,36 @@ const TransactionDetailScreenContent = () => {
             <CSText style={tw`text-black text-xs`}>{transactionDateTime}</CSText>
           </View>
 
-          <View style={tw`p-6`}>
+          <View style={tw`pt-6`}>
             <TransactionNote note={notes} transactionId={accountActivityId!} />
+          </View>
 
-            <Button onPress={handleOnReceiptPress} small containerStyle={tw`bg-black mt-5`}>
-              <ReceiptIcon color={tw.color('primary')} />
-              <CSText style={tw`text-base text-white ml-3`}>
-                {receipt?.receiptId
-                  ? t('wallet.transactionDetails.viewReceipt')
-                  : t('wallet.transactionDetails.addReceipt')}
-              </CSText>
-            </Button>
+          <View style={tw`flex-row px-2 pt-6`}>
+            <TouchableOpacity
+              style={tw.style(`flex-1 rounded overflow-hidden bg-gray90 justify-center m-2`, {
+                aspectRatio: 2,
+              })}
+              onPress={onReceiptModalPress}
+            >
+              {receipt?.receiptId ? (
+                <ReceiptPreview receiptIds={receipt?.receiptId} />
+              ) : (
+                <View style={tw`self-center justify-center items-center`}>
+                  <PlusCircleFilledIcon />
+                  <CSText style={tw`pt-2`}>{t('wallet.transactionDetails.addReceipt')}</CSText>
+                </View>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={tw.style(`flex-1 rounded bg-gray90 justify-center m-2`, {
+                aspectRatio: 2,
+              })}
+            >
+              <View style={tw`self-center justify-center items-center`}>
+                <PlusCircleFilledIcon />
+                <CSText style={tw`pt-2`}>{t('wallet.transactionDetails.assignCategory')}</CSText>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
@@ -262,6 +300,7 @@ const TransactionDetailScreenContent = () => {
           </View>
         </KeyboardAwareScrollView>
       </NativeViewGestureHandler>
+      <AddReceiptPanel ref={addReceiptPanelRef} accountActivityId={accountActivityId} />
     </View>
   );
 };

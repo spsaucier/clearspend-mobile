@@ -99,7 +99,7 @@ export type MainStackParamTypes = {
   [MainScreens.NoteInput]: { transactionId: string; note: string | null };
   [MainScreens.Notifications]: undefined;
   [MainScreens.TransactionDetails]: { cardId: string; transactionId: string };
-  [MainScreens.ViewReceipt]: { accountActivityId: string; receiptId: string, cardId: string };
+  [MainScreens.ViewReceipt]: { accountActivityId: string; receiptIds: string[]; cardId: string };
   [MainScreens.Wallet]: undefined;
 
   // Apple Wallet Mock UI Screens

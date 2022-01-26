@@ -33,3 +33,7 @@ export { WalletIcon } from './walletIcon';
 export { WarningIcon } from './warningIcon';
 export { LightningIcon } from './lightningIcon';
 export { LightningOffIcon } from './lightningOffIcon';
+export { PlusCircleFilledIcon } from './plusCircleFilledIcon';
+export { CameraIcon } from './cameraIcon';
+export { PictureIcon } from './pictureIcon';
+export { FileIcon } from './fileIcon';

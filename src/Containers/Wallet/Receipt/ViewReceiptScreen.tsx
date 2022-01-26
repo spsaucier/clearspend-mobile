@@ -1,61 +1,167 @@
-import React from 'react';
-import { Image, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, useWindowDimensions, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import Carousel from 'react-native-snap-carousel';
 
 import tw from '@/Styles/tailwind';
-import { CloseIcon } from '@/Components/Icons';
+import { CloseIcon, PlusCircleFilledIcon } from '@/Components/Icons';
 import { DarkToLightGradient } from '@/Components/Svg/DarkToLightGradient';
-import { ActivityIndicator, Button, CSText } from '@/Components';
+import { ActivityIndicator, CSText } from '@/Components';
 import { useReceiptUri } from '@/Queries';
-import { MainScreens } from '../../../Navigators/NavigatorTypes';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
+
+type CachedReceipt = {
+  receiptId: string;
+  image?: string;
+  loading?: boolean;
+};
 
 const ViewReceiptScreen = () => {
+  const dimens = useWindowDimensions();
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
   const { params } = route;
-  const { accountActivityId, receiptId, cardId } = params as any;
+  const { accountActivityId, receiptIds, cardId } = params as any;
+  const carouselRef = useRef<Carousel<any>>(null);
+  const [controlsEnabled, setControlsEnabled] = useState(true);
 
-  const { data, isLoading } = useReceiptUri(receiptId);
+  const cachedInitialValue = receiptIds.map((id: string) => {
+    return {
+      receiptId: id,
+      image: undefined,
+      loading: undefined,
+    } as CachedReceipt;
+  });
 
-  const handleUploadNewReceipt = () => {
+  const [currentReceiptId, setCurrentReceiptId] = useState(receiptIds[0]);
+  const [cachedReceipts, setCachedReceipts] = useState<CachedReceipt[]>(cachedInitialValue);
+  const { data, isLoading } = useReceiptUri(currentReceiptId);
+
+  const onAddAnotherReceiptPress = () => {
     navigation.navigate(MainScreens.AddReceipt, { accountActivityId, cardId });
   };
 
-  if (isLoading) {
-    return (
-      <SafeAreaView style={tw`flex-1 justify-center items-center bg-black/75`}>
-        <ActivityIndicator color={tw.color('black')} />
-      </SafeAreaView>
-    );
-  }
+  const onDeleteReceiptPress = () => {
+    //
+  };
+
+  useEffect(() => {
+    if (data && !isLoading) {
+      const idx = cachedReceipts.findIndex((x) => x.receiptId === currentReceiptId);
+
+      const current = cachedReceipts[idx];
+      const updated = {
+        ...current,
+        image: data,
+        loading: false,
+      };
+
+      cachedReceipts[idx] = updated;
+      setCachedReceipts(cachedReceipts);
+      carouselRef?.current?.forceUpdate();
+    }
+  }, [data, isLoading]);
+
+  const onViewRef = useRef(({ viewableItems, changed }: { viewableItems: any; changed: any }) => {
+    const [first] = viewableItems;
+    const { item } = first;
+
+    if (!item.image) {
+      const idx = cachedReceipts.findIndex((x) => x.receiptId === item.receiptId);
+      const current = cachedReceipts[idx];
+      const updated = {
+        ...current,
+        loading: true,
+      };
+      cachedReceipts[idx] = updated;
+      setCachedReceipts(cachedReceipts);
+    }
+    setCurrentReceiptId(item.receiptId);
+  });
 
   return (
     <View style={tw`h-full bg-black/75`}>
-      <Image
-        style={[tw`absolute w-full h-full`, { resizeMode: 'contain' }]}
-        source={{ uri: data }}
-      />
+      <Carousel
+        ref={carouselRef}
+        data={cachedReceipts}
+        extraData={cachedReceipts}
+        layout="default"
+        containerCustomStyle={tw`absolute w-full h-full`}
+        sliderWidth={dimens.width}
+        itemWidth={dimens.width}
+        initialNumToRender={2}
+        inactiveSlideScale={1}
+        viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
+        onViewableItemsChanged={onViewRef.current}
+        renderItem={({ item }: any) => {
+          return (
+            <TouchableWithoutFeedback
+              style={tw`w-full h-full items-center justify-center`}
+              onPress={() => setControlsEnabled(!controlsEnabled)}
+            >
+              {item.loading ? (
+                <ActivityIndicator color={tw.color('white')} />
+              ) : (
+                <Image
+                  style={[tw`w-full h-full`, { resizeMode: 'contain' }]}
+                  source={{ uri: item.image }}
+                />
+              )}
+            </TouchableWithoutFeedback>
+          );
+        }}
+      ></Carousel>
       <DarkToLightGradient style={tw`absolute`} />
       <DarkToLightGradient style={tw`absolute bottom-0`} inverted />
-      <SafeAreaView style={tw`flex-1 justify-between`}>
-        <TouchableOpacity
-          style={tw`self-end`}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <CloseIcon style={tw`mr-4 mt-6`} size={32} color={tw.color('white')} />
-        </TouchableOpacity>
-        <View style={tw`p-4`}>
-          <Button onPress={handleUploadNewReceipt} small containerStyle={tw`bg-black mt-5`}>
-            <CSText style={tw`text-base text-white`}>{t('wallet.receipt.uploadNewReceipt')}</CSText>
-          </Button>
-        </View>
-      </SafeAreaView>
+
+      {controlsEnabled && (
+        <SafeAreaView>
+          <TouchableOpacity
+            style={tw.style(`self-end`)}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <CloseIcon style={tw`mr-4 mt-6`} size={32} color={tw.color('white')} />
+          </TouchableOpacity>
+        </SafeAreaView>
+      )}
+
+      {controlsEnabled && (
+        <SafeAreaView style={tw.style(`absolute w-full bottom-10`)} edges={['bottom']}>
+          <TouchableOpacity
+            style={tw`flex-row bg-white rounded-full items-center px-2 py-1 self-end m-4`}
+            onPress={onAddAnotherReceiptPress}
+          >
+            <PlusCircleFilledIcon />
+            <CSText style={tw`ml-1 text-sm`}>{t('wallet.receipt.addAnotherReceipt')}</CSText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={tw`flex-row bg-white rounded-full items-center px-2 py-1 self-end mr-4`}
+            onPress={onDeleteReceiptPress}
+          >
+            <PlusCircleFilledIcon />
+            <CSText style={tw`ml-1 text-sm`}>{t('wallet.receipt.deleteReceipt')}</CSText>
+          </TouchableOpacity>
+        </SafeAreaView>
+      )}
+      <View style={tw`mb-10 self-center flex-row absolute bottom-0`}>
+        {receiptIds.length > 1 &&
+          receiptIds?.map((rId: string) => {
+            return (
+              <View
+                style={tw.style(`rounded-full h-2, w-2 m-1`, {
+                  backgroundColor: currentReceiptId === rId ? 'white' : 'grey',
+                })}
+                key={rId}
+              />
+            );
+          })}
+      </View>
     </View>
   );
 };
