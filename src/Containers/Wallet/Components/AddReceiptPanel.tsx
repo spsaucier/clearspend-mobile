@@ -26,7 +26,7 @@ const AddReceiptPanel = forwardRef((props: any, ref: any) => {
         {...props}
         disappearsOnIndex={-1}
         appearsOnIndex={0}
-        pressBehavior={'close'}
+        pressBehavior="close"
       />
     ),
     [],

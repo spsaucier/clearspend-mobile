@@ -43,16 +43,17 @@ const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 const ReceiptPreview = ({ receiptIds }: { receiptIds: string[] }) => {
   const { data: imageData, isLoading } = useReceiptUri(receiptIds[0]);
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <View style={tw`justify-center items-center`}>
         <ActivityIndicator color="black" />
       </View>
     );
+  }
 
   return (
     <View style={tw`flex`}>
-      <Image source={{ uri: imageData }} style={tw`w-full h-full `} resizeMode="cover"></Image>
+      <Image source={{ uri: imageData }} style={tw`w-full h-full `} resizeMode="cover" />
       <View
         style={tw`rounded-full bg-white h-6 w-6 justify-center items-center absolute right-2 top-2`}
       >
@@ -226,7 +227,7 @@ const TransactionDetailScreenContent = () => {
 
           <View style={tw`flex-row px-2 pt-6`}>
             <TouchableOpacity
-              style={tw.style(`flex-1 rounded overflow-hidden bg-gray90 justify-center m-2`, {
+              style={tw.style('flex-1 rounded overflow-hidden bg-gray90 justify-center m-2', {
                 aspectRatio: 2,
               })}
               onPress={onReceiptModalPress}
@@ -241,7 +242,7 @@ const TransactionDetailScreenContent = () => {
               )}
             </TouchableOpacity>
             <TouchableOpacity
-              style={tw.style(`flex-1 rounded bg-gray90 justify-center m-2`, {
+              style={tw.style('flex-1 rounded bg-gray90 justify-center m-2', {
                 aspectRatio: 2,
               })}
             >

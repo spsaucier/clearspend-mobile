@@ -29,13 +29,14 @@ const ViewReceiptScreen = () => {
   const carouselRef = useRef<Carousel<any>>(null);
   const [controlsEnabled, setControlsEnabled] = useState(true);
 
-  const cachedInitialValue = receiptIds.map((id: string) => {
-    return {
-      receiptId: id,
-      image: undefined,
-      loading: undefined,
-    } as CachedReceipt;
-  });
+  const cachedInitialValue = receiptIds.map(
+    (id: string) =>
+      ({
+        receiptId: id,
+        image: undefined,
+        loading: undefined,
+      } as CachedReceipt),
+  );
 
   const [currentReceiptId, setCurrentReceiptId] = useState(receiptIds[0]);
   const [cachedReceipts, setCachedReceipts] = useState<CachedReceipt[]>(cachedInitialValue);
@@ -84,7 +85,7 @@ const ViewReceiptScreen = () => {
   });
 
   return (
-    <View style={tw`h-full bg-black/75`}>
+    <View style={tw`h-full bg-black75`}>
       <Carousel
         ref={carouselRef}
         data={cachedReceipts}
@@ -97,31 +98,29 @@ const ViewReceiptScreen = () => {
         inactiveSlideScale={1}
         viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
         onViewableItemsChanged={onViewRef.current}
-        renderItem={({ item }: any) => {
-          return (
-            <TouchableWithoutFeedback
-              style={tw`w-full h-full items-center justify-center`}
-              onPress={() => setControlsEnabled(!controlsEnabled)}
-            >
-              {item.loading ? (
-                <ActivityIndicator color={tw.color('white')} />
-              ) : (
-                <Image
-                  style={[tw`w-full h-full`, { resizeMode: 'contain' }]}
-                  source={{ uri: item.image }}
-                />
-              )}
-            </TouchableWithoutFeedback>
-          );
-        }}
-      ></Carousel>
+        renderItem={({ item }: any) => (
+          <TouchableWithoutFeedback
+            style={tw`w-full h-full items-center justify-center`}
+            onPress={() => setControlsEnabled(!controlsEnabled)}
+          >
+            {item.loading ? (
+              <ActivityIndicator color={tw.color('white')} />
+            ) : (
+              <Image
+                style={[tw`w-full h-full`, { resizeMode: 'contain' }]}
+                source={{ uri: item.image }}
+              />
+            )}
+          </TouchableWithoutFeedback>
+        )}
+      />
       <DarkToLightGradient style={tw`absolute`} />
       <DarkToLightGradient style={tw`absolute bottom-0`} inverted />
 
       {controlsEnabled && (
         <SafeAreaView>
           <TouchableOpacity
-            style={tw.style(`self-end`)}
+            style={tw.style('self-end')}
             onPress={() => {
               navigation.goBack();
             }}
@@ -132,7 +131,7 @@ const ViewReceiptScreen = () => {
       )}
 
       {controlsEnabled && (
-        <SafeAreaView style={tw.style(`absolute w-full bottom-10`)} edges={['bottom']}>
+        <SafeAreaView style={tw.style('absolute w-full bottom-10')} edges={['bottom']}>
           <TouchableOpacity
             style={tw`flex-row bg-white rounded-full items-center px-2 py-1 self-end m-4`}
             onPress={onAddAnotherReceiptPress}
@@ -151,16 +150,14 @@ const ViewReceiptScreen = () => {
       )}
       <View style={tw`mb-10 self-center flex-row absolute bottom-0`}>
         {receiptIds.length > 1 &&
-          receiptIds?.map((rId: string) => {
-            return (
-              <View
-                style={tw.style(`rounded-full h-2, w-2 m-1`, {
-                  backgroundColor: currentReceiptId === rId ? 'white' : 'grey',
-                })}
-                key={rId}
-              />
-            );
-          })}
+          receiptIds?.map((rId: string) => (
+            <View
+              style={tw.style('rounded-full h-2, w-2 m-1', {
+                backgroundColor: currentReceiptId === rId ? 'white' : 'grey',
+              })}
+              key={rId}
+            />
+          ))}
       </View>
     </View>
   );

@@ -33,10 +33,7 @@ const SetPasswordScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <KeyboardAvoidingView style={tw`flex-1`} behavior="padding">
-          <OnboardingHeader
-            title={t('setPassword.title')}
-            subTitle={t('setPassword.subTitle')}
-          />
+          <OnboardingHeader title={t('setPassword.title')} subTitle={t('setPassword.subTitle')} />
           <CSTextInput
             // errorMessage="There was an error"
             placeholder={t('setPassword.passwordInputPlaceholder')}

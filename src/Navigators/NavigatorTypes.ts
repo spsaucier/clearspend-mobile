@@ -23,14 +23,14 @@ export enum AuthScreens {
 }
 
 export type AuthStackParamTypes = {
-  [AuthScreens.Landing]: undefined,
-  [AuthScreens.EnterMobile]: undefined,
-  [AuthScreens.ForgotPassword]: undefined,
-  [AuthScreens.Login]: undefined,
-  [AuthScreens.LoginStack]: undefined,
-  [AuthScreens.SelectOrganization]: undefined,
-  [AuthScreens.SetPassword]: undefined,
-  [AuthScreens.VerifyAccount]: undefined,
+  [AuthScreens.Landing]: undefined;
+  [AuthScreens.EnterMobile]: undefined;
+  [AuthScreens.ForgotPassword]: undefined;
+  [AuthScreens.Login]: undefined;
+  [AuthScreens.LoginStack]: undefined;
+  [AuthScreens.SelectOrganization]: undefined;
+  [AuthScreens.SetPassword]: undefined;
+  [AuthScreens.VerifyAccount]: undefined;
 };
 
 export enum MainScreens {
@@ -75,7 +75,7 @@ export type MainStackParamTypes = {
   [MainScreens.Home]: undefined;
 
   // Prompt before confirming logged in status
-  [MainScreens.LoginShortcut]: undefined,
+  [MainScreens.LoginShortcut]: undefined;
 
   // Onboarding post-auth
   [MainScreens.SetBiometricsOrPin]: undefined;
@@ -90,7 +90,7 @@ export type MainStackParamTypes = {
   [MainScreens.ProfileScreen]: undefined;
 
   // Wallet and Cards
-  [MainScreens.AddReceipt]: { accountActivityId: string, cardId: string };
+  [MainScreens.AddReceipt]: { accountActivityId: string; cardId: string };
   [MainScreens.CardDetails]: { cardId: string };
   [MainScreens.CardInfo]: { cardId: string };
   [MainScreens.CardLostStolen]: { cardId: string };

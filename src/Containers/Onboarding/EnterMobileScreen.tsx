@@ -24,10 +24,7 @@ const EnterMobileScreen = () => {
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`}>
       <KeyboardAvoidingView style={tw`flex-1 p-6`} behavior="padding">
-        <OnboardingHeader
-          title={t('enterMobile.title')}
-          subTitle={t('enterMobile.subTitle')}
-        />
+        <OnboardingHeader title={t('enterMobile.title')} subTitle={t('enterMobile.subTitle')} />
         <CSTextInput
           label={t('enterMobile.mobileInputLabel')}
           // errorMessage="There was an error"

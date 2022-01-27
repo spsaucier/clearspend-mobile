@@ -24,12 +24,11 @@ apiClient.interceptors.request.use((config) => {
 
 const refreshAuthToken = async () => {
   const { refreshToken } = store.getState().session;
-  const sessionPayload = await getNewAccessToken(refreshToken!)
-    .catch((e) => {
-      // TODO: treat this in the same as useAuthentication's logout
-      store.dispatch(killSession());
-      return Promise.reject(e);
-    });
+  const sessionPayload = await getNewAccessToken(refreshToken!).catch((e) => {
+    // TODO: treat this in the same as useAuthentication's logout
+    store.dispatch(killSession());
+    return Promise.reject(e);
+  });
   store.dispatch(updateSession(sessionPayload));
 };
 

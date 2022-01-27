@@ -126,7 +126,6 @@ export const Card = ({
                   {formatCurrency(balance)}
                 </CSText>
               )}
-
             </View>
 
             <View style={tw`flex-1 items-end`}>

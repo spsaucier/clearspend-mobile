@@ -27,10 +27,7 @@ const VerifyAccountScreen = () => {
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`}>
       <KeyboardAvoidingView style={tw`flex-1 p-6`} behavior="padding">
-        <OnboardingHeader
-          title={t('verifyAccount.title')}
-          subTitle={t('verifyAccount.subTitle')}
-        />
+        <OnboardingHeader title={t('verifyAccount.title')} subTitle={t('verifyAccount.subTitle')} />
 
         <View style={tw`flex-row justify-center px-3`}>
           <Box value="1" />

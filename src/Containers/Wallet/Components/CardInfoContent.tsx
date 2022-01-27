@@ -287,7 +287,15 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
             }}
           />
           {loading && (
-            <View style={{ position: 'absolute', left: '50%', top: '50%', marginLeft: -35, marginTop: -30 }}>
+            <View
+              style={{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                marginLeft: -35,
+                marginTop: -30,
+              }}
+            >
               <ActivityIndicator />
             </View>
           )}

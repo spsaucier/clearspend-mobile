@@ -5,7 +5,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
-import { CSText, FocusAwareStatusBar, Button, CloseIconButton, ActivityIndicator } from '@/Components';
+import {
+  CSText,
+  FocusAwareStatusBar,
+  Button,
+  CloseIconButton,
+  ActivityIndicator,
+} from '@/Components';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { useUser } from '@/Queries';
