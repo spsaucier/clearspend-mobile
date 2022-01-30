@@ -37,3 +37,4 @@ export { PlusCircleFilledIcon } from './plusCircleFilledIcon';
 export { CameraIcon } from './cameraIcon';
 export { PictureIcon } from './pictureIcon';
 export { FileIcon } from './fileIcon';
+export { MinusCircleFilledIcon } from './minusCircleFilledIcon';

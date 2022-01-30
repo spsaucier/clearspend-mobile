@@ -27,6 +27,7 @@ import ChangePasswordMessage from '@/Containers/Profile/ChangePasswordMessage';
 import SetBiometricsOrPinScreen from '@/Containers/Onboarding/SetBiometricsOrPinScreen';
 import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
 import LoginShortcutScreen from '@/Containers/Onboarding/LoginShortcutScreen';
+import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -98,6 +99,11 @@ const WalletStack = () => (
     <Stack.Screen
       name={MainScreens.ViewReceipt}
       component={ViewReceiptScreen}
+      options={transparentModal}
+    />
+    <Stack.Screen
+      name={MainScreens.DeleteReceipt}
+      component={DeleteReceiptScreen}
       options={transparentModal}
     />
   </Stack.Navigator>

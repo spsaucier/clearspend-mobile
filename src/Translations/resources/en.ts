@@ -130,6 +130,9 @@ export default {
       uploadNewReceipt: 'Upload a new receipt',
       addAnotherReceipt: 'Add another receipt',
       deleteReceipt: 'Delete receipt',
+      deleteConfirmation: 'Are you sure you want to delete this receipt from the transaction?',
+      deleteConfirmationSecondary: 'This action is permanent and can not be undone.',
+      deleteCancel: 'Cancel',
     },
     transactionDetails: {
       title: 'Transaction Details',

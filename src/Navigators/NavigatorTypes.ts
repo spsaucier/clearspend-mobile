@@ -62,6 +62,7 @@ export enum MainScreens {
   Notifications = 'Notifications',
   TransactionDetails = 'Transaction Details',
   ViewReceipt = 'View Receipt',
+  DeleteReceipt = 'Delete Receipt',
   Wallet = 'Wallet',
 
   // Apple Wallet Mock UI Screens
@@ -100,6 +101,7 @@ export type MainStackParamTypes = {
   [MainScreens.Notifications]: undefined;
   [MainScreens.TransactionDetails]: { cardId: string; transactionId: string };
   [MainScreens.ViewReceipt]: { accountActivityId: string; receiptIds: string[]; cardId: string };
+  [MainScreens.DeleteReceipt]: { cardId: string; accountActivityId: string; receiptId: string };
   [MainScreens.Wallet]: undefined;
 
   // Apple Wallet Mock UI Screens

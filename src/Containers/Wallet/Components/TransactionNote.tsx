@@ -1,13 +1,12 @@
-import { TouchableOpacity, View } from 'react-native';
 import React from 'react';
-
+import { TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Path, Svg } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { NoteIcon, PlusCircleFilledIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
-import { MainScreens } from '../../../Navigators/NavigatorTypes';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 type Props = {
   note: string | null | undefined;

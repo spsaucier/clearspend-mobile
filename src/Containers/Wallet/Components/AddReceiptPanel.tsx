@@ -8,6 +8,7 @@ import React, { forwardRef, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import { CSText } from '@/Components';
 import { CameraIcon, FileIcon, PictureIcon } from '@/Components/Icons';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
@@ -16,14 +17,15 @@ import tw from '@/Styles/tailwind';
 const AddReceiptPanel = forwardRef((props: any, ref: any) => {
   const dimens = useWindowDimensions();
   const { t } = useTranslation();
-  const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '35%' : '50%'], []);
+  const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '35%' : '50%'], [dimens.scale]);
   const { navigate } = useNavigation();
   const { cardId, accountActivityId } = props;
 
   const renderBackdrop = useCallback(
-    (props) => (
+    ({ animatedIndex, animatedPosition }: BottomSheetDefaultBackdropProps) => (
       <BottomSheetBackdrop
-        {...props}
+        animatedIndex={animatedIndex}
+        animatedPosition={animatedPosition}
         disappearsOnIndex={-1}
         appearsOnIndex={0}
         pressBehavior="close"

@@ -7,7 +7,7 @@ import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture
 import Carousel from 'react-native-snap-carousel';
 
 import tw from '@/Styles/tailwind';
-import { CloseIcon, PlusCircleFilledIcon } from '@/Components/Icons';
+import { CloseIcon, MinusCircleFilledIcon, PlusCircleFilledIcon } from '@/Components/Icons';
 import { DarkToLightGradient } from '@/Components/Svg/DarkToLightGradient';
 import { ActivityIndicator, CSText } from '@/Components';
 import { useReceiptUri } from '@/Queries';
@@ -47,12 +47,18 @@ const ViewReceiptScreen = () => {
   };
 
   const onDeleteReceiptPress = () => {
-    //
+    navigation.navigate(MainScreens.DeleteReceipt, {
+      cardId,
+      accountActivityId,
+      receiptId: currentReceiptId,
+    });
   };
 
   useEffect(() => {
     if (data && !isLoading) {
       const idx = cachedReceipts.findIndex((x) => x.receiptId === currentReceiptId);
+
+      if (idx === -1) return;
 
       const current = cachedReceipts[idx];
       const updated = {
@@ -65,9 +71,9 @@ const ViewReceiptScreen = () => {
       setCachedReceipts(cachedReceipts);
       carouselRef?.current?.forceUpdate();
     }
-  }, [data, isLoading]);
+  }, [data, isLoading, cachedReceipts, currentReceiptId]);
 
-  const onViewRef = useRef(({ viewableItems, changed }: { viewableItems: any; changed: any }) => {
+  const onViewRef = useRef(({ viewableItems }: { viewableItems: any; changed: any }) => {
     const [first] = viewableItems;
     const { item } = first;
 
@@ -85,7 +91,7 @@ const ViewReceiptScreen = () => {
   });
 
   return (
-    <View style={tw`h-full bg-black75`}>
+    <View style={tw`h-full bg-black/75`}>
       <Carousel
         ref={carouselRef}
         data={cachedReceipts}
@@ -103,7 +109,7 @@ const ViewReceiptScreen = () => {
             style={tw`w-full h-full items-center justify-center`}
             onPress={() => setControlsEnabled(!controlsEnabled)}
           >
-            {item.loading ? (
+            {item.loading || !item.image ? (
               <ActivityIndicator color={tw.color('white')} />
             ) : (
               <Image
@@ -120,7 +126,7 @@ const ViewReceiptScreen = () => {
       {controlsEnabled && (
         <SafeAreaView>
           <TouchableOpacity
-            style={tw.style('self-end')}
+            style={tw`self-end`}
             onPress={() => {
               navigation.goBack();
             }}
@@ -131,7 +137,7 @@ const ViewReceiptScreen = () => {
       )}
 
       {controlsEnabled && (
-        <SafeAreaView style={tw.style('absolute w-full bottom-10')} edges={['bottom']}>
+        <SafeAreaView style={tw`absolute w-full bottom-10`} edges={['bottom']}>
           <TouchableOpacity
             style={tw`flex-row bg-white rounded-full items-center px-2 py-1 self-end m-4`}
             onPress={onAddAnotherReceiptPress}
@@ -143,7 +149,7 @@ const ViewReceiptScreen = () => {
             style={tw`flex-row bg-white rounded-full items-center px-2 py-1 self-end mr-4`}
             onPress={onDeleteReceiptPress}
           >
-            <PlusCircleFilledIcon />
+            <MinusCircleFilledIcon />
             <CSText style={tw`ml-1 text-sm`}>{t('wallet.receipt.deleteReceipt')}</CSText>
           </TouchableOpacity>
         </SafeAreaView>

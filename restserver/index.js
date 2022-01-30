@@ -175,28 +175,32 @@ app.post('/users/account-activity/:accountActivityId/receipts/:receiptId/link', 
   res.json(newTransactionWithReceiptUpdated);
 });
 
-app.post('/users/account-activity/:accountActivityId/receipts/:receiptId/unlink', (req, res) => {
+app.delete('/users/receipts/:receiptId/delete', (req, res) => {
   const { params } = req;
-  const { accountActivityId, receiptId } = params;
+  const { receiptId } = params;
 
-  const cardIdx = transactions.findIndex((t) =>
-    t.response.content.find((x) => x.accountActivityId === accountActivityId),
+  //need to unlink from transaction first
+  const transactionIdx = transactions.findIndex((x) =>
+    x.receipt?.receiptId.some((y) => y === receiptId),
   );
 
-  const transactionIdx = transactions[cardIdx].response.content.findIndex(
-    (t) => t.accountActivityId === accountActivityId,
-  );
+  if (transactionIdx === -1) {
+    res.sendStatus(500);
+    return;
+  }
 
-  const currentTransaction = transactions[cardIdx].response.content[transactionIdx];
+  const transaction = transactions[transactionIdx];
+  const receiptIdsUpdated = transaction.receipt.receiptId.filter((x) => x !== receiptId);
 
-  const newTransactionWithReceiptUpdated = {
-    ...currentTransaction,
-    receipt: null,
+  const transactionUpdated = {
+    ...transaction,
+    receipt: {
+      receiptId: receiptIdsUpdated,
+    },
   };
+  transactions[transactionIdx] = transactionUpdated;
 
-  transactions[cardIdx].response.content[transactionIdx] = newTransactionWithReceiptUpdated;
-
-  res.json(newTransactionWithReceiptUpdated);
+  res.sendStatus(200);
 });
 
 app.use('/images', images);

@@ -41,9 +41,9 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
 const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 
 const ReceiptPreview = ({ receiptIds }: { receiptIds: string[] }) => {
-  const { data: imageData, isLoading } = useReceiptUri(receiptIds[0]);
+  const { data: imageData, isFetching } = useReceiptUri(receiptIds[0]);
 
-  if (isLoading) {
+  if (isFetching || !imageData) {
     return (
       <View style={tw`justify-center items-center`}>
         <ActivityIndicator color="black" />
@@ -118,11 +118,13 @@ const TransactionDetailScreenContent = () => {
   const latitude = merchant?.merchantLatitude;
   const longitude = merchant?.merchantLongitude;
 
+  const thereAreReceipts = (receipt?.receiptId && receipt.receiptId.length > 0) || false;
+
   const onReceiptModalPress = () => {
-    if (receipt?.receiptId) {
+    if (thereAreReceipts) {
       navigate(MainScreens.ViewReceipt, {
         accountActivityId: accountActivityId!,
-        receiptIds: receipt.receiptId,
+        receiptIds: receipt?.receiptId!,
         cardId: params.cardId,
       });
     } else {
@@ -232,8 +234,8 @@ const TransactionDetailScreenContent = () => {
               })}
               onPress={onReceiptModalPress}
             >
-              {receipt?.receiptId ? (
-                <ReceiptPreview receiptIds={receipt?.receiptId} />
+              {thereAreReceipts ? (
+                <ReceiptPreview receiptIds={receipt!.receiptId!} />
               ) : (
                 <View style={tw`self-center justify-center items-center`}>
                   <PlusCircleFilledIcon />

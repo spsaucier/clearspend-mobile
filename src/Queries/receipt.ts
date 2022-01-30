@@ -40,4 +40,13 @@ const viewReceipt = (receiptId: string) =>
     .then(blobToUri);
 
 export const useReceiptUri = (receiptId = '') =>
-  useQuery<any, Error>(['receipt', receiptId], () => viewReceipt(receiptId));
+  useQuery<any, Error>(['receiptUri', receiptId], () => viewReceipt(receiptId));
+
+export const deleteReceipt = (receiptId: string) =>
+  apiClient.delete<String>(`/users/receipts/${receiptId}/delete`).then((r) => r.data);
+
+export const useDeleteReceiptLazy = (receiptId: string) =>
+  useQuery<any, Error>(['deleteReceipt', receiptId], () => deleteReceipt(receiptId), {
+    enabled: false,
+    retry: false,
+  });

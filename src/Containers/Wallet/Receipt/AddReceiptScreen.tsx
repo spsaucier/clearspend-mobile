@@ -38,7 +38,7 @@ const AddReceiptScreen = () => {
   const queryClient = useQueryClient();
 
   const onTakePic = async () => {
-    const data = await cameraRef.current?.takePictureAsync({ quality: 1, imageType: 'jpeg' });
+    const data = await cameraRef.current?.takePictureAsync({ quality: 0.5, imageType: 'jpeg' });
     const { uri } = data!;
 
     setUploadReceiptState({ previewURI: uri });
