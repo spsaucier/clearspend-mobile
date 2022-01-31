@@ -14,10 +14,11 @@ export const uploadReceipt = (data: any) => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      timeout: 20 * 1000, //20 secs
     })
     .then((r) => r.data);
 };
-export const useUploadReceipt = () =>
+export const useUploadReceiptRemote = () =>
   useMutation<ReceiptDetails, Error>((data: any) => uploadReceipt(data));
 
 export const linkReceiptAsync = (accountActivityId: string, receiptId: string) =>
@@ -39,8 +40,8 @@ const viewReceipt = (receiptId: string) =>
     })
     .then(blobToUri);
 
-export const useReceiptUri = (receiptId = '') =>
-  useQuery<any, Error>(['receiptUri', receiptId], () => viewReceipt(receiptId));
+export const useReceiptUri = (queryId = '', receiptId = '') =>
+  useQuery<any, Error>([queryId, receiptId], () => viewReceipt(receiptId));
 
 export const deleteReceipt = (receiptId: string) =>
   apiClient.delete<String>(`/users/receipts/${receiptId}/delete`).then((r) => r.data);

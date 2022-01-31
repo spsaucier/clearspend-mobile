@@ -12,6 +12,11 @@ import { DarkToLightGradient } from '@/Components/Svg/DarkToLightGradient';
 import { ActivityIndicator, CSText } from '@/Components';
 import { useReceiptUri } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
+import AddReceiptPanel from '../Components/AddReceiptPanel';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { launchImageLibrary } from 'react-native-image-picker';
+import useUploadReceipt from '@/Hooks/useUploadReceipt';
+import { ActivityOverlay } from '@/Components/ActivityOverlay';
 
 type CachedReceipt = {
   receiptId: string;
@@ -28,6 +33,7 @@ const ViewReceiptScreen = () => {
   const { accountActivityId, receiptIds, cardId } = params as any;
   const carouselRef = useRef<Carousel<any>>(null);
   const [controlsEnabled, setControlsEnabled] = useState(true);
+  const addReceiptPanelRef = useRef<BottomSheetModal>(null);
 
   const cachedInitialValue = receiptIds.map(
     (id: string) =>
@@ -40,10 +46,22 @@ const ViewReceiptScreen = () => {
 
   const [currentReceiptId, setCurrentReceiptId] = useState(receiptIds[0]);
   const [cachedReceipts, setCachedReceipts] = useState<CachedReceipt[]>(cachedInitialValue);
-  const { data, isLoading } = useReceiptUri(currentReceiptId);
+  const { data, isLoading } = useReceiptUri('viewReceiptQuery', currentReceiptId);
+
+  const onUploadReceiptFromGalleryFinished = () => {
+    navigation.navigate(MainScreens.TransactionDetails, {
+      cardId,
+      transactionId: accountActivityId,
+    });
+  };
+
+  const { uploadReceipt, isUploading } = useUploadReceipt({
+    accountActivityId: accountActivityId!,
+    onUploadFinished: onUploadReceiptFromGalleryFinished,
+  });
 
   const onAddAnotherReceiptPress = () => {
-    navigation.navigate(MainScreens.AddReceipt, { accountActivityId, cardId });
+    addReceiptPanelRef.current?.present();
   };
 
   const onDeleteReceiptPress = () => {
@@ -90,18 +108,33 @@ const ViewReceiptScreen = () => {
     setCurrentReceiptId(item.receiptId);
   });
 
+  const onSelectAddPhotosFromGalleryPress = async () => {
+    addReceiptPanelRef.current?.close();
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
+      includeBase64: false,
+    });
+
+    const { assets } = result;
+
+    if (!assets) return;
+
+    const [first] = assets!;
+    const { uri } = first;
+
+    uploadReceipt(uri!);
+  };
+
   return (
     <View style={tw`h-full bg-black/75`}>
       <Carousel
         ref={carouselRef}
         data={cachedReceipts}
         extraData={cachedReceipts}
-        layout="default"
         containerCustomStyle={tw`absolute w-full h-full`}
         sliderWidth={dimens.width}
         itemWidth={dimens.width}
-        initialNumToRender={2}
-        inactiveSlideScale={1}
+        initialNumToRender={1}
         viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
         onViewableItemsChanged={onViewRef.current}
         renderItem={({ item }: any) => (
@@ -110,7 +143,7 @@ const ViewReceiptScreen = () => {
             onPress={() => setControlsEnabled(!controlsEnabled)}
           >
             {item.loading || !item.image ? (
-              <ActivityIndicator color={tw.color('white')} />
+              <ActivityIndicator />
             ) : (
               <Image
                 style={[tw`w-full h-full`, { resizeMode: 'contain' }]}
@@ -137,7 +170,7 @@ const ViewReceiptScreen = () => {
       )}
 
       {controlsEnabled && (
-        <SafeAreaView style={tw`absolute w-full bottom-10`} edges={['bottom']}>
+        <SafeAreaView style={tw`absolute w-full bottom-20`} edges={['bottom']}>
           <TouchableOpacity
             style={tw`flex-row bg-white rounded-full items-center px-2 py-1 self-end m-4`}
             onPress={onAddAnotherReceiptPress}
@@ -165,6 +198,16 @@ const ViewReceiptScreen = () => {
             />
           ))}
       </View>
+      <AddReceiptPanel
+        ref={addReceiptPanelRef}
+        accountActivityId={accountActivityId}
+        onSelectPhotoPress={onSelectAddPhotosFromGalleryPress}
+      />
+      <ActivityOverlay
+        visible={isUploading}
+        message={t('wallet.receipt.uploadingReceipt')}
+        subMessage={t('wallet.receipt.uploadingReceiptTime')}
+      />
     </View>
   );
 };

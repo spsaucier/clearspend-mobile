@@ -19,7 +19,7 @@ const AddReceiptPanel = forwardRef((props: any, ref: any) => {
   const { t } = useTranslation();
   const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '35%' : '50%'], [dimens.scale]);
   const { navigate } = useNavigation();
-  const { cardId, accountActivityId } = props;
+  const { cardId, accountActivityId, onSelectPhotoPress } = props;
 
   const renderBackdrop = useCallback(
     ({ animatedIndex, animatedPosition }: BottomSheetDefaultBackdropProps) => (
@@ -42,7 +42,6 @@ const AddReceiptPanel = forwardRef((props: any, ref: any) => {
 
     (ref?.current as BottomSheetModal)?.dismiss();
   };
-  const onSelectPhotoPress = () => {};
 
   const onUploadFilePress = () => {};
 
@@ -58,11 +57,7 @@ const AddReceiptPanel = forwardRef((props: any, ref: any) => {
               {t('wallet.transactionDetails.addReceiptPanel.takePhoto')}
             </CSText>
           </TouchableOpacity>
-          <TouchableOpacity
-            disabled
-            style={tw`flex-row items-center mt-6`}
-            onPress={onSelectPhotoPress}
-          >
+          <TouchableOpacity style={tw`flex-row items-center mt-6`} onPress={onSelectPhotoPress}>
             <PictureIcon />
             <CSText style={tw`ml-2`}>
               {t('wallet.transactionDetails.addReceiptPanel.selectPhoto')}

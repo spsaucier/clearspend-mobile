@@ -6,21 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-import { useQueryClient } from 'react-query';
 import { ActivityIndicator, Button } from '@/Components';
 import { CloseIcon, LightningIcon, LightningOffIcon } from '@/Components/Icons';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import tw from '@/Styles/tailwind';
-import { linkReceiptAsync, useUploadReceipt } from '@/Queries';
 import { MainScreens } from '../../../Navigators/NavigatorTypes';
-
-type UploadReceiptState = {
-  previewURI?: string;
-  receiptId?: string;
-  linked?: boolean;
-};
-
-const initialState: UploadReceiptState = {};
+import useUploadReceipt from '@/Hooks/useUploadReceipt';
 
 const AddReceiptScreen = () => {
   const { t } = useTranslation();
@@ -29,58 +20,27 @@ const AddReceiptScreen = () => {
   const { params } = route;
   const { accountActivityId, cardId } = params as any;
   const [hasCameraAccess, setHasCameraAccess] = useState<boolean>(false);
+  const [previewURI, setPreviewURI] = useState<string>();
 
   const [flashOn, setFlashOn] = useState(false);
   const cameraRef = useRef<RNCamera>(null);
 
-  const [uploadReceiptState, setUploadReceiptState] = useState<UploadReceiptState>(initialState);
-  const { mutateAsync: uploadReceipt, isLoading: uploadingReceipt } = useUploadReceipt();
-  const queryClient = useQueryClient();
+  const { uploadReceiptState, uploadReceipt, isUploading } = useUploadReceipt({
+    accountActivityId,
+    onUploadFinished: () => {},
+  });
+  const { receiptId, linked } = uploadReceiptState;
 
   const onTakePic = async () => {
     const data = await cameraRef.current?.takePictureAsync({ quality: 0.5, imageType: 'jpeg' });
     const { uri } = data!;
 
-    setUploadReceiptState({ previewURI: uri });
+    setPreviewURI(uri);
   };
 
   const submitReceipt = () => {
-    const { previewURI } = uploadReceiptState;
-    if (!previewURI) return;
-
-    const fileName = previewURI.split('/').pop();
-    const extension = fileName?.split('.').pop();
-    uploadReceipt({
-      receipt: {
-        uri: previewURI,
-        type: `image/${extension}`,
-        name: fileName,
-      },
-      // TODO: TS freakout
-    } as unknown as void).then((data) => {
-      const { receiptId } = data;
-
-      queryClient.invalidateQueries(['receipt', receiptId], {
-        refetchInactive: true,
-      });
-      setUploadReceiptState({
-        ...uploadReceiptState,
-        receiptId,
-      });
-    });
+    if (previewURI) uploadReceipt(previewURI);
   };
-
-  const { receiptId, previewURI, linked } = uploadReceiptState;
-
-  // when receiptId exists, link it to the account activity (transaction)
-  useEffect(() => {
-    if (receiptId && !linked) {
-      const linkReceipt = async () => {
-        await linkReceiptAsync(accountActivityId, receiptId);
-      };
-      linkReceipt().then(() => setUploadReceiptState({ ...uploadReceiptState, linked: true }));
-    }
-  }, [linked, receiptId, accountActivityId, uploadReceiptState]);
 
   useEffect(() => {
     if (linked) {
@@ -171,7 +131,7 @@ const AddReceiptScreen = () => {
               </Button>
               <TouchableOpacity
                 onPress={() => {
-                  setUploadReceiptState(initialState);
+                  setPreviewURI(undefined);
                 }}
               >
                 <Text style={tw`text-white`}>{t('wallet.receipt.retakePhoto')}</Text>
@@ -209,7 +169,7 @@ const AddReceiptScreen = () => {
       </SafeAreaView>
 
       <ActivityOverlay
-        visible={uploadingReceipt || receiptId !== undefined}
+        visible={isUploading || receiptId !== undefined}
         message={t('wallet.receipt.uploadingReceipt')}
         subMessage={t('wallet.receipt.uploadingReceiptTime')}
       />

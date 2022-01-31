@@ -81,7 +81,6 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
   const enableBiometrics = async () => {
     if (await canEnableBiometrics()) {
       try {
-        console.log('enable');
         const { success } = await ReactNativeBiometrics.simplePrompt({ promptMessage });
         setBiometricsPublicKey(success ? 'ClearSpend' : '');
         return success;

@@ -7,6 +7,7 @@ import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
 import MapView, { Marker } from 'react-native-maps';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button, CSText } from '@/Components';
@@ -23,6 +24,8 @@ import { CategoryIcon } from '@/Components/CategoryIcon';
 import { useReceiptUri, useTransaction } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from './Components/AddReceiptPanel';
+import useUploadReceipt from '@/Hooks/useUploadReceipt';
+import { ActivityOverlay } from '@/Components/ActivityOverlay';
 
 type InfoRowProps = {
   label: string;
@@ -41,12 +44,12 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
 const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 
 const ReceiptPreview = ({ receiptIds }: { receiptIds: string[] }) => {
-  const { data: imageData, isFetching } = useReceiptUri(receiptIds[0]);
+  const { data: imageData, isFetching } = useReceiptUri('viewReceiptThumbnail', receiptIds[0]);
 
   if (isFetching || !imageData) {
     return (
       <View style={tw`justify-center items-center`}>
-        <ActivityIndicator color="black" />
+        <ActivityIndicator color="black" style={tw`w-10`} />
       </View>
     );
   }
@@ -68,8 +71,19 @@ const TransactionDetailScreenContent = () => {
   const { navigate } = useNavigation();
   const route = useRoute<any>();
   const { params } = route;
+  const { transactionId: accountActivityId } = params;
+
   const addReceiptPanelRef = useRef<BottomSheetModal>(null);
-  const { isLoading, error, data, refetch } = useTransaction(params.transactionId);
+  const { isLoading, error, data, refetch } = useTransaction(accountActivityId);
+
+  const onUploadReceiptFromGalleryFinished = () => {
+    refetch();
+  };
+
+  const { uploadReceipt, isUploading } = useUploadReceipt({
+    accountActivityId: accountActivityId!,
+    onUploadFinished: onUploadReceiptFromGalleryFinished,
+  });
 
   useFocusEffect(
     useCallback(() => {
@@ -79,7 +93,7 @@ const TransactionDetailScreenContent = () => {
 
   if (isLoading || !data) {
     return (
-      <View style={tw`flex-1 items-center justify-center p-6`}>
+      <View style={tw`h-full items-center justify-center p-6`}>
         <ActivityIndicator />
       </View>
     );
@@ -87,14 +101,13 @@ const TransactionDetailScreenContent = () => {
 
   if (error) {
     return (
-      <View style={tw`flex-1 items-center justify-center p-6`}>
+      <View style={tw`h-full items-center justify-center p-6`}>
         <CSText style={tw`text-base text-error mb-2`}>{error?.message}</CSText>
       </View>
     );
   }
 
   const {
-    accountActivityId,
     merchant,
     amount,
     status,
@@ -130,6 +143,23 @@ const TransactionDetailScreenContent = () => {
     } else {
       addReceiptPanelRef.current?.present();
     }
+  };
+
+  const onSelectAddPhotosFromGalleryPress = async () => {
+    addReceiptPanelRef.current?.close();
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
+      includeBase64: false,
+    });
+
+    const { assets } = result;
+
+    if (!assets) return;
+
+    const [first] = assets!;
+    const { uri } = first;
+
+    uploadReceipt(uri!);
   };
 
   return (
@@ -303,7 +333,16 @@ const TransactionDetailScreenContent = () => {
           </View>
         </KeyboardAwareScrollView>
       </NativeViewGestureHandler>
-      <AddReceiptPanel ref={addReceiptPanelRef} accountActivityId={accountActivityId} />
+      <AddReceiptPanel
+        ref={addReceiptPanelRef}
+        accountActivityId={accountActivityId}
+        onSelectPhotoPress={onSelectAddPhotosFromGalleryPress}
+      />
+      <ActivityOverlay
+        visible={isUploading}
+        message={t('wallet.receipt.uploadingReceipt')}
+        subMessage={t('wallet.receipt.uploadingReceiptTime')}
+      />
     </View>
   );
 };

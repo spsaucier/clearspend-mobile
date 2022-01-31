@@ -7,7 +7,6 @@ import { Button, CSText } from '@/Components';
 import { CloseIcon } from '@/Components/Icons';
 import { useDeleteReceiptLazy } from '@/Queries/receipt';
 import tw from '@/Styles/tailwind';
-
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 const DeleteReceiptScreen = () => {
@@ -42,7 +41,7 @@ const DeleteReceiptScreen = () => {
       <Button
         disabled={isFetching}
         onPress={ondeleteReceiptPress}
-        containerStyle={[tw`m-6`, { backgroundColor: tw.color('error') }]}
+        containerStyle={[tw`w-auto px-20`, { backgroundColor: tw.color('error') }]}
       >
         <CSText style={tw`text-white`}>{t('wallet.receipt.deleteReceipt')}</CSText>
       </Button>

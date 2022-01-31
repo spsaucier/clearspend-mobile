@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { Animated, Easing } from 'react-native';
 
 export const useRotateAnimation = (running: boolean = true, duration: number = 1000) => {
-  const animation = useMemo(() => new Animated.Value(0), []);
+  const animation = new Animated.Value(0);
 
   const loop = Animated.loop(
     Animated.timing(animation, {
