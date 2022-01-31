@@ -52,7 +52,6 @@ const LoginScreen = () => {
         const invalidCredentials = error === 'invalid_grant';
         if (invalidCredentials) {
           setError(t('login.invalidCredentials'));
-          console.log(error);
         }
         const changePasswordRequired = error === 'change_password_required';
         if (changePasswordRequired) {
