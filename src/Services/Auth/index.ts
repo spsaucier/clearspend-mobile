@@ -39,8 +39,34 @@ const login = async (username: string, password: string) => {
     data: params,
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
   }).catch((ex) => Promise.reject(ex.response));
-
   return parseTokenResponse(response);
+};
+
+const changePassword = async (change_password_id: string, password: string) => {
+  const response = await axios({
+    method: 'POST',
+    url: `${Config.CS_FA_URL}/api/user/change-password/${change_password_id}`,
+    headers: { 'content-type': 'application/json' },
+    data: { password },
+  }).catch((ex) => ex.response);
+  return response;
+};
+
+const loginUsingOneTimePass = async (oneTimePassword: string) => {
+  const params = qs.stringify({
+    grant_type: 'password',
+    oneTimePassword,
+    client_id: Config.CS_FA_CLIENT_ID,
+    client_secret: Config.CS_FA_CLIENT_SECRET,
+    scope: 'offline_access',
+  });
+  const response = await axios({
+    method: 'POST',
+    url: `${Config.CS_FA_URL}/api/login/`,
+    headers: { 'content-type': 'application/json' },
+    data: params,
+  }).catch((ex) => ex.response);
+  return response;
 };
 
 const getNewAccessToken = async (refreshToken: string) => {
@@ -62,4 +88,4 @@ const getNewAccessToken = async (refreshToken: string) => {
   return parseTokenResponse(response);
 };
 
-export { login, getNewAccessToken };
+export { login, getNewAccessToken, changePassword, loginUsingOneTimePass };

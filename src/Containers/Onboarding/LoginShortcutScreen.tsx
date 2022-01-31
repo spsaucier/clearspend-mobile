@@ -17,12 +17,15 @@ const LoginShortcutScreen = () => {
   const { navigate } = useNavigation();
   const { setLoggedIn, logout } = useAuthentication();
 
-  useBiometricLogin(() => {
-    setLoggedIn(true);
-    navigate(MainScreens.Home);
-  }, () => {
-    logout();
-  });
+  useBiometricLogin(
+    () => {
+      setLoggedIn(true);
+      navigate(MainScreens.Home);
+    },
+    () => {
+      logout();
+    },
+  );
 
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top', 'bottom']}>

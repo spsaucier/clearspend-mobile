@@ -38,3 +38,4 @@ export { CameraIcon } from './cameraIcon';
 export { PictureIcon } from './pictureIcon';
 export { FileIcon } from './fileIcon';
 export { MinusCircleFilledIcon } from './minusCircleFilledIcon';
+export { USFlagIcon } from './USFlagIcon';

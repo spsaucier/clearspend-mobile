@@ -4,6 +4,7 @@ export default {
   general: {
     continue: 'Continue',
     reload: 'Reload',
+    back: 'BACK',
   },
   login: {
     heading: 'Modern commercial cards and accounts',
@@ -31,10 +32,20 @@ export default {
   },
   enterMobile: {
     title: 'Enter mobile number',
-    subTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    titlePart1: 'Enter your',
+    titlePart2: 'mobile number',
+    subTitle: 'We will send a verification code to this number',
     mobileInputLabel: 'Mobile Number',
     mobileInputPlaceholder: 'Enter your mobile number',
-    buttonCta: 'Get OTP',
+    buttonCta: 'Send Verification Code',
+  },
+  otp: {
+    title: 'Enter the 6 digit code we sent to your mobile device',
+    titlePart1: 'Enter the',
+    titlePart2: '6 digit code',
+    titlePart3: 'we sent to your mobile device',
+    resendCode: 'Resend code',
+    buttonCta: 'Verified'
   },
   verifyAccount: {
     title: 'Verify your account',
@@ -73,18 +84,20 @@ export default {
   },
   setPassword: {
     title: 'Set your own password',
+    titlePart1: 'Set your own',
+    titlePart2: 'password',
     subTitle: 'The password we sent to your email was temporary. Please set your own password now.',
     passwordInputLabel: 'New password',
     passwordInputPlaceholder: 'Enter a new password',
     rules: {
       mustInclude: 'Must include',
       mix: 'Mixture of letters and numbers',
-      length: 'At least 8 characters long',
+      length: 'Must be a minimum of 10 characters',
       upperCase: 'At least 1 character in uppercase',
       lowerCase: 'At least 1 character in lowercase',
       special: 'At least one special character, e.g., ! @ # ? ]',
     },
-    buttonCta: 'Set password',
+    buttonCta: 'Next',
   },
   forgotPassword: {
     enterEmail: {

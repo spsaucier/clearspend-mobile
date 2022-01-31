@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
@@ -14,19 +14,17 @@ import { login } from '@/Services/Auth';
 import { Session, updateSession } from '@/Store/Session';
 import { ClearSpendIcon } from '@/Components/Svg/ClearSpendIcon';
 import { mixpanel } from '@/Services/utils/analytics';
-import { AuthScreens } from '@/Navigators/NavigatorTypes';
-import { useAuthentication } from '@/Hooks/useAuthentication';
+import { AuthScreens } from '../../Navigators/NavigatorTypes';
 
 const LoginScreen = () => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginButtonDisabled, setLoginButtonDisabled] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [authError, setError] = useState<string>();
   const dispatch = useDispatch();
-  const { setLoggedIn } = useAuthentication();
+  const { navigate } = useNavigation();
 
   const handleLogin = () => {
     Keyboard.dismiss();
@@ -37,18 +35,15 @@ const LoginScreen = () => {
 
     login(email, password)
       .then((res) => {
-        if (res) {
+        if ('accessToken' in res) {
           mixpanel.track('Login');
           const sessionPayload = res as Session;
-          setLoggedIn(true);
-          setProcessing(false);
-          setLoginButtonDisabled(false);
           dispatch(updateSession(sessionPayload));
         }
       })
       .catch((ex) => {
         const {
-          data: { error, error_description: errorDescription },
+          data: { change_password_id, error, error_description: errorDescription },
         } = ex;
         const invalidRequest = error === 'invalid_request';
         if (invalidRequest) {
@@ -57,6 +52,12 @@ const LoginScreen = () => {
         const invalidCredentials = error === 'invalid_grant';
         if (invalidCredentials) {
           setError(t('login.invalidCredentials'));
+          console.log(error);
+        }
+        const changePasswordRequired = error === 'change_password_required';
+        if (changePasswordRequired) {
+          const changePassId = change_password_id;
+          navigate(AuthScreens.SetPassword, { changePassId, email });
         }
         setProcessing(false);
         setLoginButtonDisabled(false);
@@ -123,7 +124,7 @@ const LoginScreen = () => {
           </Button>
           <TouchableOpacity
             onPress={() => {
-              navigate(AuthScreens.VerifyAccount);
+              navigate(AuthScreens.ForgotPassword);
             }}
           >
             <CSText style={tw`text-base text-primary mt-6 self-center`}>
@@ -141,8 +142,7 @@ const LoginScreen = () => {
                 style={tw`text-base text-primary`}
                 onPress={() => {
                   Linking.openURL('https://www.clearspend.com/').catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.warn('Failed to open ClearSpend website: ', err);
+                    console.error('Failed to open ClearSpend website: ', err);
                   });
                 }}
               >

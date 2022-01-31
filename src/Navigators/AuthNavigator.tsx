@@ -7,6 +7,7 @@ import VerifyAccountScreen from '@/Containers/Onboarding/VerifyAccountScreen';
 import SetPasswordScreen from '@/Containers/Onboarding/SetPasswordScreen';
 import ForgotPasswordScreen from '@/Containers/Onboarding/ForgotPasswordScreen';
 import { AuthScreens, AuthStackParamTypes } from './NavigatorTypes';
+import EnterOTPScreen from '@/Containers/Onboarding/EnterOTPScreen';
 
 const Stack = createStackNavigator<AuthStackParamTypes>();
 
@@ -18,6 +19,7 @@ const LoginStack = () => (
     <Stack.Screen name={AuthScreens.VerifyAccount} component={VerifyAccountScreen} />
     <Stack.Screen name={AuthScreens.SetPassword} component={SetPasswordScreen} />
     <Stack.Screen name={AuthScreens.ForgotPassword} component={ForgotPasswordScreen} />
+    <Stack.Screen name={AuthScreens.EnterOTP} component={EnterOTPScreen} />
   </Stack.Navigator>
 );
 

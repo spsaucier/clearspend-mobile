@@ -1,3 +1,5 @@
+import { Session } from '@/Store/Session';
+
 export enum TopScreens {
   Auth = 'Auth',
   Main = 'Main',
@@ -20,17 +22,19 @@ export enum AuthScreens {
   SelectOrganization = 'Select Organization',
   SetPassword = 'Set Password',
   VerifyAccount = 'Verify Account',
+  EnterOTP = 'Enter OTP',
 }
 
 export type AuthStackParamTypes = {
   [AuthScreens.Landing]: undefined;
-  [AuthScreens.EnterMobile]: undefined;
+  [AuthScreens.EnterMobile]: { sessionPayload: Session }; // { accessToken: string; userId: string; refreshToken: string; expires_in: string };
   [AuthScreens.ForgotPassword]: undefined;
   [AuthScreens.Login]: undefined;
   [AuthScreens.LoginStack]: undefined;
   [AuthScreens.SelectOrganization]: undefined;
-  [AuthScreens.SetPassword]: undefined;
+  [AuthScreens.SetPassword]: { changePassId: string; email: string };
   [AuthScreens.VerifyAccount]: undefined;
+  [AuthScreens.EnterOTP]: { sessionPayload: Session };
 };
 
 export enum MainScreens {
