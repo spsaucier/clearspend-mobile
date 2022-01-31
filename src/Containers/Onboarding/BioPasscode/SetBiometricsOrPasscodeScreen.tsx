@@ -50,7 +50,7 @@ const SetBiometricsOrPasscodeScreen = () => {
         subTitle={t('loginOptions.subTitle')}
       />
 
-      {availableBio && !biometricsEnabled && (
+      {availableBio && !biometricsEnabled ? (
         <TouchableOpacity style={tw`flex-row mb-7`} onPress={onEnableBiometrics}>
           <RoundedBox>
             {availableBio === AuthenticationMethods.FACE ? (
@@ -68,7 +68,7 @@ const SetBiometricsOrPasscodeScreen = () => {
             </CSText>
           </View>
         </TouchableOpacity>
-      )}
+      ) : null}
 
       <TouchableOpacity style={tw`flex-row mb-7`} onPress={onPressPasscode}>
         <RoundedBox>
