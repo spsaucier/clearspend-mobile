@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { MMKV, useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
@@ -7,8 +8,9 @@ import { ReturnUseBiometrics, useBiometrics } from '@/Hooks/useBiometrics';
 import { usePasscode } from '@/Hooks/usePasscode';
 import { mixpanel } from '../utils/analytics';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
-import { AVAILABLE_BIO_KEY, IS_AUTHED, IS_PASSCODE_ENABLED, LAST_ACTIVE_KEY } from '../../Store/keys';
+import { IS_AUTHED, LAST_ACTIVE_KEY } from '../../Store/keys';
 import { useRequireAuth } from '@/Hooks/useRequireAuth';
+import { navigationRef } from '@/Navigators/Root';
 
 /*
 The AuthProvider provides a means to work with stateful values/effects/custom
@@ -20,6 +22,7 @@ interface AuthContextInterface
     ReturnType<typeof useRequireAuth>,
     ReturnType<typeof usePasscode> {
   loggedIn: boolean;
+  setAuthed: (show: boolean) => void;
   setLoggedIn: (show: boolean) => void;
   logout: () => void;
   isNewUser: boolean;
@@ -42,26 +45,34 @@ const AuthProvider: FC = ({ children }) => {
   const [isWelcomeBack, setWelcomeBack] = useState(false);
   const { reset } = useNavigation();
   const bioProps = useBiometrics(setLoggedIn);
-  const [, setIsPasscodeEnabled] = useMMKVBoolean(IS_PASSCODE_ENABLED);
+  const passcodeProps = usePasscode();
   const [, setLastSignedIn] = useMMKVNumber(LAST_ACTIVE_KEY);
   const [, setAuthed] = useMMKVBoolean(IS_AUTHED);
   const storage = new MMKV();
 
-  const onRequireAuth = (loggedInStatus = false) => {
-    // TODO: Also trigger if PIN enabled, log out if neither
-    if (storage.getString(AVAILABLE_BIO_KEY)) {
-      setLoggedIn(loggedInStatus);
-      setShowLoadingPlaceholder(true);
-      reset({
-        index: 0,
-        routes: [{ name: MainScreens.LoginShortcut }],
-      });
+  const onRequireAuth = (authedStatus = false) => {
+    if (!authedStatus) {
+      if (navigationRef.current?.getCurrentRoute()?.name !== MainScreens.ConfirmAuth) {
+        setAuthed(authedStatus);
+        if (bioProps.biometricsEnabled || passcodeProps.passcodeActive) {
+          setShowLoadingPlaceholder(true);
+          reset({
+            index: 0,
+            routes: [{ name: MainScreens.ConfirmAuth }],
+          });
+        } else {
+          // Trying to confirm auth, but no Bio or Passcode enabled
+        }
+      } else {
+        // Already on Bio/Passcode entry screen
+      }
+    } else {
+      storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
+      storage.set(IS_AUTHED, true);
     }
   };
 
   const { setAutoLockTempDisabled } = useRequireAuth(onRequireAuth);
-
-  const passcodeProps = usePasscode();
 
   const logout = async () => {
     mixpanel.track('Logout');
@@ -73,7 +84,6 @@ const AuthProvider: FC = ({ children }) => {
     persistor.purge();
     bioProps.disableBiometrics();
     passcodeProps.removePasscode();
-    setIsPasscodeEnabled(false);
     store.dispatch(killSession());
   };
 
@@ -101,6 +111,7 @@ const AuthProvider: FC = ({ children }) => {
     ...passcodeProps,
     setAutoLockTempDisabled,
     loading: bioProps.loading || passcodeProps.loading,
+    setAuthed,
     setLoggedIn,
     loggedIn,
     logout,

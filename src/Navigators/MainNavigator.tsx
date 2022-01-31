@@ -24,9 +24,9 @@ import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
 import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
 import NewPasswordScreen from '@/Containers/Profile/NewPasswordScreen';
 import ChangePasswordMessage from '@/Containers/Profile/ChangePasswordMessage';
-import SetBiometricsOrPinScreen from '@/Containers/Onboarding/SetBiometricsOrPinScreen';
 import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
-import LoginShortcutScreen from '@/Containers/Onboarding/LoginShortcutScreen';
+import ConfirmAuthScreen from '@/Containers/Onboarding/ConfirmAuthScreen';
+import { SetBioPasscodeNavigator } from '@/Containers/Onboarding/BioPasscode/SetBioPasscodeNavigator';
 import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
@@ -52,7 +52,7 @@ const ProfileStack = () => (
 
 const WalletStack = () => (
   <Stack.Navigator initialRouteName={MainScreens.Wallet} screenOptions={{ headerShown: false }}>
-    <Stack.Screen name={MainScreens.SetBiometricsOrPin} component={SetBiometricsOrPinScreen} />
+    <Stack.Screen name={MainScreens.SetBiometricsOrPasscode} component={SetBioPasscodeNavigator} />
     <Stack.Screen name={MainScreens.Wallet} component={WalletScreen} />
     <Stack.Screen name={MainScreens.Notifications} component={NotificationScreen} />
     <Stack.Screen
@@ -112,7 +112,7 @@ const WalletStack = () => (
 const MainNavigator = () => (
   <Stack.Navigator initialRouteName={MainScreens.Home} screenOptions={{ headerShown: false }}>
     <Stack.Screen name={MainScreens.Home} component={WalletStack} />
-    <Stack.Screen name={MainScreens.LoginShortcut} component={LoginShortcutScreen} />
+    <Stack.Screen name={MainScreens.ConfirmAuth} component={ConfirmAuthScreen} />
   </Stack.Navigator>
 );
 

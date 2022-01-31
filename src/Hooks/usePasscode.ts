@@ -8,7 +8,7 @@ export const PASSCODE_KEY = 'PASSCODE_KEY';
 const PASSCODE_ATTEMPT_COUNT_KEY = 'PASSCODE_ATTEMPT_COUNT_KEY';
 
 export const usePasscode = () => {
-  const [isPasscodeEnabled] = useMMKVBoolean(IS_PASSCODE_ENABLED);
+  const [isPasscodeEnabled, setIsPasscodeEnabled] = useMMKVBoolean(IS_PASSCODE_ENABLED);
   const [failedAttempts, setFailedAttempts] = useMMKVNumber(PASSCODE_ATTEMPT_COUNT_KEY);
   const {
     data: storedPasscode,
@@ -28,23 +28,24 @@ export const usePasscode = () => {
   const verifyPasscode = async (code: string) => {
     if (code === storedPasscode) {
       clearFailedAttempts();
-      mixpanel.track('LoginWithPin');
+      mixpanel.track('LoginWithPasscode');
       return true;
     }
     incrementFailedAttempts();
-    mixpanel.track('LoginWithPinFailure');
+    mixpanel.track('LoginWithPasscodeFailure');
     return false;
   };
 
   const removePasscode = async () => {
     await deletePasscode();
-    mixpanel.track('PinDisabled');
+    setIsPasscodeEnabled(false);
+    mixpanel.track('PasscodeDisabled');
     clearFailedAttempts();
   };
 
   const setPasscode = async (passcode: string) => {
     await savePasscode(passcode);
-    mixpanel.track('PinEnabled');
+    mixpanel.track('PasscodeEnabled');
   };
 
   return {

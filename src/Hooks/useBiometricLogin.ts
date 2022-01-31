@@ -9,7 +9,8 @@ const useBiometricLogin = (
   onSuccessCallback?: () => void,
   onCancelCallback?: () => void,
   interceptCallback?: () => void,
-): void => {
+): { reprompt: (
+) => void } => {
   const [hasPrompted, setHasPrompted] = useState(false);
   const { verifyBio, successfulBioLogin, loading, biometricsEnabled } = useBiometrics();
   const isMounted = useIsMounted();
@@ -34,7 +35,6 @@ const useBiometricLogin = (
           }
           onSuccessCallback?.();
         } else {
-          setHasPrompted(false);
           mixpanel.track('LoginWithBiometricsFailure', {
             type: availableBio,
           });
@@ -52,10 +52,22 @@ const useBiometricLogin = (
     onCancelCallback,
   ]);
 
+  const reprompt = useCallback(() => {
+    if (hasPrompted) {
+      setHasPrompted(false);
+    } else {
+      onBiometricLogin();
+    }
+  }, [hasPrompted, setHasPrompted, onBiometricLogin]);
+
   useEffect(() => {
     if (loading || !biometricsEnabled || !isMounted.current || hasPrompted) return;
     onBiometricLogin();
   }, [loading, biometricsEnabled, isMounted, onBiometricLogin, hasPrompted]);
+
+  return {
+    reprompt,
+  };
 };
 
 export default useBiometricLogin;

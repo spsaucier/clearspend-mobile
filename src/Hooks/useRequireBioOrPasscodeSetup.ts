@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/core';
+import { ParamListBase, useNavigation } from '@react-navigation/core';
 import { useMMKVString } from 'react-native-mmkv';
 
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAuthentication } from './useAuthentication';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { AVAILABLE_BIO_KEY } from '@/Store/keys';
 
-const useRequireBioOrPinSetup = (): void => {
+const useRequireBioOrPasscodeSetup = (): void => {
   const { biometricsEnabled, passcodeActive, loading } = useAuthentication();
-  const { navigate } = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [availableBio] = useMMKVString(AVAILABLE_BIO_KEY);
   useEffect(() => {
     if (!loading) {
-      // TODO: when PIN is added, remove availableBio from below
-      if (!biometricsEnabled && !passcodeActive && availableBio) {
-        navigate(MainScreens.SetBiometricsOrPin);
+      if (!biometricsEnabled && !passcodeActive) {
+        navigation.replace(MainScreens.SetBiometricsOrPasscode);
       }
     }
   }, [
@@ -22,8 +22,8 @@ const useRequireBioOrPinSetup = (): void => {
     loading,
     passcodeActive,
     availableBio,
-    navigate,
+    navigation,
   ]);
 };
 
-export default useRequireBioOrPinSetup;
+export default useRequireBioOrPasscodeSetup;

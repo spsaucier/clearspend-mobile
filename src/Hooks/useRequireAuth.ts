@@ -11,12 +11,11 @@ import { MMKV } from 'react-native-mmkv';
 import { mixpanel } from '@/Services/utils/analytics';
 import { IS_AUTHED, LAST_ACTIVE_KEY } from '@/Store/keys';
 
-export const REQUIRE_AUTH_TIMEOUT_MINUTES = 5;
+export const REQUIRE_AUTH_TIMEOUT_SECONDS = 300;
 
 /**
  * When our application is put into the background for a certain amount of time (5 minutes at the
- * time of writing this comment), we want to require that the user puts in their pin, has their bio
- * checked, or enters their password again. This hook handles that.
+ * time of writing this comment), we want to trigger an auth confirmation.
  *
  * @param onRequireAuth Method to flag that the user must authenticate again.
  */
@@ -28,8 +27,9 @@ export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void
     const currentDate = new Date().valueOf();
     const lastActive = storage.getNumber(LAST_ACTIVE_KEY);
     const diff = currentDate - lastActive;
-    const minutesSinceLastActive = Math.floor(diff / 1000 / 60);
-    return minutesSinceLastActive >= REQUIRE_AUTH_TIMEOUT_MINUTES;
+    const secondsSinceLastActive = Math.floor(diff / 1000);
+    const hasBeenTooLong = secondsSinceLastActive >= REQUIRE_AUTH_TIMEOUT_SECONDS;
+    return hasBeenTooLong;
   };
 
   const onInactive = async () => {
@@ -45,13 +45,7 @@ export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void
   const onActive = async () => {
     mixpanel.track('App state changed to active');
     setTemporarilyDisabled(false);
-
-    if (tooLongSinceLastActive()) {
-      storage.set(IS_AUTHED, false);
-      onRequireAuth(true);
-    } else {
-      storage.set(IS_AUTHED, true);
-    }
+    onRequireAuth(!tooLongSinceLastActive());
   };
 
   const handleAppStateChange = async (newAppState: AppStateStatus) => {

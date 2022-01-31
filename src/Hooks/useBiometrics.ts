@@ -26,7 +26,7 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
   const [loading, setLoading] = useState(false);
   const [biometricsPublicKey, setBiometricsPublicKey] = useMMKVString(BIO_STORAGE_KEY);
   const { t } = useTranslation();
-  const promptMessage = t(`loginMethod.${availableBio}.${Platform.OS}.description`);
+  const promptMessage = t(`loginOptions.${availableBio}.${Platform.OS}.description`);
 
   /**
    * Is the app in a state where we can request the permission for biometrics on iOS?

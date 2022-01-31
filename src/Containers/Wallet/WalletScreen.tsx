@@ -13,14 +13,14 @@ import { useFreezeCard, useUnFreezeCard, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens } from '../../Navigators/NavigatorTypes';
-import useRequireBioOrPinSetup from '@/Hooks/useRequireBioOrPinSetup';
+import useRequireBioOrPasscodeSetup from '@/Hooks/useRequireBioOrPasscodeSetup';
 
 const { width: screenWidth } = Dimensions.get('screen');
 
 const WalletScreen = () => {
+  useRequireBioOrPasscodeSetup();
   const { navigate } = useNavigation();
   const { t } = useTranslation();
-  useRequireBioOrPinSetup();
   const cardWidth = 0.95 * screenWidth;
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
   const cardStatus = selectedCard?.card?.status;

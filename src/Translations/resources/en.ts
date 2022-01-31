@@ -81,6 +81,15 @@ export default {
     },
     pin: 'PIN',
     pinDescription: 'Create a 4-digit PIN to log in to ClearSpend',
+    passcode: {
+      confirmYour: 'Confirm your ',
+      createYour: 'Create your ',
+      enterYour: 'Enter your ',
+      fourDigitPasscode: '4-digit PIN',
+      mismatch: 'Your PINs did not match',
+      incorrect: 'Incorrect PIN',
+      tryAgain: 'Please try again',
+    },
   },
   setPassword: {
     title: 'Set your own password',
