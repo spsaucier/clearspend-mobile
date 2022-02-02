@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { View, Dimensions, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Config from 'react-native-config';
 import { Card } from './Card';
 import tw from '@/Styles/tailwind';
 import { CardDetailsResponse } from '@/generated/capital';
@@ -12,6 +13,8 @@ import { ActivityIndicator } from '../../../Components/ActivityIndicator';
 export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse }) => {
   const { card, availableBalance } = cardData;
   const [loading, setLoading] = useState(true);
+  const [opacity, setOpacity] = useState(0);
+  const [readyCount, setReadyCount] = useState(0);
   const { t } = useTranslation();
 
   const { cardId, lastFour, type, status, address, externalRef } = card;
@@ -39,7 +42,6 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
           isFrozen={isFrozen}
           showSensitiveInformation
         />
-
         <View
           style={{
             height: Dimensions.get('window').width * 0.63,
@@ -52,13 +54,28 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
             ref={webviewRef}
             originWhitelist={['*']}
             bounces={false}
-            style={{ backgroundColor: 'transparent' }}
+            style={{ backgroundColor: 'transparent', opacity: loading ? 0 : 1 }}
             showsHorizontalScrollIndicator={false}
             onMessage={async (event: any) => {
               const { data } = event.nativeEvent;
-              const result = await revealCardKey({ nonce: data, cardId });
-              setLoading(false);
-              sendDataToWebView(result?.ephemeralKey!);
+              if (data.indexOf('ephkn_pub') === 0) {
+                const result = await revealCardKey({ nonce: data, cardId });
+                sendDataToWebView(result?.ephemeralKey!);
+              } else if (loading) {
+                try {
+                  const dataObj = JSON.parse(data);
+                  if (dataObj.message.payload.event === 'ready') {
+                    // Stripe sends six ready events en route to complete rendering
+                    // probably one per field and one per Copy icon
+                    if (readyCount + 1 === 6) {
+                      setLoading(false);
+                    }
+                    setReadyCount(readyCount + 1);
+                  }
+                } catch {
+                  // ignore
+                }
+              }
             }}
             source={{
               // eslint-disable-next-line global-require
@@ -179,13 +196,10 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
       </div>
     </div>
     <script>
-      // TODO: Set this to be from env variable
-      const STRIPE_PUBLISHABLE_KEY =
-        "pk_test_51K4bTGGAnZyEKADzAHWpsUzRhpZKBUdFOWgBfdfSw302hniCVohvChc3THqrUdVN7tHxqpu8JNz3ABuN35OBuYtu00m8x9cVd3";
       const CARD_ID = "${externalRef}";
 
       const renderCard = async () => {
-        const stripe = Stripe(STRIPE_PUBLISHABLE_KEY, {
+        const stripe = Stripe("${Config.STRIPE_PUBLISHABLE_KEY}", {
           betas: ["issuing_elements_2"]
         });
         const elements = stripe.elements({
@@ -198,13 +212,13 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
           issuingCard: CARD_ID
         });
 
-        let hasReceivedData = false;
-
         const getEphemeralKey = () => new Promise((resolve, reject) => {
           window.addEventListener("message", message => {
-            if (!hasReceivedData) {
-              hasReceivedData = true;
+            if (message.data.indexOf('ek_') === 0) {
               return resolve(message.data);
+            } else {
+              // Stripe and others send some messages that we want to act on
+              window.ReactNativeWebView.postMessage(message.data);
             }
           });
           window.ReactNativeWebView.postMessage(nonceResult.nonce);
