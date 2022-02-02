@@ -123,7 +123,7 @@ app.patch('/users/cards/:cardId/block', (req, res) => {
   const cardItem = usersCards[idx];
   const { card } = cardItem;
 
-  const modifiedCard = { ...cardItem, card: { ...card, ...{ status: 'BLOCKED' } } };
+  const modifiedCard = { ...cardItem, card: { ...card, ...{ status: 'INACTIVE' } } };
 
   usersCards[idx] = modifiedCard;
   res.json(modifiedCard);

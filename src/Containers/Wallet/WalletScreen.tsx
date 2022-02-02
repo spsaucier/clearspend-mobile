@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Dimensions, StatusBar } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,11 +27,25 @@ const WalletScreen = () => {
   const isFrozen = cardStatus === 'INACTIVE';
 
   const {
-    data: cardsData,
+    data: allCardsData,
     isLoading: cardsLoading,
     refetch: refetchCards,
     error: cardsError,
   } = useUserCards();
+
+  const activeCards = useMemo(
+    () =>
+      allCardsData?.filter((cardDetails) => {
+        if (
+          cardDetails.card.status === 'CANCELLED' ||
+          (cardDetails.card.type === 'PHYSICAL' && cardDetails.card.activated === false)
+        ) {
+          return false;
+        }
+        return true;
+      }) ?? [],
+    [allCardsData],
+  );
 
   const { mutate: freeze, isLoading: isFreezing } = useFreezeCard(selectedCard?.card?.cardId!);
   const { mutate: unfreeze, isLoading: isUnfreezing } = useUnFreezeCard(
@@ -40,16 +54,16 @@ const WalletScreen = () => {
   const freezingOrUnfreezing = isUnfreezing || isFreezing;
 
   useEffect(() => {
-    if (cardsData?.length) {
+    if (activeCards.length) {
       if (!selectedCard) {
-        const [first] = cardsData;
+        const [first] = activeCards;
         setSelectedCard(first);
       } else {
-        const card = cardsData.find((x) => x.card.cardId === selectedCard?.card?.cardId);
+        const card = activeCards.find((x) => x.card.cardId === selectedCard?.card?.cardId);
         setSelectedCard(card);
       }
     }
-  }, [cardsData, selectedCard]);
+  }, [activeCards, selectedCard]);
 
   if (cardsLoading) {
     return (
@@ -77,7 +91,7 @@ const WalletScreen = () => {
     );
   }
 
-  if (!cardsData || cardsData.length === 0) {
+  if (!activeCards || activeCards.length === 0) {
     return (
       <SafeAreaView style={tw`flex-1 justify-center items-center bg-secondary`} edges={['top']}>
         <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
@@ -118,16 +132,16 @@ const WalletScreen = () => {
       <View>
         <Carousel
           // ref={(c) => { _carousel = c; }}
-          data={cardsData}
+          data={activeCards}
           layout="default"
           sliderWidth={screenWidth}
           itemWidth={cardWidth}
           inactiveSlideScale={1}
-          extraData={cardsData}
+          extraData={activeCards}
           inactiveSlideOpacity={0.1}
           removeClippedSubviews={false}
           lockScrollWhileSnapping
-          onSnapToItem={(index: any) => setSelectedCard(cardsData?.[index])}
+          onSnapToItem={(index: any) => setSelectedCard(activeCards[index])}
           renderItem={({ item }: any) => {
             const { card, availableBalance, allocationName } = item;
             if (card) {
@@ -160,8 +174,8 @@ const WalletScreen = () => {
 
       {/* Slider dots */}
       <View style={tw`flex-row justify-center my-1`}>
-        {cardsData?.length > 1 &&
-          cardsData.map(({ card }) => {
+        {activeCards.length > 1 &&
+          activeCards.map(({ card }) => {
             const cardId = card?.cardId;
             const selected = cardId === selectedCard?.card?.cardId;
 

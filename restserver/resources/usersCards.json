@@ -7,7 +7,7 @@
       "allocationId": "f7e15f44-76c4-4aeb-9edf-780a86cb08a5",
       "userId": "194a9c38-63c5-4970-998d-2b881cec71da",
       "accountId": null,
-      "status": "OPEN",
+      "status": "ACTIVE",
       "statusReason": "NONE",
       "fundingType": "POOLED",
       "type": "VIRTUAL",
@@ -47,10 +47,10 @@
       "allocationId": "f7e15f44-76c4-4aeb-9edf-780a86cb08a5",
       "userId": "194a9c38-63c5-4970-998d-2b881cec71da",
       "accountId": null,
-      "status": "OPEN",
+      "status": "ACTIVE",
       "statusReason": "NONE",
       "fundingType": "POOLED",
-      "type": "PLASTIC",
+      "type": "PHYSICAL",
       "issueDate": "2021-11-10T22:20:05.708025Z",
       "expirationDate": "2024-11-10",
       "activated": false,
@@ -87,13 +87,13 @@
       "allocationId": "f7e15f44-76c4-4aeb-9edf-780a86cb08a5",
       "userId": "194a9c38-63c5-4970-998d-2b881cec71da",
       "accountId": null,
-      "status": "BLOCKED",
+      "status": "ACTIVE",
       "statusReason": "NONE",
       "fundingType": "POOLED",
-      "type": "PLASTIC",
+      "type": "PHYSICAL",
       "issueDate": "2021-11-10T22:20:05.708025Z",
       "expirationDate": "2024-11-10",
-      "activated": false,
+      "activated": true,
       "activationDate": null,
       "cardLine3": "Kellie Wuckert",
       "cardLine4": "",
@@ -118,5 +118,45 @@
       "amount": 0.0
     },
     "allocationName": "Christmas Party"
+  },
+  {
+    "card": {
+      "cardId": "4444",
+      "bin": "401288",
+      "programId": "6faf3838-b2d7-422c-8d6f-c2294ebc73b4",
+      "allocationId": "f7e15f44-76c4-4aeb-9edf-780a86cb08a5",
+      "userId": "194a9c38-63c5-4970-998d-2b881cec71da",
+      "accountId": null,
+      "status": "CANCELLED",
+      "statusReason": "NONE",
+      "fundingType": "POOLED",
+      "type": "VIRTUAL",
+      "issueDate": "2021-11-10T22:20:05.708025Z",
+      "expirationDate": "2024-11-10",
+      "activated": false,
+      "activationDate": null,
+      "cardLine3": "Kellie Wuckert",
+      "cardLine4": "",
+      "superseded": false,
+      "cardNumber": "5901885368919593",
+      "lastFour": "1111",
+      "address": {
+        "streetLine1": "23, Marion St",
+        "streetLine2": "",
+        "locality": "New York",
+        "region": "NY",
+        "postalCode": "123456",
+        "country": "USA"
+      }
+    },
+    "ledgerBalance": {
+      "currency": "USD",
+      "amount": 0
+    },
+    "availableBalance": {
+      "currency": "USD",
+      "amount": 200.0
+    },
+    "allocationName": "Kuhn, Kunde and Nicolas"
   }
 ]
