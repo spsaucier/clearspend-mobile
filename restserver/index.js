@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const exitHook = require('async-exit-hook');
 
-const auth = require('./resources/auth.json');
+const users = require('./resources/users.json');
 var usersCards = require('./resources/usersCards.json');
 var transactions = require('./resources/transactions.json');
 const images = require('./images.js');
@@ -28,7 +28,7 @@ const port = 8000;
 app.post('/oauth2/token', (req, res) => {
   const { username, password, refreh_token: refreshToken } = req.body;
 
-  const authorized = auth.find(
+  const authorized = users.find(
     (x) =>
       (x.username === username && x.password === password) ||
       x.authorization.refresh_token === refreshToken,
@@ -53,7 +53,7 @@ const checkAuthorization = (req, res, next) => {
 
   const token = authorization.split(' ')[1];
   if (token) {
-    const authorized = auth.find((x) => x.authorization.access_token === token);
+    const authorized = users.find((x) => x.authorization.access_token === token);
     if (!authorized) {
       res.status(401).send('invalid token');
       return;
@@ -201,6 +201,13 @@ app.delete('/users/receipts/:receiptId/delete', (req, res) => {
   transactions[transactionIdx] = transactionUpdated;
 
   res.sendStatus(200);
+});
+
+app.get('/users/', checkAuthorization, (req, res) => {
+  const { userId } = res.locals;
+  const currentUser = users.find((x) => x.profile.userId === userId);
+
+  res.json(currentUser.profile);
 });
 
 app.use('/images', images);

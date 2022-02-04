@@ -8,6 +8,24 @@
       "refresh_token": "nKgSPRWsarOsOY-kMgQIwMdscMGc14uCMKLlItEqZkidviQwOltn2g",
       "token_type": "Bearer",
       "userId": "194a9c38-63c5-4970-998d-2b881cec71da"
+    },
+    "profile": {
+      "userId": "194a9c38-63c5-4970-998d-2b881cec71da",
+      "businessId": "98bd9f04-7b4e-4ae7-b21e-cc4a7fefb032",
+      "type": "EMPLOYEE",
+      "firstName": "Test 1",
+      "lastName": "Employee",
+      "address": {
+        "streetLine1": "",
+        "streetLine2": "",
+        "locality": "",
+        "region": "",
+        "postalCode": "",
+        "country": "USA"
+      },
+      "email": "test1@gmail.com",
+      "phone": "+14804422352",
+      "archived": false
     }
   },
   {
@@ -19,6 +37,24 @@
       "refresh_token": "csJUrGfIim_UYugh8fAJe3RTlxPFDEIswLuBArpnCVEJJ8wiQIwRVg",
       "token_type": "Bearer",
       "userId": "17ed8293-bb3d-4550-b003-95ce00adf026"
+    },
+    "profile": {
+      "userId": "17ed8293-bb3d-4550-b003-95ce00adf026",
+      "businessId": "98bd9f04-7b4e-4ae7-b21e-cc4a7fefb031",
+      "type": "EMPLOYEE",
+      "firstName": "Test 2",
+      "lastName": "Employee",
+      "address": {
+        "streetLine1": "",
+        "streetLine2": "",
+        "locality": "",
+        "region": "",
+        "postalCode": "",
+        "country": "USA"
+      },
+      "email": "test2@gmail.com",
+      "phone": "+14804422352",
+      "archived": false
     }
   }
 ]
