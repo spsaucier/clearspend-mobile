@@ -28,15 +28,17 @@ const ProfileScreen = () => {
       <View style={tw`flex-row items-center justify-end pr-6 pt-6`}>
         <CloseIconButton color={tw.color('white')} />
       </View>
-      {isLoading || error || !user ? (
-        <ActivityIndicator />
-      ) : (
-        <View style={[tw`h-1/4 flex-col justify-center bg-secondary px-5 pt-12 pb-16`]}>
-          <CSText style={tw`text-2xl text-white`}>{`${user.firstName} ${user.lastName}`}</CSText>
-          {/* TODO: Make this link go to a page with more user info */}
-          <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
-        </View>
-      )}
+      <View style={[tw`h-1/4 flex-col justify-center bg-secondary px-5 pt-12 pb-16`]}>
+        {isLoading || error || !user ? (
+          <ActivityIndicator />
+        ) : (
+          <>
+            <CSText style={tw`text-2xl text-white`}>{`${user.firstName} ${user.lastName}`}</CSText>
+            {/* TODO: Make this link go to a page with more user info */}
+            <CSText style={tw`text-sm text-primary pt-2`}>{t('profile.profileInfo')}</CSText>
+          </>
+        )}
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={tw`flex-1 bg-white`}

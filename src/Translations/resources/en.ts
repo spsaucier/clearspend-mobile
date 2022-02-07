@@ -24,6 +24,18 @@ export default {
       havingTroubleLoggingIn: 'Having trouble logging in?',
       loginWithEmailPassword: 'Log in using your email and password',
     },
+    twoFactor: {
+      placeholder: '******',
+      sms: {
+        label: 'Enter the code sent by SMS to your mobile number',
+      },
+      email: {
+        label: 'Enter the code sent to your email address',
+      },
+      authenticator: {
+        label: 'Enter the code available in your authenticator app',
+      },
+    },
   },
   selectOrganization: {
     title: 'Select your organization',
@@ -33,24 +45,26 @@ export default {
   enterMobile: {
     title: 'Enter mobile number',
     titlePart1: 'Enter your',
-    titlePart2: 'mobile number',
-    subTitle: 'We will send a verification code to this number',
+    titlePart2: ' mobile number',
+    subTitle: 'We’ll send a verification code to this number.',
     mobileInputLabel: 'Mobile Number',
     mobileInputPlaceholder: 'Enter your mobile number',
     buttonCta: 'Send Verification Code',
+    error: 'Invalid phone number',
   },
   otp: {
     title: 'Enter the 6 digit code we sent to your mobile device',
     titlePart1: 'Enter the',
-    titlePart2: '6 digit code',
-    titlePart3: 'we sent to your mobile device',
+    titlePart2: ' 6 digit code',
+    titlePart3: ' we sent to your mobile device',
     resendCode: 'Resend code',
     buttonCta: 'Verified',
+    incorrect: 'The entered OTP was incorrect',
   },
   verifyAccount: {
     title: 'Verify your account',
     subTitle: 'Enter the verification code send to your mobile number',
-    resendCta: "Didn't receive a code? Resend Code (in 15 seconds)",
+    resendCta: 'Didn’t receive a code? Resend Code (in 15 seconds)',
     buttonCta: 'Verify',
   },
   loginOptions: {
@@ -94,7 +108,7 @@ export default {
   setPassword: {
     title: 'Set your own password',
     titlePart1: 'Set your own',
-    titlePart2: 'password',
+    titlePart2: ' password',
     subTitle: 'The password we sent to your email was temporary. Please set your own password now.',
     passwordInputLabel: 'New password',
     passwordInputPlaceholder: 'Enter a new password',
@@ -126,7 +140,7 @@ export default {
   wallet: {
     header: 'Hey {{name}}!',
     empty: {
-      title: "Looks like you don't have any cards.",
+      title: 'Looks like you don’t have any cards.',
       subTitle: 'When you’re assigned a card, you’ll be able to view and control it from here.',
     },
     transactions: {
@@ -228,7 +242,7 @@ export default {
       notificationSettings: 'Notification Settings',
       viewAuditLog: 'View Audit Log',
       changeCompany: 'Change Company',
-      logOut: 'Log out from this device',
+      logOut: 'Log out',
     },
     changePassword: {
       title: 'Change Password',

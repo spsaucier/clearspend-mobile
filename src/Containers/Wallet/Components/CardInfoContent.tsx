@@ -13,7 +13,6 @@ import { ActivityIndicator } from '../../../Components/ActivityIndicator';
 export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse }) => {
   const { card, availableBalance } = cardData;
   const [loading, setLoading] = useState(true);
-  const [opacity, setOpacity] = useState(0);
   const [readyCount, setReadyCount] = useState(0);
   const { t } = useTranslation();
 

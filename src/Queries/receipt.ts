@@ -14,7 +14,7 @@ export const uploadReceipt = (data: any) => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      timeout: 20 * 1000, //20 secs
+      timeout: 20 * 1000, // 20 secs
     })
     .then((r) => r.data);
 };

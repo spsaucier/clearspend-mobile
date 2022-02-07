@@ -1,51 +1,56 @@
 import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { useRoute } from '@react-navigation/core';
+import { useDispatch } from 'react-redux';
 import tw from '@/Styles/tailwind';
-import { Button } from '@/Components';
+import { Button, CSText } from '@/Components';
 import { PasswordRuleRow } from '@/Containers/Onboarding/Components/PasswordRuleRow';
-import { AuthScreens } from '@/Navigators/NavigatorTypes';
 import { changePassword, login } from '@/Services/Auth';
 import { OnboardingTextInput } from '@/Components/OnboardingTextInput';
 import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
-import { Session } from '@/Store/Session';
+import { Session, updateSession } from '@/Store/Session';
+import { mixpanel } from '@/Services/utils/analytics';
+
+const validPassword = new RegExp('^(?=.*?[A-Za-z])(?=.*?[0-9]).{10,30}$');
 
 const SetPasswordScreen = () => {
   const [password, setPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
   const [pwdError, setPwdError] = useState(false);
+  const [submissionError, setSubmissionError] = useState('');
   const route = useRoute<any>();
   const { params } = route;
-  const validPassword = new RegExp('^(?=.*?[A-Za-z])(?=.*?[0-9]).{10,30}$');
+  const dispatch = useDispatch();
 
-  const { changePassId } = params;
-  const { email } = params;
+  const { changePasswordId } = params;
+  const { email, password: currentPassword } = params;
 
   const changePass = () => {
-    changePassword(changePassId, password)
+    changePassword(changePasswordId, password, currentPassword)
       .then((res) => {
         if (res.status === 200) {
           login(email, password).then((response) => {
             if ('accessToken' in response) {
+              mixpanel.track('Login');
               const sessionPayload = response as Session;
-              navigate(AuthScreens.EnterMobile, { sessionPayload });
+              dispatch(updateSession(sessionPayload));
             }
           });
+        } else {
+          // eslint-disable-next-line no-console
+          console.log(res);
         }
       })
       .catch((ex) => {
-        const {
-          data: { error, error_description: errorDescription },
-        } = ex;
-        const invalidRequest = error === 'invalid_request';
-        if (invalidRequest) {
-          throw Error(errorDescription);
+        // eslint-disable-next-line no-console
+        console.log('Field errors: ', JSON.stringify(ex.fieldErrors));
+        if (ex?.fieldErrors?.password?.[0]?.code === '[previouslyUsed]password') {
+          setSubmissionError('The password may not be the same as your past passwords.');
         } else {
-          Promise.reject(new Error('Change Password id not found'));
+          setSubmissionError(ex.message);
         }
       });
   };
@@ -55,6 +60,7 @@ const SetPasswordScreen = () => {
   }, [password]);
 
   const validatePassword = () => {
+    setSubmissionError('');
     if (password.length > 10 && !validPassword.test(password)) {
       setPwdError(true);
     } else if (password.length === 1 || validPassword.test(password)) {
@@ -68,22 +74,24 @@ const SetPasswordScreen = () => {
         <OnboardingScreenTitle
           titlePart1={t('setPassword.titlePart1')}
           titlePart2={t('setPassword.titlePart2')}
-          titlePart3=""
         />
-        {pwdError && (
-          <Text style={tw`text-white`}>
-            That password cannot be used. Please enter a different password.
-          </Text>
-        )}
         <OnboardingTextInput
           keyboardType="default"
           containerStyle={tw`mb-8`}
           secureTextEntry
           value={password}
-          onChangeText={(value) => setPassword(value)}
+          onChangeText={(value) => {
+            setPassword(value);
+          }}
           autoFocus
           onChange={validatePassword}
         />
+        {pwdError && (
+          <CSText style={tw`text-white mb-5`}>
+            That password cannot be used. Please enter a different password.
+          </CSText>
+        )}
+        {submissionError ? <CSText style={tw`text-white mb-5`}>{submissionError}</CSText> : null}
         <View>
           <PasswordRuleRow
             label={t('setPassword.rules.length')}

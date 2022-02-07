@@ -13,18 +13,20 @@ import { useFreezeCard, useUnFreezeCard, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens } from '../../Navigators/NavigatorTypes';
-import useRequireBioOrPasscodeSetup from '@/Hooks/useRequireBioOrPasscodeSetup';
+import { useAuthentication } from '../../Hooks/useAuthentication';
+import useRequireOnboarding from '../../Hooks/useRequireOnboarding';
 
 const { width: screenWidth } = Dimensions.get('screen');
 
 const WalletScreen = () => {
-  useRequireBioOrPasscodeSetup();
+  useRequireOnboarding();
   const { navigate } = useNavigation();
   const { t } = useTranslation();
   const cardWidth = 0.95 * screenWidth;
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
   const cardStatus = selectedCard?.card?.status;
   const isFrozen = cardStatus === 'INACTIVE';
+  const { logout } = useAuthentication();
 
   const {
     data: allCardsData,
@@ -37,8 +39,8 @@ const WalletScreen = () => {
     () =>
       allCardsData?.filter((cardDetails) => {
         if (
-          cardDetails.card.status === 'CANCELLED' ||
-          (cardDetails.card.type === 'PHYSICAL' && cardDetails.card.activated === false)
+          cardDetails.card.status === 'CANCELLED'
+          || (cardDetails.card.type === 'PHYSICAL' && cardDetails.card.activated === false)
         ) {
           return false;
         }
@@ -87,6 +89,11 @@ const WalletScreen = () => {
         >
           {t('general.reload')}
         </Button>
+        <View style={{ marginTop: 10 }}>
+          <Button onPress={logout} small>
+            {t('profile.profileMenu.logOut')}
+          </Button>
+        </View>
       </SafeAreaView>
     );
   }
@@ -103,7 +110,7 @@ const WalletScreen = () => {
           </CSText>
         </View>
         <View
-          style={tw.style('h-1/4 w-90 w-full absolute bottom-0 justify-center items-center -z-10')}
+          style={tw.style('h-1/6 w-90 w-full absolute bottom-0 justify-center items-center -z-10')}
         >
           <Card
             style={tw.style('w-9/10 ml-3', { transform: [{ rotateZ: '-10deg' }] })}
@@ -116,7 +123,7 @@ const WalletScreen = () => {
           />
         </View>
         <SafeAreaView
-          style={tw`shadow-xl bg-secondary-light h-1/5 w-full z-10`}
+          style={tw`shadow-xl bg-secondary-light w-full z-10`}
           edges={['bottom']}
         />
       </SafeAreaView>

@@ -4,3 +4,6 @@ import apiClient from '@/Services';
 
 export const useUser = () =>
   useQuery<User, Error>('user', () => apiClient.get('/users').then((res) => res.data));
+
+export const updateUser = (user: User) =>
+  apiClient.post(`/users/${user.userId}`, { ...user }).then((r) => r.data);

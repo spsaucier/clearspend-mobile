@@ -34,6 +34,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'react/jsx-props-no-spreading': ['off'],
     '@typescript-eslint/indent': ['off'],
     'object-curly-newline': ['off'],
     'array-bracket-spacing': ['error', 'never'],

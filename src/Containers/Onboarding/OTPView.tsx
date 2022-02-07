@@ -5,7 +5,6 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
  Cursor } from 'react-native-confirmation-code-field';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 
@@ -15,11 +14,11 @@ interface Props {
   messaging?: string;
   onPasscodeChanged?: (newCode: string) => void;
   onSuccessFinished: (passcode: string) => void;
+  error?: boolean;
   errorTitle?: string;
-  error?: string;
 }
 
-export const PASSCODE_LENGTH = 4;
+export const PASSCODE_LENGTH = 6;
 
 const styles = StyleSheet.create({
   root: { padding: 20, minHeight: 300, maxWidth: 100 },
@@ -31,7 +30,9 @@ const styles = StyleSheet.create({
     lineHeight: 70,
     fontSize: 24,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderColor: 'transparent',
+    ...tw`rounded`,
     borderRadius: 5,
     marginHorizontal: 4,
     fontFamily: 'telegraf',
@@ -44,12 +45,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export const PasscodeView: React.FC<Props> = ({
-  preface,
-  title,
-  messaging,
+export const OTPView: React.FC<Props> = ({
   errorTitle,
-  error = '',
+  error = false,
   onPasscodeChanged,
   onSuccessFinished,
 }: Props) => {
@@ -71,7 +69,7 @@ export const PasscodeView: React.FC<Props> = ({
     let textChild = null;
 
     if (symbol) {
-      textChild = '●';
+      textChild = symbol;
     } else if (isFocused) {
       textChild = <Cursor />;
     }
@@ -106,9 +104,7 @@ export const PasscodeView: React.FC<Props> = ({
   }, [error]);
 
   return (
-    <SafeAreaView style={tw.style('pt-10')}>
-      {preface}
-      {title}
+    <View>
       <View style={tw.style('items-center justify-center h-30')}>
         <CodeField
           {...props}
@@ -125,8 +121,7 @@ export const PasscodeView: React.FC<Props> = ({
       </View>
       <View style={tw.style('items-center')}>
         {error ? <Animated.Text style={tw`text-white mt-3`}>{errorTitle}</Animated.Text> : null}
-        {(error || messaging) && <Animated.Text style={tw`text-white`}>{error || messaging}</Animated.Text>}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };

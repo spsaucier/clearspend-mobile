@@ -29,6 +29,8 @@ import ConfirmAuthScreen from '@/Containers/Onboarding/ConfirmAuthScreen';
 import { SetBioPasscodeNavigator } from '@/Containers/Onboarding/BioPasscode/SetBioPasscodeNavigator';
 import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';
 import { ActivateCardScreen } from '@/Containers/Profile/ActivateCardScreen';
+import EnterMobileScreen from '@/Containers/Onboarding/EnterMobileScreen';
+import EnterOTPScreen from '@/Containers/Onboarding/EnterOTPScreen';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -115,6 +117,8 @@ const MainNavigator = () => (
   <Stack.Navigator initialRouteName={MainScreens.Home} screenOptions={{ headerShown: false }}>
     <Stack.Screen name={MainScreens.Home} component={WalletStack} />
     <Stack.Screen name={MainScreens.ConfirmAuth} component={ConfirmAuthScreen} />
+    <Stack.Screen name={MainScreens.EnterMobile} component={EnterMobileScreen} />
+    <Stack.Screen name={MainScreens.ConfirmMobile} component={EnterOTPScreen} />
   </Stack.Navigator>
 );
 
