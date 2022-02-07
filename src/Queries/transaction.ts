@@ -11,9 +11,7 @@ export const useCardTransactions = (cardId: string, pageNumber = 0, pageSize = 1
     ['transactions', { card: cardId }],
     () =>
       apiClient
-        .get(
-          `/users/cards/${cardId}/account-activity?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-        )
+        .post('/account-activity', { cardId, pageRequest: { pageNumber, pageSize } })
         .then((res) => res.data),
     { keepPreviousData: true },
   );
