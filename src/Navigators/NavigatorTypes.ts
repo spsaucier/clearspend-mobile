@@ -47,6 +47,7 @@ export enum MainScreens {
 
   // Profile & Settings
   AuditLog = 'Audit Log',
+  ActivateCard = 'Activate Card',
   ChangePassword = 'Change Password',
   ChangePasswordMessage = 'Change Password Message',
   NewPassword = 'New Password',
@@ -79,13 +80,14 @@ export type MainStackParamTypes = {
   [MainScreens.Home]: undefined;
 
   // Prompt before confirming logged in status
-  [MainScreens.ConfirmAuth]: undefined,
+  [MainScreens.ConfirmAuth]: undefined;
 
   // Onboarding post-auth
   [MainScreens.SetBiometricsOrPasscode]: undefined;
 
   // Profile & Settings
   [MainScreens.AuditLog]: undefined;
+  [MainScreens.ActivateCard]: undefined;
   [MainScreens.ChangePassword]: undefined;
   [MainScreens.ChangePasswordMessage]: undefined;
   [MainScreens.NewPassword]: undefined;

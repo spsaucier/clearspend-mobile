@@ -28,6 +28,7 @@ import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
 import ConfirmAuthScreen from '@/Containers/Onboarding/ConfirmAuthScreen';
 import { SetBioPasscodeNavigator } from '@/Containers/Onboarding/BioPasscode/SetBioPasscodeNavigator';
 import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';
+import { ActivateCardScreen } from '@/Containers/Profile/ActivateCardScreen';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -47,6 +48,7 @@ const ProfileStack = () => (
     <Stack.Screen name={MainScreens.ChangePasswordMessage} component={ChangePasswordMessage} />
     <Stack.Screen name={MainScreens.NotificationSettings} component={NotificationSettingScreen} />
     <Stack.Screen name={MainScreens.AuditLog} component={AuditLogScreen} />
+    <Stack.Screen name={MainScreens.ActivateCard} component={ActivateCardScreen} />
   </Stack.Navigator>
 );
 

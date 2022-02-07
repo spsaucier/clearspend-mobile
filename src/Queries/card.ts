@@ -4,8 +4,10 @@ import {
   CardDetailsResponse,
   RevealCardRequest,
   RevealCardResponse,
+  UpdateCardStatusRequest,
 } from '@/generated/capital';
 import apiClient from '@/Services';
+import { AxiosError } from 'axios';
 
 const getCards = () => apiClient.get('/users/cards').then((res) => res.data);
 export const useUserCards = () => useQuery<CardDetailsResponse[], Error>('cards', getCards);
@@ -78,6 +80,22 @@ export const useUnFreezeCard = (
       },
       // Always refetch after error or success:
       onSettled: () => {
+        queryClient.invalidateQueries('cards');
+      },
+    },
+  );
+};
+
+export const useActivateCard = () => {
+  const queryClient = useQueryClient();
+  return useMutation<Card, AxiosError, { lastFour: string } & UpdateCardStatusRequest>(
+    ({ lastFour, statusReason = 'CARDHOLDER_REQUESTED' }) =>
+      apiClient.patch('/users/cards/activate', { lastFour, statusReason }).then((res) => res.data),
+    {
+      // TODO may not be needed if handled in component
+      onError: (err, updatedCard, context: any) => {},
+      // Refetch cards if a card was activated successfully
+      onSuccess: () => {
         queryClient.invalidateQueries('cards');
       },
     },

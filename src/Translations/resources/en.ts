@@ -45,7 +45,7 @@ export default {
     titlePart2: '6 digit code',
     titlePart3: 'we sent to your mobile device',
     resendCode: 'Resend code',
-    buttonCta: 'Verified'
+    buttonCta: 'Verified',
   },
   verifyAccount: {
     title: 'Verify your account',
@@ -221,6 +221,7 @@ export default {
     profileInfo: 'View profile info',
     profileMenu: {
       manageAccount: 'Manage Account',
+      activateCard: 'Activate Card',
       biometrics: 'Biometrics',
       faceId: 'Face ID',
       changePassword: 'Change Password',

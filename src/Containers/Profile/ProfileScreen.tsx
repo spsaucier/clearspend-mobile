@@ -64,6 +64,13 @@ const ProfileScreen = () => {
             </TouchableOpacity>
 
             <ProfileMenuRow
+              label={t('profile.profileMenu.activateCard')}
+              onPress={() => {
+                navigate(MainScreens.ActivateCard);
+              }}
+            />
+
+            <ProfileMenuRow
               label={t('profile.profileMenu.changePassword')}
               onPress={() => {
                 navigate(MainScreens.ChangePassword);
