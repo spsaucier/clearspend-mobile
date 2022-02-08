@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View, ActivityIndicator, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { chain } from 'lodash';
+import { chain, debounce } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
 import BottomSheet, {
   BottomSheetView,
@@ -40,7 +40,13 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   const { t } = useTranslation();
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const transactionsListRef = useRef<any>(null);
-  const { data, isLoading, error, refetch } = useCardTransactions(cardId, 0, 10);
+  const [searchText, setSearchText] = useState('');
+  const { data, isLoading, error, refetch, hasNextPage, fetchNextPage } = useCardTransactions(
+    {
+      cardId,
+      searchText,
+    },
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -54,16 +60,17 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
     }
   }, [expanded]);
 
-  const content = data?.content;
-
-  const transactionsWithDate = content?.map((x: any) => {
-    const activityTimeISO = parseISO(x.activityTime);
-    const activityDate = format(activityTimeISO, 'yyyy-MM-dd');
-    return {
-      ...x,
-      activityDate,
-    };
-  });
+  const transactionsWithDate = data?.pages
+    .map((page) => page.content)
+    .flat()
+    .map((x) => {
+      const activityTimeISO = parseISO(x?.activityTime || '');
+      const activityDate = format(activityTimeISO, 'yyyy-MM-dd');
+      return {
+        ...x,
+        activityDate,
+      };
+    });
 
   const transactionsGroupedByDate = transactionsWithDate
     ? chain(transactionsWithDate)
@@ -95,6 +102,17 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
     [animatedPosition],
   );
 
+  const onChangeSearch = debounce((newSearch) => {
+    setSearchText(newSearch);
+    setTimeout(() => refetch());
+  }, 100);
+
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
   return (
     <View style={tw`h-full`}>
       <View style={[tw`flex m-6 mt-2 content-start`]}>
@@ -106,7 +124,10 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
 
         <View style={[tw`flex-row mt-4 justify-between`]}>
           <View style={tw`flex-grow pr-2`}>
-            <TWSearchInput placeholder={t('wallet.transactions.searchTransactions')} />
+            <TWSearchInput
+              onChangeText={onChangeSearch}
+              placeholder={t('wallet.transactions.searchTransactions')}
+            />
           </View>
           <View style={tw`flex-none self-center rounded-lg bg-gray95 w-8 py-1 items-center`}>
             <FilterIcon color="black" />
@@ -129,6 +150,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
             data={transactionsGroupedByDate}
             showsVerticalScrollIndicator={false}
             ref={transactionsListRef}
+            onEndReached={loadMore}
             renderItem={({ item }) => {
               const { date, transactions } = item;
               const dateParsed = parse(date, 'yyyy-MM-dd', new Date());

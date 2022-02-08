@@ -199,7 +199,8 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
 
       const renderCard = async () => {
         const stripe = Stripe("${Config.STRIPE_PUBLISHABLE_KEY}", {
-          betas: ["issuing_elements_2"]
+          betas: ["issuing_elements_2"],
+          stripeAccount: '${Config.STRIPE_ACCOUNT}',
         });
         const elements = stripe.elements({
           fonts: [{
