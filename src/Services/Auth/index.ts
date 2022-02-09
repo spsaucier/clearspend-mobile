@@ -1,34 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
-import { addSeconds } from 'date-fns';
 import Config from 'react-native-config';
 import jwtDecode from 'jwt-decode';
 import { Session } from '@/Store/Session';
 
-const qs = require('qs');
-
-const parseTokenResponse = (response: AxiosResponse) => {
-  if (response.status === 200) {
-    const {
-      access_token: accessToken,
-      expires_in: expiresIn,
-      refresh_token: refreshToken,
-      userId,
-    } = response.data;
-
-    const session: Session = {
-      userId,
-      accessToken,
-      expiresAt: addSeconds(Date.now(), expiresIn).toISOString(),
-      refreshToken,
-    };
-    return session;
-  }
-  return Promise.reject(new Error(response.statusText));
-};
-
 const parseLoginResponse = (res: AxiosResponse) => {
   let decoded = {
     exp: new Date().valueOf() / 1000,
+    userId: res.data.user?.id,
   };
   const accessToken = res.data.token;
   try {
@@ -37,7 +15,7 @@ const parseLoginResponse = (res: AxiosResponse) => {
     // Ignore
   }
   const session: Session = {
-    userId: res.data.user.id,
+    userId: decoded.userId || res.data.user?.id,
     accessToken,
     refreshToken: res.data.refreshToken,
     expiresAt: new Date(decoded.exp * 1000).toISOString(),
@@ -57,7 +35,12 @@ export const sendEnrollment2FA = async (formattedMobile: string, userId: string,
     headers: { 'content-type': 'application/json' },
   }).catch((ex) => Promise.reject(ex.response));
 
-export const submitEnrollment2FACode = async (code: string, userId: string, formattedMobile: string, method = 'sms') =>
+export const submitEnrollment2FACode = async (
+  code: string,
+  userId: string,
+  formattedMobile: string,
+  method = 'sms',
+) =>
   axios({
     method: 'POST',
     url: `${Config.CS_FA_URL}/api/user/two-factor/${userId}`,
@@ -172,20 +155,12 @@ export const loginUsingOneTimePass = async (loginId: string, oneTimePassword: st
 };
 
 export const getNewAccessToken = async (refreshToken: string) => {
-  const params = qs.stringify({
-    grant_type: 'refresh_token',
-    refresh_token: refreshToken,
-    client_id: Config.CS_FA_CLIENT_ID,
-    client_secret: Config.CS_FA_CLIENT_SECRET,
-    scope: 'offline_access',
-  });
-
   const response = await axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/oauth2/token`,
-    data: params,
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    url: `${Config.CS_FA_URL}/api/jwt/refresh`,
+    data: { refreshToken },
+    headers: { 'content-type': 'application/json' },
   }).catch((ex) => Promise.reject(ex.response));
 
-  return parseTokenResponse(response);
+  return parseLoginResponse(response);
 };
