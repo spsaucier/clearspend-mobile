@@ -7,13 +7,13 @@ import tw from '@/Styles/tailwind';
 import { Button } from '@/Components';
 import { OrganizationCard } from '@/Containers/Onboarding/Components/OrganizationCard';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
-import { AuthScreens } from '../../Navigators/NavigatorTypes';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 const SelectOrganizationScreen = () => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const handleSubmit = () => {
-    navigate(AuthScreens.EnterMobile);
+    navigate(MainScreens.EnterMobile);
   };
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`}>

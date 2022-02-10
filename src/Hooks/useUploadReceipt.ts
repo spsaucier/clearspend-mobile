@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { linkReceiptAsync, useUploadReceiptRemote } from '@/Queries/receipt';
 
@@ -20,8 +20,6 @@ const useUploadReceipt = ({
   const { mutateAsync, isLoading: uploadingReceipt } = useUploadReceiptRemote();
   const queryClient = useQueryClient();
 
-  const { receiptId, linked } = uploadReceiptState;
-
   const uploadReceipt = (uri: string) => {
     const fileName = uri.split('/').pop();
     const extension = fileName?.split('.').pop();
@@ -36,10 +34,21 @@ const useUploadReceipt = ({
       const { receiptId } = data;
       setUploadReceiptState({
         ...initialState,
+        // @ts-expect-error string[] is not assignable to string?
+        // Despite ReceiptDetails type seems incorrect at the backend code,
+        // it endpoint returns a string anyway.
         receiptId,
       });
     });
   };
+
+  const { receiptId, linked } = uploadReceiptState;
+
+  const refetchReceiptQuery = useCallback(() => {
+    queryClient.invalidateQueries(['receipt', receiptId], {
+      refetchInactive: true,
+    });
+  }, [queryClient, receiptId]);
 
   useEffect(() => {
     if (receiptId && !linked) {
@@ -48,17 +57,19 @@ const useUploadReceipt = ({
       };
       linkReceipt()
         .then(() => setUploadReceiptState({ ...uploadReceiptState, linked: true }))
-        .then(() =>
-          queryClient.invalidateQueries(['receipt', receiptId], {
-            refetchInactive: true,
-          }))
+        .then(refetchReceiptQuery)
         .then(() => {
-          // TODO Rodrigo - Fix eslint error
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          !!onUploadFinished && onUploadFinished();
+          onUploadFinished();
         });
     }
-  }, [linked, receiptId, accountActivityId, uploadReceiptState]);
+  }, [
+    linked,
+    receiptId,
+    accountActivityId,
+    uploadReceiptState,
+    onUploadFinished,
+    refetchReceiptQuery,
+  ]);
 
   const isUploading = uploadingReceipt || (receiptId && !linked) || false;
 

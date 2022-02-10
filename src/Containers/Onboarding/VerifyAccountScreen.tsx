@@ -21,6 +21,7 @@ const VerifyAccountScreen = () => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const handleSubmit = () => {
+    // @ts-expect-error todo fix screen param types
     navigate(AuthScreens.SetPassword);
   };
 

@@ -1,6 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const { resolve } = require('path');
-const { generateApi } = require('swagger-typescript-api');
+import { resolve } from 'path';
+import { generateApi } from 'swagger-typescript-api';
 
 const baseUrl = 'https://api.capital.dev.tranwall.net/v3/api-docs';
 
@@ -9,5 +8,4 @@ generateApi({
   name: 'capital.ts',
   output: resolve(__dirname, '../src/generated'),
   generateClient: false,
-  prettier: true,
-});
+}).then(() => console.log('Regenerated capital.ts'));

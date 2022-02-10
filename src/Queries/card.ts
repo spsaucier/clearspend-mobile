@@ -50,7 +50,7 @@ export const useFreezeCard = (
     {
       onMutate: async (updatedCard) => onMutateFreeze({ updatedCard, queryClient, cardId }),
       // If the mutation fails, use the context returned from onMutate to roll back
-      onError: (err, updatedCard, context: any) => {
+      onError: (context: any) => {
         queryClient.setQueryData('cards', context.previousCards);
       },
       // Always refetch after error or success:
@@ -75,7 +75,7 @@ export const useUnFreezeCard = (
     {
       onMutate: async (updatedCard) => onMutateFreeze({ updatedCard, queryClient, cardId }),
       // If the mutation fails, use the context returned from onMutate to roll back
-      onError: (err, updatedCard, context: any) => {
+      onError: (context: any) => {
         queryClient.setQueryData('cards', context.previousCards);
       },
       // Always refetch after error or success:
@@ -93,7 +93,7 @@ export const useActivateCard = () => {
       apiClient.patch('/users/cards/activate', { lastFour, statusReason }).then((res) => res.data),
     {
       // TODO may not be needed if handled in component
-      onError: (err, updatedCard, context: any) => {},
+      onError: () => {},
       // Refetch cards if a card was activated successfully
       onSuccess: () => {
         queryClient.invalidateQueries('cards');

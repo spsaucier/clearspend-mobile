@@ -391,6 +391,9 @@ export interface NetworkMessageRequest {
   cardId?: string;
   networkMessageType?: 'AUTH_REQUEST' | 'AUTH_CREATED' | 'AUTH_UPDATED' | 'TRANSACTION_CREATED';
   amount?: Amount;
+
+  /** @format uuid */
+  priorNetworkMessageId?: string;
 }
 
 export interface NetworkMessageResponse {
@@ -422,12 +425,6 @@ export interface CreateBusinessOwnerRequest {
 export interface TransactBankAccountRequest {
   bankAccountTransactType?: 'DEPOSIT' | 'WITHDRAW';
   amount?: Amount;
-
-  /**
-   * Indicate if transaction is requested during the onboarding process
-   * @example false
-   */
-  isOnboarding?: boolean;
 }
 
 export interface CreateAdjustmentResponse {
@@ -519,6 +516,10 @@ export interface SearchCardData {
   balance?: Amount;
   cardStatus?: 'ACTIVE' | 'INACTIVE' | 'CANCELLED';
   cardType?: 'PHYSICAL' | 'VIRTUAL';
+  activated?: boolean;
+
+  /** @format date-time */
+  activationDate?: string;
 }
 
 export interface RevealCardRequest {
@@ -618,6 +619,45 @@ export interface CreateBusinessProspectRequest {
    * @example Wick
    */
   lastName: string;
+
+  /**
+   * The Business type
+   * @example SINGLE_MEMBER_LLC
+   */
+  businessType:
+    | 'INDIVIDUAL'
+    | 'SOLE_PROPRIETORSHIP'
+    | 'SINGLE_MEMBER_LLC'
+    | 'MULTI_MEMBER_LLC'
+    | 'PRIVATE_PARTNERSHIP'
+    | 'PUBLIC_PARTNERSHIP'
+    | 'PRIVATE_CORPORATION'
+    | 'PUBLIC_CORPORATION'
+    | 'INCORPORATED_NON_PROFIT';
+
+  /**
+   * Relationship to business Owner
+   * @example true
+   */
+  relationshipOwner?: boolean;
+
+  /**
+   * Relationship to business Representative
+   * @example true
+   */
+  relationshipRepresentative?: boolean;
+
+  /**
+   * Relationship to business Executive
+   * @example true
+   */
+  relationshipExecutive?: boolean;
+
+  /**
+   * Relationship to business Director
+   * @example true
+   */
+  relationshipDirector?: boolean;
 }
 
 export interface CreateBusinessProspectResponse {
@@ -655,27 +695,33 @@ export interface SetBusinessProspectPasswordRequest {
 }
 
 export interface ConvertBusinessProspectRequest {
-  legalName?: string;
-  businessType?:
-    | 'UNSPECIFIED'
-    | 'LLC'
-    | 'LLP'
-    | 'S_CORP'
-    | 'C_CORP'
-    | 'B_CORP'
-    | 'SOLE_PROPRIETORSHIP'
-    | '_501_C_3';
+  legalName: string;
 
   /** @pattern ^[1-9][0-9]{8}$ */
-  employerIdentificationNumber?: string;
+  employerIdentificationNumber: string;
 
   /**
    * Phone number in e.164 format
    * @pattern ^\+[1-9][0-9]{9,14}$
    * @example +1234567890
    */
-  businessPhone?: string;
+  businessPhone: string;
   address?: Address;
+
+  /** @format int32 */
+  mcc: number;
+
+  /**
+   * Phone number in e.164 format
+   * @example +1234567890
+   */
+  description: string;
+
+  /**
+   * Business url
+   * @example https://fecebook.com/business
+   */
+  url?: string;
 }
 
 export interface Business {
@@ -683,14 +729,15 @@ export interface Business {
   businessId?: string;
   legalName?: string;
   businessType?:
-    | 'UNSPECIFIED'
-    | 'LLC'
-    | 'LLP'
-    | 'S_CORP'
-    | 'C_CORP'
-    | 'B_CORP'
+    | 'INDIVIDUAL'
     | 'SOLE_PROPRIETORSHIP'
-    | '_501_C_3';
+    | 'SINGLE_MEMBER_LLC'
+    | 'MULTI_MEMBER_LLC'
+    | 'PRIVATE_PARTNERSHIP'
+    | 'PUBLIC_PARTNERSHIP'
+    | 'PRIVATE_CORPORATION'
+    | 'PUBLIC_CORPORATION'
+    | 'INCORPORATED_NON_PROFIT';
   employerIdentificationNumber?: string;
 
   /**
@@ -700,6 +747,7 @@ export interface Business {
   businessPhone?: string;
   address?: Address;
   onboardingStep?:
+    | 'BUSINESS'
     | 'BUSINESS_OWNERS'
     | 'SOFT_FAIL'
     | 'REVIEW'
@@ -715,9 +763,13 @@ export interface ConvertBusinessProspectResponse {
 
   /** @format uuid */
   businessOwnerId?: string;
+  errorMessages?: string[];
 }
 
 export interface CreateOrUpdateBusinessOwnerRequest {
+  /** @format uuid */
+  id?: string;
+
   /**
    * The first name of the person
    * @example John
@@ -729,6 +781,42 @@ export interface CreateOrUpdateBusinessOwnerRequest {
    * @example Wick
    */
   lastName: string;
+
+  /**
+   * Relationship to business Owner
+   * @example true
+   */
+  relationshipOwner?: boolean;
+
+  /**
+   * Relationship to business Representative
+   * @example true
+   */
+  relationshipRepresentative?: boolean;
+
+  /**
+   * Relationship to business Executive
+   * @example true
+   */
+  relationshipExecutive?: boolean;
+
+  /**
+   * Relationship to business Director
+   * @example true
+   */
+  relationshipDirector?: boolean;
+
+  /**
+   * Percentage Ownership from business
+   * @example 25
+   */
+  percentageOwnership?: number;
+
+  /**
+   * Title on business
+   * @example CEO
+   */
+  title?: string;
 
   /**
    * The date of birth of the person
@@ -749,7 +837,6 @@ export interface CreateOrUpdateBusinessOwnerRequest {
    * @example johnw@hightable.com
    */
   email: string;
-  address?: Address;
 
   /**
    * Phone address of the person
@@ -757,6 +844,7 @@ export interface CreateOrUpdateBusinessOwnerRequest {
    * @example +12345679
    */
   phone?: string;
+  address?: Address;
 
   /**
    * Indication if business owner is updated during the onboarding process
@@ -783,6 +871,13 @@ export interface LoginRequest {
   password?: string;
 }
 
+export interface RelationshipToBusiness {
+  owner?: boolean;
+  executive?: boolean;
+  representative?: boolean;
+  director?: boolean;
+}
+
 export interface User {
   /** @format uuid */
   userId?: string;
@@ -796,6 +891,7 @@ export interface User {
   email?: string;
   phone?: string;
   archived?: boolean;
+  relationshipToBusiness?: RelationshipToBusiness;
 }
 
 export interface ForgotPasswordRequest {
@@ -868,7 +964,7 @@ export interface AccountActivityRequest {
   /** @format uuid */
   cardId?: string;
   searchText?: string;
-  type?:
+  types?: (
     | 'BANK_LINK'
     | 'BANK_DEPOSIT'
     | 'BANK_DEPOSIT_RETURN'
@@ -877,7 +973,8 @@ export interface AccountActivityRequest {
     | 'BANK_UNLINK'
     | 'REALLOCATE'
     | 'NETWORK_AUTHORIZATION'
-    | 'NETWORK_CAPTURE';
+    | 'NETWORK_CAPTURE'
+  )[];
 
   /** @format date-time */
   from?: string;
@@ -1257,6 +1354,7 @@ export interface GraphData {
   /** @format date-time */
   to?: string;
   amount?: number;
+  count?: number;
 }
 
 export interface ChartDataRequest {
@@ -2010,56 +2108,6 @@ export interface CardDetailsResponse {
   disabledTransactionChannels?: ('ATM' | 'POS' | 'MOTO' | 'ONLINE')[];
 }
 
-export interface Agent {
-  email?: string;
-  external_id?: string;
-}
-
-export interface AlloyWebHookResponse {
-  request_token?: string;
-  timestamp?: string;
-  type?: string;
-  description?: string;
-  data?: Data;
-}
-
-export interface ChildEntity {
-  entity_token?: string;
-  evaluation_tokens?: string[];
-}
-
-export interface Data {
-  service?: string;
-  entity_token?: string;
-  external_entity_id?: string;
-  group_token?: string;
-  external_group_id?: string;
-  review_token?: string;
-  application_token?: string;
-  application_name?: string;
-  outcome?: string;
-  reason?: string;
-  reasons?: string[];
-  started?: string;
-  timestamp?: string;
-  completed?: string;
-  reviewer?: string;
-  agent?: Agent;
-  notes?: Notes[];
-  child_entities?: ChildEntity[];
-}
-
-export interface Notes {
-  note?: string;
-  note_author_agent_email?: string;
-
-  /** @format date-time */
-  created_at?: string;
-
-  /** @format date-time */
-  updated_at?: string;
-}
-
 export interface UpdateAllocationRequest {
   /**
    * name of the department/ allocation
@@ -2109,19 +2157,37 @@ export interface Receipt {
   amount: Amount;
 }
 
-export interface UserAllocationRoleRecord {
+export interface UserAllocationRolesResponse {
+  userRolesAndPermissionsList: UserRolesAndPermissionsRecord[];
+}
+
+export interface UserRolesAndPermissionsRecord {
   /** @format uuid */
   userAllocationRoleId?: string;
 
   /** @format uuid */
   allocationId: string;
   user?: UserData;
-  role?: string;
+  allocationRole?: string;
   inherited?: boolean;
-}
-
-export interface UserAllocationRolesResponse {
-  userAllocationRoleList: UserAllocationRoleRecord[];
+  allocationPermissions?: (
+    | 'READ'
+    | 'CATEGORIZE'
+    | 'LINK_RECEIPTS'
+    | 'MANAGE_FUNDS'
+    | 'MANAGE_CARDS'
+    | 'MANAGE_USERS'
+    | 'MANAGE_PERMISSIONS'
+    | 'VIEW_OWN'
+  )[];
+  globalUserPermissions?: (
+    | 'BATCH_ONBOARD'
+    | 'CROSS_BUSINESS_BOUNDARY'
+    | 'GLOBAL_READ'
+    | 'CUSTOMER_SERVICE'
+    | 'CUSTOMER_SERVICE_MANAGER'
+    | 'SYSTEM'
+  )[];
 }
 
 export interface CreateTestDataResponse {
@@ -2143,6 +2209,303 @@ export interface TestBusiness {
 
 export interface GetBusinessesResponse {
   businesses?: Business[];
+}
+
+export interface BusinessOwner {
+  /** @format uuid */
+  businessId?: string;
+  type?: 'UNSPECIFIED' | 'PRINCIPLE_OWNER' | 'ULTIMATE_BENEFICIAL_OWNER';
+  firstName?: NullableEncryptedString;
+  lastName?: NullableEncryptedString;
+  email?: string;
+  countryOfCitizenship?:
+    | 'UNSPECIFIED'
+    | 'ABW'
+    | 'AFG'
+    | 'AGO'
+    | 'AIA'
+    | 'ALA'
+    | 'ALB'
+    | 'AND'
+    | 'ANT'
+    | 'ARE'
+    | 'ARG'
+    | 'ARM'
+    | 'ASM'
+    | 'ATA'
+    | 'ATF'
+    | 'ATG'
+    | 'AUS'
+    | 'AUT'
+    | 'AZE'
+    | 'BDI'
+    | 'BEL'
+    | 'BEN'
+    | 'BFA'
+    | 'BGD'
+    | 'BGR'
+    | 'BHR'
+    | 'BHS'
+    | 'BIH'
+    | 'BLM'
+    | 'BLR'
+    | 'BLZ'
+    | 'BMU'
+    | 'BOL'
+    | 'BRA'
+    | 'BRB'
+    | 'BRN'
+    | 'BTN'
+    | 'BVT'
+    | 'BWA'
+    | 'CAF'
+    | 'CAN'
+    | 'CCK'
+    | 'CHE'
+    | 'CHL'
+    | 'CHN'
+    | 'CIV'
+    | 'CMR'
+    | 'COD'
+    | 'COG'
+    | 'COK'
+    | 'COL'
+    | 'COM'
+    | 'CPV'
+    | 'CRI'
+    | 'CUB'
+    | 'CXR'
+    | 'CYM'
+    | 'CYP'
+    | 'CZE'
+    | 'DEU'
+    | 'DJI'
+    | 'DMA'
+    | 'DNK'
+    | 'DOM'
+    | 'DZA'
+    | 'ECU'
+    | 'EGY'
+    | 'ERI'
+    | 'ESH'
+    | 'ESP'
+    | 'EST'
+    | 'ETH'
+    | 'FIN'
+    | 'FJI'
+    | 'FLK'
+    | 'FRA'
+    | 'FRO'
+    | 'FSM'
+    | 'GAB'
+    | 'GBR'
+    | 'GEO'
+    | 'GGY'
+    | 'GHA'
+    | 'GIB'
+    | 'GIN'
+    | 'GLP'
+    | 'GMB'
+    | 'GNB'
+    | 'GNQ'
+    | 'GRC'
+    | 'GRD'
+    | 'GRL'
+    | 'GTM'
+    | 'GUF'
+    | 'GUM'
+    | 'GUY'
+    | 'HKG'
+    | 'HMD'
+    | 'HND'
+    | 'HRV'
+    | 'HTI'
+    | 'HUN'
+    | 'IDN'
+    | 'IMN'
+    | 'IND'
+    | 'IOT'
+    | 'IRL'
+    | 'IRN'
+    | 'IRQ'
+    | 'ISL'
+    | 'ISR'
+    | 'ITA'
+    | 'JAM'
+    | 'JEY'
+    | 'JOR'
+    | 'JPN'
+    | 'KAZ'
+    | 'KEN'
+    | 'KGZ'
+    | 'KHM'
+    | 'KIR'
+    | 'KNA'
+    | 'KOR'
+    | 'KWT'
+    | 'LAO'
+    | 'LBN'
+    | 'LBR'
+    | 'LBY'
+    | 'LCA'
+    | 'LIE'
+    | 'LKA'
+    | 'LSO'
+    | 'LTU'
+    | 'LUX'
+    | 'LVA'
+    | 'MAC'
+    | 'MAF'
+    | 'MAR'
+    | 'MCO'
+    | 'MDA'
+    | 'MDG'
+    | 'MDV'
+    | 'MEX'
+    | 'MHL'
+    | 'MKD'
+    | 'MLI'
+    | 'MLT'
+    | 'MMR'
+    | 'MNE'
+    | 'MNG'
+    | 'MNP'
+    | 'MOZ'
+    | 'MRT'
+    | 'MSR'
+    | 'MTQ'
+    | 'MUS'
+    | 'MWI'
+    | 'MYS'
+    | 'MYT'
+    | 'NAM'
+    | 'NCL'
+    | 'NER'
+    | 'NFK'
+    | 'NGA'
+    | 'NIC'
+    | 'NIU'
+    | 'NLD'
+    | 'NOR'
+    | 'NPL'
+    | 'NRU'
+    | 'NZL'
+    | 'OMN'
+    | 'PAK'
+    | 'PAN'
+    | 'PCN'
+    | 'PER'
+    | 'PHL'
+    | 'PLW'
+    | 'PNG'
+    | 'POL'
+    | 'PRI'
+    | 'PRK'
+    | 'PRT'
+    | 'PRY'
+    | 'PSE'
+    | 'PYF'
+    | 'QAT'
+    | 'REU'
+    | 'ROU'
+    | 'RUS'
+    | 'RWA'
+    | 'SAU'
+    | 'SDN'
+    | 'SEN'
+    | 'SGP'
+    | 'SGS'
+    | 'SHN'
+    | 'SJM'
+    | 'SLB'
+    | 'SLE'
+    | 'SLV'
+    | 'SMR'
+    | 'SOM'
+    | 'SPM'
+    | 'SRB'
+    | 'SSD'
+    | 'STP'
+    | 'SUR'
+    | 'SVK'
+    | 'SVN'
+    | 'SWE'
+    | 'SWZ'
+    | 'SYC'
+    | 'SYR'
+    | 'TCA'
+    | 'TCD'
+    | 'TGO'
+    | 'THA'
+    | 'TJK'
+    | 'TKL'
+    | 'TKM'
+    | 'TLS'
+    | 'TON'
+    | 'TTO'
+    | 'TUN'
+    | 'TUR'
+    | 'TUV'
+    | 'TWN'
+    | 'TZA'
+    | 'UGA'
+    | 'UKR'
+    | 'UMI'
+    | 'URY'
+    | 'USA'
+    | 'UZB'
+    | 'VAT'
+    | 'VCT'
+    | 'VEN'
+    | 'VGB'
+    | 'VIR'
+    | 'VNM'
+    | 'VUT'
+    | 'WLF'
+    | 'WSM'
+    | 'YEM'
+    | 'ZAF'
+    | 'ZMB'
+    | 'ZWE';
+  knowYourCustomerStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
+  status?: 'ACTIVE' | 'RETIRED';
+  title?: string;
+  relationshipOwner?: boolean;
+  relationshipRepresentative?: boolean;
+  relationshipExecutive?: boolean;
+  relationshipDirector?: boolean;
+  percentageOwnership?: number;
+  address?: Address;
+  taxIdentificationNumber?: NullableEncryptedString;
+  phone?: string;
+
+  /** @format date */
+  dateOfBirth?: string;
+  subjectRef?: string;
+  stripePersonReference?: string;
+
+  /** @format int64 */
+  version?: number;
+
+  /** @format date-time */
+  created?: string;
+
+  /** @format date-time */
+  updated?: string;
+
+  /** @format uuid */
+  id?: string;
+}
+
+export interface BusinessRecord {
+  business?: Business;
+  businessOwners?: BusinessOwner[];
+  user?: User;
+  allocation?: Allocation;
+}
+
+export interface NullableEncryptedString {
+  encrypted?: string;
 }
 
 export interface MccGroup {
@@ -2177,20 +2540,78 @@ export interface MccGroup {
   name?: string;
 }
 
-export interface KycDocuments {
-  owner?: string;
-  documents?: RequiredDocument[];
+export interface ExpenseCategory {
+  /** @format int32 */
+  iconRef?: number;
+  categoryName?: string;
 }
 
-export interface RequiredDocument {
-  documentName?: string;
-  type?: string;
-  entityTokenId?: string;
+export interface BusinessLimit {
+  /** @format int32 */
+  issuedPhysicalCardsLimit?: number;
+
+  /** @format int32 */
+  issuedPhysicalCardsTotal?: number;
 }
 
-export interface SoftFailRequiredDocumentsResponse {
-  kybRequiredDocuments?: RequiredDocument[];
-  kycRequiredDocuments?: KycDocuments[];
+export interface BusinessProspectData {
+  /**
+   * Email address of the prospect
+   * @pattern ^[^@]+@[^@.]+\.[^@]+$
+   * @example johnw@hightable.com
+   */
+  email: string;
+
+  /**
+   * The first name of the person
+   * @example John
+   */
+  firstName: string;
+
+  /**
+   * The last name of the person
+   * @example Wick
+   */
+  lastName: string;
+
+  /**
+   * The Business type
+   * @example SINGLE_MEMBER_LLC
+   */
+  businessType:
+    | 'INDIVIDUAL'
+    | 'SOLE_PROPRIETORSHIP'
+    | 'SINGLE_MEMBER_LLC'
+    | 'MULTI_MEMBER_LLC'
+    | 'PRIVATE_PARTNERSHIP'
+    | 'PUBLIC_PARTNERSHIP'
+    | 'PRIVATE_CORPORATION'
+    | 'PUBLIC_CORPORATION'
+    | 'INCORPORATED_NON_PROFIT';
+
+  /**
+   * Relationship to business Owner
+   * @example true
+   */
+  relationshipOwner?: boolean;
+
+  /**
+   * Relationship to business Representative
+   * @example true
+   */
+  relationshipRepresentative?: boolean;
+
+  /**
+   * Relationship to business Executive
+   * @example true
+   */
+  relationshipExecutive?: boolean;
+
+  /**
+   * Relationship to business Director
+   * @example true
+   */
+  relationshipDirector?: boolean;
 }
 
 export interface BankAccount {
@@ -2203,6 +2624,24 @@ export interface BankAccount {
 
 export interface LinkTokenResponse {
   linkToken?: string;
+}
+
+export interface ApplicationReviewRequirements {
+  kybRequiredFields?: string[];
+  kycRequiredFields?: string[];
+  kybRequiredDocuments?: RequiredDocument[];
+  kycRequiredDocuments?: KycDocuments[];
+}
+
+export interface KycDocuments {
+  owner?: string;
+  documents?: RequiredDocument[];
+}
+
+export interface RequiredDocument {
+  documentName?: string;
+  type?: string;
+  entityTokenId?: string;
 }
 
 export interface AllocationRolePermissionRecord {
@@ -2220,6 +2659,7 @@ export interface AllocationRolePermissionRecord {
     | 'MANAGE_CARDS'
     | 'MANAGE_USERS'
     | 'MANAGE_PERMISSIONS'
+    | 'VIEW_OWN'
   )[];
 }
 

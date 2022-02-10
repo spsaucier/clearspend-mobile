@@ -6,8 +6,8 @@ pipelines:
           script:
             - yarn
 #            - yarn run check-format
-            - yarn run lint
             - yarn type-check
+            - yarn run lint
             - yarn test
 #    feature/*: #any branch with a feature prefix
 #      - step:

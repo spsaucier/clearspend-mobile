@@ -9,7 +9,7 @@
     "devices-ios": "xcrun xctrace list devices",
     "format-server": "yarn prettier-server && yarn lint-server",
     "format": "yarn prettier && yarn lint --fix",
-    "generate": "node ./scripts/generateTypes.ts && git add ./src/generated/capital.ts",
+    "generate": "ts-node ./scripts/generateTypes.ts && prettier --write ./src/generated/capital.ts && git add ./src/generated/capital.ts",
     "ios": "react-native run-ios",
     "lint-server": "eslint './restserver/**/*.{js,ts,tsx,json}' --fix",
     "lint": "eslint './src/**/*.{js,ts,tsx,json}'",
@@ -22,7 +22,7 @@
     "restserver": "cd restserver && node index.js && cd ..",
     "start": "react-native start --reset-cache",
     "test": "jest",
-    "type-check": "tsc --build plugins/typescript/template/tsconfig.json"
+    "type-check": "tsc"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.1.3",
@@ -114,6 +114,7 @@
     "react-native-codegen": "^0.0.7",
     "react-test-renderer": "17.0.2",
     "swagger-typescript-api": "^9.3.1",
+    "ts-node": "^10.5.0",
     "typescript": "^4.4.3"
   }
 }
