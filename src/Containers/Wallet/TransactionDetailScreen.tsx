@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useRef } from 'react';
+import React, { ReactNode, useCallback, useRef, useState } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -26,6 +26,7 @@ import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from './Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
+import AssignCategoryBottomSheet from '@/Containers/Wallet/Components/AssignCategoryBottomSheet';
 
 type InfoRowProps = {
   label: string;
@@ -74,7 +75,11 @@ const TransactionDetailScreenContent = () => {
   const { transactionId: accountActivityId } = params;
 
   const addReceiptPanelRef = useRef<BottomSheetModal>(null);
+  const assignCategoryBottomSheetRef = useRef<BottomSheetModal>(null);
   const { isLoading, error, data, refetch } = useTransaction(accountActivityId);
+
+  // TODO temp category state replace with backend
+  const [transactionCategory, setTransactionCategory] = useState<string | null>(null);
 
   const onUploadReceiptFromGalleryFinished = () => {
     refetch();
@@ -123,7 +128,7 @@ const TransactionDetailScreenContent = () => {
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';
   const statusApproved = status === 'APPROVED';
-  const categoryFormatted = sentenceCase(merchant?.type!);
+  const merchantCategoryFormatted = sentenceCase(merchant?.type!);
 
   const transactionDateTime = format(parseISO(activityTime!), 'MMM dd, yyyy hh:mm a');
   const transactionAmount = amount?.amount;
@@ -143,6 +148,14 @@ const TransactionDetailScreenContent = () => {
     } else {
       addReceiptPanelRef.current?.present();
     }
+  };
+
+  const onAssignCategoryModalPress = () => {
+    assignCategoryBottomSheetRef.current?.present();
+  };
+
+  const onSelectCategory = (category: any) => {
+    setTransactionCategory(category);
   };
 
   const onSelectAddPhotosFromGalleryPress = async () => {
@@ -248,7 +261,7 @@ const TransactionDetailScreenContent = () => {
             <CSText style={tw`text-black text-3xl`}>{formatCurrency(transactionAmount)}</CSText>
             <CSText style={tw`text-black text-lg my-2`}>
               {merchant?.name}
-              {merchant?.type && ` • ${categoryFormatted}`}
+              {merchant?.type && ` • ${merchantCategoryFormatted}`}
             </CSText>
             <CSText style={tw`text-black text-xs`}>{transactionDateTime}</CSText>
           </View>
@@ -277,10 +290,33 @@ const TransactionDetailScreenContent = () => {
               style={tw.style('flex-1 rounded bg-gray90 justify-center m-2', {
                 aspectRatio: 2,
               })}
+              onPress={onAssignCategoryModalPress}
             >
               <View style={tw`self-center justify-center items-center`}>
-                <PlusCircleFilledIcon />
-                <CSText style={tw`pt-2`}>{t('wallet.transactionDetails.assignCategory')}</CSText>
+                {transactionCategory ? (
+                  <>
+                    <View
+                      style={tw.style('bg-white items-center justify-center', {
+                        height: 40,
+                        width: 40,
+                        borderRadius: 40,
+                      })}
+                    >
+                      {/* @ts-ignore todo don't pass the real component/data like this */}
+                      <transactionCategory.CategoryIcon size={24} />
+                    </View>
+
+                    {/* @ts-ignore todo don't pass the real component/data like this */}
+                    <CSText style={tw`pt-1`}>{transactionCategory.categoryName}</CSText>
+                  </>
+                ) : (
+                  <>
+                    <PlusCircleFilledIcon />
+                    <CSText style={tw`pt-2`}>
+                      {t('wallet.transactionDetails.assignCategory')}
+                    </CSText>
+                  </>
+                )}
               </View>
             </TouchableOpacity>
           </View>
@@ -338,6 +374,10 @@ const TransactionDetailScreenContent = () => {
         accountActivityId={accountActivityId}
         onSelectPhotoPress={onSelectAddPhotosFromGalleryPress}
       />
+      <AssignCategoryBottomSheet
+        ref={assignCategoryBottomSheetRef}
+        onSelectCategory={onSelectCategory}
+      />
       <ActivityOverlay
         visible={isUploading}
         message={t('wallet.receipt.uploadingReceipt')}
@@ -348,7 +388,7 @@ const TransactionDetailScreenContent = () => {
 };
 
 const TransactionDetailScreen = () => (
-  <CSBottomSheet snapPoints={['95%']} translucidBackground>
+  <CSBottomSheet snapPoints={['95%']} showHandle={false} translucidBackground>
     <TransactionDetailScreenContent />
   </CSBottomSheet>
 );

@@ -31,6 +31,8 @@ import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen
 import { ActivateCardScreen } from '@/Containers/Profile/ActivateCardScreen';
 import EnterMobileScreen from '@/Containers/Onboarding/EnterMobileScreen';
 import EnterOTPScreen from '@/Containers/Onboarding/EnterOTPScreen';
+import DevMenuScreen from '@/Containers/DevMenu/DevMenuScreen';
+import { IconDemoScreen } from '@/Containers/DevMenu/IconDemoScreen';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -110,6 +112,8 @@ const WalletStack = () => (
       component={DeleteReceiptScreen}
       options={transparentModal}
     />
+    <Stack.Screen name={MainScreens.DevMenu} component={DevMenuScreen} />
+    <Stack.Screen name={MainScreens.DevIconDemo} component={IconDemoScreen} />
   </Stack.Navigator>
 );
 

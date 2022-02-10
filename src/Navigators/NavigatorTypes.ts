@@ -70,6 +70,10 @@ export enum MainScreens {
   AppleWallet = 'Apple Wallet',
   SetCardAsDefault = 'Set Card As Default',
   WalletTerms = 'Wallet Terms',
+
+  // Dev menu
+  DevMenu = 'DevMenu',
+  DevIconDemo = 'DevIconDemo',
 }
 
 export type MainStackParamTypes = {
@@ -112,6 +116,10 @@ export type MainStackParamTypes = {
   [MainScreens.AppleWallet]: { cardId: string; termsAccepted: boolean };
   [MainScreens.SetCardAsDefault]: { cardId: string };
   [MainScreens.WalletTerms]: { cardId: string };
+
+  // Dev menu
+  [MainScreens.DevMenu]: undefined;
+  [MainScreens.DevIconDemo]: undefined;
 };
 
 declare global {

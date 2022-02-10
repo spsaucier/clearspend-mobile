@@ -149,6 +149,7 @@ export default {
       searchTransactions: 'Search transactions',
       noRecent: 'No recent transactions',
       addReceipt: 'Add receipt',
+      selectCategory: 'Select A Category',
     },
     cardInfo: {
       title: 'Card Info',

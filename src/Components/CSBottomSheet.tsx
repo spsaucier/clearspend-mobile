@@ -14,6 +14,7 @@ type CSBottomSheetProps = {
   panningEnabled?: boolean;
   closeOnBackdropTap?: boolean;
   translucidBackground?: boolean;
+  showHandle?: boolean;
   children: any;
 };
 
@@ -27,6 +28,7 @@ export const CSBottomSheet = ({
   panningEnabled = true,
   closeOnBackdropTap = true,
   translucidBackground = false,
+  showHandle = true,
   children,
 }: CSBottomSheetProps) => {
   const navigation = useNavigation();
@@ -69,7 +71,7 @@ export const CSBottomSheet = ({
       }}
       handleStyle={[
         tw`flex self-center bg-transparent w-12 rounded-full my-3`,
-        { display: panningEnabled ? 'flex' : 'none' },
+        { display: panningEnabled && showHandle ? 'flex' : 'none' },
       ]}
       handleIndicatorStyle={tw`${translucidBackground ? 'bg-gray80' : 'bg-gray20'}`}
     >
