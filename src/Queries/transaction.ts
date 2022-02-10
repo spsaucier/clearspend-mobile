@@ -20,12 +20,16 @@ export const useCardTransactions = ({
     ['transactions', { card: cardId }],
     (request) =>
       apiClient
-        .post('/account-activity', { cardId, searchText: searchText || undefined, pageRequest: { pageNumber: request.pageParam || 0, pageSize } })
+        .post('/account-activity', {
+          cardId,
+          searchText: searchText || undefined,
+          pageRequest: { pageNumber: request.pageParam || 0, pageSize },
+        })
         .then((res) => res.data),
     {
       keepPreviousData: true,
       getNextPageParam: (lastPage) => {
-        if ((lastPage.totalElements || 0) > (((lastPage.pageNumber || 0) + 1) * pageSize)) {
+        if ((lastPage.totalElements || 0) > ((lastPage.pageNumber || 0) + 1) * pageSize) {
           return (lastPage.pageNumber || 0) + 1;
         }
         return undefined;

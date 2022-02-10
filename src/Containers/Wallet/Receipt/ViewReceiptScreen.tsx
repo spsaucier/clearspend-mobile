@@ -6,6 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Carousel from 'react-native-snap-carousel';
 
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { launchImageLibrary } from 'react-native-image-picker';
 import tw from '@/Styles/tailwind';
 import { CloseIcon, MinusCircleFilledIcon, PlusCircleFilledIcon } from '@/Components/Icons';
 import { DarkToLightGradient } from '@/Components/Svg/DarkToLightGradient';
@@ -13,8 +15,6 @@ import { ActivityIndicator, CSText } from '@/Components';
 import { useReceiptUri } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from '../Components/AddReceiptPanel';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { launchImageLibrary } from 'react-native-image-picker';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 

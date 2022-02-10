@@ -1,6 +1,6 @@
-import { linkReceiptAsync, useUploadReceiptRemote } from '@/Queries/receipt';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
+import { linkReceiptAsync, useUploadReceiptRemote } from '@/Queries/receipt';
 
 type UploadReceiptState = {
   receiptId?: string;
@@ -36,7 +36,7 @@ const useUploadReceipt = ({
       const { receiptId } = data;
       setUploadReceiptState({
         ...initialState,
-        receiptId: receiptId,
+        receiptId,
       });
     });
   };
@@ -48,13 +48,14 @@ const useUploadReceipt = ({
       };
       linkReceipt()
         .then(() => setUploadReceiptState({ ...uploadReceiptState, linked: true }))
-        .then(() => {
-          return queryClient.invalidateQueries(['receipt', receiptId], {
+        .then(() =>
+          queryClient.invalidateQueries(['receipt', receiptId], {
             refetchInactive: true,
-          });
-        })
+          }))
         .then(() => {
-          onUploadFinished && onUploadFinished();
+          // TODO Rodrigo - Fix eslint error
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+          !!onUploadFinished && onUploadFinished();
         });
     }
   }, [linked, receiptId, accountActivityId, uploadReceiptState]);

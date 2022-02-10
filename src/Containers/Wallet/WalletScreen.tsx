@@ -122,10 +122,7 @@ const WalletScreen = () => {
             cardTitle="John Smith"
           />
         </View>
-        <SafeAreaView
-          style={tw`shadow-xl bg-secondary-light w-full z-10`}
-          edges={['bottom']}
-        />
+        <SafeAreaView style={tw`shadow-xl bg-secondary-light w-full z-10`} edges={['bottom']} />
       </SafeAreaView>
     );
   }

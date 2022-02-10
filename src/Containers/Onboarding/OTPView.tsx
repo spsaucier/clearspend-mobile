@@ -4,7 +4,8 @@ import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
- Cursor } from 'react-native-confirmation-code-field';
+  Cursor,
+} from 'react-native-confirmation-code-field';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 

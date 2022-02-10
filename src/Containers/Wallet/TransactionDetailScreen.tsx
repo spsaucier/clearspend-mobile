@@ -7,7 +7,7 @@ import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
 import MapView, { Marker } from 'react-native-maps';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button, CSText } from '@/Components';

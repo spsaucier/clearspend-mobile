@@ -41,12 +41,10 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const transactionsListRef = useRef<any>(null);
   const [searchText, setSearchText] = useState('');
-  const { data, isLoading, error, refetch, hasNextPage, fetchNextPage } = useCardTransactions(
-    {
-      cardId,
-      searchText,
-    },
-  );
+  const { data, isLoading, error, refetch, hasNextPage, fetchNextPage } = useCardTransactions({
+    cardId,
+    searchText,
+  });
 
   useFocusEffect(
     useCallback(() => {

@@ -81,11 +81,7 @@ const EnterMobileScreen = () => {
             autoFocus
           />
         )}
-        {mobileNumError && (
-          <CSText style={tw`text-white mt-1`}>
-            {t('enterMobile.error')}
-          </CSText>
-        )}
+        {mobileNumError && <CSText style={tw`text-white mt-1`}>{t('enterMobile.error')}</CSText>}
         <Button
           containerStyle={[tw`mt-auto mb-4`, mobile.length < 10 ? tw`bg-gray98` : tw`bg-primary`]}
           onPress={onSubmit}

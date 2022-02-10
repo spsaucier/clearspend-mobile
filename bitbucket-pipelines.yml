@@ -1,0 +1,22 @@
+image: node:16.14.0
+pipelines:
+  pull-requests:
+    '**': #this runs as default for any branch not elsewhere defined
+      - step:
+          script:
+            - yarn
+#            - yarn run check-format
+            - yarn run lint
+            - yarn type-check
+            - yarn test
+#    feature/*: #any branch with a feature prefix
+#      - step:
+#          script:
+#            - ...
+#  branches: #these will run on every push of the branch
+#    main:
+#      - step:
+#          script:
+#            - yarn
+#            - yarn run lint
+#            - yarn run check-format

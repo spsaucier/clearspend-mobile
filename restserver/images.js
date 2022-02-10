@@ -1,9 +1,10 @@
 const express = require('express');
 const uuid = require('uuid');
+
 const router = express.Router();
 
-const uploadPath = __dirname + '/uploads/';
-var uploadedReceipts = [];
+const uploadPath = `${__dirname}/uploads/`;
+const uploadedReceipts = [];
 
 router.post('/receipts', (req, res) => {
   const { files } = req;

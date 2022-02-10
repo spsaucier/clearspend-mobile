@@ -4,7 +4,8 @@ import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
- Cursor } from 'react-native-confirmation-code-field';
+  Cursor,
+} from 'react-native-confirmation-code-field';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
@@ -125,7 +126,9 @@ export const PasscodeView: React.FC<Props> = ({
       </View>
       <View style={tw.style('items-center')}>
         {error ? <Animated.Text style={tw`text-white mt-3`}>{errorTitle}</Animated.Text> : null}
-        {(error || messaging) && <Animated.Text style={tw`text-white`}>{error || messaging}</Animated.Text>}
+        {(error || messaging) && (
+          <Animated.Text style={tw`text-white`}>{error || messaging}</Animated.Text>
+        )}
       </View>
     </SafeAreaView>
   );

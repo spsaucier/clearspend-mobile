@@ -26,7 +26,7 @@ export type AuthStackParamTypes = {
   [AuthScreens.Login]: undefined;
   [AuthScreens.LoginStack]: undefined;
   [AuthScreens.SelectOrganization]: undefined;
-  [AuthScreens.SetPassword]: { changePasswordId: string; email: string, password: string };
+  [AuthScreens.SetPassword]: { changePasswordId: string; email: string; password: string };
   [AuthScreens.VerifyAccount]: undefined;
 };
 

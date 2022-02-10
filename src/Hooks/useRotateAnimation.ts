@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Animated, Easing } from 'react-native';
 
 export const useRotateAnimation = (running: boolean = true, duration: number = 1000) => {

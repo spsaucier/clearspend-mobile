@@ -11,25 +11,22 @@ const BioPasscodeStack = createStackNavigator<BioPasscodeParams>();
 export const SetBioPasscodeNavigator = () => (
   <BioPasscodeStack.Navigator
     screenOptions={{
-    headerTransparent: true,
-    headerTitle: '',
-    headerBackTitle: 'Back',
-    headerBackTitleStyle: { color: tw.color('white') },
-    headerTintColor: 'white',
-    cardStyle: { backgroundColor: tw.color('secondary'), paddingHorizontal: 24 },
-  }}
+      headerTransparent: true,
+      headerTitle: '',
+      headerBackTitle: 'Back',
+      headerBackTitleStyle: { color: tw.color('white') },
+      headerTintColor: 'white',
+      cardStyle: { backgroundColor: tw.color('secondary'), paddingHorizontal: 24 },
+    }}
   >
     <BioPasscodeStack.Screen
       name={BioPasscodeScreens.SetBioOrPasscode}
       component={SetBiometricsOrPasscodeScreen}
       options={{ gestureEnabled: false }}
     />
-    <BioPasscodeStack.Screen
-      name={BioPasscodeScreens.Set}
-      component={PasscodeSet}
-    />
+    <BioPasscodeStack.Screen name={BioPasscodeScreens.Set} component={PasscodeSet} />
     <BioPasscodeStack.Screen name={BioPasscodeScreens.Confirm} component={PasscodeConfirm} />
   </BioPasscodeStack.Navigator>
-  );
+);
 
 export default SetBioPasscodeNavigator;

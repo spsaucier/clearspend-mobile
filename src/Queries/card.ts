@@ -1,4 +1,5 @@
 import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { AxiosError } from 'axios';
 import {
   Card,
   CardDetailsResponse,
@@ -7,7 +8,6 @@ import {
   UpdateCardStatusRequest,
 } from '@/generated/capital';
 import apiClient from '@/Services';
-import { AxiosError } from 'axios';
 
 const getCards = () => apiClient.get('/users/cards').then((res) => res.data);
 export const useUserCards = () => useQuery<CardDetailsResponse[], Error>('cards', getCards);

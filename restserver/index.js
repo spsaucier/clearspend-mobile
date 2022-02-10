@@ -5,8 +5,8 @@ const path = require('path');
 const exitHook = require('async-exit-hook');
 
 const users = require('./resources/users.json');
-var usersCards = require('./resources/usersCards.json');
-var transactions = require('./resources/transactions.json');
+const usersCards = require('./resources/usersCards.json');
+const transactions = require('./resources/transactions.json');
 const images = require('./images.js');
 
 const app = express();
@@ -30,18 +30,19 @@ app.post('/oauth2/token', (req, res) => {
 
   const authorized = users.find(
     (x) =>
-      (x.username === username && x.password === password) ||
-      x.authorization.refresh_token === refreshToken,
+      (x.username === username && x.password === password)
+      || x.authorization.refresh_token === refreshToken,
   );
 
   if (authorized) {
     res.json(authorized.authorization);
-  } else
-    res.status(401).json({
+  } else {
+res.status(401).json({
       error: 'invalid_grant',
       error_description: 'The user credentials are invalid.',
       error_reason: 'invalid_user_credentials',
     });
+}
 });
 
 const checkAuthorization = (req, res, next) => {
@@ -80,9 +81,7 @@ app.get('/users/cards/:id', checkAuthorization, (req, res) => {
   res.json(card);
 });
 
-const paginate = (array, pageNumber, pageSize) => {
-  return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
-};
+const paginate = (array, pageNumber, pageSize) => array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
 
 // Get all transactions for given card
 app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) => {
@@ -179,10 +178,9 @@ app.delete('/users/receipts/:receiptId/delete', (req, res) => {
   const { params } = req;
   const { receiptId } = params;
 
-  //need to unlink from transaction first
+  // need to unlink from transaction first
   const transactionIdx = transactions.findIndex((x) =>
-    x.receipt?.receiptId.some((y) => y === receiptId),
-  );
+    x.receipt?.receiptId.some((y) => y === receiptId));
 
   if (transactionIdx === -1) {
     res.sendStatus(500);
@@ -218,7 +216,7 @@ app.listen(port, () => {
 
 exitHook((callback) => {
   console.log('cleaning up uploads...');
-  const uploadPath = __dirname + '/uploads';
+  const uploadPath = `${__dirname}/uploads`;
   fs.readdir(uploadPath, (err, files) => {
     if (err) throw err;
 
