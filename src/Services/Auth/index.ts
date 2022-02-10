@@ -26,7 +26,7 @@ const parseLoginResponse = (res: AxiosResponse) => {
 export const sendEnrollment2FA = async (formattedMobile: string, userId: string, method = 'sms') =>
   axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/api/two-factor/send`,
+    url: `${Config.FA_URL}/api/two-factor/send`,
     data: {
       mobilePhone: parseInt(formattedMobile, 10),
       userId,
@@ -43,7 +43,7 @@ export const submitEnrollment2FACode = async (
 ) =>
   axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/api/user/two-factor/${userId}`,
+    url: `${Config.FA_URL}/api/user/two-factor/${userId}`,
     data: {
       code,
       userId,
@@ -56,7 +56,7 @@ export const submitEnrollment2FACode = async (
 const send2FA = async (twoFactorId: string, methodId: string) =>
   axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/api/two-factor/send/${twoFactorId}`,
+    url: `${Config.FA_URL}/api/two-factor/send/${twoFactorId}`,
     data: {
       methodId,
     },
@@ -66,11 +66,11 @@ const send2FA = async (twoFactorId: string, methodId: string) =>
 export const login = async (username: string, password: string) => {
   const response = await axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/api/login`,
+    url: `${Config.FA_URL}/api/login`,
     data: {
       loginId: username,
       password,
-      applicationId: Config.CS_FA_CLIENT_ID,
+      applicationId: Config.FA_CLIENT_ID,
     },
     headers: { 'content-type': 'application/json' },
   }).catch((ex) => Promise.reject(ex.response));
@@ -115,11 +115,11 @@ export const login = async (username: string, password: string) => {
 export const login2FA = async (twoFactorId: string, code: string) => {
   const response = await axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/api/two-factor/login`,
+    url: `${Config.FA_URL}/api/two-factor/login`,
     data: {
       code,
       twoFactorId,
-      applicationId: Config.CS_FA_CLIENT_ID,
+      applicationId: Config.FA_CLIENT_ID,
     },
     headers: { 'content-type': 'application/json' },
   }).catch((ex) => Promise.reject(ex.response));
@@ -133,7 +133,7 @@ export const changePassword = async (
 ) => {
   const response = await axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/api/user/change-password/${changePasswordId}`,
+    url: `${Config.FA_URL}/api/user/change-password/${changePasswordId}`,
     headers: { 'content-type': 'application/json' },
     data: { password, currentPassword },
   }).catch((ex) => Promise.reject(ex.response.data));
@@ -143,12 +143,12 @@ export const changePassword = async (
 export const loginUsingOneTimePass = async (loginId: string, oneTimePassword: string) => {
   const response = await axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/api/login/`,
+    url: `${Config.FA_URL}/api/login/`,
     headers: { 'content-type': 'application/json' },
     data: {
       loginId,
       oneTimePassword,
-      applicationId: Config.CS_FA_CLIENT_ID,
+      applicationId: Config.FA_CLIENT_ID,
     },
   }).catch((ex) => ex.response);
   return parseLoginResponse(response);
@@ -157,7 +157,7 @@ export const loginUsingOneTimePass = async (loginId: string, oneTimePassword: st
 export const getNewAccessToken = async (refreshToken: string) => {
   const response = await axios({
     method: 'POST',
-    url: `${Config.CS_FA_URL}/api/jwt/refresh`,
+    url: `${Config.FA_URL}/api/jwt/refresh`,
     data: { refreshToken },
     headers: { 'content-type': 'application/json' },
   }).catch((ex) => Promise.reject(ex.response));

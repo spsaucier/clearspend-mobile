@@ -7,7 +7,7 @@ import { store } from '@/Store';
 import { killSession, updateSession } from '@/Store/Session';
 
 const apiClient = axios.create({
-  baseURL: Config.CS_API_URL,
+  baseURL: Config.API_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
