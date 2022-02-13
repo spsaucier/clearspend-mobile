@@ -3,11 +3,15 @@ const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const path = require('path');
 const exitHook = require('async-exit-hook');
+const jwt = require('jsonwebtoken');
 
 const users = require('./resources/users.json');
 const usersCards = require('./resources/usersCards.json');
 const transactions = require('./resources/transactions.json');
 const images = require('./images.js');
+
+const TOKEN_KEY = 'XYZRANDOM';
+const port = 8000;
 
 const app = express();
 app.use(
@@ -23,26 +27,50 @@ app.use(
   }),
 );
 
-const port = 8000;
-
-app.post('/oauth2/token', (req, res) => {
-  const { username, password, refreh_token: refreshToken } = req.body;
-
-  const authorized = users.find(
-    (x) =>
-      (x.username === username && x.password === password)
-      || x.authorization.refresh_token === refreshToken,
+const toJWTResponse = (user, res) => {
+  const { profile, refreshToken } = user;
+  const { userId, email } = profile;
+  const token = jwt.sign(
+    { userId, email, exp: Math.floor(Date.now() / 1000) + 60 * 60 },
+    TOKEN_KEY,
   );
+  res.json({
+    token,
+    refreshToken,
+    user,
+  });
+};
 
-  if (authorized) {
-    res.json(authorized.authorization);
+app.post('/api/login', (req, res) => {
+  const { loginId, password } = req.body;
+
+  const user = users.find((x) => x.username === loginId && x.password === password);
+
+  if (user) {
+    toJWTResponse(user, res);
   } else {
-res.status(401).json({
+    res.status(401).json({
       error: 'invalid_grant',
       error_description: 'The user credentials are invalid.',
       error_reason: 'invalid_user_credentials',
     });
-}
+  }
+});
+
+app.post('/api/jwt/refresh', (req, res) => {
+  const { refreshToken } = req.body;
+
+  const user = users.find((x) => x.authorization.refreshToken === refreshToken);
+
+  if (user) {
+    toJWTResponse(user);
+  } else {
+    res.status(401).json({
+      error: 'invalid_grant',
+      error_description: 'The user credentials are invalid.',
+      error_reason: 'invalid_user_credentials',
+    });
+  }
 });
 
 const checkAuthorization = (req, res, next) => {
@@ -54,12 +82,12 @@ const checkAuthorization = (req, res, next) => {
 
   const token = authorization.split(' ')[1];
   if (token) {
-    const authorized = users.find((x) => x.authorization.access_token === token);
+    const authorized = jwt.verify(token, TOKEN_KEY);
     if (!authorized) {
       res.status(401).send('invalid token');
       return;
     }
-    res.locals.userId = authorized.authorization.userId;
+    res.locals.userId = authorized.userId;
     next();
   } else res.status(401).send('no token');
 };
@@ -81,23 +109,24 @@ app.get('/users/cards/:id', checkAuthorization, (req, res) => {
   res.json(card);
 });
 
-const paginate = (array, pageNumber, pageSize) => array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+const paginate = (array, pageNumber, pageSize) =>
+  array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
 
 // Get all transactions for given card
 app.post('/account-activity', checkAuthorization, (req, res) => {
   const { body } = req;
   const {
     cardId,
-    pageRequest: { pageNumber, pageSize, pNumber = +pageNumber, pSize = +pageSize },
+    pageRequest: { pageNumber, pageSize },
   } = body;
 
   const cardTransactions = transactions.filter((t) => t.card?.cardId === cardId) || [];
   const totalElements = cardTransactions.length || 0;
-  const pagedTransactions = paginate(cardTransactions, pNumber, pSize);
+  const pagedTransactions = paginate(cardTransactions, pageNumber, pageSize);
 
   const response = {
-    pageNumber: pNumber,
-    pageSize: pSize,
+    pageNumber,
+    pageSize,
     totalElements,
     content: pagedTransactions || [],
   };
@@ -203,7 +232,8 @@ app.delete('/users/receipts/:receiptId/delete', (req, res) => {
 
   // need to unlink from transaction first
   const transactionIdx = transactions.findIndex((x) =>
-    x.receipt?.receiptId.some((y) => y === receiptId));
+    x.receipt?.receiptId.some((y) => y === receiptId),
+  );
 
   if (transactionIdx === -1) {
     res.sendStatus(500);
@@ -244,7 +274,7 @@ exitHook((callback) => {
     if (err) throw err;
 
     for (const file of files) {
-      if (file.endsWith('jpg')) {
+      if (file.endsWith('jpg') || file.endsWith('png')) {
         fs.unlink(path.join(uploadPath, file), (err) => {
           if (err) throw err;
         });

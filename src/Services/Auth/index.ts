@@ -15,7 +15,7 @@ const parseLoginResponse = (res: AxiosResponse) => {
     // Ignore
   }
   const session: Session = {
-    userId: decoded.userId || res.data.user?.id,
+    userId: decoded.userId,
     accessToken,
     refreshToken: res.data.refreshToken,
     expiresAt: new Date(decoded.exp * 1000).toISOString(),
