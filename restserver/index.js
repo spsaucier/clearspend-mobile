@@ -84,10 +84,12 @@ app.get('/users/cards/:id', checkAuthorization, (req, res) => {
 const paginate = (array, pageNumber, pageSize) => array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
 
 // Get all transactions for given card
-app.get('/users/cards/:cardId/account-activity', checkAuthorization, (req, res) => {
-  const { params, query } = req;
-  const { cardId } = params;
-  const { pageNumber, pageSize, pNumber = +pageNumber, pSize = +pageSize } = query;
+app.post('/account-activity', checkAuthorization, (req, res) => {
+  const { body } = req;
+  const {
+    cardId,
+    pageRequest: { pageNumber, pageSize, pNumber = +pageNumber, pSize = +pageSize },
+  } = body;
 
   const cardTransactions = transactions.filter((t) => t.card?.cardId === cardId) || [];
   const totalElements = cardTransactions.length || 0;
@@ -141,6 +143,27 @@ app.patch('/users/cards/:cardId/unblock', (req, res) => {
 
   usersCards[idx] = modifiedCard;
   res.json(modifiedCard);
+});
+
+app.patch('/users/cards/activate', (req, res) => {
+  const {
+    body: { lastFour },
+  } = req;
+
+  const idx = usersCards.findIndex(
+    (c) =>
+      c.card.cardNumber.slice(c.card.cardNumber.length - 4, c.card.cardNumber.length) === lastFour,
+  );
+  const cardItem = usersCards[idx];
+
+  if (!cardItem) {
+    setTimeout(() => res.status(404).send('Not found'), 750);
+  } else {
+    const { card } = cardItem;
+
+    usersCards[idx] = { ...cardItem, card: { ...card, ...{ status: 'ACTIVE', activated: true } } };
+    res.json({});
+  }
 });
 
 app.post('/users/account-activity/:accountActivityId/receipts/:receiptId/link', (req, res) => {

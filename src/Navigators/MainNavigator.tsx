@@ -1,9 +1,18 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import {
   createStackNavigator,
   StackNavigationOptions,
   TransitionPresets,
 } from '@react-navigation/stack';
+import { StackHeaderOptions } from '@react-navigation/stack/lib/typescript/src/types';
+import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
+import { CSText } from '@/Components';
+import tw from '@/Styles/tailwind';
+import { ChevronIconLeft } from '@/Components/Icons';
+
+// Screens
 import WalletScreen from '@/Containers/Wallet/WalletScreen';
 import ProfileScreen from '@/Containers/Profile/ProfileScreen';
 import ChangePasswordScreen from '@/Containers/Profile/ChangePasswordScreen';
@@ -24,13 +33,14 @@ import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
 import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
 import NewPasswordScreen from '@/Containers/Profile/NewPasswordScreen';
 import ChangePasswordMessage from '@/Containers/Profile/ChangePasswordMessage';
-import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
 import ConfirmAuthScreen from '@/Containers/Onboarding/ConfirmAuthScreen';
 import { SetBioPasscodeNavigator } from '@/Containers/Onboarding/BioPasscode/SetBioPasscodeNavigator';
 import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';
-import { ActivateCardScreen } from '@/Containers/Profile/ActivateCardScreen';
 import EnterMobileScreen from '@/Containers/Onboarding/EnterMobileScreen';
 import EnterOTPScreen from '@/Containers/Onboarding/EnterOTPScreen';
+import { ActivateCardDigitEntryScreen } from '@/Containers/ActivateCard/ActivateCardDigitEntryScreen';
+import { ActivateCardGetStartedScreen } from '@/Containers/ActivateCard/ActivateCardGetStartedScreen';
+import { ActivateCardResultScreen } from '@/Containers/ActivateCard/ActivateCardResultScreen';
 import DevMenuScreen from '@/Containers/DevMenu/DevMenuScreen';
 import { IconDemoScreen } from '@/Containers/DevMenu/IconDemoScreen';
 
@@ -39,6 +49,49 @@ const Stack = createStackNavigator<MainStackParamTypes>();
 const transparentModal: StackNavigationOptions = {
   presentation: 'transparentModal',
   gestureEnabled: false,
+};
+
+const sharedStackHeaderConfig = (
+  headerTitle: string,
+  backButtonTitle: string,
+): StackHeaderOptions => ({
+    headerShadowVisible: false,
+    headerLeft: ({ onPress }) => (
+      <TouchableOpacity style={tw`flex-row items-center bg-tan ml-4`} onPress={onPress}>
+        <ChevronIconLeft style={tw`m-2`} size={6} />
+        <CSText style={tw`text-2xs tracking-widest mr-2`}>{backButtonTitle}</CSText>
+      </TouchableOpacity>
+    ),
+    headerTitle,
+    headerTitleAlign: 'left',
+    headerStyle: tw`bg-white border-0`,
+    headerTitleStyle: tw`font-montreal text-lg font-normal`,
+  });
+
+const ActivateCardStack = () => {
+  const { t } = useTranslation();
+  return (
+    <Stack.Navigator
+      initialRouteName={MainScreens.ActivateCardGetStarted}
+      screenOptions={{
+        ...sharedStackHeaderConfig(t('profile.profileMenu.activateCard'), t('general.back')),
+      }}
+    >
+      <Stack.Screen
+        name={MainScreens.ActivateCardGetStarted}
+        component={ActivateCardGetStartedScreen}
+      />
+      <Stack.Screen
+        name={MainScreens.ActivateCardDigitEntry}
+        component={ActivateCardDigitEntryScreen}
+      />
+      <Stack.Screen
+        name={MainScreens.ActivateCardResult}
+        component={ActivateCardResultScreen}
+        options={{ headerShown: true, headerTitle: '', headerLeft: () => null }}
+      />
+    </Stack.Navigator>
+  );
 };
 
 const ProfileStack = () => (
@@ -52,7 +105,7 @@ const ProfileStack = () => (
     <Stack.Screen name={MainScreens.ChangePasswordMessage} component={ChangePasswordMessage} />
     <Stack.Screen name={MainScreens.NotificationSettings} component={NotificationSettingScreen} />
     <Stack.Screen name={MainScreens.AuditLog} component={AuditLogScreen} />
-    <Stack.Screen name={MainScreens.ActivateCard} component={ActivateCardScreen} />
+    <Stack.Screen name={MainScreens.ActivateCard} component={ActivateCardStack} />
   </Stack.Navigator>
 );
 

@@ -213,6 +213,22 @@ export default {
     validThru: 'Valid Thru',
     cvv: 'CVV',
   },
+  activateCard: {
+    activateCSCard: 'Activate your ClearSpend card',
+    getStartedInstructions:
+      'If you’ve received your physical card in the mail, you’ll be able to activate it instantly. All you need are the last 4 digits found on the back of your card.',
+    getStartedButtonCta: 'Get Started',
+    enterDigitsInstruction1: 'Enter the last 4 digits of the 16-digit card number.',
+    enterDigitsInstruction2: 'This can be found on the back of your physical ClearSpend card',
+    loadingTitle: 'Checking your information',
+    loadingSubTitle: 'This may take several minutes',
+    successTitle: 'You’re good to go!',
+    successSubTitle: 'Your ClearSpend card has been activated and can now be used.',
+    activateAnotherCardButtonCta: 'Activate Another Card',
+    viewCardsButtonCta: 'View My Cards',
+    error:
+      'We could not find a card that matches this number or user. Please try the number again.',
+  },
   cardProfile: {
     cardBalance: 'Card Balance',
     spendControls: 'Spend Controls',

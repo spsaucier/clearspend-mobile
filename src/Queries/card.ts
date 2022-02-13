@@ -92,7 +92,7 @@ export const useActivateCard = () => {
     ({ lastFour, statusReason = 'CARDHOLDER_REQUESTED' }) =>
       apiClient.patch('/users/cards/activate', { lastFour, statusReason }).then((res) => res.data),
     {
-      // TODO may not be needed if handled in component
+      // TODO: error toast
       onError: () => {},
       // Refetch cards if a card was activated successfully
       onSuccess: () => {
