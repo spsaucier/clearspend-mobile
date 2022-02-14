@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
-import { MainStackParamTypes, MainScreens } from '../../../Navigators/NavigatorTypes';
+import { MainStackParamTypes, MainScreens, TopScreens, TopParams } from '../../../Navigators/NavigatorTypes';
 
 export enum BioPasscodeScreens {
   SetBioOrPasscode = 'SetBioOrPasscode',
@@ -16,7 +16,10 @@ export type BioPasscodeParams = {
 
 export type BioPasscodeNavigationProp = CompositeNavigationProp<
   StackNavigationProp<BioPasscodeParams, BioPasscodeScreens>,
-  StackNavigationProp<MainStackParamTypes, MainScreens>
+  CompositeNavigationProp<
+    StackNavigationProp<MainStackParamTypes, MainScreens>,
+    StackNavigationProp<TopParams, TopScreens>
+  >
 >;
 
 export interface BioPasscodeNavigationProps<Screen extends BioPasscodeScreens> {

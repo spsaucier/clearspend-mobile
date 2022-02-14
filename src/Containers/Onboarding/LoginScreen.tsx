@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Keyboard, Linking } from 'react-native';
+import React, { createRef, useEffect, useState } from 'react';
+import { View, TouchableOpacity, Keyboard, Linking, TextInput } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AxiosResponse } from 'axios';
+import Toast from 'react-native-toast-message';
 import tw from '@/Styles/tailwind';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
@@ -31,6 +32,7 @@ const LoginScreen = () => {
   const { setLoggedIn } = useAuthentication();
   const dispatch = useDispatch();
   const { navigate } = useNavigation();
+  const passwordRef = createRef<TextInput>();
 
   const handleError = (ex: AxiosResponse) => {
     if (ex.status === 404) {
@@ -82,7 +84,14 @@ const LoginScreen = () => {
         setLoginButtonDisabled(false);
         loginSuccess(res);
       })
-      .catch(handleError);
+      .catch(() => {
+        Toast.show({
+          type: 'error',
+          text1: t('login.twoFactor.error'),
+        });
+        setProcessing(false);
+        setLoginButtonDisabled(false);
+      });
   };
 
   useEffect(() => {
@@ -134,24 +143,28 @@ const LoginScreen = () => {
               {/* Work Email */}
               <CSTextInput
                 label={t('login.emailLabel')}
-                // errorMessage="There was an error"
                 placeholder={t('login.emailPlaceholder')}
                 keyboardType="email-address"
                 containerStyle={tw`mb-8`}
                 onChangeText={(value) => setEmail(value)}
                 value={email}
+                onSubmitEditing={() => passwordRef?.current?.focus()}
+                returnKeyType="next"
+                autoFocus
               />
 
               {/* Password */}
               <CSTextInput
+                ref={passwordRef}
                 label={t('login.passwordLabel')}
-                // errorMessage="There was an error"
+                returnKeyType="done"
                 placeholder={t('login.passwordPlaceholder')}
                 keyboardType="default"
                 containerStyle={tw`mb-4`}
                 onChangeText={(value) => setPassword(value)}
                 value={password}
                 secureTextEntry
+                onSubmitEditing={handleLogin}
               />
 
               <View style={tw`items-center mb-4`}>

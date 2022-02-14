@@ -1,32 +1,42 @@
 import { useState, useEffect } from 'react';
-import { useMMKVBoolean } from 'react-native-mmkv';
+import { MMKV } from 'react-native-mmkv';
 import { useUser } from '@/Queries';
 import { store } from '@/Store';
 import { JUST_SET_2FA_KEY } from '@/Store/keys';
 
 const useRequire2FA = () => {
   const [shouldAct, setShouldAct] = useState(false);
-  const { isLoading, error, data: user } = useUser();
+  const [loading, setLoading] = useState(false);
+  const { isLoading, data: user } = useUser();
   const { session } = store.getState();
-  const [justSetUp2fa] = useMMKVBoolean(JUST_SET_2FA_KEY);
+  const storage = new MMKV();
 
   useEffect(() => {
-    if (!isLoading && !error) {
-      if (user && !user?.phone) {
-        setShouldAct(true);
-      } else if (!session?.twoFactor?.methods?.length && !justSetUp2fa) {
-        if (user?.phone === '+1111111111') {
-          setShouldAct(false);
-        } else {
+    if (user) {
+      setLoading(true);
+      const checkShouldAct = async () => {
+        const justSetUp2Fa = await storage.getBoolean(JUST_SET_2FA_KEY);
+        if (!user?.phone) {
           setShouldAct(true);
+        } else if (!session?.twoFactor?.methods?.length && !justSetUp2Fa) {
+          if (user?.phone === '+1111111111') {
+            setShouldAct(false);
+          } else {
+            setShouldAct(true);
+          }
+        } else {
+          setShouldAct(false);
         }
-      } else {
-        setShouldAct(false);
-      }
+        setLoading(false);
+      };
+      checkShouldAct();
+    } else {
+      setShouldAct(false);
     }
-  }, [error, isLoading, user, session, justSetUp2fa]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, session]);
 
-  return { loading: isLoading, shouldAct };
+  return { loading: isLoading || loading, shouldAct };
 };
 
 export default useRequire2FA;

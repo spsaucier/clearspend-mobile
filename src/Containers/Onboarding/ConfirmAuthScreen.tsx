@@ -13,10 +13,11 @@ import { PasscodeView } from './Components/Passcode/PasscodeView';
 import { PromptBio } from './Components/PromptBio';
 import { vibrate } from '@/Helpers/vibrate';
 import { BioPasscodeNavigationProp } from './BioPasscode/BioPasscodeTypes';
+import { TopScreens } from '../../Navigators/NavigatorTypes';
 
 const ConfirmAuthScreen = () => {
   const { t } = useTranslation();
-  const { popToTop } = useNavigation<BioPasscodeNavigationProp>();
+  const { popToTop, navigate } = useNavigation<BioPasscodeNavigationProp>();
   const {
     setAuthed,
     logout,
@@ -31,7 +32,11 @@ const ConfirmAuthScreen = () => {
 
   const onSuccess = () => {
     setAuthed(true);
-    popToTop();
+    try {
+      popToTop();
+    } catch {
+      navigate(TopScreens.Main);
+    }
   };
 
   const onPasscodeComplete = async (newPasscode: string) => {

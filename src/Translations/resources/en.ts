@@ -35,6 +35,7 @@ export default {
       authenticator: {
         label: 'Enter the code available in your authenticator app',
       },
+      error: 'Unable to log in with the entered code',
     },
   },
   selectOrganization: {
