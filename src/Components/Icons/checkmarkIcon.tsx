@@ -22,9 +22,9 @@ export const CheckMarkIcon = ({
       <Path
         d="M9.125 0.75L3.62497 6L0.875 3.375"
         stroke={color}
-        stroke-width="1.125"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </Svg>
   </View>
