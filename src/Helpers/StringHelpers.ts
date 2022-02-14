@@ -14,3 +14,11 @@ export const sentenceCase = (str: string): string => {
 
 export const formatCurrency = (num = 0) =>
   num.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+
+export function formatPhone(val: string | undefined): string {
+  if (!val) return '';
+  return val
+    .replace(/[^\d]/g, '')
+    .replace(/^(\d)?(\d{3})(\d{3})(\d{4})$/, '+$1 ($2) $3-$4')
+    .replace('+ ', '');
+}

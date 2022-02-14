@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAvoidingView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
-import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSettingHeader';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextField } from '@/Components/TextField';
@@ -25,12 +24,9 @@ const ChangePasswordScreen = () => {
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <KeyboardAvoidingView style={tw`flex-1 p-5 justify-between`} behavior="padding">
         <View>
-          <View style={tw`flex-row`}>
-            <BackButtonNavigator backNav={t('profile.backNav')} />
-            <ProfileSettingsHeader title={t('profile.changePassword.title')} />
-          </View>
+          <BackButtonNavigator />
 
-          <CSText style={tw`text-2xl text-black pt-20 font-telegraf`}>
+          <CSText style={tw`text-2xl text-black pt-8 font-telegraf`}>
             {t('profile.changePassword.currPass')}
           </CSText>
           <CSTextField
@@ -41,11 +37,11 @@ const ChangePasswordScreen = () => {
           />
         </View>
         <Button
-          containerStyle={[tw`mb-5`, !currPassword ? tw`bg-gray98` : tw`bg-primary`]}
+          containerStyle={[tw`mb-5`, buttonDisabled ? tw`bg-gray98` : tw`bg-primary`]}
           label={t('profile.changePassword.next')}
           disabled={buttonDisabled}
           onPress={() => {
-            navigate(MainScreens.NewPassword);
+            navigate(MainScreens.NewPassword, { currentPassword: currPassword });
           }}
         />
       </KeyboardAvoidingView>

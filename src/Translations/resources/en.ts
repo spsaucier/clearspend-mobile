@@ -110,6 +110,7 @@ export default {
     titlePart1: 'Set your own',
     titlePart2: ' password',
     subTitle: 'The password we sent to your email was temporary. Please set your own password now.',
+    samePasswordError: 'The new password cannot be the same as your past passwords.',
     passwordInputLabel: 'New password',
     passwordInputPlaceholder: 'Enter a new password',
     rules: {
@@ -137,8 +138,18 @@ export default {
       buttonCta: 'Resend Email',
     },
   },
+  toasts: {
+    addressUpdated: 'Address updated successfully',
+    disable2faInvalid: 'Insufficient information to disable 2FA',
+    mobileVerified: 'Mobile number verified',
+    mobileSaveFailed: 'Unable to save your phone number',
+    previousNumberRemoved: 'Previous mobile number removed as authentication method',
+    resendFailed: 'Re-sending verification code failed',
+    updatePasswordFailed: 'Failed to update password',
+    updatePasswordSuccess: 'Your password has been successfully updated',
+    verificationResent: 'Verification code re-sent to {{number}}',
+  },
   wallet: {
-    header: 'Hey {{name}}!',
     empty: {
       title: 'Looks like you don’t have any cards.',
       subTitle: 'When you’re assigned a card, you’ll be able to view and control it from here.',
@@ -251,15 +262,43 @@ export default {
   profile: {
     profileInfo: 'View profile info',
     profileMenu: {
-      manageAccount: 'Manage Account',
+      updatePersonalDetails: 'Update personal details',
+      loginOptions: 'Log in options',
       activateCard: 'Activate Card',
       biometrics: 'Biometrics',
       faceId: 'Face ID',
       changePassword: 'Change Password',
-      notificationSettings: 'Notification Settings',
-      viewAuditLog: 'View Audit Log',
       changeCompany: 'Change Company',
       logOut: 'Log out',
+    },
+    loginOptions: {
+      title: 'Log in options',
+      pin: 'Update PIN',
+      pinOr: 'Update PIN or {{method}}',
+      updatePassword: 'Update password',
+    },
+    updateAccount: {
+      title: 'Personal details',
+      updateEmail: 'Update email',
+      updatePhone: 'Update phone number',
+      updateAddress: 'Update address',
+    },
+    updateEmail: {
+      title: 'New email address',
+    },
+    updatePhone: {
+      title: 'Enter your new mobile number',
+      secondary: 'We’ll send a verification code to this number',
+    },
+    updateAddress: {
+      title: 'New address',
+      cta: 'Save Address',
+      selectedAddress: 'Selected address:',
+      placeholder: 'Type 4+ characters',
+    },
+    updateAuth: {
+      disabled: '{{method}} authentication disabled',
+      success: '{{method}} authentication enabled',
     },
     changePassword: {
       title: 'Change Password',
@@ -274,19 +313,6 @@ export default {
     rules: {
       minLength: 'Must be a minimum of 10 characters',
       maxLength: 'Must be less than 30 characters',
-    },
-    message: {
-      passwordUpdated: 'Your password has been updated',
-      signInUsingNewPassword:
-        'You will be able to sign in using your new password the next time you open the clearspend app',
-      confirmation: 'Ok, got it',
-    },
-    notificationSettings: {
-      title: 'Notification Settings',
-      disableAll: 'Disable all notifications',
-    },
-    auditLog: {
-      title: 'Audit Log',
     },
   },
   notifications: {

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { MMKV, useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
@@ -7,8 +6,8 @@ import { killSession } from '@/Store/Session';
 import { ReturnUseBiometrics, useBiometrics } from '@/Hooks/useBiometrics';
 import { usePasscode } from '@/Hooks/usePasscode';
 import { mixpanel } from '../utils/analytics';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
-import { IS_AUTHED, LAST_ACTIVE_KEY } from '../../Store/keys';
+import { MainScreens, TopScreens } from '@/Navigators/NavigatorTypes';
+import { IS_AUTHED, JUST_SET_2FA_KEY, LAST_ACTIVE_KEY } from '../../Store/keys';
 import { useRequireAuth } from '@/Hooks/useRequireAuth';
 import { navigationRef } from '@/Navigators/Root';
 
@@ -49,23 +48,28 @@ const AuthProvider: FC = ({ children }) => {
   const [, setLastSignedIn] = useMMKVNumber(LAST_ACTIVE_KEY);
   const [, setAuthed] = useMMKVBoolean(IS_AUTHED);
   const storage = new MMKV();
+  const [, setJustSet2FA] = useMMKVBoolean(JUST_SET_2FA_KEY);
+
+  const confirmAuth = (authedStatus = true) => {
+    if (navigationRef.current?.getCurrentRoute()?.name !== MainScreens.ConfirmAuth) {
+      setAuthed(authedStatus);
+      if (bioProps.biometricsEnabled || passcodeProps.passcodeEnabled) {
+        setShowLoadingPlaceholder(true);
+        reset({
+          index: 0,
+          routes: [{ name: MainScreens.ConfirmAuth }],
+        });
+      } else {
+        // Trying to confirm auth, but no Bio or Passcode enabled
+      }
+    } else {
+      // Already on Bio/Passcode entry screen
+    }
+  };
 
   const onRequireAuth = (authedStatus = false) => {
     if (!authedStatus) {
-      if (navigationRef.current?.getCurrentRoute()?.name !== MainScreens.ConfirmAuth) {
-        setAuthed(authedStatus);
-        if (bioProps.biometricsEnabled || passcodeProps.passcodeActive) {
-          setShowLoadingPlaceholder(true);
-          reset({
-            index: 0,
-            routes: [{ name: MainScreens.ConfirmAuth }],
-          });
-        } else {
-          // Trying to confirm auth, but no Bio or Passcode enabled
-        }
-      } else {
-        // Already on Bio/Passcode entry screen
-      }
+      confirmAuth(authedStatus);
     } else {
       storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
       storage.set(IS_AUTHED, true);
@@ -81,9 +85,11 @@ const AuthProvider: FC = ({ children }) => {
     setLoggedIn(false);
     setAuthed(false);
     setLastSignedIn(new Date().valueOf());
+    navigationRef.current?.navigate(TopScreens.Auth);
+    setJustSet2FA(false);
+    await bioProps.disableBiometrics();
+    await passcodeProps.disablePasscode();
     persistor.purge();
-    bioProps.disableBiometrics();
-    passcodeProps.removePasscode();
     store.dispatch(killSession());
   };
 
@@ -109,6 +115,7 @@ const AuthProvider: FC = ({ children }) => {
   const context = {
     ...bioProps,
     ...passcodeProps,
+    confirmAuth,
     setAutoLockTempDisabled,
     loading: bioProps.loading || passcodeProps.loading,
     setAuthed,

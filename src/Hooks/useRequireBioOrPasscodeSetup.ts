@@ -6,15 +6,15 @@ import { AVAILABLE_BIO_KEY } from '@/Store/keys';
 
 const useRequireBioOrPasscodeSetup = () => {
   const [shouldAct, setShouldAct] = useState(false);
-  const { biometricsEnabled, passcodeActive, loading } = useAuthentication();
+  const { biometricsEnabled, passcodeEnabled, loading } = useAuthentication();
   const [availableBio] = useMMKVString(AVAILABLE_BIO_KEY);
   useEffect(() => {
     if (!loading) {
-      if (!biometricsEnabled && !passcodeActive) {
+      if (!biometricsEnabled && !passcodeEnabled) {
         setShouldAct(true);
       }
     }
-  }, [biometricsEnabled, loading, passcodeActive, availableBio]);
+  }, [biometricsEnabled, loading, passcodeEnabled, availableBio]);
 
   return { loading, shouldAct };
 };

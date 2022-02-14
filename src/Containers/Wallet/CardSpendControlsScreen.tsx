@@ -43,7 +43,7 @@ const CardSpendControlsScreen = () => {
         {/* Title */}
         <View style={tw`pt-4 pb-6 flex-row items-center`}>
           <CoinIcon />
-          <Text style={tw`pl-5 text-xl`}>{t('spendControls.title')}</Text>
+          <Text style={tw`pl-5 text-xl pt-2`}>{t('spendControls.title')}</Text>
         </View>
 
         {/* Pill Carousel */}
@@ -103,7 +103,7 @@ const CardSpendControlsScreen = () => {
             <Text style={tw`text-sm`}>
               {t('spendControls.channelsSection.validUntil')}
               <Text style={tw`italic`}>
-                {`${t('spendControls.channelsSection.cardValidity')} • ${t(
+                {` ${t('spendControls.channelsSection.cardValidity')} • ${t(
                   'spendControls.channelsSection.cardLimit',
                 )}`}
               </Text>

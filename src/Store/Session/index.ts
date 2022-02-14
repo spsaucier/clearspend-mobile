@@ -6,6 +6,15 @@ export interface Session {
   accessToken?: string;
   expiresAt?: string;
   refreshToken?: string;
+  twoFactor?: {
+    methods?: {
+      id: string;
+      lastUsed: boolean;
+      method: 'sms' | 'email' | 'authenticator';
+      mobilePhone?: string;
+      email?: string;
+    }[];
+  };
 }
 
 const initialSessionState = {
@@ -13,6 +22,7 @@ const initialSessionState = {
   accessToken: undefined,
   expiresAt: undefined,
   refreshToken: undefined,
+  twoFactor: undefined,
 } as Session;
 
 const sessionSlice = createSlice({
@@ -20,7 +30,7 @@ const sessionSlice = createSlice({
   initialState: initialSessionState,
   reducers: {
     updateSession(state, action: PayloadAction<Session>) {
-      const { accessToken, expiresAt, refreshToken, userId } = action.payload;
+      const { accessToken, expiresAt, refreshToken, userId, twoFactor } = action.payload;
       mixpanel.identify(userId || '');
       return {
         ...state,
@@ -28,11 +38,15 @@ const sessionSlice = createSlice({
         expiresAt,
         refreshToken,
         userId,
+        twoFactor,
       };
+    },
+    remove2FA({ twoFactor, ...rest }) {
+      return { ...rest };
     },
     killSession: () => initialSessionState,
   },
 });
 
-export const { updateSession, killSession } = sessionSlice.actions;
+export const { updateSession, remove2FA, killSession } = sessionSlice.actions;
 export default sessionSlice.reducer;

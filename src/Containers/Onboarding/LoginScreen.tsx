@@ -101,9 +101,10 @@ const LoginScreen = () => {
         keyboardShouldPersistTaps="handled"
         enableResetScrollToCoords={false}
         style={tw`flex-1`}
+        contentContainerStyle={tw`justify-between`}
         showsVerticalScrollIndicator={false}
       >
-        <View style={tw`flex-1 p-5 justify-center`}>
+        <View style={tw`p-5 justify-center`}>
           <Logo style={tw`w-30 mb-3`} />
           <CSText
             style={tw.style('text-3xl text-white mb-10 mt-6 font-telegraf leading-10', {

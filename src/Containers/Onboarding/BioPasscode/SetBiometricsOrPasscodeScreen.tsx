@@ -1,9 +1,9 @@
-/* eslint-disable no-console */
 import React from 'react';
 import { View, KeyboardAvoidingView, TouchableOpacity, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
 import { useMMKVString } from 'react-native-mmkv';
+import Toast from 'react-native-toast-message';
 
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
@@ -11,11 +11,11 @@ import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingH
 import { FaceIdIcon } from '@/Components/Icons/faceIdIcon';
 import { PinIcon } from '@/Components/Icons/pinIcon';
 import { useAuthentication } from '@/Hooks/useAuthentication';
-import { MainScreens } from '../../../Navigators/NavigatorTypes';
 import { AVAILABLE_BIO_KEY } from '../../../Store/keys';
 import { BioPasscodeScreens, BioPasscodeNavigationProp } from './BioPasscodeTypes';
 import { AuthenticationMethods } from '../../../Hooks/useAvailableBioMethod';
 import { TouchIdIcon } from '../../../Components/Icons/touchIdIcon';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 export const RoundedBox: React.FC = ({ children }) => (
   <View style={tw`items-center justify-center h-12 w-12 rounded-lg bg-secondary-light`}>
@@ -25,16 +25,21 @@ export const RoundedBox: React.FC = ({ children }) => (
 
 const SetBiometricsOrPasscodeScreen = () => {
   const { t } = useTranslation();
-  const { enableBiometrics, biometricsEnabled } = useAuthentication();
+  const { enableBiometrics, biometricsEnabled, loggedIn, setLoggedIn } = useAuthentication();
   const { navigate } = useNavigation<BioPasscodeNavigationProp>();
   const [availableBio] = useMMKVString(AVAILABLE_BIO_KEY);
-
-  const onSuccess = () => navigate(MainScreens.Wallet);
 
   const onEnableBiometrics = async () => {
     const success = await enableBiometrics();
     if (success) {
-      onSuccess();
+      if (!loggedIn) {
+        setLoggedIn(true);
+      }
+      Toast.show({
+        type: 'success',
+        text1: t('profile.updateAuth.success', { method: availableBio }),
+      });
+      navigate(MainScreens.Wallet);
     }
   };
 

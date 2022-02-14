@@ -68,6 +68,7 @@ module.exports = {
       // Brand
       primary: '#43FA76',
       secondary: '#10292C',
+      forest: '#003333',
       'secondary-light': '#1C3437',
       tan: '#F3F2EF',
 
@@ -80,6 +81,7 @@ module.exports = {
       error: '#FF2F2F',
       success: '#059669',
       pending: '#AFFFC6',
+      darkError: '#CC0033',
 
       // Apple Wallet mock flow
       lightBG: '#F1F7FF',

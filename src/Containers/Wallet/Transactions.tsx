@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, ActivityIndicator, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
@@ -10,7 +10,6 @@ import BottomSheet, {
   useBottomSheetInternal,
 } from '@gorhom/bottom-sheet';
 import { FlatList } from 'react-native-gesture-handler';
-import { useFocusEffect } from '@react-navigation/core';
 
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
@@ -45,12 +44,6 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
     cardId,
     searchText,
   });
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, [refetch]),
-  );
 
   useEffect(() => {
     if (!expanded) {

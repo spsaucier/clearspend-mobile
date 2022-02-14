@@ -22,7 +22,7 @@ export const useCardTransactions = ({
       apiClient
         .post('/account-activity', {
           cardId,
-          searchText: searchText || undefined,
+          searchText: searchText.trim() || undefined,
           pageRequest: { pageNumber: request.pageParam || 0, pageSize },
         })
         .then((res) => res.data),

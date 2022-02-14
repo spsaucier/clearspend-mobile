@@ -48,7 +48,7 @@ const SetPasswordScreen = () => {
         // eslint-disable-next-line no-console
         console.log('Field errors: ', JSON.stringify(ex.fieldErrors));
         if (ex?.fieldErrors?.password?.[0]?.code === '[previouslyUsed]password') {
-          setSubmissionError('The password may not be the same as your past passwords.');
+          setSubmissionError(t('setPassword.samePasswordError'));
         } else {
           setSubmissionError(ex.message);
         }

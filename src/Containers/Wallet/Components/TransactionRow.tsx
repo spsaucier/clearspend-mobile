@@ -93,7 +93,11 @@ export const TransactionRow = ({
     >
       <View style={tw`flex-row`}>
         <View
-          style={[tw`bg-primary h-8 w-8 rounded-full overflow-hidden items-center justify-center`]}
+          style={[
+            tw`h-8 w-8 rounded-full overflow-hidden items-center justify-center ${
+              !merchantLogoUrl ? 'bg-primary' : ''
+            }`,
+          ]}
         >
           {merchantLogoUrl ? (
             <Image

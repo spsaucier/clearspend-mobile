@@ -1,14 +1,12 @@
-import { useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
+import { useMMKVNumber } from 'react-native-mmkv';
 
 import { mixpanel } from '@/Services/utils/analytics';
 import { useSensitiveInfo } from './useSensitiveInfo';
-import { IS_PASSCODE_ENABLED } from '../Store/keys';
 
 export const PASSCODE_KEY = 'PASSCODE_KEY';
 const PASSCODE_ATTEMPT_COUNT_KEY = 'PASSCODE_ATTEMPT_COUNT_KEY';
 
 export const usePasscode = () => {
-  const [isPasscodeEnabled, setIsPasscodeEnabled] = useMMKVBoolean(IS_PASSCODE_ENABLED);
   const [failedAttempts, setFailedAttempts] = useMMKVNumber(PASSCODE_ATTEMPT_COUNT_KEY);
   const {
     data: storedPasscode,
@@ -36,11 +34,11 @@ export const usePasscode = () => {
     return false;
   };
 
-  const removePasscode = async () => {
+  const disablePasscode = async () => {
     await deletePasscode();
-    setIsPasscodeEnabled(false);
     mixpanel.track('PasscodeDisabled');
     clearFailedAttempts();
+    return true;
   };
 
   const setPasscode = async (passcode: string) => {
@@ -49,13 +47,12 @@ export const usePasscode = () => {
   };
 
   return {
-    passcodeActive: !!storedPasscode,
+    passcodeEnabled: !!storedPasscode,
     setPasscode,
-    removePasscode,
+    disablePasscode,
     verifyPasscode,
     failedAttempts,
     clearFailedAttempts,
     loading: passcodeLoading,
-    isPasscodeEnabled,
   };
 };

@@ -10,7 +10,13 @@
  */
 
 export interface LimitTypeMap {
-  limitType?: 'ACH_DEPOSIT' | 'ACH_WITHDRAW' | 'PURCHASE' | 'ATM_WITHDRAW';
+  limitType?:
+    | 'ACH_DEPOSIT'
+    | 'ACH_WITHDRAW'
+    | 'ACH_PUSH_IN'
+    | 'ACH_PULL_OUT'
+    | 'PURCHASE'
+    | 'ATM_WITHDRAW';
 }
 
 export interface ControllerError {
@@ -459,8 +465,24 @@ export interface IssueCardRequest {
   currency: 'UNSPECIFIED' | 'USD';
   isPersonal: boolean;
   limits: CurrencyLimit[];
-  disabledMccGroups: string[];
-  disabledTransactionChannels: ('ATM' | 'POS' | 'MOTO' | 'ONLINE')[];
+  disabledMccGroups: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+  disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
 
   /** @example DEBIT */
   binType?: 'DEBIT';
@@ -915,8 +937,24 @@ export interface CreateAllocationRequest {
   ownerId: string;
   amount: Amount;
   limits: CurrencyLimit[];
-  disabledMccGroups: string[];
-  disabledTransactionChannels: ('ATM' | 'POS' | 'MOTO' | 'ONLINE')[];
+  disabledMccGroups: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+  disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
 }
 
 export interface CreateAllocationResponse {
@@ -1303,6 +1341,22 @@ export interface Merchant {
 
   /** @format int32 */
   merchantCategoryCode?: number;
+  merchantCategoryGroup?:
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER';
   merchantLogoUrl?: string;
   merchantLatitude?: number;
   merchantLongitude?: number;
@@ -2094,8 +2148,24 @@ export interface UpdateAccountActivityRequest {
 
 export interface UpdateCardRequest {
   limits?: CurrencyLimit[];
-  disabledMccGroups?: string[];
-  disabledTransactionChannels?: ('ATM' | 'POS' | 'MOTO' | 'ONLINE')[];
+  disabledMccGroups?: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+  disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
 }
 
 export interface CardDetailsResponse {
@@ -2104,8 +2174,24 @@ export interface CardDetailsResponse {
   availableBalance: Amount;
   allocationName: string;
   limits?: CurrencyLimit[];
-  disabledMccGroups?: string[];
-  disabledTransactionChannels?: ('ATM' | 'POS' | 'MOTO' | 'ONLINE')[];
+  disabledMccGroups?: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+  disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
 }
 
 export interface UpdateAllocationRequest {
@@ -2124,16 +2210,48 @@ export interface UpdateAllocationRequest {
   /** @format uuid */
   ownerId?: string;
   limits?: CurrencyLimit[];
-  disabledMccGroups?: string[];
-  disabledTransactionChannels?: ('ATM' | 'POS' | 'MOTO' | 'ONLINE')[];
+  disabledMccGroups?: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+  disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
 }
 
 export interface AllocationDetailsResponse {
   allocation?: Allocation;
   owner?: UserData;
   limits?: CurrencyLimit[];
-  disabledMccGroups?: string[];
-  disabledTransactionChannels?: ('ATM' | 'POS' | 'MOTO' | 'ONLINE')[];
+  disabledMccGroups?: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+  disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
 }
 
 export interface Receipt {
@@ -2506,38 +2624,6 @@ export interface BusinessRecord {
 
 export interface NullableEncryptedString {
   encrypted?: string;
-}
-
-export interface MccGroup {
-  /** @format uuid */
-  mccGroupId?: string;
-  i2cMccGroupRef?:
-    | 'UT_MCG_CONFG'
-    | 'RS_MCG_CONFG'
-    | 'AV_MCG_CONFG'
-    | 'MS_MCG_CONFG'
-    | 'SP_MCG_CONFG'
-    | 'PS_MCG_CONFG'
-    | 'BS_MCG_CONFG'
-    | 'RR_MCG_CONFG'
-    | 'AE_MCG_CONFG'
-    | 'SM_MCG_CONFG'
-    | 'GS_MCG_CONFG'
-    | 'CR_MCG_CONFG'
-    | 'CS_MCG_CONFG'
-    | 'AL_MCG_CONFG'
-    | 'AR_MCG_CONFG'
-    | 'HM_MCG_CONFG'
-    | 'TT_MCG_CONFG'
-    | 'TE_MCG_CONFG'
-    | 'MSL_MCG_CONFG'
-    | 'WS_MCG_CONFG'
-    | 'OP_MCG_CONFG'
-    | 'DG_MCG_CONFG'
-    | 'RES_MCG_CONFG'
-    | 'GAS_MCG_CONFG'
-    | 'EDU_MCG_CONFG';
-  name?: string;
 }
 
 export interface ExpenseCategory {

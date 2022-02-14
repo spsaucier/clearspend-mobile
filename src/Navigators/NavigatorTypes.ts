@@ -39,13 +39,16 @@ export enum MainScreens {
   // Onboarding post-auth
   SetBiometricsOrPasscode = 'SetBiometricsOrPasscode',
   EnterMobile = 'Enter Mobile',
-  ConfirmMobile = 'Confirm Mobile',
+  EnterOTP = 'Confirm Mobile',
 
   // Profile & Settings
-  AuditLog = 'Audit Log',
+  UpdateAccount = 'Update Account',
+  // UpdateEmail = 'Update Email',
+  UpdateMobile = 'Update Phone',
+  UpdateAddress = 'Update Address',
+  LoginOptions = 'Log in options',
   ActivateCard = 'Activate Card',
   ChangePassword = 'Change Password',
-  ChangePasswordMessage = 'Change Password Message',
   NewPassword = 'New Password',
   NotificationSettings = 'Notification Settings',
   Profile = 'Profile',
@@ -88,14 +91,17 @@ export type MainStackParamTypes = {
   // Onboarding post-auth
   [MainScreens.SetBiometricsOrPasscode]: undefined;
   [MainScreens.EnterMobile]: undefined;
-  [MainScreens.ConfirmMobile]: { phone: string };
+  [MainScreens.EnterOTP]: { phone: string, nextScreen?: string };
 
   // Profile & Settings
-  [MainScreens.AuditLog]: undefined;
+  [MainScreens.UpdateAccount]: undefined;
+  // [MainScreens.UpdateEmail]: undefined;
+  [MainScreens.UpdateMobile]: undefined;
+  [MainScreens.UpdateAddress]: undefined;
+  [MainScreens.LoginOptions]: undefined;
   [MainScreens.ActivateCard]: undefined;
   [MainScreens.ChangePassword]: undefined;
-  [MainScreens.ChangePasswordMessage]: undefined;
-  [MainScreens.NewPassword]: undefined;
+  [MainScreens.NewPassword]: { currentPassword: string };
   [MainScreens.NotificationSettings]: undefined;
   [MainScreens.Profile]: undefined;
   [MainScreens.ProfileScreen]: undefined;

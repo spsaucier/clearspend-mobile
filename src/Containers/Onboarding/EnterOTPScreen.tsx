@@ -3,55 +3,79 @@ import { View, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 import { ParamListBase, useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useMMKVBoolean } from 'react-native-mmkv';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
-import { mixpanel } from '@/Services/utils/analytics';
-import { useAuthentication } from '../../Hooks/useAuthentication';
 import { OTPView } from './OTPView';
 import { sendEnrollment2FA, submitEnrollment2FACode } from '../../Services/Auth/index';
-import { useUser } from '@/Queries';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
-import { updateUser } from '@/Queries/user';
+import { useUser, useUpdateUser } from '@/Queries';
+import { JUST_SET_2FA_KEY, RECOVERY_CODE_KEY } from '@/Store/keys';
+import { navigationRef } from '@/Navigators/Root';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { UpdateUserRequest } from '../../generated/capital';
+import { useSensitiveInfo } from '@/Hooks/useSensitiveInfo';
+import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
+import { formatPhone } from '@/Helpers/StringHelpers';
+import { store } from '@/Store';
+import { remove2FA } from '@/Store/Session';
 
 const EnterOTPScreen = () => {
   const { t } = useTranslation();
   const { data: user } = useUser();
   const { params } = useRoute<any>();
-  const { setLoggedIn } = useAuthentication();
+  const { popToTop } = useNavigation<StackNavigationProp<ParamListBase>>();
   const [hasError, setHasError] = useState(false);
-  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+  const { setItem: setRecoveryCode } = useSensitiveInfo(RECOVERY_CODE_KEY);
+  const [, setJustSet2FA] = useMMKVBoolean(JUST_SET_2FA_KEY);
+
+  const { mutate } = useUpdateUser();
 
   const resendCode = async () => {
     try {
       await sendEnrollment2FA(params?.phone, user?.userId || '', 'sms');
-      // TODO: show toast for success
+      Toast.show({
+        type: 'success',
+        text1: t('toasts.verificationResent', { number: formatPhone(params.phone) }),
+      });
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.info(e);
-      // TODO: show toast for failure
+      Toast.show({
+        type: 'error',
+        text1: t('toasts.resendFailed'),
+      });
     }
   };
 
   const handleSubmit = async (code: string) => {
     try {
-      await submitEnrollment2FACode(code, user?.userId || '', params.phone);
-      await updateUser({ ...user, phone: params.phone });
+      const { recoveryCodes } = await submitEnrollment2FACode(
+        code,
+        user?.userId || '',
+        params.phone,
+      );
+      await setRecoveryCode(`${recoveryCodes[0]}|${user?.userId}`);
+      setJustSet2FA(true);
+      await mutate({ ...user, phone: params.phone } as UpdateUserRequest);
+      // Remove old 2FA method info from storage of session
+      store.dispatch(remove2FA());
+      Toast.show({
+        type: 'success',
+        text1: `${formatPhone(params.phone)} saved as authentication method`,
+      });
+      navigationRef.current?.navigate(params.nextScreen || MainScreens.Profile);
+      popToTop();
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(e);
       setHasError(true);
     }
-    mixpanel.track('Login');
-    setLoggedIn(true);
-    navigation.replace(MainScreens.Wallet);
   };
 
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`}>
       <KeyboardAvoidingView style={tw`flex-1 p-6`} behavior="padding">
+        <BackButtonNavigator />
         <OnboardingScreenTitle
           titlePart1={t('otp.titlePart1')}
           titlePart2={t('otp.titlePart2')}

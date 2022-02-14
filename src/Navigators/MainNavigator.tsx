@@ -17,7 +17,7 @@ import WalletScreen from '@/Containers/Wallet/WalletScreen';
 import ProfileScreen from '@/Containers/Profile/ProfileScreen';
 import ChangePasswordScreen from '@/Containers/Profile/ChangePasswordScreen';
 import NotificationSettingScreen from '@/Containers/Profile/NotificationSettingsScreen';
-import AuditLogScreen from '@/Containers/Profile/AuditLog';
+import LoginOptionsScreen from '@/Containers/Profile/LoginOptions';
 import NotificationScreen from '@/Containers/Notifications/NotificationScreen';
 import CardDetailScreen from '@/Containers/Wallet/CardDetailScreen';
 import CardInfoScreen from '@/Containers/Wallet/CardInfoScreen';
@@ -32,7 +32,6 @@ import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
 import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
 import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
 import NewPasswordScreen from '@/Containers/Profile/NewPasswordScreen';
-import ChangePasswordMessage from '@/Containers/Profile/ChangePasswordMessage';
 import ConfirmAuthScreen from '@/Containers/Onboarding/ConfirmAuthScreen';
 import { SetBioPasscodeNavigator } from '@/Containers/Onboarding/BioPasscode/SetBioPasscodeNavigator';
 import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';
@@ -43,6 +42,9 @@ import { ActivateCardGetStartedScreen } from '@/Containers/ActivateCard/Activate
 import { ActivateCardResultScreen } from '@/Containers/ActivateCard/ActivateCardResultScreen';
 import DevMenuScreen from '@/Containers/DevMenu/DevMenuScreen';
 import { IconDemoScreen } from '@/Containers/DevMenu/IconDemoScreen';
+import UpdateAccountScreen from '@/Containers/Profile/UpdateAccountScreen';
+import UpdateMobileScreen from '@/Containers/Profile/UpdateMobileScreen';
+import UpdateAddressScreen from '@/Containers/Profile/UpdateAddressScreen';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -100,11 +102,13 @@ const ProfileStack = () => (
     screenOptions={{ headerShown: false }}
   >
     <Stack.Screen name={MainScreens.ProfileScreen} component={ProfileScreen} />
+    <Stack.Screen name={MainScreens.UpdateAccount} component={UpdateAccountScreen} />
+    <Stack.Screen name={MainScreens.UpdateMobile} component={UpdateMobileScreen} />
+    <Stack.Screen name={MainScreens.UpdateAddress} component={UpdateAddressScreen} />
     <Stack.Screen name={MainScreens.ChangePassword} component={ChangePasswordScreen} />
     <Stack.Screen name={MainScreens.NewPassword} component={NewPasswordScreen} />
-    <Stack.Screen name={MainScreens.ChangePasswordMessage} component={ChangePasswordMessage} />
     <Stack.Screen name={MainScreens.NotificationSettings} component={NotificationSettingScreen} />
-    <Stack.Screen name={MainScreens.AuditLog} component={AuditLogScreen} />
+    <Stack.Screen name={MainScreens.LoginOptions} component={LoginOptionsScreen} />
     <Stack.Screen name={MainScreens.ActivateCard} component={ActivateCardStack} />
   </Stack.Navigator>
 );
@@ -175,7 +179,7 @@ const MainNavigator = () => (
     <Stack.Screen name={MainScreens.Home} component={WalletStack} />
     <Stack.Screen name={MainScreens.ConfirmAuth} component={ConfirmAuthScreen} />
     <Stack.Screen name={MainScreens.EnterMobile} component={EnterMobileScreen} />
-    <Stack.Screen name={MainScreens.ConfirmMobile} component={EnterOTPScreen} />
+    <Stack.Screen name={MainScreens.EnterOTP} component={EnterOTPScreen} />
   </Stack.Navigator>
 );
 

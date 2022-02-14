@@ -36,7 +36,6 @@ export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void
     if (temporarilyDisabled) return;
 
     mixpanel.track('App state changed to inactive/background');
-
     if (storage.getBoolean(IS_AUTHED) && !tooLongSinceLastActive()) {
       storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
     }

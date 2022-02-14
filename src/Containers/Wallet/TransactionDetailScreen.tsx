@@ -35,9 +35,9 @@ type InfoRowProps = {
 };
 
 const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
-  <View style={tw`flex-row justify-between items-center mt-1`}>
-    <CSText style={tw`text-sm text-gray50`}>{label}</CSText>
-    {value ? <CSText style={tw`text-sm mt-4`}>{value}</CSText> : null}
+  <View style={tw`flex-row justify-between items-center mt-2`}>
+    <CSText style={tw`text-sm text-gray50 leading-relaxed`}>{label}</CSText>
+    {value ? <CSText style={tw`text-sm leading-relaxed`}>{value}</CSText> : null}
     {!!children && children}
   </View>
 );
@@ -239,7 +239,7 @@ const TransactionDetailScreenContent = () => {
             <View style={[tw`bg-white justify-center items-center h-18 w-18 rounded-full`]}>
               <View
                 style={[
-                  tw`bg-primary h-16 w-16 overflow-hidden items-center justify-center rounded-full`,
+                  tw`h-16 w-16 overflow-hidden items-center justify-center rounded-full ${merchant?.merchantLogoUrl ? '' : 'bg-primary'}`,
                 ]}
               >
                 {merchant?.merchantLogoUrl ? (

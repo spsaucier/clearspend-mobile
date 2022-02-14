@@ -11,11 +11,7 @@ const BioPasscodeStack = createStackNavigator<BioPasscodeParams>();
 export const SetBioPasscodeNavigator = () => (
   <BioPasscodeStack.Navigator
     screenOptions={{
-      headerTransparent: true,
-      headerTitle: '',
-      headerBackTitle: 'Back',
-      headerBackTitleStyle: { color: tw.color('white') },
-      headerTintColor: 'white',
+      headerShown: false,
       cardStyle: { backgroundColor: tw.color('secondary'), paddingHorizontal: 24 },
     }}
   >

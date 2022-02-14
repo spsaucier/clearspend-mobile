@@ -14,7 +14,6 @@ import {
 import {
   AlarmIcon,
   AppleWalletIcon,
-  CardSettingsIcon,
   ChevronIcon,
   EyeIcon,
   SnowflakeIcon,
@@ -168,7 +167,7 @@ const CardDetailScreen = ({ route }: Props) => {
                 {formatCurrency(balanceAmount)}
               </CSText>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
                 onPress={() => navigate(MainScreens.CardSpendControls, { cardId })}
               >
@@ -179,7 +178,7 @@ const CardDetailScreen = ({ route }: Props) => {
                   {t('cardProfile.spendControls')}
                 </CSText>
                 <ChevronIcon color={tw.color('white')} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               <TouchableOpacity
                 style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}

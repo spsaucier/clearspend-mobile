@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 
 import { BioPasscodeNavigationProps, BioPasscodeScreens } from '../../BioPasscode/BioPasscodeTypes';
 import { PasscodeView } from './PasscodeView';
@@ -25,6 +26,11 @@ export const PasscodeConfirm = ({
       if (!loggedIn) {
         setLoggedIn(true);
       }
+      Toast.show({
+        type: 'success',
+        text1: t('profile.updateAuth.success', { method: 'PIN' }),
+      });
+      navigation.popToTop();
       navigation.navigate(MainScreens.Wallet);
     } else {
       setCurrentError(t('loginOptions.passcode.tryAgain'));

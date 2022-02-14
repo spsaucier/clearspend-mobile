@@ -19,6 +19,7 @@ const parseLoginResponse = (res: AxiosResponse) => {
     accessToken,
     refreshToken: res.data.refreshToken,
     expiresAt: new Date(decoded.exp * 1000).toISOString(),
+    twoFactor: res.data.user?.twoFactor,
   };
   return session;
 };
@@ -35,13 +36,24 @@ export const sendEnrollment2FA = async (formattedMobile: string, userId: string,
     headers: { 'content-type': 'application/json' },
   }).catch((ex) => Promise.reject(ex.response));
 
+export const disableEnrollment2FA = async (
+  recoveryCode: string,
+  userId: string,
+  twoFactorMethodId: string,
+) =>
+  axios({
+    method: 'DELETE',
+    url: `${Config.FA_URL}/api/user/two-factor/${userId}?code=${recoveryCode}&methodId=${twoFactorMethodId}`,
+    headers: { 'content-type': 'application/json', 'x-fusionauth-tenantid': '933328da-3f46-0236-6ec6-4a04a689f99e' },
+  }).catch((ex) => Promise.reject(ex.response));
+
 export const submitEnrollment2FACode = async (
   code: string,
   userId: string,
   formattedMobile: string,
   method = 'sms',
-) =>
-  axios({
+) => {
+  const response = await axios({
     method: 'POST',
     url: `${Config.FA_URL}/api/user/two-factor/${userId}`,
     data: {
@@ -52,6 +64,8 @@ export const submitEnrollment2FACode = async (
     },
     headers: { 'content-type': 'application/json' },
   }).catch((ex) => Promise.reject(ex.response));
+  return response.data;
+};
 
 const send2FA = async (twoFactorId: string, methodId: string) =>
   axios({
@@ -85,14 +99,18 @@ export const login = async (username: string, password: string) => {
       if (response.data?.methods?.length) {
         try {
           const { twoFactorId } = response.data;
-          const twoFactorMethodId = response.data.methods?.[0]?.id;
-          const twoFactorMethod = response.data.methods?.[0]?.method;
+          let method = response.data.methods?.find((m: { lastUsed: boolean }) => m.lastUsed);
+          if (!method) {
+            method = response.data.methods?.[0];
+          }
+          const twoFactorMethodId = method.id;
+          const twoFactorMethod = method?.method;
           if (['sms', 'email'].includes(twoFactorMethod)) {
             send2FA(twoFactorId, twoFactorMethodId);
           }
           return {
             twoFactorId,
-            twoFactorMethod, // 'sms' | 'email'
+            twoFactorMethod,
           };
         } catch (e) {
           return Promise.reject(e);

@@ -8,19 +8,19 @@ import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
 import { Logo } from '@/Components/Svg/Logo';
 
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { PasscodeView } from './Components/Passcode/PasscodeView';
 import { PromptBio } from './Components/PromptBio';
 import { vibrate } from '@/Helpers/vibrate';
+import { BioPasscodeNavigationProp } from './BioPasscode/BioPasscodeTypes';
 
 const ConfirmAuthScreen = () => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
+  const { popToTop } = useNavigation<BioPasscodeNavigationProp>();
   const {
     setAuthed,
     logout,
-    passcodeActive,
+    passcodeEnabled,
     biometricsEnabled,
     verifyPasscode,
     failedAttempts,
@@ -31,7 +31,7 @@ const ConfirmAuthScreen = () => {
 
   const onSuccess = () => {
     setAuthed(true);
-    navigate(MainScreens.Home);
+    popToTop();
   };
 
   const onPasscodeComplete = async (newPasscode: string) => {
@@ -63,7 +63,7 @@ const ConfirmAuthScreen = () => {
             <Logo style={tw`w-30`} />
           </View>
 
-          {!loading && passcodeActive ? (
+          {!loading && passcodeEnabled ? (
             <View style={tw.style('p-5 pt-0 -mt-12')}>
               <PasscodeView
                 title={(

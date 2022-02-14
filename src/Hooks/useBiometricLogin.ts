@@ -9,12 +9,11 @@ const useBiometricLogin = (
   onSuccessCallback?: () => void,
   onCancelCallback?: () => void,
   interceptCallback?: () => void,
-): { reprompt: (
-) => void } => {
-  const [hasPrompted, setHasPrompted] = useState(false);
+) => {
   const { verifyBio, successfulBioLogin, loading, biometricsEnabled } = useBiometrics();
   const isMounted = useIsMounted();
   const [availableBio] = useMMKVString(AVAILABLE_BIO_KEY);
+  const [hasPrompted, setHasPrompted] = useState(true);
 
   const onBiometricLogin = useCallback(() => {
     if (!hasPrompted) {
@@ -42,15 +41,8 @@ const useBiometricLogin = (
         }
       });
     }
-  }, [
-    hasPrompted,
-    verifyBio,
-    availableBio,
-    interceptCallback,
-    onSuccessCallback,
-    successfulBioLogin,
-    onCancelCallback,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasPrompted, availableBio]);
 
   const reprompt = useCallback(() => {
     if (hasPrompted) {

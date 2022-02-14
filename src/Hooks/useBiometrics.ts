@@ -14,7 +14,6 @@ export interface ReturnUseBiometrics {
   loading: boolean;
   bioLogin: () => Promise<boolean>;
   biometricsEnabled?: string;
-  toggleBiometrics: () => void;
   enableBiometrics: () => Promise<boolean>;
   disableBiometrics: () => Promise<boolean>;
   verifyBio: () => Promise<boolean>;
@@ -93,25 +92,6 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
     return false;
   };
 
-  const disableBiometrics = async () => {
-    mixpanel.track('BiometricDisabled');
-    setBiometricsPublicKey('');
-    return false;
-  };
-
-  const toggleBiometrics = async () => {
-    setLoading(true);
-    const { keysExist } = await ReactNativeBiometrics.biometricKeysExist();
-    if (keysExist) {
-      const biometricsEnabled = await disableBiometrics();
-      setLoading(false);
-      return biometricsEnabled;
-    }
-    const biometricsEnabled = await enableBiometrics();
-    setLoading(false);
-    return biometricsEnabled;
-  };
-
   const verifyBio = async (): Promise<boolean> => {
     setLoading(true);
     if (!availableBio) {
@@ -129,6 +109,12 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
       setLoading(false);
       return false;
     }
+  };
+
+  const disableBiometrics = async () => {
+    mixpanel.track('BiometricDisabled');
+    await setBiometricsPublicKey('');
+    return true;
   };
 
   const successfulBioLogin = () => {
@@ -151,7 +137,6 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
     loading,
     bioLogin,
     biometricsEnabled: biometricsPublicKey,
-    toggleBiometrics,
     enableBiometrics,
     disableBiometrics,
     verifyBio,
