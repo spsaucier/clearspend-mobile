@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Keyboard, KeyboardAvoidingView, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation, useRoute } from '@react-navigation/core';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import tw from '@/Styles/tailwind';
+import { useUpdateTransaction } from '@/Queries/transaction';
 
 const NoteInputScreen = () => {
   const { t } = useTranslation();
@@ -12,10 +13,14 @@ const NoteInputScreen = () => {
   const route = useRoute<any>();
   const { params } = route;
 
-  const [note, setNote] = useState(params.note || '');
+  const [note, setNote] = useState(params.notes || '');
   const [charCount, setCharCount] = useState(note.length || 0);
   const [buttonDisabled, setButtonDisabled] = useState(true);
-
+  const {
+    mutate: saveNote,
+    isLoading: isSaving,
+    isSuccess,
+  } = useUpdateTransaction(params.accountActivityId);
   const maxCharCount = 300;
 
   const onChangeText = (value: string) => {
@@ -25,8 +30,10 @@ const NoteInputScreen = () => {
   };
 
   const submitNote = () => {
-    // TODO Submit Note to API
-    navigation.goBack();
+    Keyboard.dismiss();
+    saveNote({
+      notes: note,
+    });
   };
 
   const cancelAndGoBack = () => {
@@ -34,21 +41,27 @@ const NoteInputScreen = () => {
     navigation.goBack();
   };
 
+  useEffect(() => {
+    if (isSuccess) navigation.goBack();
+  }, [isSuccess, navigation]);
+
   return (
     <SafeAreaView style={tw`flex-1 justify-between p-6 bg-white`} edges={['top', 'bottom']}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <KeyboardAvoidingView style={tw`flex-1`} behavior="padding">
         <View style={tw`flex-1`}>
-          <CSText style={tw`text-2xl py-10 text-center`}>Add a note</CSText>
+          <CSText style={tw`text-2xl py-10 text-center`}>
+            {t('wallet.transactionDetails.notes.addANote')}
+          </CSText>
           <TextInput
             style={tw`text-black w-full`}
             multiline
             autoCorrect
             autoFocus
+            testID="noteField"
             underlineColorAndroid="rgba(0,0,0,0)"
             placeholder={t('wallet.transactionDetails.notes.addANote')}
             placeholderTextColor={tw.color('gray60')}
-            // testID={""}
             keyboardType="default"
             onChangeText={onChangeText}
             value={note}
@@ -64,13 +77,20 @@ const NoteInputScreen = () => {
             </CSText>
             <CSText style={tw`text-black opacity-50`}>{` / ${maxCharCount}`}</CSText>
           </View>
-          <Button onPress={submitNote} disabled={buttonDisabled}>
+          <Button
+            onPress={submitNote}
+            testID="setNoteButton"
+            disabled={buttonDisabled || isSaving}
+            loading={isSaving}
+          >
             {t('wallet.transactionDetails.notes.setNote')}
           </Button>
           <Button
             onPress={cancelAndGoBack}
+            testID="cancelButton"
             containerStyle={tw`bg-white`}
             textStyle={tw`text-secondary`}
+            disabled={isSaving}
           >
             {t('wallet.transactionDetails.notes.cancel')}
           </Button>

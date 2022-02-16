@@ -226,6 +226,29 @@ app.post('/users/account-activity/:accountActivityId/receipts/:receiptId/link', 
   res.json(newTransactionWithReceiptUpdated);
 });
 
+app.patch(`/users/account-activity/:accountActivityId`, (req, res) => {
+  const { params, body } = req;
+  const { accountActivityId } = params;
+  const { notes } = body;
+
+  const transactionIdx = transactions.findIndex((x) => x.accountActivityId === accountActivityId);
+  if (transactionIdx === -1) {
+    res.sendStatus(404);
+    return;
+  }
+
+  const transaction = transactions[transactionIdx];
+
+  const updated = {
+    ...transaction,
+    notes,
+  };
+
+  transactions[transactionIdx] = updated;
+
+  res.status(200).json(updated);
+});
+
 app.delete('/users/receipts/:receiptId/delete', (req, res) => {
   const { params } = req;
   const { receiptId } = params;
@@ -236,7 +259,7 @@ app.delete('/users/receipts/:receiptId/delete', (req, res) => {
   );
 
   if (transactionIdx === -1) {
-    res.sendStatus(500);
+    res.sendStatus(404);
     return;
   }
 

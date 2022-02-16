@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
 import {
   AccountActivityRequest,
   AccountActivityResponse,
@@ -36,3 +36,11 @@ export const useCardTransactions = ({
       },
     },
   );
+
+export const useUpdateTransaction = (accountActivityId: string) =>
+  useMutation<Promise<AccountActivityResponse>, Error, { notes: string }>((context) => {
+    const { notes } = context;
+    return apiClient
+      .patch(`/users/account-activity/${accountActivityId}`, { notes })
+      .then((res) => res.data);
+  });

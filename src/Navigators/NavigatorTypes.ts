@@ -113,7 +113,7 @@ export type MainStackParamTypes = {
   [MainScreens.CardLostStolen]: { cardId: string };
   [MainScreens.CardSettings]: { cardId: string };
   [MainScreens.CardSpendControls]: { cardId: string };
-  [MainScreens.NoteInput]: { transactionId: string; note: string | null };
+  [MainScreens.NoteInput]: { accountActivityId: string; notes: string | null };
   [MainScreens.Notifications]: undefined;
   [MainScreens.TransactionDetails]: { cardId: string; transactionId: string };
   [MainScreens.ViewReceipt]: { accountActivityId: string; receiptIds: string[]; cardId: string };

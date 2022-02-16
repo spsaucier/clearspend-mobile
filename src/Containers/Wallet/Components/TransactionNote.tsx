@@ -4,21 +4,21 @@ import { useTranslation } from 'react-i18next';
 import { Path, Svg } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
-import { NoteIcon, PlusCircleFilledIcon } from '@/Components/Icons';
+import { PlusCircleFilledIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 type Props = {
-  note: string | null | undefined;
-  transactionId: string;
+  notes: string | null | undefined;
+  accountActivityId: string;
 };
 
-export const TransactionNote = ({ note = '', transactionId }: Props) => {
+export const TransactionNote = ({ notes = '', accountActivityId }: Props) => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
 
   const navToNoteInput = () => {
-    navigate(MainScreens.NoteInput, { transactionId, note });
+    navigate(MainScreens.NoteInput, { accountActivityId, notes });
   };
 
   const Triangle = () => (
@@ -29,7 +29,7 @@ export const TransactionNote = ({ note = '', transactionId }: Props) => {
     </View>
   );
 
-  if (!note) {
+  if (!notes) {
     return (
       <View style={tw`flex justify-center items-center my-3`}>
         <TouchableOpacity
@@ -46,18 +46,15 @@ export const TransactionNote = ({ note = '', transactionId }: Props) => {
   }
 
   return (
-    <View style={tw`flex justify-center items-center`}>
+    <TouchableOpacity style={tw`flex justify-center items-center px-4`} onPress={navToNoteInput}>
       {Triangle()}
       <View
         style={tw.style('w-full flex-row items-start justify-between border border-tan p-2 bg-tan')}
       >
         <View style={tw`flex-1 flex-row items-center justify-start`}>
-          <CSText style={tw`p-2`}>{note}</CSText>
+          <CSText style={tw`p-2`}>{notes}</CSText>
         </View>
-        <TouchableOpacity onPress={navToNoteInput}>
-          <NoteIcon style={tw`mt-1 flex`} />
-        </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

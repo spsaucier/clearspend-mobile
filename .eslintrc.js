@@ -42,6 +42,10 @@ module.exports = {
     'react/sort-prop-types': ['error'],
     'operator-linebreak': ['error', 'before', { overrides: { '=': 'after', '&&': 'after' } }],
     'implicit-arrow-linebreak': ['off'],
+    'import/no-extraneous-dependencies': [
+      'error',
+      { devDependencies: ['**/*.test.ts', '**/*.test.tsx', '**/testing/*'] },
+    ],
   },
   settings: {
     'import/resolver': {

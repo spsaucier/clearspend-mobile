@@ -1,13 +1,15 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent } from '@testing-library/react-native';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClientProvider } from 'react-query';
 
 import { useActivateCard } from '@/Queries/card';
 import { ActivateCardResultScreen } from '@/Containers/ActivateCard/ActivateCardResultScreen';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { createQueryClient } from '@/Helpers/testing/reactQuery';
+import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
 
 jest.mock('@/Assets/Images/blank-physical-chip-card.png');
 
@@ -28,28 +30,6 @@ jest.mock('@react-navigation/core', () => {
 jest.mock('@react-navigation/native', () => ({
   useIsFocused: jest.fn(() => true),
 }));
-
-const createQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-        cacheTime: Infinity,
-      },
-    },
-  });
-
-const renderComponentWithQueryClient = (client: QueryClient, ui: React.ReactElement) => {
-  const { rerender, ...result } = render(
-    <QueryClientProvider client={client}>{ui}</QueryClientProvider>,
-  );
-
-  return {
-    ...result,
-    rerender: (rerenderUi: React.ReactElement) =>
-      rerender(<QueryClientProvider client={client}>{rerenderUi}</QueryClientProvider>),
-  };
-};
 
 describe('Activate Card Result Screen', () => {
   // TODO improve mock and test errors as well
@@ -105,9 +85,7 @@ describe('Activate Card Result Screen', () => {
   });
 
   it('Navigates back on error', async () => {
-    server.use(
-      rest.patch('*/users/cards/activate', (req, res, ctx) => res(ctx.status(500))),
-    );
+    server.use(rest.patch('*/users/cards/activate', (req, res, ctx) => res(ctx.status(500))));
 
     const result = renderComponentWithQueryClient(
       createQueryClient(),
