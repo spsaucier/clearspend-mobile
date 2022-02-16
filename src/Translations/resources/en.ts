@@ -142,7 +142,7 @@ export default {
   toasts: {
     addressUpdated: 'Address updated successfully',
     disable2faInvalid: 'Insufficient information to disable 2FA',
-    mobileVerified: 'Mobile number verified',
+    mobileSaved: 'Mobile number saved',
     mobileSaveFailed: 'Unable to save your phone number',
     previousNumberRemoved: 'Previous mobile number removed as authentication method',
     resendFailed: 'Re-sending verification code failed',

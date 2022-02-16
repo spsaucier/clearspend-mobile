@@ -20,7 +20,7 @@ const getCodeOnly = (code: string | null) => code?.split('|')[0] || '';
 
 const UpdateMobileScreen = () => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
   const [mobile, setMobile] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [mobileNumError, setMobileNumError] = useState(false);
@@ -31,16 +31,32 @@ const UpdateMobileScreen = () => {
 
   const isSame = useMemo(() => `+1${mobile}` === user?.phone, [mobile, user]);
 
+  const onChangeText = (newVal: string) => {
+    setMobileNumError(false);
+    setMobile(newVal);
+  };
+
   const onSubmit = async () => {
-    const checkValid = phoneInput.current?.isValidNumber(mobile);
-    setMobileNumError(!checkValid);
-    if (checkValid && user?.userId) {
-      setLoading(true);
-      if (formattedValue === '+11111111111') {
-        // Workaround for dev/qa who do not want a number
-        await updateUser({ ...user, phone: formattedValue });
-        navigate(MainScreens.Profile);
+    if (formattedValue === '+11111111111') {
+      // Workaround for dev/qa who do not want a number
+      await updateUser({ ...user, phone: formattedValue });
+      Toast.show({
+        type: 'success',
+        text1: t('toasts.mobileSaved'),
+      });
+      if (navigation.getState().routeNames.find((r) => r === MainScreens.Home)) {
+        navigation.navigate(MainScreens.Home);
+      } else if (navigation.getState().routeNames.find((r) => r === MainScreens.Profile)) {
+        navigation.navigate(MainScreens.Profile);
       } else {
+        // eslint-disable-next-line no-console
+        console.warn('Unknown navigation state:', navigation.getState());
+      }
+    } else {
+      const checkValid = phoneInput.current?.isValidNumber(mobile);
+      setMobileNumError(!checkValid);
+      if (checkValid && user?.userId) {
+        setLoading(true);
         try {
           const methodId = store.getState().session?.twoFactor?.methods?.[0].id;
           if (validRecoveryCode(recoveryCode, user.userId) && methodId) {
@@ -50,7 +66,7 @@ const UpdateMobileScreen = () => {
               text1: t('toasts.previousNumberRemoved'),
             });
             await sendEnrollment2FA(formattedValue, user?.userId, 'sms');
-            navigate(MainScreens.EnterOTP, { phone: formattedValue });
+            navigation.navigate(MainScreens.EnterOTP, { phone: formattedValue });
           } else {
             // This shouldn't happen - can't nav to this screen without it
             Toast.show({
@@ -89,7 +105,7 @@ const UpdateMobileScreen = () => {
             ref={phoneInput}
             defaultCode="US"
             placeholder="xxxxxxxxxx"
-            onChangeText={setMobile}
+            onChangeText={onChangeText}
             onChangeFormattedText={setFormattedValue}
             containerStyle={tw`bg-transparent`}
             flagButtonStyle={{ width: 40 }}

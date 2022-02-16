@@ -13,15 +13,12 @@ import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
 import { useUser, useUpdateUser } from '@/Queries';
 import { sendEnrollment2FA } from '@/Services/Auth';
 import { UpdateUserRequest } from '../../generated/capital';
-import { mixpanel } from '@/Services/utils/analytics';
-import { useAuthentication } from '@/Hooks/useAuthentication';
 
 const EnterMobileScreen = () => {
   const [mobile, setMobile] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [mobileNumError, setMobileNumError] = useState(false);
-  const { setLoggedIn } = useAuthentication();
   const { mutate } = useUpdateUser();
   const { t } = useTranslation();
   const { navigate, replace } = useNavigation<StackNavigationProp<ParamListBase>>();
@@ -35,28 +32,31 @@ const EnterMobileScreen = () => {
     }
   }, [isLoading, user, error]);
 
-  const onComplete = async () => {
+  const skip2FA = async () => {
     setLoading(true);
     await mutate({ ...user, phone: formattedValue } as UpdateUserRequest);
-    mixpanel.track('Login');
-    setLoggedIn(true);
     Toast.show({
       type: 'success',
-      text1: t('toasts.mobileVerified'),
+      text1: t('toasts.mobileSaved'),
     });
     setLoading(false);
-    replace(MainScreens.Wallet);
+    replace(MainScreens.Home);
+  };
+
+  const onChangeText = (newVal: string) => {
+    setMobileNumError(false);
+    setMobile(newVal);
   };
 
   const onSubmit = async () => {
-    const checkValid = phoneInput.current?.isValidNumber(mobile);
-    setMobileNumError(!checkValid);
-    if (checkValid && user?.userId) {
-      setLoading(true);
-      if (formattedValue === '+11111111111') {
-        // Workaround for dev/qa who do not want a number
-        onComplete();
-      } else {
+    if (formattedValue === '+11111111111') {
+      // Workaround for dev/qa who do not want a number
+      skip2FA();
+    } else {
+      const checkValid = phoneInput.current?.isValidNumber(mobile);
+      setMobileNumError(!checkValid);
+      if (checkValid && user?.userId) {
+        setLoading(true);
         try {
           await sendEnrollment2FA(formattedValue, user?.userId, 'sms');
           navigate(MainScreens.EnterOTP, { phone: formattedValue, nextScreen: MainScreens.Wallet });
@@ -86,7 +86,7 @@ const EnterMobileScreen = () => {
             ref={phoneInput}
             defaultCode="US"
             defaultValue={user?.phone?.substring(2)}
-            onChangeText={setMobile}
+            onChangeText={onChangeText}
             onChangeFormattedText={setFormattedValue}
             containerStyle={tw`bg-transparent`}
             flagButtonStyle={{ width: 40 }}

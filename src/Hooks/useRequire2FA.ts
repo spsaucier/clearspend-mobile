@@ -19,7 +19,7 @@ const useRequire2FA = () => {
         if (!user?.phone) {
           setShouldAct(true);
         } else if (!session?.twoFactor?.methods?.length && !justSetUp2Fa) {
-          if (user?.phone === '+1111111111') {
+          if (user?.phone === '+11111111111') {
             setShouldAct(false);
           } else {
             setShouldAct(true);
