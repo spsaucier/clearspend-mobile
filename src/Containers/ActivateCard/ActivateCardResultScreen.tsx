@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Alert, Image, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,8 +25,7 @@ export const ActivateCardResultScreen = ({ route }: Props) => {
     activateCard(
       { lastFour },
       {
-        onError: (error) => {
-          Alert.alert(error?.response?.data);
+        onError: () => {
           goBack();
         },
       },

@@ -1,5 +1,7 @@
 import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 import {
   Card,
   CardDetailsResponse,
@@ -88,12 +90,15 @@ export const useUnFreezeCard = (
 
 export const useActivateCard = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
   return useMutation<Card, AxiosError, { lastFour: string } & UpdateCardStatusRequest>(
     ({ lastFour, statusReason = 'CARDHOLDER_REQUESTED' }) =>
       apiClient.patch('/users/cards/activate', { lastFour, statusReason }).then((res) => res.data),
     {
-      // TODO: error toast
-      onError: () => {},
+      onError: () => {
+        Toast.show({ type: 'error', props: { dark: true }, text1: t('activateCard.error') });
+      },
       // Refetch cards if a card was activated successfully
       onSuccess: () => {
         queryClient.invalidateQueries('cards');

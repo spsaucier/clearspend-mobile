@@ -15,6 +15,7 @@ import { Session } from '@/Store/Session';
 import { mixpanel } from '@/Services/utils/analytics';
 import { TopParams, TopScreens } from './NavigatorTypes';
 import AuthProvider from '@/Services/Auth/AuthProvider';
+import { GlobalToast } from '@/Components/GlobalToast';
 
 const Stack = createStackNavigator<TopParams>();
 
@@ -77,6 +78,7 @@ const ApplicationNavigator = () => {
             </Stack.Navigator>
           </AuthProvider>
         </NavigationContainer>
+        <GlobalToast />
       </SafeAreaProvider>
     </QueryClientProvider>
   );
