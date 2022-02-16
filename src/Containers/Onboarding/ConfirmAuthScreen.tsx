@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
 import { Logo } from '@/Components/Svg/Logo';
@@ -12,12 +13,11 @@ import { useAuthentication } from '@/Hooks/useAuthentication';
 import { PasscodeView } from './Components/Passcode/PasscodeView';
 import { PromptBio } from './Components/PromptBio';
 import { vibrate } from '@/Helpers/vibrate';
-import { BioPasscodeNavigationProp } from './BioPasscode/BioPasscodeTypes';
-import { TopScreens } from '../../Navigators/NavigatorTypes';
+import { MainScreens, MainStackParamTypes } from '../../Navigators/NavigatorTypes';
 
 const ConfirmAuthScreen = () => {
   const { t } = useTranslation();
-  const { popToTop, navigate } = useNavigation<BioPasscodeNavigationProp>();
+  const navigation = useNavigation<StackNavigationProp<MainStackParamTypes, MainScreens>>();
   const {
     setAuthed,
     logout,
@@ -32,10 +32,13 @@ const ConfirmAuthScreen = () => {
 
   const onSuccess = () => {
     setAuthed(true);
-    try {
-      popToTop();
-    } catch {
-      navigate(TopScreens.Main);
+    if (navigation.getState().routeNames.find((r) => r === MainScreens.Home)) {
+      navigation.navigate(MainScreens.Home);
+    } else if (navigation.getState().routeNames.find((r) => r === MainScreens.Profile)) {
+      navigation.navigate(MainScreens.Profile);
+    } else {
+      // eslint-disable-next-line no-console
+      console.warn('Unknown navigation state:', navigation.getState());
     }
   };
 
@@ -89,7 +92,7 @@ const ConfirmAuthScreen = () => {
         </View>
         {!loading && biometricsEnabled ? (
           <View style={tw`flex-1 items-center justify-center`}>
-            <PromptBio onSuccess={onSuccess} />
+            <PromptBio onSuccess={onSuccess} promptOnMount />
           </View>
         ) : null}
         <View style={tw`flex-row justify-center items-center p-5 mb-5`}>
