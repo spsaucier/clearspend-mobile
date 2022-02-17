@@ -34,21 +34,25 @@ const UpdateAccountScreen = () => {
           />
           {!isLoading && user ? (
             <View style={tw`mt-5`}>
-              {!recoveryCodeLoading &&
-              !isLoading &&
-              user?.userId &&
-              methodId &&
-              validRecoveryCode(recoveryCode, user.userId) ? (
-                <View style={tw`mb-3`}>
-                  <ProfileMenuRow
-                    title={t('profile.updateAccount.updatePhone')}
-                    label={formatPhone(user.phone || '')}
-                    onPress={() => {
-                      navigate(MainScreens.UpdateMobile);
-                    }}
-                  />
-                </View>
-              ) : null}
+              {
+                // eslint-disable-next-line no-constant-condition
+                !recoveryCodeLoading &&
+                !isLoading &&
+                user?.userId &&
+                methodId &&
+                validRecoveryCode(recoveryCode, user.userId) &&
+                false ? (
+                  <View style={tw`mb-3`}>
+                    <ProfileMenuRow
+                      title={t('profile.updateAccount.updatePhone')}
+                      label={formatPhone(user?.phone || '')}
+                      onPress={() => {
+                        navigate(MainScreens.UpdateMobile);
+                      }}
+                    />
+                  </View>
+                ) : null
+              }
               <View style={tw`mb-3`}>
                 <ProfileMenuRow
                   title={t('profile.updateAccount.updateAddress')}

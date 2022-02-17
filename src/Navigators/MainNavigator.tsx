@@ -25,9 +25,6 @@ import TransactionDetailScreen from '@/Containers/Wallet/TransactionDetailScreen
 import CardSpendControlsScreen from '@/Containers/Wallet/CardSpendControlsScreen';
 import CardSettingsScreen from '@/Containers/Wallet/CardSettingsScreen';
 import CardLostStolen from '@/Containers/Wallet/CardLostStolen';
-import AddCardScreen from '@/Containers/Wallet/AppleWallet/AddCardScreen';
-import WalletTermsScreen from '@/Containers/Wallet/AppleWallet/WalletTermsScreen';
-import SetCardAsDefaultScreen from '@/Containers/Wallet/AppleWallet/SetCardAsDefaultScreen';
 import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
 import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
 import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
@@ -145,15 +142,6 @@ const WalletStack = () => (
     />
     <Stack.Screen name={MainScreens.CardSettings} component={CardSettingsScreen} />
     <Stack.Screen name={MainScreens.CardLostStolen} component={CardLostStolen} />
-
-    {/* Apple Wallet Mock UI Screens */}
-    <Stack.Screen name={MainScreens.AddCardToAppleWallet} component={AddCardScreen} />
-    <Stack.Screen
-      name={MainScreens.WalletTerms}
-      component={WalletTermsScreen}
-      options={{ presentation: 'modal' }}
-    />
-    <Stack.Screen name={MainScreens.SetCardAsDefault} component={SetCardAsDefaultScreen} />
     <Stack.Screen
       name={MainScreens.AddReceipt}
       component={AddReceiptScreen}

@@ -212,11 +212,12 @@ const CardDetailScreen = ({ route }: Props) => {
               </TouchableOpacity>
 
               {/* Apple Wallet Button */}
-              {displayAppleWalletBtn && (
+              {displayAppleWalletBtn && false && (
                 <TouchableOpacity
                   style={tw`flex-row bg-black rounded-lg p-1 w-full items-center justify-center border-black border-2 mt-5 mb-2`}
                   onPress={() => {
-                    navigate(MainScreens.AddCardToAppleWallet, { cardId, termsAccepted: false });
+                    // eslint-disable-next-line no-console
+                    console.log('Add to Apple Wallet Pressed');
                   }}
                 >
                   <AppleWalletIcon style={tw`mr-1`} />

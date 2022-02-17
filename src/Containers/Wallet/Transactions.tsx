@@ -14,7 +14,6 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
 import { TWSearchInput } from '@/Components/SearchInput';
-import { FilterIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import { useCardTransactions } from '@/Queries';
@@ -119,9 +118,6 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
               onChangeText={onChangeSearch}
               placeholder={t('wallet.transactions.searchTransactions')}
             />
-          </View>
-          <View style={tw`flex-none self-center rounded-lg bg-gray95 w-8 py-1 items-center`}>
-            <FilterIcon color="black" />
           </View>
         </View>
       </View>

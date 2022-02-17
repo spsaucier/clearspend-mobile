@@ -71,12 +71,6 @@ export enum MainScreens {
   ActivateCardDigitEntry = 'Activate Card Digit Entry',
   ActivateCardResult = 'Activate Card Result',
 
-  // Apple Wallet Mock UI Screens
-  AddCardToAppleWallet = 'Add Card To Apple Wallet',
-  AppleWallet = 'Apple Wallet',
-  SetCardAsDefault = 'Set Card As Default',
-  WalletTerms = 'Wallet Terms',
-
   // Dev menu
   DevMenu = 'DevMenu',
   DevIconDemo = 'DevIconDemo',
@@ -122,12 +116,6 @@ export type MainStackParamTypes = {
   [MainScreens.ActivateCardGetStarted]: undefined;
   [MainScreens.ActivateCardDigitEntry]: undefined;
   [MainScreens.ActivateCardResult]: { lastFour: string };
-
-  // Apple Wallet Mock UI Screens
-  [MainScreens.AddCardToAppleWallet]: { cardId: string; termsAccepted: boolean };
-  [MainScreens.AppleWallet]: { cardId: string; termsAccepted: boolean };
-  [MainScreens.SetCardAsDefault]: { cardId: string };
-  [MainScreens.WalletTerms]: { cardId: string };
 
   // Dev menu
   [MainScreens.DevMenu]: undefined;
