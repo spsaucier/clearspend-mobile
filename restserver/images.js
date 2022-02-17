@@ -36,7 +36,7 @@ router.get('/receipts/:receiptId', (req, res) => {
   const receipt = uploadedReceipts.find((x) => x.receiptId === receiptId);
   const { fileName } = receipt;
 
-  res.set('Content-Type', 'image/application/octet-stream');
+  // res.set('Content-Type', 'image/application/octet-stream');
   return res.sendFile(`${uploadPath}${fileName}`);
 });
 

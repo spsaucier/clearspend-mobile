@@ -7,7 +7,7 @@ import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
 import MapView, { Marker } from 'react-native-maps';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { launchImageLibrary } from 'react-native-image-picker';
+import Pdf from 'react-native-pdf';
 
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button, CSText } from '@/Components';
@@ -18,7 +18,7 @@ import {
   PlusCircleFilledIcon,
   WarningIcon,
 } from '@/Components/Icons';
-import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
+import { detectMimeType, formatCurrency, MediaType, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
 import { CategoryIcon } from '@/Components/CategoryIcon';
 import { useReceiptUri, useTransaction } from '@/Queries';
@@ -45,19 +45,21 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
 const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 
 const ReceiptPreview = ({ receiptIds }: { receiptIds: string[] }) => {
-  const { data: imageData, isFetching } = useReceiptUri('viewReceiptThumbnail', receiptIds[0]);
-
-  if (isFetching || !imageData) {
-    return (
-      <View style={tw`justify-center items-center`}>
-        <ActivityIndicator color="black" style={tw`w-10`} />
-      </View>
-    );
-  }
+  const { data: receiptData, isFetching } = useReceiptUri('viewReceiptThumbnail', receiptIds[0]);
 
   return (
     <View style={tw`flex`}>
-      <Image source={{ uri: imageData }} style={tw`w-full h-full `} resizeMode="cover" />
+      <View style={tw`w-full h-full `}>
+        {isFetching || !receiptData ? (
+          <View style={tw`flex-1 justify-center items-center`}>
+            <ActivityIndicator color="black" style={tw`w-10`} />
+          </View>
+        ) : detectMimeType(receiptData) === MediaType.image ? (
+          <Image source={{ uri: receiptData }} style={tw`w-full h-full `} resizeMode="cover" />
+        ) : (
+          <Pdf source={{ uri: receiptData }} singlePage style={{ width: '100%', height: '100%' }} />
+        )}
+      </View>
       <View
         style={tw`rounded-full bg-white h-6 w-6 justify-center items-center absolute right-2 top-2`}
       >
@@ -113,6 +115,7 @@ const TransactionDetailScreenContent = () => {
   }
 
   const {
+    card,
     merchant,
     amount,
     status,
@@ -158,21 +161,15 @@ const TransactionDetailScreenContent = () => {
     setTransactionCategory(category);
   };
 
-  const onSelectAddPhotosFromGalleryPress = async () => {
-    addReceiptPanelRef.current?.close();
-    const result = await launchImageLibrary({
-      mediaType: 'photo',
-      includeBase64: false,
+  const onTakePhotoPress = () => {
+    navigate(MainScreens.AddReceipt, {
+      accountActivityId,
+      cardId: card?.cardId!,
     });
+  };
 
-    const { assets } = result;
-
-    if (!assets) return;
-
-    const [first] = assets!;
-    const { uri } = first;
-
-    uploadReceipt(uri!);
+  const onFileOrPhotoSelected = (uri: string) => {
+    uploadReceipt(uri);
   };
 
   return (
@@ -371,8 +368,8 @@ const TransactionDetailScreenContent = () => {
       </NativeViewGestureHandler>
       <AddReceiptPanel
         ref={addReceiptPanelRef}
-        accountActivityId={accountActivityId}
-        onSelectPhotoPress={onSelectAddPhotosFromGalleryPress}
+        onTakePhotoPress={onTakePhotoPress}
+        onFileOrPhotoSelected={onFileOrPhotoSelected}
       />
       <AssignCategoryBottomSheet
         ref={assignCategoryBottomSheetRef}
@@ -388,7 +385,7 @@ const TransactionDetailScreenContent = () => {
 };
 
 const TransactionDetailScreen = () => (
-  <CSBottomSheet snapPoints={['95%']} showHandle={false} translucidBackground>
+  <CSBottomSheet snapPoints={['95%']} translucidBackground>
     <TransactionDetailScreenContent />
   </CSBottomSheet>
 );

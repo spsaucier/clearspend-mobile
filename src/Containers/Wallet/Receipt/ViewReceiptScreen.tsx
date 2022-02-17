@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Carousel from 'react-native-snap-carousel';
-
+import Pdf from 'react-native-pdf';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { launchImageLibrary } from 'react-native-image-picker';
+
 import tw from '@/Styles/tailwind';
 import { CloseIcon, MinusCircleFilledIcon, PlusCircleFilledIcon } from '@/Components/Icons';
 import { DarkToLightGradient } from '@/Components/Svg/DarkToLightGradient';
@@ -17,6 +17,7 @@ import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from '../Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
+import { detectMimeType, MediaType } from '@/Helpers/StringHelpers';
 
 type CachedReceipt = {
   receiptId: string;
@@ -46,7 +47,7 @@ const ViewReceiptScreen = () => {
 
   const [currentReceiptId, setCurrentReceiptId] = useState(receiptIds[0]);
   const [cachedReceipts, setCachedReceipts] = useState<CachedReceipt[]>(cachedInitialValue);
-  const { data, isLoading } = useReceiptUri('viewReceiptQuery', currentReceiptId);
+  const { data, isFetching } = useReceiptUri('viewReceiptQuery', currentReceiptId);
 
   const onUploadReceiptFromGalleryFinished = () => {
     navigation.navigate(MainScreens.TransactionDetails, {
@@ -73,7 +74,7 @@ const ViewReceiptScreen = () => {
   };
 
   useEffect(() => {
-    if (data && !isLoading) {
+    if (data && !isFetching) {
       const idx = cachedReceipts.findIndex((x) => x.receiptId === currentReceiptId);
 
       if (idx === -1) return;
@@ -89,40 +90,34 @@ const ViewReceiptScreen = () => {
       setCachedReceipts(cachedReceipts);
       carouselRef?.current?.forceUpdate();
     }
-  }, [data, isLoading, cachedReceipts, currentReceiptId]);
+  }, [data, isFetching, cachedReceipts, currentReceiptId]);
 
-  const onViewRef = useRef(({ viewableItems }: { viewableItems: any; changed: any }) => {
-    const [first] = viewableItems;
-    const { item } = first;
+  const onSnapToItem = (idx: number) => {
+    const receiptId = receiptIds[idx];
 
-    if (!item.image) {
-      const idx = cachedReceipts.findIndex((x) => x.receiptId === item.receiptId);
-      const current = cachedReceipts[idx];
+    const cachedReceiptIdx = cachedReceipts.findIndex((x) => x.receiptId === receiptId);
+    const cachedReceipt = cachedReceipts[cachedReceiptIdx];
+
+    if (!cachedReceipt.image) {
       const updated = {
-        ...current,
+        ...cachedReceipt,
         loading: true,
       };
-      cachedReceipts[idx] = updated;
+      cachedReceipts[cachedReceiptIdx] = updated;
       setCachedReceipts(cachedReceipts);
     }
-    setCurrentReceiptId(item.receiptId);
-  });
+    setCurrentReceiptId(receiptId);
+  };
 
-  const onSelectAddPhotosFromGalleryPress = async () => {
-    addReceiptPanelRef.current?.close();
-    const result = await launchImageLibrary({
-      mediaType: 'photo',
-      includeBase64: false,
+  const onTakePhotoPress = () => {
+    navigation.navigate(MainScreens.AddReceipt, {
+      accountActivityId,
+      cardId,
     });
+  };
 
-    const { assets } = result;
-
-    if (!assets) return;
-
-    const [first] = assets!;
-    const { uri } = first;
-
-    uploadReceipt(uri!);
+  const onFileOrPhotoSelected = (uri: string) => {
+    uploadReceipt(uri);
   };
 
   return (
@@ -135,8 +130,10 @@ const ViewReceiptScreen = () => {
         sliderWidth={dimens.width}
         itemWidth={dimens.width}
         initialNumToRender={1}
-        viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
-        onViewableItemsChanged={onViewRef.current}
+        inactiveSlideScale={1}
+        // viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
+        // onViewableItemsChanged={onViewRef.current}
+        onSnapToItem={onSnapToItem}
         renderItem={({ item }: any) => (
           <TouchableWithoutFeedback
             style={tw`w-full h-full items-center justify-center`}
@@ -144,10 +141,15 @@ const ViewReceiptScreen = () => {
           >
             {item.loading || !item.image ? (
               <ActivityIndicator />
-            ) : (
+            ) : detectMimeType(item.image) === MediaType.image ? (
               <Image
                 style={[tw`w-full h-full`, { resizeMode: 'contain' }]}
                 source={{ uri: item.image }}
+              />
+            ) : (
+              <Pdf
+                source={{ uri: item.image }}
+                style={{ flex: 1, width: dimens.width, height: dimens.height }}
               />
             )}
           </TouchableWithoutFeedback>
@@ -200,8 +202,8 @@ const ViewReceiptScreen = () => {
       </View>
       <AddReceiptPanel
         ref={addReceiptPanelRef}
-        accountActivityId={accountActivityId}
-        onSelectPhotoPress={onSelectAddPhotosFromGalleryPress}
+        onTakePhotoPress={onTakePhotoPress}
+        onFileOrPhotoSelected={onFileOrPhotoSelected}
       />
       <ActivityOverlay
         visible={isUploading}

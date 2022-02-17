@@ -1,3 +1,5 @@
+import { findKey } from 'lodash';
+
 export const nameToInitials = (fullName: string): string => {
   const namesArray = fullName.trim().split(' ');
   return namesArray.length === 1
@@ -22,3 +24,21 @@ export function formatPhone(val: string | undefined): string {
     .replace(/^(\d)?(\d{3})(\d{3})(\d{4})$/, '+$1 ($2) $3-$4')
     .replace('+ ', '');
 }
+
+export const enum MediaType {
+  image,
+  pdf,
+}
+
+const mimeTypeSignatures = {
+  [MediaType.pdf]: ['data:application/pdf'],
+  [MediaType.image]: ['data:image/png', 'data:image/jpg', 'data:image/jpeg'],
+};
+
+export const detectMimeType = (base64: string) => {
+  const values = Object.values(mimeTypeSignatures);
+  const detectedValue = values.find((value) => value.find((x) => base64.indexOf(x) !== -1));
+
+  const key = findKey(mimeTypeSignatures, (x) => x === detectedValue);
+  return Number(key!);
+};
