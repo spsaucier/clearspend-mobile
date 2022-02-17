@@ -27,7 +27,7 @@ export default {
     twoFactor: {
       placeholder: '******',
       sms: {
-        label: 'Enter the code sent by SMS to your mobile number',
+        label: 'Enter the code sent to your mobile number',
       },
       email: {
         label: 'Enter the code sent to your email address',

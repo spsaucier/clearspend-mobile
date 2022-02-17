@@ -82,14 +82,6 @@ const EnterOTPScreen = () => {
           titlePart3={t('otp.titlePart3')}
         />
         <OTPView
-          title={(
-            <CSText style={tw`font-telegraf text-2xl text-white mb-3 mt-6`}>
-              {t('loginOptions.passcode.confirmYour')}
-              <CSText style={tw`font-telegraf text-2xl mb-3 mt-6 text-primary`}>
-                {t('loginOptions.passcode.fourDigitPasscode')}
-              </CSText>
-            </CSText>
-          )}
           error={hasError}
           errorTitle={t('otp.incorrect')}
           onPasscodeChanged={() => setHasError(false)}

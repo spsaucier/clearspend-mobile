@@ -18,6 +18,8 @@ import { ClearSpendIcon } from '@/Components/Svg/ClearSpendIcon';
 import { mixpanel } from '@/Services/utils/analytics';
 import { AuthScreens } from '../../Navigators/NavigatorTypes';
 import { useAuthentication } from '../../Hooks/useAuthentication';
+import { OTPView } from './OTPView';
+import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 
 const LoginScreen = () => {
   const { t } = useTranslation();
@@ -25,7 +27,6 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [show2faEntry, setShow2faEntry] = useState('');
   const [twoFactorId, setTwoFactorId] = useState('');
-  const [code, setCode] = useState('');
   const [loginButtonDisabled, setLoginButtonDisabled] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [authError, setError] = useState<string>();
@@ -72,7 +73,7 @@ const LoginScreen = () => {
       .catch(handleError);
   };
 
-  const handle2faLogin = () => {
+  const handle2faLogin = (code: string) => {
     Keyboard.dismiss();
 
     setProcessing(true);
@@ -125,18 +126,20 @@ const LoginScreen = () => {
 
           {show2faEntry ? (
             <View>
-              <CSTextInput
-                label={t(`login.twoFactor.${show2faEntry}.label`)}
-                // errorMessage="There was an error"
-                placeholder="******"
-                keyboardType="numeric"
-                containerStyle={tw`mb-4`}
-                onChangeText={(value) => setCode(value)}
-                value={code}
-              />
-              <Button onPress={handle2faLogin} disabled={loginButtonDisabled} loading={processing}>
-                {t('login.buttonLogin')}
-              </Button>
+              <BackButtonNavigator onBackPress={() => setShow2faEntry('')} />
+              <View style={tw`mb-5 h-1/2`}>
+                <OTPView
+                  title={(
+                    <CSText style={tw`text-white mt-6`}>
+                      {t(`login.twoFactor.${show2faEntry}.label`)}
+                    </CSText>
+                  )}
+                  error={!!authError}
+                  errorTitle={t('otp.incorrect')}
+                  onPasscodeChanged={() => setError('')}
+                  onSuccessFinished={handle2faLogin}
+                />
+              </View>
             </View>
           ) : (
             <View>

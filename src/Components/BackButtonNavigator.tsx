@@ -8,15 +8,16 @@ import { CSText } from '@/Components';
 
 type Props = {
   backText?: string;
+  onBackPress?: () => void;
 };
 
-export const BackButtonNavigator = ({ backText }: Props) => {
+export const BackButtonNavigator = ({ backText, onBackPress }: Props) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   return (
     <View style={tw`flex`}>
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() => (onBackPress ? onBackPress() : navigation.goBack())}
         style={tw`flex-row items-center justify-center self-start mt-4 px-2 py-1 bg-gray98`}
       >
         <ChevronIconLeft />

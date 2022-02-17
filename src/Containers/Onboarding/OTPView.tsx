@@ -11,7 +11,7 @@ import { CSText } from '@/Components';
 
 interface Props {
   preface?: JSX.Element;
-  title: JSX.Element;
+  title?: JSX.Element;
   messaging?: string;
   onPasscodeChanged?: (newCode: string) => void;
   onSuccessFinished: (passcode: string) => void;
@@ -23,7 +23,6 @@ export const PASSCODE_LENGTH = 6;
 
 const styles = StyleSheet.create({
   root: { padding: 20, minHeight: 300, maxWidth: 100 },
-  title: { textAlign: 'center', fontSize: 30 },
   codeFieldRoot: { marginTop: 20 },
   cell: {
     width: 50,
@@ -47,6 +46,7 @@ const styles = StyleSheet.create({
 });
 
 export const OTPView: React.FC<Props> = ({
+  title,
   errorTitle,
   error = false,
   onPasscodeChanged,
@@ -106,6 +106,7 @@ export const OTPView: React.FC<Props> = ({
 
   return (
     <View>
+      {title || null}
       <View style={tw.style('items-center justify-center h-30')}>
         <CodeField
           {...props}
