@@ -90,5 +90,9 @@
 	<string>ClearSpend needs access to your photo library to save receipt photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ClearSpend needs access to your photo library to select a receipt photo</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+	</array>
 </dict>
 </plist>

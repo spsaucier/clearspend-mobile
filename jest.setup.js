@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native-reanimated';
 import { setLogger } from 'react-query';
+import { FlatList } from 'react-native';
 
 global.__reanimatedWorkletInit = jest.fn();
 
@@ -41,7 +42,25 @@ jest.mock('mixpanel-react-native', () => ({
 
 jest.mock('react-native-mmkv', () => ({
   __esModule: true,
-  useMMKVString: jest.fn().mockReturnValue([{ setAvailableBio: () => {} }]),
+  useMMKVString: jest
+    .fn()
+    .mockReturnValue([{ setAvailableBio: () => {}, availableBio: jest.fn() }]),
+
+  useMMKVNumber: jest.fn().mockReturnValue([
+    {
+      failedAttempts: jest.fn(),
+      setFailedAttempts: jest.fn(),
+      setLastSignedIn: jest.fn(),
+    },
+  ]),
+  useMMKVBoolean: jest.fn().mockReturnValue([
+    {
+      setAuthed: jest.fn(),
+    },
+  ]),
+  MMKV: jest.fn().mockReturnValue({
+    getNumber: jest.fn(),
+  }),
 }));
 
 jest.mock('react-i18next', () => ({
@@ -57,4 +76,27 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('react-native-sensitive-info', () => ({
   setItem: jest.fn(),
+  getItem: jest.fn(),
 }));
+
+jest.mock('react-native/Libraries/Linking/Linking', () => ({
+  canOpenURL: jest.fn().mockResolvedValue(true),
+  openURL: jest.fn().mockResolvedValue(true),
+}));
+
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+  useDispatch: jest.fn(),
+}));
+
+jest.mock('@react-navigation/native', () => ({
+  useIsFocused: jest.fn(() => true),
+  useNavigation: () => ({
+    reset: jest.fn(),
+  }),
+}));
+
+jest.mock('react-native-keyboard-aware-scroll-view', () => {
+  const KeyboardAwareScrollView = require('react-native').ScrollView;
+  return { KeyboardAwareScrollView };
+});

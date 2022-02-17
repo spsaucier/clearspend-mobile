@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AxiosResponse } from 'axios';
 import Toast from 'react-native-toast-message';
+import Config from 'react-native-config';
+
 import tw from '@/Styles/tailwind';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
@@ -20,6 +22,8 @@ import { AuthScreens } from '../../Navigators/NavigatorTypes';
 import { useAuthentication } from '../../Hooks/useAuthentication';
 import { OTPView } from './OTPView';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
+
+const forgotPassowordURL = `${Config.WEB_URL}/forgot-password`;
 
 const LoginScreen = () => {
   const { t } = useTranslation();
@@ -103,6 +107,11 @@ const LoginScreen = () => {
     }
   }, [email, password]);
 
+  const launchForgotPassword = () =>
+    Linking.canOpenURL(forgotPassowordURL).then((canOpen) => {
+      if (canOpen) Linking.openURL(forgotPassowordURL);
+    });
+
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top', 'bottom']}>
       <FocusAwareStatusBar barStyle="light-content" backgroundColor="transparent" translucent />
@@ -179,11 +188,7 @@ const LoginScreen = () => {
               </Button>
             </View>
           )}
-          <TouchableOpacity
-            onPress={() => {
-              navigate(AuthScreens.ForgotPassword);
-            }}
-          >
+          <TouchableOpacity onPress={launchForgotPassword} testID="forgotPasswordLink">
             <CSText style={tw`text-base text-primary mt-6 self-center`}>
               {t('login.forgotPassword')}
             </CSText>
