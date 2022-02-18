@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { View, ActivityIndicator, Dimensions } from 'react-native';
+import { View, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { chain, debounce } from 'lodash';
@@ -49,6 +49,12 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
       transactionsListRef.current?.scrollToOffset({ animated: true, offset: 0 });
     }
   }, [expanded]);
+
+  useEffect(() => {
+    if (animatedIndex.value === 0) {
+      Keyboard.dismiss();
+    }
+  }, [animatedIndex.value]);
 
   const transactionsWithDate = data?.pages
     .map((page) => page.content)
