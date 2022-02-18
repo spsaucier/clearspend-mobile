@@ -13,7 +13,6 @@ import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button, CSText } from '@/Components';
 import {
   CheckCircleIconFilled,
-  EditIcon,
   ExclamationIcon,
   PlusCircleFilledIcon,
   WarningIcon,
@@ -27,6 +26,7 @@ import AddReceiptPanel from './Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import AssignCategoryBottomSheet from '@/Containers/Wallet/Components/AssignCategoryBottomSheet';
+import { MERCHANT_CATEGORY_ICON_NAME_MAP } from '@/Components/Icons/Categories';
 
 type InfoRowProps = {
   label: string;
@@ -131,7 +131,8 @@ const TransactionDetailScreenContent = () => {
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';
   const statusApproved = status === 'APPROVED';
-  const merchantCategoryFormatted = sentenceCase(merchant?.type!);
+  const merchantCategoryName =
+    MERCHANT_CATEGORY_ICON_NAME_MAP[merchant?.merchantCategoryGroup ?? 'OTHER'].name;
 
   const transactionDateTime = format(parseISO(activityTime!), 'MMM dd, yyyy hh:mm a');
   const transactionAmount = amount?.amount;
@@ -258,7 +259,7 @@ const TransactionDetailScreenContent = () => {
             <CSText style={tw`text-black text-3xl`}>{formatCurrency(transactionAmount)}</CSText>
             <CSText style={tw`text-black text-lg my-2`}>
               {merchant?.name}
-              {merchant?.type && ` • ${merchantCategoryFormatted}`}
+              {merchant?.type && ` • ${merchantCategoryName}`}
             </CSText>
             <CSText style={tw`text-black text-xs`}>{transactionDateTime}</CSText>
           </View>
@@ -330,15 +331,10 @@ const TransactionDetailScreenContent = () => {
               label={t('wallet.transactionDetails.merchant.merchantId')}
               value={merchant?.merchantNumber}
             />
-            <InfoRow label={t('wallet.transactionDetails.merchant.merchantCategory')}>
-              <TouchableOpacity
-                onPress={() => {}}
-                style={tw`flex-row justify-center items-center bg-black rounded-1 py-1 pl-2 pr-1`}
-              >
-                <CSText style={tw`text-primary mr-1`}>{sentenceCase(merchant?.type!)}</CSText>
-                <EditIcon color={tw.color('primary')} size={18} />
-              </TouchableOpacity>
-            </InfoRow>
+            <InfoRow
+              label={t('wallet.transactionDetails.merchant.merchantCategory')}
+              value={merchantCategoryName}
+            />
           </View>
 
           <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
@@ -385,7 +381,7 @@ const TransactionDetailScreenContent = () => {
 };
 
 const TransactionDetailScreen = () => (
-  <CSBottomSheet snapPoints={['95%']} translucidBackground>
+  <CSBottomSheet snapPoints={['95%']} showHandle={false} translucidBackground>
     <TransactionDetailScreenContent />
   </CSBottomSheet>
 );

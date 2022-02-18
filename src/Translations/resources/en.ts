@@ -150,6 +150,25 @@ export default {
     updatePasswordSuccess: 'Your password has been successfully updated',
     verificationResent: 'Verification code re-sent to {{number}}',
   },
+  categories: {
+    merchant: {
+      childCare: 'Child Care',
+      digitalGoods: 'Digital Goods',
+      education: 'Education',
+      entertainment: 'Entertainment',
+      foodAndBeverage: 'Food & Beverage',
+      gambling: 'Gambling',
+      government: 'Government',
+      health: 'Health',
+      memberships: 'Memberships',
+      moneyTransfer: 'Money Transfer',
+      services: 'Services',
+      shopping: 'Shopping',
+      travel: 'Travel',
+      utilities: 'Utilities',
+      other: 'Other',
+    },
+  },
   wallet: {
     empty: {
       title: 'Looks like you don’t have any cards.',

@@ -20,10 +20,12 @@ const AssignCategoryBottomSheet = forwardRef(
     // TODO temp getting categories from file structure
     const categories = useMemo(
       () =>
-        Object.entries(categoryIcons).map(([name, CategoryIcon]) => ({
-          categoryName: name.slice(0, name.length - 4),
-          CategoryIcon,
-        })),
+        Object.entries(categoryIcons)
+          .filter(([name]) => name !== 'MERCHANT_CATEGORY_ICON_NAME_MAP')
+          .map(([name, CategoryIcon]) => ({
+            categoryName: name.slice(0, name.length - 4),
+            CategoryIcon,
+          })),
       [],
     );
 
@@ -60,6 +62,7 @@ const AssignCategoryBottomSheet = forwardRef(
                   style={tw`flex-row items-center mb-5`}
                   onPress={() => onCategoryPress(item)}
                 >
+                  {/* @ts-expect-error todo fix with expense categories */}
                   <item.CategoryIcon style={tw`mr-3`} size={24} />
                   <CSText>{item.categoryName}</CSText>
                 </TouchableOpacity>
