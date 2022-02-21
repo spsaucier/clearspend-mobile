@@ -33,7 +33,7 @@ const UpdateAddressScreen = () => {
       setAddress(user.address);
       setSearch(addressToString(user.address));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, user, error]);
 
   const onSubmit = async () => {

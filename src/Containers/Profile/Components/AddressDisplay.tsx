@@ -11,7 +11,7 @@ interface AddressDisplayProps {
 }
 
 export const AddressDisplay = ({ address, color = 'white' }: AddressDisplayProps) =>
-  ('streetLine1' in address && address.streetLine1 ? (
+  'streetLine1' in address && address.streetLine1 ? (
     <View style={tw`flex-row`}>
       <MapPinIcon size={20} color={color} />
       <View style={tw`ml-3`}>
@@ -26,4 +26,4 @@ export const AddressDisplay = ({ address, color = 'white' }: AddressDisplayProps
         ) : null}
       </View>
     </View>
-  ) : null);
+  ) : null;

@@ -33,7 +33,7 @@ const useRequire2FA = () => {
     } else {
       setShouldAct(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, session]);
 
   return { loading: isLoading || loading, shouldAct };

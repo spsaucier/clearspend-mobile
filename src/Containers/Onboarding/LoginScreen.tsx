@@ -138,11 +138,11 @@ const LoginScreen = () => {
               <BackButtonNavigator onBackPress={() => setShow2faEntry('')} />
               <View style={tw`mb-5 h-1/2`}>
                 <OTPView
-                  title={(
+                  title={
                     <CSText style={tw`text-white mt-6`}>
                       {t(`login.twoFactor.${show2faEntry}.label`)}
                     </CSText>
-                  )}
+                  }
                   error={!!authError}
                   errorTitle={t('otp.incorrect')}
                   onPasscodeChanged={() => setError('')}

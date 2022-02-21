@@ -54,18 +54,18 @@ const sharedStackHeaderConfig = (
   headerTitle: string,
   backButtonTitle: string,
 ): StackHeaderOptions => ({
-    headerShadowVisible: false,
-    headerLeft: ({ onPress }) => (
-      <TouchableOpacity style={tw`flex-row items-center bg-tan ml-4`} onPress={onPress}>
-        <ChevronIconLeft style={tw`m-2`} size={6} />
-        <CSText style={tw`text-2xs tracking-widest mr-2`}>{backButtonTitle}</CSText>
-      </TouchableOpacity>
-    ),
-    headerTitle,
-    headerTitleAlign: 'left',
-    headerStyle: tw`bg-white border-0`,
-    headerTitleStyle: tw`font-montreal text-lg font-normal`,
-  });
+  headerShadowVisible: false,
+  headerLeft: ({ onPress }) => (
+    <TouchableOpacity style={tw`flex-row items-center bg-tan ml-4`} onPress={onPress}>
+      <ChevronIconLeft style={tw`m-2`} size={6} />
+      <CSText style={tw`text-2xs tracking-widest mr-2`}>{backButtonTitle}</CSText>
+    </TouchableOpacity>
+  ),
+  headerTitle,
+  headerTitleAlign: 'left',
+  headerStyle: tw`bg-white border-0`,
+  headerTitleStyle: tw`font-montreal text-lg font-normal`,
+});
 
 const ActivateCardStack = () => {
   const { t } = useTranslation();

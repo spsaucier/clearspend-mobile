@@ -18,14 +18,14 @@ export const PasscodeSet = ({
 
   return (
     <PasscodeView
-      title={(
+      title={
         <CSText style={tw`font-telegraf text-2xl text-white mb-3 mt-6`}>
           {t('loginOptions.passcode.createYour')}
           <CSText style={tw`font-telegraf text-2xl mb-3 mt-6 text-primary`}>
             {t('loginOptions.passcode.fourDigitPasscode')}
           </CSText>
         </CSText>
-      )}
+      }
       onSuccessFinished={onPasscodeComplete}
     />
   );

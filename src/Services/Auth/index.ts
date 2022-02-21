@@ -44,7 +44,10 @@ export const disableEnrollment2FA = async (
   axios({
     method: 'DELETE',
     url: `${Config.FA_URL}/api/user/two-factor/${userId}?code=${recoveryCode}&methodId=${twoFactorMethodId}`,
-    headers: { 'content-type': 'application/json', 'x-fusionauth-tenantid': '933328da-3f46-0236-6ec6-4a04a689f99e' },
+    headers: {
+      'content-type': 'application/json',
+      'x-fusionauth-tenantid': '933328da-3f46-0236-6ec6-4a04a689f99e',
+    },
   }).catch((ex) => Promise.reject(ex.response));
 
 export const submitEnrollment2FACode = async (

@@ -12,7 +12,10 @@ type Props = {
 };
 
 export const ProfileMenuRow = ({ label, title, onPress, style }: Props) => (
-  <TouchableOpacity style={[tw`flex-row items-center justify-between py-2`, style]} onPress={onPress}>
+  <TouchableOpacity
+    style={[tw`flex-row items-center justify-between py-2`, style]}
+    onPress={onPress}
+  >
     <View>
       {title ? <CSText style={tw`text-lg ${label ? 'mb-2' : ''}`}>{title}</CSText> : null}
       {label ? <CSText style={tw`text-sm ${title ? 'opacity-70' : ''}`}>{label}</CSText> : null}

@@ -20,7 +20,9 @@ export const OnboardingBackBtnNav = ({ backNav }: Props) => {
         style={tw`flex-row items-center justify-center self-start mt-4 px-2 py-1 bg-secondary-light`}
       >
         <ChevronIconLeft color={tw.color('white')} />
-        <CSText style={tw`ml-2 text-2xs text-white`}>{(typeof backNav !== 'undefined' ? backNav : t('profile.backNav')).toUpperCase()}</CSText>
+        <CSText style={tw`ml-2 text-2xs text-white`}>
+          {(typeof backNav !== 'undefined' ? backNav : t('profile.backNav')).toUpperCase()}
+        </CSText>
       </TouchableOpacity>
     </View>
   );

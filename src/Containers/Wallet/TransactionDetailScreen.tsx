@@ -237,7 +237,9 @@ const TransactionDetailScreenContent = () => {
             <View style={[tw`bg-white justify-center items-center h-18 w-18 rounded-full`]}>
               <View
                 style={[
-                  tw`h-16 w-16 overflow-hidden items-center justify-center rounded-full ${merchant?.merchantLogoUrl ? '' : 'bg-primary'}`,
+                  tw`h-16 w-16 overflow-hidden items-center justify-center rounded-full ${
+                    merchant?.merchantLogoUrl ? '' : 'bg-primary'
+                  }`,
                 ]}
               >
                 {merchant?.merchantLogoUrl ? (

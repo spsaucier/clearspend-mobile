@@ -74,14 +74,14 @@ const ConfirmAuthScreen = () => {
           {!loading && passcodeEnabled ? (
             <View style={tw.style('p-5 pt-0 -mt-12')}>
               <PasscodeView
-                title={(
+                title={
                   <CSText style={tw`font-telegraf text-2xl text-white mb-3`}>
                     {t('loginOptions.passcode.enterYour')}
                     <CSText style={tw`font-telegraf text-2xl mb-3 text-primary`}>
                       {t('loginOptions.passcode.fourDigitPasscode')}
                     </CSText>
                   </CSText>
-                )}
+                }
                 errorTitle={t('loginOptions.passcode.incorrect')}
                 error={error}
                 onPasscodeChanged={() => setCurrentError('')}

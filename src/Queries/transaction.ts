@@ -8,7 +8,8 @@ import apiClient from '@/Services';
 
 export const useTransaction = (accountActivityId: string) =>
   useQuery<AccountActivityResponse, Error>(['transactions', { id: accountActivityId }], () =>
-    apiClient.get(`/users/account-activity/${accountActivityId}`).then((res) => res.data));
+    apiClient.get(`/users/account-activity/${accountActivityId}`).then((res) => res.data),
+  );
 
 const pageSize = 10;
 

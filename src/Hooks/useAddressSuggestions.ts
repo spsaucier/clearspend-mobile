@@ -40,11 +40,7 @@ const isValid = (search: string) => search && search.length >= MIN_CHARS;
 export const useAddressSuggestions = () => {
   const [search, setSearch] = useState('');
   const [prevSearch, setPrevSearch] = useState('');
-  const {
-    refetch,
-    data,
-    ...rest
-  } = useQuery<SuggestionsResponse, Error>(
+  const { refetch, data, ...rest } = useQuery<SuggestionsResponse, Error>(
     ['suggestions', search],
     () => getAddresses(search).then((res) => res.data),
     { enabled: false },

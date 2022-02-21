@@ -3,7 +3,7 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ['airbnb', 'airbnb-typescript', 'plugin:react-hooks/recommended'],
+  extends: ['airbnb', 'airbnb-typescript', 'plugin:react-hooks/recommended', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -37,10 +37,10 @@ module.exports = {
     'react/jsx-props-no-spreading': ['off'],
     '@typescript-eslint/indent': ['off'],
     'object-curly-newline': ['off'],
-    'array-bracket-spacing': ['error', 'never'],
+    'array-bracket-spacing': ['off'],
     'react/default-props-match-prop-types': ['error'],
     'react/sort-prop-types': ['error'],
-    'operator-linebreak': ['error', 'before', { overrides: { '=': 'after', '&&': 'after' } }],
+    'operator-linebreak': ['off'],
     'implicit-arrow-linebreak': ['off'],
     'import/no-extraneous-dependencies': [
       'error',

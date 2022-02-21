@@ -39,7 +39,9 @@ const ProfileScreen = () => {
             </View>
             <View style={tw`flex-row mb-3`}>
               <PhoneIcon size={20} />
-              <CSText style={tw`text-white text-sm ml-3 leading-5`}>{formatPhone(user.phone)}</CSText>
+              <CSText style={tw`text-white text-sm ml-3 leading-5`}>
+                {formatPhone(user.phone)}
+              </CSText>
             </View>
             <AddressDisplay address={user.address || {}} />
           </>

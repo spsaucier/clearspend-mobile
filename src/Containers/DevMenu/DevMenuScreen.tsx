@@ -38,7 +38,8 @@ const DevMenuScreen = () => {
             Toast.show({
               type: 'error',
               text1: 'An error has occurred with a lot of text that goes on to the second line',
-            })}
+            })
+          }
         />
       </View>
     </SafeAreaView>

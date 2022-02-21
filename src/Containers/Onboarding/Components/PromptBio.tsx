@@ -22,17 +22,13 @@ export const PromptBio = ({ onSuccess, onFail, promptOnMount }: Props) => {
     if (promptOnMount) {
       reprompt();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <TouchableOpacity onPress={reprompt}>
       <RoundedBox>
-        {availableBio === AuthenticationMethods.FACE ? (
-          <FaceIdIcon />
-        ) : (
-          <TouchIdIcon />
-        )}
+        {availableBio === AuthenticationMethods.FACE ? <FaceIdIcon /> : <TouchIdIcon />}
       </RoundedBox>
     </TouchableOpacity>
   );

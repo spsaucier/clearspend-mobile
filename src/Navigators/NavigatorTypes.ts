@@ -85,7 +85,7 @@ export type MainStackParamTypes = {
   // Onboarding post-auth
   [MainScreens.SetBiometricsOrPasscode]: undefined;
   [MainScreens.EnterMobile]: undefined;
-  [MainScreens.EnterOTP]: { phone: string, nextScreen?: string };
+  [MainScreens.EnterOTP]: { phone: string; nextScreen?: string };
 
   // Profile & Settings
   [MainScreens.UpdateAccount]: undefined;

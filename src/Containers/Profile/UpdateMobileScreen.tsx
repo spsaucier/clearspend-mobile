@@ -15,7 +15,8 @@ import { useSensitiveInfo } from '@/Hooks/useSensitiveInfo';
 import { RECOVERY_CODE_KEY } from '@/Store/keys';
 import { store } from '@/Store';
 
-export const validRecoveryCode = (code: string | null, userId: string) => !!code && code.split('|')[1] === userId;
+export const validRecoveryCode = (code: string | null, userId: string) =>
+  !!code && code.split('|')[1] === userId;
 const getCodeOnly = (code: string | null) => code?.split('|')[0] || '';
 
 const UpdateMobileScreen = () => {
@@ -98,9 +99,7 @@ const UpdateMobileScreen = () => {
           <CSText style={tw`text-2xl text-black pt-8 font-telegraf mb-4`}>
             {t('profile.updatePhone.title')}
           </CSText>
-          <CSText style={tw`mb-4`}>
-            {t('profile.updatePhone.secondary')}
-          </CSText>
+          <CSText style={tw`mb-4`}>{t('profile.updatePhone.secondary')}</CSText>
           <PhoneInput
             ref={phoneInput}
             defaultCode="US"
@@ -121,13 +120,12 @@ const UpdateMobileScreen = () => {
             autoFocus
           />
         </View>
-        {mobileNumError && (
-          <CSText style={tw`text-black mt-1`}>
-            {t('enterMobile.error')}
-          </CSText>
-        )}
+        {mobileNumError && <CSText style={tw`text-black mt-1`}>{t('enterMobile.error')}</CSText>}
         <Button
-          containerStyle={[tw`mt-auto mb-4`, mobile.length !== 10 || isSame ? tw`bg-gray98` : tw`bg-primary`]}
+          containerStyle={[
+            tw`mt-auto mb-4`,
+            mobile.length !== 10 || isSame ? tw`bg-gray98` : tw`bg-primary`,
+          ]}
           onPress={onSubmit}
           disabled={mobileNumError || mobile.length !== 10 || isSame || loading}
         >

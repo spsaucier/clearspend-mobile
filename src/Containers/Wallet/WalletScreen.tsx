@@ -39,8 +39,8 @@ const WalletScreen = () => {
     () =>
       allCardsData?.filter((cardDetails) => {
         if (
-          cardDetails.card.status === 'CANCELLED'
-          || (cardDetails.card.type === 'PHYSICAL' && cardDetails.card.activated === false)
+          cardDetails.card.status === 'CANCELLED' ||
+          (cardDetails.card.type === 'PHYSICAL' && cardDetails.card.activated === false)
         ) {
           return false;
         }
