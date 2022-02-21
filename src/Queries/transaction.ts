@@ -56,7 +56,8 @@ export const useUpdateTransaction = (accountActivityId: string, existingNote?: s
         queryClient.setQueryData(['transactions', { id: accountActivityId }], data);
       },
       onError: (_error, variables) => {
-        if (variables.notes) {
+        // If an existing note argument was provided there was an error adding or updating the note
+        if (existingNote !== undefined) {
           Toast.show({
             type: 'error',
             text1:
@@ -64,6 +65,7 @@ export const useUpdateTransaction = (accountActivityId: string, existingNote?: s
                 ? t('wallet.transactionDetails.notes.addNoteError')
                 : t('wallet.transactionDetails.notes.updateNoteError'),
           });
+          // If an iconRef was provided to the mutate function there was an error updating the category
         } else if (variables.iconRef) {
           Toast.show({
             type: 'error',

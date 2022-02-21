@@ -163,7 +163,7 @@ const TransactionDetailScreenContent = () => {
   };
 
   const onSelectCategory = (category: ExpenseDetails) => {
-    updateTransaction({ iconRef: category.iconRef });
+    updateTransaction({ iconRef: category.iconRef, notes: notes ?? '' });
   };
 
   const onTakePhotoPress = () => {
