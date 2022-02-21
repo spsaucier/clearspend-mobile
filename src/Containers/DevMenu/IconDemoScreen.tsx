@@ -5,16 +5,15 @@ import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import * as categoryIcons from '@/Components/Icons/Categories';
 import * as icons from '@/Components/Icons';
-import { CategoryIcon } from '@/Components/CategoryIcon';
 
 export const IconDemoScreen = () => {
-  const categoryIconComponentVariants = [
-    5172, 4582, 1, 1500, 3000, 3300, 3500, 4000, 4800, 5000, 5600, 5700, 7300, 8000, 9000, 10000,
-  ].map((code) => [code.toString(), () => <CategoryIcon code={code} />]);
-
   const data = [
-    { title: 'New Category Icons', data: Object.entries(categoryIcons) },
-    { title: 'Existing <CategoryIcon /> Icons', data: categoryIconComponentVariants },
+    {
+      title: 'Merchant & Expense Category Icons',
+      data: Object.entries(categoryIcons).filter(
+        ([name]) => name !== 'MERCHANT_CATEGORY_ICON_NAME_MAP',
+      ),
+    },
     { title: 'All Other Icons', data: Object.entries(icons) },
   ];
 
@@ -23,7 +22,6 @@ export const IconDemoScreen = () => {
       <CSText style={tw`text-2xl ml-4`}>All Icons</CSText>
 
       <SectionList
-        // @ts-ignore doesn't like the rendered component variants
         sections={data}
         renderItem={({ item }) => {
           const [name, Icon] = item;

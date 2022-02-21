@@ -17,6 +17,6 @@ export const FullPageError = ({ title, subTitle }: Props) => (
       <CSText style={tw`text-base text-center leading-relaxed font-telegraf mb-8`}>
         {subTitle}
       </CSText>
-      ) : null}
+    ) : null}
   </View>
-  );
+);

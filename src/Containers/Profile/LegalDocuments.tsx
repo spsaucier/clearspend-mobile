@@ -25,10 +25,12 @@ const LegalDocumentsScreen = () => {
               <ProfileMenuRow
                 title={t('profile.legalDocs.terms')}
                 onPress={() => {
-                  Linking.openURL('https://www.clearspend.com/terms-and-conditions').catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error('Failed to open ClearSpend website: ', err);
-                  });
+                  Linking.openURL('https://www.clearspend.com/terms-and-conditions').catch(
+                    (err) => {
+                      // eslint-disable-next-line no-console
+                      console.error('Failed to open ClearSpend website: ', err);
+                    },
+                  );
                 }}
               />
             </View>

@@ -22,7 +22,11 @@ const dimensions = Dimensions.get('screen');
 
 type TransactionType = {
   accountActivityId: string;
-  merchant: { name: string; merchantLogoUrl: string | undefined; merchantCategoryCode: number };
+  merchant: {
+    name: string;
+    merchantLogoUrl: string | undefined;
+    merchantCategoryGroup: string;
+  };
   amount: { amount: number };
   status: Status;
   receipt: { receiptId: string };
@@ -166,7 +170,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
                       receiptId={transaction.receipt?.receiptId}
                       time={transaction.activityTime}
                       merchantLogoUrl={transaction.merchant.merchantLogoUrl}
-                      merchantCategoryCode={transaction.merchant.merchantCategoryCode}
+                      merchantCategoryGroup={transaction.merchant.merchantCategoryGroup}
                       animatedIndex={animatedIndex}
                       animatedPosition={animatedPosition}
                     />

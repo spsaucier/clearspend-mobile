@@ -19,7 +19,6 @@ import {
 } from '@/Components/Icons';
 import { detectMimeType, formatCurrency, MediaType, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
-import { CategoryIcon } from '@/Components/CategoryIcon';
 import { useReceiptUri, useTransaction } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from './Components/AddReceiptPanel';
@@ -30,6 +29,7 @@ import { ExpenseDetails } from '@/generated/capital';
 import { useUpdateTransaction } from '@/Queries/transaction';
 import { ExpenseCategoryIcon } from '@/Components/ExpenseCategoryIcon';
 import { MERCHANT_CATEGORY_ICON_NAME_MAP } from '@/Components/Icons/Categories';
+import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 
 type InfoRowProps = {
   label: string;
@@ -135,8 +135,8 @@ const TransactionDetailScreenContent = () => {
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';
   const statusApproved = status === 'APPROVED';
-  const merchantCategoryName =
-    MERCHANT_CATEGORY_ICON_NAME_MAP[merchant?.merchantCategoryGroup ?? 'OTHER'].name;
+  const merchantCategoryGroup = merchant?.merchantCategoryGroup ?? 'OTHER';
+  const merchantCategoryName = MERCHANT_CATEGORY_ICON_NAME_MAP[merchantCategoryGroup].name;
 
   const transactionDateTime = format(parseISO(activityTime!), 'MMM dd, yyyy hh:mm a');
   const transactionAmount = amount?.amount;
@@ -255,7 +255,10 @@ const TransactionDetailScreenContent = () => {
                     resizeMode="cover"
                   />
                 ) : (
-                  <CategoryIcon style={tw`w-9 h-9`} code={merchant?.merchantCategoryCode!} />
+                  <MerchantCategoryIcon
+                    style={tw`w-9 h-9`}
+                    merchantCategoryGroup={merchantCategoryGroup}
+                  />
                 )}
               </View>
             </View>

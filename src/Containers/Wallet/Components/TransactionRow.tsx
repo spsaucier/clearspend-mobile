@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { AnimatedCSText, CSText } from '@/Components';
-import { CategoryIcon } from '@/Components/CategoryIcon';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 
 export type Status = 'PENDING' | 'DECLINED' | 'APPROVED';
 
@@ -18,7 +18,7 @@ type Props = {
   merchantName: string;
   amount: number;
   merchantLogoUrl?: string;
-  merchantCategoryCode: number;
+  merchantCategoryGroup: string;
   status: Status;
   receiptId: string;
   time: string;
@@ -32,7 +32,7 @@ export const TransactionRow = ({
   merchantName,
   amount,
   merchantLogoUrl,
-  merchantCategoryCode,
+  merchantCategoryGroup,
   status,
   receiptId,
   time = '',
@@ -108,7 +108,10 @@ export const TransactionRow = ({
               resizeMode="cover"
             />
           ) : (
-            <CategoryIcon style={tw`w-5 h-5`} code={merchantCategoryCode} />
+            <MerchantCategoryIcon
+              style={tw`w-5 h-5`}
+              merchantCategoryGroup={merchantCategoryGroup}
+            />
           )}
         </View>
 
