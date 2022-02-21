@@ -1,17 +1,16 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import { Path, Svg } from 'react-native-svg';
 
 import tw from '@/Styles/tailwind';
+import { IconBaseProps } from '@/Components/Icons/types';
 
-type Props = {
-  color?: string;
-  style?: StyleProp<ViewStyle>;
-  testID?: string;
-  size?: string | number;
-};
-
-export const ChevronIconLeft = ({ color = tw.color('black'), style, testID, size = 8 }: Props) => (
+export const ChevronIconLeft = ({
+  color = tw.color('black'),
+  style,
+  testID,
+  size = 8,
+}: IconBaseProps) => (
   <View style={[{ aspectRatio: 3 / 5, height: size, width: size }, style]} testID={testID}>
     <Svg width="100%" height="100%" viewBox="0 0 6 10" fill="none">
       <Path

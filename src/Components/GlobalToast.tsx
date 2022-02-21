@@ -21,7 +21,7 @@ const toastConfig: ToastConfig = {
             bgColor={dark ? tw.color('primary') : tw.color('black')}
           />
         </View>
-        <CSText style={tw`text-xs text-${dark ? 'white' : 'forest'}`}>{text1}</CSText>
+        <CSText style={tw`flex-1 text-xs text-${dark ? 'white' : 'forest'}`}>{text1}</CSText>
       </View>
     </View>
   ),
@@ -39,7 +39,7 @@ const toastConfig: ToastConfig = {
             bgColor={dark ? tw.color('darkError') : tw.color('error')}
           />
         </View>
-        <CSText style={tw`text-xs text-${dark ? 'white' : 'forest'}`}>{text1}</CSText>
+        <CSText style={tw`flex-1 text-xs text-${dark ? 'white' : 'forest'}`}>{text1}</CSText>
       </View>
     </View>
   ),
@@ -57,7 +57,7 @@ const toastConfig: ToastConfig = {
             bgColor={dark ? 'white' : tw.color('forest')}
           />
         </View>
-        <CSText style={tw`text-xs text-${dark ? 'white' : 'forest'}`}>{text1}</CSText>
+        <CSText style={tw`flex-1 text-xs text-${dark ? 'white' : 'forest'}`}>{text1}</CSText>
       </View>
     </View>
   ),

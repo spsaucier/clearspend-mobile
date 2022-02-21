@@ -1,22 +1,16 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import { Path, Svg } from 'react-native-svg';
 
 import tw from '@/Styles/tailwind';
-
-type MagnificationIconProps = {
-  color?: string;
-  style?: StyleProp<ViewStyle>;
-  testID?: string;
-  size?: string | number;
-};
+import { IconBaseProps } from '@/Components/Icons/types';
 
 export const MagnificationIcon = ({
   color = tw.color('gray60'),
   style,
   testID,
   size = 20,
-}: MagnificationIconProps) => (
+}: IconBaseProps) => (
   <View style={[{ aspectRatio: 1, height: size, width: size }, style]} testID={testID}>
     <Svg width="100%" height="100%" viewBox="0 0 20 20" fill="none">
       <Path

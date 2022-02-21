@@ -1,4 +1,6 @@
-import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
+import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next';
 import {
   AccountActivityRequest,
   AccountActivityResponse,
@@ -38,10 +40,37 @@ export const useCardTransactions = ({
     },
   );
 
-export const useUpdateTransaction = (accountActivityId: string) =>
-  useMutation<Promise<AccountActivityResponse>, Error, { notes: string }>((context) => {
-    const { notes } = context;
-    return apiClient
-      .patch(`/users/account-activity/${accountActivityId}`, { notes })
-      .then((res) => res.data);
-  });
+export const useUpdateTransaction = (accountActivityId: string, existingNote?: string) => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation<Promise<AccountActivityResponse>, Error, { notes?: string; iconRef?: number }>(
+    (context) => {
+      const { notes, iconRef } = context;
+      return apiClient
+        .patch(`/users/account-activity/${accountActivityId}`, { notes, iconRef })
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: (data) => {
+        queryClient.setQueryData(['transactions', { id: accountActivityId }], data);
+      },
+      onError: (_error, variables) => {
+        if (variables.notes) {
+          Toast.show({
+            type: 'error',
+            text1:
+              !existingNote || existingNote === ''
+                ? t('wallet.transactionDetails.notes.addNoteError')
+                : t('wallet.transactionDetails.notes.updateNoteError'),
+          });
+        } else if (variables.iconRef) {
+          Toast.show({
+            type: 'error',
+            text1: t('wallet.transactionDetails.selectCategory.updateCategoryError'),
+          });
+        }
+      },
+    },
+  );
+};

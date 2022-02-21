@@ -1,17 +1,11 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import { Path, Svg } from 'react-native-svg';
 
 import tw from '@/Styles/tailwind';
+import { IconBaseProps } from '@/Components/Icons/types';
 
-type Props = {
-  color?: string;
-  style?: StyleProp<ViewStyle>;
-  testID?: string;
-  size?: string | number;
-};
-
-export const Visa = ({ color = tw.color('white'), style, testID, size = 20 }: Props) => (
+export const Visa = ({ color = tw.color('white'), style, testID, size = 20 }: IconBaseProps) => (
   <View style={[{ aspectRatio: 73 / 34, height: size, width: size }, style]} testID={testID}>
     <Svg width="100%" height="100%" viewBox="0 0 73 34" fill="none">
       <Path

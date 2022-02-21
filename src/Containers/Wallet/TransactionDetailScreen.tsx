@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useRef } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -26,6 +26,9 @@ import AddReceiptPanel from './Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import AssignCategoryBottomSheet from '@/Containers/Wallet/Components/AssignCategoryBottomSheet';
+import { ExpenseDetails } from '@/generated/capital';
+import { useUpdateTransaction } from '@/Queries/transaction';
+import { ExpenseCategoryIcon } from '@/Components/ExpenseCategoryIcon';
 import { MERCHANT_CATEGORY_ICON_NAME_MAP } from '@/Components/Icons/Categories';
 
 type InfoRowProps = {
@@ -78,10 +81,10 @@ const TransactionDetailScreenContent = () => {
 
   const addReceiptPanelRef = useRef<BottomSheetModal>(null);
   const assignCategoryBottomSheetRef = useRef<BottomSheetModal>(null);
-  const { isLoading, error, data, refetch } = useTransaction(accountActivityId);
 
-  // TODO temp category state replace with backend
-  const [transactionCategory, setTransactionCategory] = useState<string | null>(null);
+  const { isLoading, error, data, refetch } = useTransaction(accountActivityId);
+  const { mutate: updateTransaction, isLoading: isUpdatingTransaction } =
+    useUpdateTransaction(accountActivityId);
 
   const onUploadReceiptFromGalleryFinished = () => {
     refetch();
@@ -122,6 +125,7 @@ const TransactionDetailScreenContent = () => {
     activityTime,
     receipt,
     notes,
+    expenseDetails,
     // country
   } = data;
   // TODO: Delete once API supports it
@@ -158,8 +162,8 @@ const TransactionDetailScreenContent = () => {
     assignCategoryBottomSheetRef.current?.present();
   };
 
-  const onSelectCategory = (category: any) => {
-    setTransactionCategory(category);
+  const onSelectCategory = (category: ExpenseDetails) => {
+    updateTransaction({ iconRef: category.iconRef });
   };
 
   const onTakePhotoPress = () => {
@@ -293,7 +297,9 @@ const TransactionDetailScreenContent = () => {
               onPress={onAssignCategoryModalPress}
             >
               <View style={tw`self-center justify-center items-center`}>
-                {transactionCategory ? (
+                {isUpdatingTransaction ? (
+                  <ActivityIndicator />
+                ) : expenseDetails?.iconRef && expenseDetails?.categoryName ? (
                   <>
                     <View
                       style={tw.style('bg-white items-center justify-center', {
@@ -302,12 +308,9 @@ const TransactionDetailScreenContent = () => {
                         borderRadius: 40,
                       })}
                     >
-                      {/* @ts-ignore todo don't pass the real component/data like this */}
-                      <transactionCategory.CategoryIcon size={24} />
+                      <ExpenseCategoryIcon iconRef={expenseDetails.iconRef} />
                     </View>
-
-                    {/* @ts-ignore todo don't pass the real component/data like this */}
-                    <CSText style={tw`pt-1`}>{transactionCategory.categoryName}</CSText>
+                    <CSText style={tw`pt-1`}>{expenseDetails.categoryName}</CSText>
                   </>
                 ) : (
                   <>

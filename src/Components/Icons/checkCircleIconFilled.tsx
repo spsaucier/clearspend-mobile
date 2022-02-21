@@ -1,16 +1,13 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import { Path, Svg } from 'react-native-svg';
 
 import tw from '@/Styles/tailwind';
+import { IconBaseProps } from '@/Components/Icons/types';
 
 type Props = {
-  color?: string;
   bgColor?: string;
-  style?: StyleProp<ViewStyle>;
-  testID?: string;
-  size?: string | number;
-};
+} & IconBaseProps;
 
 export const CheckCircleIconFilled = ({
   color = tw.color('black'),

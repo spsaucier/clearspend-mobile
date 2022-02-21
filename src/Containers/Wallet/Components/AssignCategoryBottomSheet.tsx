@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,25 +9,18 @@ import {
 } from '@gorhom/bottom-sheet';
 import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 
-import { CSText } from '@/Components';
+import { ActivityIndicator, CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
-import * as categoryIcons from '@/Components/Icons/Categories';
+import { useExpenseCategories } from '@/Queries/expenseCategory';
+import { ExpenseCategory } from '@/generated/capital';
+import { ExpenseCategoryIcon } from '@/Components/ExpenseCategoryIcon';
+import { FullPageError } from '@/Components/FullPageError';
 
 const AssignCategoryBottomSheet = forwardRef(
-  (props: { onSelectCategory: (category: any) => void }, ref: any) => {
+  (props: { onSelectCategory: (category: ExpenseCategory) => void }, ref: any) => {
     const { t } = useTranslation();
 
-    // TODO temp getting categories from file structure
-    const categories = useMemo(
-      () =>
-        Object.entries(categoryIcons)
-          .filter(([name]) => name !== 'MERCHANT_CATEGORY_ICON_NAME_MAP')
-          .map(([name, CategoryIcon]) => ({
-            categoryName: name.slice(0, name.length - 4),
-            CategoryIcon,
-          })),
-      [],
-    );
+    const { data: categories, isError } = useExpenseCategories();
 
     const renderBackdrop = useCallback(
       ({ animatedIndex, animatedPosition }: BottomSheetDefaultBackdropProps) => (
@@ -43,7 +36,7 @@ const AssignCategoryBottomSheet = forwardRef(
       [],
     );
 
-    const onCategoryPress = (category: any) => {
+    const onCategoryPress = (category: ExpenseCategory) => {
       props.onSelectCategory(category);
       (ref?.current as BottomSheetModal)?.dismiss();
     };
@@ -52,23 +45,36 @@ const AssignCategoryBottomSheet = forwardRef(
       <BottomSheetModalProvider>
         <BottomSheetModal ref={ref} snapPoints={['100%']} backdropComponent={renderBackdrop}>
           <View style={tw`flex-1 pt-4 px-1`}>
-            <CSText style={tw`text-lg pb-5 pl-5`}>{t('wallet.transactions.selectCategory')}</CSText>
-
-            <BottomSheetFlatList
-              data={categories}
-              keyExtractor={(item) => item.categoryName}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={tw`flex-row items-center mb-5`}
-                  onPress={() => onCategoryPress(item)}
-                >
-                  {/* @ts-expect-error todo fix with expense categories */}
-                  <item.CategoryIcon style={tw`mr-3`} size={24} />
-                  <CSText>{item.categoryName}</CSText>
-                </TouchableOpacity>
-              )}
-              contentContainerStyle={tw`w-full pt-2 px-5`}
-            />
+            {!categories ? (
+              <View style={tw`flex h-5/6 items-center justify-center`}>
+                <ActivityIndicator />
+              </View>
+            ) : isError ? (
+              <FullPageError
+                title={t('error.generic')}
+                subTitle={t('wallet.transactionDetails.selectCategory.fetchCategoriesError')}
+              />
+            ) : (
+              <>
+                <CSText style={tw`text-lg pb-5 pl-5`}>
+                  {t('wallet.transactionDetails.selectCategory.title')}
+                </CSText>
+                <BottomSheetFlatList
+                  data={categories}
+                  keyExtractor={(item, index) => item?.iconRef?.toString() ?? index.toString()}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      style={tw`flex-row items-center mb-5`}
+                      onPress={() => onCategoryPress(item)}
+                    >
+                      <ExpenseCategoryIcon iconRef={item.iconRef} style={tw`mr-3`} />
+                      <CSText>{item.categoryName}</CSText>
+                    </TouchableOpacity>
+                  )}
+                  contentContainerStyle={tw`w-full pt-2 px-5`}
+                />
+              </>
+            )}
           </View>
         </BottomSheetModal>
       </BottomSheetModalProvider>

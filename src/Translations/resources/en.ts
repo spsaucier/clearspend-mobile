@@ -6,6 +6,9 @@ export default {
     reload: 'Reload',
     back: 'BACK',
   },
+  error: {
+    generic: 'Looks like something went wrong.',
+  },
   login: {
     heading: 'Modern commercial cards and accounts',
     emailLabel: 'Email Address',
@@ -180,7 +183,6 @@ export default {
       searchTransactions: 'Search transactions',
       noRecent: 'No recent transactions',
       addReceipt: 'Add receipt',
-      selectCategory: 'Select A Category',
     },
     cardInfo: {
       title: 'Card Info',
@@ -224,11 +226,21 @@ export default {
         addANote: 'Add a note',
         setNote: 'Set Note',
         cancel: 'Cancel',
+        addNoteError:
+          'There was a problem adding a note to this transaction. Please try again later.',
+        updateNoteError:
+          'There was a problem updating the note on this transaction. Please try again later.',
       },
       addReceiptPanel: {
         takePhoto: 'Take a photo',
         selectPhoto: 'Select a photo',
         uploadFile: 'Upload a file',
+      },
+      selectCategory: {
+        title: 'Select A Category',
+        fetchCategoriesError: "We couldn't load the expense categories. Please try again later.",
+        updateCategoryError:
+          'There was a problem setting your expense category. Please try again later',
       },
     },
   },

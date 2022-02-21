@@ -1,22 +1,16 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import { Path, Svg } from 'react-native-svg';
 
 import tw from '@/Styles/tailwind';
-
-type Props = {
-  color?: string;
-  style?: StyleProp<ViewStyle>;
-  testID?: string;
-  size?: string | number;
-};
+import { IconBaseProps } from '@/Components/Icons/types';
 
 export const FoodAndBeverageIcon = ({
   color = tw.color('black'),
   style,
   testID,
   size = 32,
-}: Props) => (
+}: IconBaseProps) => (
   <View style={[{ aspectRatio: 1, height: size, width: size }, style]} testID={testID}>
     <Svg width="100%" height="100%" viewBox="0 0 32 32" fill="none">
       <Path

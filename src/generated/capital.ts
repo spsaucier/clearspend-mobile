@@ -443,6 +443,21 @@ export interface CreateReceiptResponse {
   receiptId?: string;
 }
 
+export interface CodatError {
+  itemId?: string;
+  message?: string;
+}
+
+export interface CodatSyncDirectCostResponse {
+  status?: string;
+  pushOperationKey?: string;
+  validation?: CodatValidation;
+}
+
+export interface CodatValidation {
+  errors?: CodatError[];
+}
+
 export interface CurrencyLimit {
   currency: 'UNSPECIFIED' | 'USD';
   typeMap: LimitTypeMap;
@@ -702,6 +717,11 @@ export interface ValidateBusinessProspectIdentifierRequest {
   otp?: string;
 }
 
+export interface ValidateIdentifierResponse {
+  /** @example true */
+  'If email already exist on the system. User can login, reset password or use another email'?: boolean;
+}
+
 export interface SetBusinessProspectPhoneRequest {
   /**
    * Phone number in e.164 format
@@ -778,6 +798,7 @@ export interface Business {
     | 'COMPLETE';
   knowYourBusinessStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
   status?: 'ONBOARDING' | 'ACTIVE' | 'SUSPENDED' | 'CLOSED';
+  accountingSetupStep?: 'ADD_CREDIT_CARD' | 'MAP_CATEGORIES' | 'COMPLETE';
 }
 
 export interface ConvertBusinessProspectResponse {
@@ -1044,6 +1065,13 @@ export interface AccountActivityResponse {
   amount?: Amount;
   receipt?: ReceiptDetails;
   notes?: string;
+  expenseDetails?: ExpenseDetails;
+}
+
+export interface ExpenseDetails {
+  /** @format int32 */
+  iconRef?: number;
+  categoryName?: string;
 }
 
 export interface Merchant {
@@ -2144,6 +2172,13 @@ export interface ActivateCardRequest {
 
 export interface UpdateAccountActivityRequest {
   notes: string;
+
+  /** @format int32 */
+  iconRef?: number;
+}
+
+export interface ExpenseCategoryRequest {
+  expenseCategoryName?: string;
 }
 
 export interface UpdateCardRequest {
@@ -2296,6 +2331,7 @@ export interface UserRolesAndPermissionsRecord {
     | 'MANAGE_CARDS'
     | 'MANAGE_USERS'
     | 'MANAGE_PERMISSIONS'
+    | 'MANAGE_CONNECTIONS'
     | 'VIEW_OWN'
   )[];
   globalUserPermissions?: (
@@ -2335,7 +2371,19 @@ export interface BusinessOwner {
   type?: 'UNSPECIFIED' | 'PRINCIPLE_OWNER' | 'ULTIMATE_BENEFICIAL_OWNER';
   firstName?: NullableEncryptedString;
   lastName?: NullableEncryptedString;
+  title?: string;
+  relationshipOwner?: boolean;
+  relationshipRepresentative?: boolean;
+  relationshipExecutive?: boolean;
+  relationshipDirector?: boolean;
+  percentageOwnership?: number;
+  address?: Address;
+  taxIdentificationNumber?: NullableEncryptedString;
   email?: string;
+  phone?: string;
+
+  /** @format date */
+  dateOfBirth?: string;
   countryOfCitizenship?:
     | 'UNSPECIFIED'
     | 'ABW'
@@ -2585,21 +2633,9 @@ export interface BusinessOwner {
     | 'ZAF'
     | 'ZMB'
     | 'ZWE';
+  subjectRef?: string;
   knowYourCustomerStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
   status?: 'ACTIVE' | 'RETIRED';
-  title?: string;
-  relationshipOwner?: boolean;
-  relationshipRepresentative?: boolean;
-  relationshipExecutive?: boolean;
-  relationshipDirector?: boolean;
-  percentageOwnership?: number;
-  address?: Address;
-  taxIdentificationNumber?: NullableEncryptedString;
-  phone?: string;
-
-  /** @format date */
-  dateOfBirth?: string;
-  subjectRef?: string;
   stripePersonReference?: string;
 
   /** @format int64 */
@@ -2745,6 +2781,7 @@ export interface AllocationRolePermissionRecord {
     | 'MANAGE_CARDS'
     | 'MANAGE_USERS'
     | 'MANAGE_PERMISSIONS'
+    | 'MANAGE_CONNECTIONS'
     | 'VIEW_OWN'
   )[];
 }

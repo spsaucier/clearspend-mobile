@@ -109,8 +109,6 @@ export const MERCHANT_CATEGORY_ICON_NAME_MAP: {
   },
 };
 
-// exports
-// TODO export all of these in an object where they can be referenced by id/code
 export {
   AssetsIcon,
   CarRentalIcon,

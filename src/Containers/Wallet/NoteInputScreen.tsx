@@ -20,7 +20,7 @@ const NoteInputScreen = () => {
     mutate: saveNote,
     isLoading: isSaving,
     isSuccess,
-  } = useUpdateTransaction(params.accountActivityId);
+  } = useUpdateTransaction(params.accountActivityId, params.notes || '');
   const maxCharCount = 300;
 
   const onChangeText = (value: string) => {
