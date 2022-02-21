@@ -156,7 +156,6 @@ const LoginScreen = () => {
             </View>
           ) : (
             <View>
-              {/* Work Email */}
               <CSTextInput
                 label={t('login.emailLabel')}
                 placeholder={t('login.emailPlaceholder')}
@@ -169,7 +168,6 @@ const LoginScreen = () => {
                 autoFocus
               />
 
-              {/* Password */}
               <CSTextInput
                 ref={passwordRef}
                 label={t('login.passwordLabel')}

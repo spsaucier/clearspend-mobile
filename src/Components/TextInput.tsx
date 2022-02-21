@@ -52,6 +52,7 @@ export const CSTextInput = React.forwardRef(
             placeholderTextColor={tw.color('gray95')}
             selectionColor={tw.color('white')}
             ref={ref}
+            secureTextEntry={showSecureInput}
             {...rest}
           />
           {secureTextEntry && renderEye()}
