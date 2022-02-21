@@ -8,13 +8,11 @@ import Toast from 'react-native-toast-message';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
-import { FaceIdIcon } from '@/Components/Icons/faceIdIcon';
-import { PinIcon } from '@/Components/Icons/pinIcon';
+import { FaceIdIcon, PinIcon, TouchIdIcon } from '@/Components/Icons';
 import { useAuthentication } from '@/Hooks/useAuthentication';
-import { AVAILABLE_BIO_KEY } from '../../../Store/keys';
+import { AVAILABLE_BIO_KEY } from '@/Store/keys';
 import { BioPasscodeScreens, BioPasscodeNavigationProp } from './BioPasscodeTypes';
-import { AuthenticationMethods } from '../../../Hooks/useAvailableBioMethod';
-import { TouchIdIcon } from '../../../Components/Icons/touchIdIcon';
+import { AuthenticationMethods } from '@/Hooks/useAvailableBioMethod';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 export const RoundedBox: React.FC = ({ children }) => (

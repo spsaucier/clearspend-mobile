@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { MMKV } from 'react-native-mmkv';
 import { useUser } from '@/Queries';
 import { store } from '@/Store';
-import { JUST_SET_2FA_KEY } from '@/Store/keys';
+import { JUST_SET_2FA_KEY, SHOW_2FA_PROMPT_KEY } from '@/Store/keys';
 
 const useRequire2FA = () => {
   const [shouldAct, setShouldAct] = useState(false);
@@ -16,7 +16,9 @@ const useRequire2FA = () => {
       setLoading(true);
       const checkShouldAct = async () => {
         const justSetUp2Fa = await storage.getBoolean(JUST_SET_2FA_KEY);
-        if (!user?.phone) {
+        if (!(await storage.getBoolean(SHOW_2FA_PROMPT_KEY))) {
+          setShouldAct(false);
+        } else if (!user?.phone) {
           setShouldAct(true);
         } else if (!session?.twoFactor?.methods?.length && !justSetUp2Fa) {
           if (user?.phone === '+11111111111') {
@@ -27,6 +29,7 @@ const useRequire2FA = () => {
         } else {
           setShouldAct(false);
         }
+        storage.set(JUST_SET_2FA_KEY, false);
         setLoading(false);
       };
       checkShouldAct();

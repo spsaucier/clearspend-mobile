@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 import useBiometricLogin from '@/Hooks/useBiometricLogin';
-import { FaceIdIcon } from '../../../Components/Icons/faceIdIcon';
+import { FaceIdIcon, TouchIdIcon } from '@/Components/Icons';
 import { RoundedBox } from '../BioPasscode/SetBiometricsOrPasscodeScreen';
 import { AuthenticationMethods } from '@/Hooks/useAvailableBioMethod';
-import { TouchIdIcon } from '@/Components/Icons/touchIdIcon';
 import { AVAILABLE_BIO_KEY } from '@/Store/keys';
 
 interface Props {

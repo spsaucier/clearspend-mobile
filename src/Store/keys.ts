@@ -4,4 +4,5 @@ export const BIO_STORAGE_KEY = 'BIO_STORAGE_KEY';
 export const LAST_ACTIVE_KEY = 'LAST_ACTIVE_KEY';
 export const RECOVERY_CODE_KEY = 'RECOVERY_CODE_KEY';
 export const JUST_SET_2FA_KEY = 'JUST_SET_2FA_KEY';
+export const SHOW_2FA_PROMPT_KEY = 'SHOW_2FA_PROMPT_KEY';
 export const IS_AUTHED = 'IS_AUTHED';

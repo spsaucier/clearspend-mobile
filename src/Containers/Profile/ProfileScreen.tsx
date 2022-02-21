@@ -73,6 +73,14 @@ const ProfileScreen = () => {
             }}
             style={tw`px-4`}
           />
+          <View style={tw`border-b-1 opacity-10`} />
+          <ProfileMenuRow
+            label={t('profile.legalDocs.title')}
+            onPress={() => {
+              navigate(MainScreens.LegalDocuments);
+            }}
+            style={tw`px-4`}
+          />
         </View>
         <TouchableOpacity onPress={logout} style={tw`flex-row justify-center mb-10`}>
           <CSText style={tw`text-primary py-3`}>{t('profile.profileMenu.logOut')}</CSText>

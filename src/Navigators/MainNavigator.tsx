@@ -18,6 +18,7 @@ import ProfileScreen from '@/Containers/Profile/ProfileScreen';
 import ChangePasswordScreen from '@/Containers/Profile/ChangePasswordScreen';
 import NotificationSettingScreen from '@/Containers/Profile/NotificationSettingsScreen';
 import LoginOptionsScreen from '@/Containers/Profile/LoginOptions';
+import LegalDocumentsScreen from '@/Containers/Profile/LegalDocuments';
 import NotificationScreen from '@/Containers/Notifications/NotificationScreen';
 import CardDetailScreen from '@/Containers/Wallet/CardDetailScreen';
 import CardInfoScreen from '@/Containers/Wallet/CardInfoScreen';
@@ -107,6 +108,7 @@ const ProfileStack = () => (
     <Stack.Screen name={MainScreens.NotificationSettings} component={NotificationSettingScreen} />
     <Stack.Screen name={MainScreens.LoginOptions} component={LoginOptionsScreen} />
     <Stack.Screen name={MainScreens.ActivateCard} component={ActivateCardStack} />
+    <Stack.Screen name={MainScreens.LegalDocuments} component={LegalDocumentsScreen} />
   </Stack.Navigator>
 );
 

@@ -9,6 +9,7 @@ import { AxiosResponse } from 'axios';
 import Toast from 'react-native-toast-message';
 import Config from 'react-native-config';
 
+import { useMMKVBoolean } from 'react-native-mmkv';
 import tw from '@/Styles/tailwind';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
@@ -22,6 +23,7 @@ import { AuthScreens } from '../../Navigators/NavigatorTypes';
 import { useAuthentication } from '../../Hooks/useAuthentication';
 import { OTPView } from './OTPView';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
+import { SHOW_2FA_PROMPT_KEY } from '../../Store/keys';
 
 const forgotPassowordURL = `${Config.WEB_URL}/forgot-password`;
 
@@ -38,6 +40,7 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const { navigate } = useNavigation();
   const passwordRef = createRef<TextInput>();
+  const [, setShow2faPrompt] = useMMKVBoolean(SHOW_2FA_PROMPT_KEY);
 
   const handleError = (ex: AxiosResponse) => {
     if (ex.status === 404) {
@@ -65,6 +68,7 @@ const LoginScreen = () => {
         setProcessing(false);
         setLoginButtonDisabled(false);
         if ('accessToken' in res) {
+          setShow2faPrompt(true);
           loginSuccess(res);
         } else if ('changePasswordId' in res) {
           const { changePasswordId } = res;

@@ -8,10 +8,10 @@ import Toast from 'react-native-toast-message';
 import tw from '@/Styles/tailwind';
 import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSettingHeader';
 import { FocusAwareStatusBar } from '@/Components';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { ProfileMenuRow } from './Components/ProfileMenuRow';
-import { KeyIconLg } from '../../Components/Icons/keyIconLg';
-import { useAuthentication } from '../../Hooks/useAuthentication';
+import { KeyIconLg } from '@/Components/Icons';
+import { useAuthentication } from '@/Hooks/useAuthentication';
 import { AVAILABLE_BIO_KEY } from '@/Store/keys';
 import { navigationRef } from '@/Navigators/Root';
 

@@ -297,6 +297,12 @@ export default {
       pinOr: 'Update PIN or {{method}}',
       updatePassword: 'Update password',
     },
+    legalDocs: {
+      title: 'Legal documents',
+      terms: 'Terms of use',
+      privacy: 'Privacy policy',
+      cardholder: 'Cardholder agreement',
+    },
     updateAccount: {
       title: 'Personal details',
       updateEmail: 'Update email',

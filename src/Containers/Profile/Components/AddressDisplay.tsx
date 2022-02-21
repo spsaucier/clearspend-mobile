@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { MapPinIcon } from '@/Components/Icons/mapPinIcon';
+import { MapPinIcon } from '@/Components/Icons';
 import { Address } from '@/generated/capital';
 import { CSText } from '@/Components';
 import tw from '@/Styles/tailwind';

@@ -47,6 +47,7 @@ export enum MainScreens {
   UpdateMobile = 'Update Phone',
   UpdateAddress = 'Update Address',
   LoginOptions = 'Log in options',
+  LegalDocuments = 'Legal documents',
   ActivateCard = 'Activate Card',
   ChangePassword = 'Change Password',
   NewPassword = 'New Password',
@@ -93,6 +94,7 @@ export type MainStackParamTypes = {
   [MainScreens.UpdateMobile]: undefined;
   [MainScreens.UpdateAddress]: undefined;
   [MainScreens.LoginOptions]: undefined;
+  [MainScreens.LegalDocuments]: undefined;
   [MainScreens.ActivateCard]: undefined;
   [MainScreens.ChangePassword]: undefined;
   [MainScreens.NewPassword]: { currentPassword: string };
