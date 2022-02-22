@@ -9,3 +9,4 @@ export { CSText } from './Text';
 export { LinearProgressBar } from './LinearProgressBar';
 export { CSBottomSheet } from './CSBottomSheet';
 export { AnimatedCSText } from './AnimatedText';
+export { InfoPanel } from './InfoPanel';

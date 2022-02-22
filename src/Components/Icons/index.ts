@@ -20,6 +20,7 @@ export { EyeOpenIcon } from './eyeOpenIcon';
 export { FaceIdIcon } from './faceIdIcon';
 export { FileIcon } from './fileIcon';
 export { FilterIcon } from './filterIcon';
+export { InfoIcon } from './infoIcon';
 export { KeyIcon } from './keyIcon';
 export { KeyIconLg } from './keyIconLg';
 export { LegalIcon } from './legalIcon';

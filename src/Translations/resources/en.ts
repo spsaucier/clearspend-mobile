@@ -284,6 +284,10 @@ export default {
     remaining: 'Remaining: {{amount}}',
     cardIsFrozenForSecurity: 'Card is frozen for security reasons.',
     addToAppleWallet: 'Add to Apple Wallet',
+    availableToSpendMeans: 'What does <key>`Available to spend`</key> mean?',
+    availableToSpendMeansDescription:
+      'Available to spend is based on your card’s allocation balance and spending limits.',
+    okGotIt: 'Ok, got it',
   },
   cardInfo: {
     dismiss: 'Dismiss',

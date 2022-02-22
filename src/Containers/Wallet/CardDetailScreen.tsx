@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, ScrollView, ImageBackground, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import tw from '@/Styles/tailwind';
 import {
   ActivityIndicator,
   Button,
   CSText,
   FocusAwareStatusBar,
+  InfoPanel,
   LinearProgressBar,
 } from '@/Components';
 import {
@@ -16,6 +18,7 @@ import {
   AppleWalletIcon,
   ChevronIcon,
   EyeIcon,
+  InfoIcon,
   SnowflakeIcon,
   SuspensionPointsIcon,
 } from '@/Components/Icons';
@@ -30,6 +33,7 @@ type Props = {
 };
 
 const CardDetailScreen = ({ route }: Props) => {
+  const balanceInfoPanelRef = useRef<BottomSheetModal>(null);
   const { navigate } = useNavigation();
   const { t } = useTranslation();
 
@@ -40,6 +44,10 @@ const CardDetailScreen = ({ route }: Props) => {
   const { mutate: freeze, isLoading: isFreezing } = useFreezeCard(cardId);
   const { mutate: unfreeze, isLoading: isUnfreezing } = useUnFreezeCard(cardId);
   const freezingOrUnfreezing = isUnfreezing || isFreezing;
+
+  const onCardBalanceInfoPress = () => {
+    balanceInfoPanelRef.current?.present();
+  };
 
   if (isLoading) {
     return (
@@ -160,9 +168,13 @@ const CardDetailScreen = ({ route }: Props) => {
             </View>
 
             <View>
-              <CSText style={tw`text-base text-white mt-2 mb-2`}>
-                {t('cardProfile.cardBalance')}
-              </CSText>
+              <View style={tw`flex-row mt-2 mb-2 items-center`}>
+                <CSText style={tw`text-base text-white`}>{t('cardProfile.cardBalance')}</CSText>
+                <TouchableOpacity style={tw`ml-1`} onPress={onCardBalanceInfoPress}>
+                  <InfoIcon />
+                </TouchableOpacity>
+              </View>
+
               <CSText style={tw`text-2xl mt-1 mb-8 text-white`}>
                 {formatCurrency(balanceAmount)}
               </CSText>
@@ -274,6 +286,12 @@ const CardDetailScreen = ({ route }: Props) => {
             <View style={tw`h-20`} />
           </View>
         </ScrollView>
+        <InfoPanel
+          ref={balanceInfoPanelRef}
+          title={t('cardProfile.availableToSpendMeans')}
+          description={t('cardProfile.availableToSpendMeansDescription')}
+          okButtonText={t('cardProfile.okGotIt')}
+        />
       </View>
     );
   }
