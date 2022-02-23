@@ -9,6 +9,7 @@ import { CardDetailsResponse } from '@/generated/capital';
 import { CSText } from '@/Components';
 import { revealCardKey } from '@/Queries/card';
 import { ActivityIndicator } from '../../../Components/ActivityIndicator';
+import { useBusiness } from '@/Queries';
 
 export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse }) => {
   const { card, availableBalance } = cardData;
@@ -16,7 +17,8 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
   const [readyCount, setReadyCount] = useState(0);
   const { t } = useTranslation();
 
-  const { cardId, lastFour, type, status, address, externalRef } = card;
+  const { cardId, lastFour, type, status, externalRef } = card;
+  const { data: business } = useBusiness();
   const { amount: balanceAmount } = availableBalance;
 
   const isFrozen = status === 'INACTIVE';
@@ -316,7 +318,7 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
         </View>
       </View>
 
-      {!!address?.streetLine1 && (
+      {!!business?.address?.streetLine1 && (
         <>
           {/* Address Section */}
           <View style={tw`mt-6`}>
@@ -326,10 +328,10 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
             >
               <View style={tw`flex`}>
                 <CSText style={tw`font-montreal`}>
-                  {`${address.streetLine1} ${address.streetLine2}`}
+                  {`${business.address.streetLine1} ${business.address.streetLine2}`}
                 </CSText>
                 <CSText style={tw`mt-1 font-montreal`}>
-                  {`${address.locality}, ${address.region} ${address.postalCode}, ${address.country}`}
+                  {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
                 </CSText>
               </View>
             </TouchableOpacity>
