@@ -152,6 +152,7 @@ export default {
     updatePasswordFailed: 'Failed to update password',
     updatePasswordSuccess: 'Your password has been successfully updated',
     verificationResent: 'Verification code re-sent to {{number}}',
+    receiptUploadedSuccessfully: 'Receipt uploaded successfully',
   },
   categories: {
     merchant: {

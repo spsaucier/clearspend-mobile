@@ -7,6 +7,7 @@ import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture
 import Carousel from 'react-native-snap-carousel';
 import Pdf from 'react-native-pdf';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import Toast from 'react-native-toast-message';
 
 import tw from '@/Styles/tailwind';
 import { CloseIcon, MinusCircleFilledIcon, PlusCircleFilledIcon } from '@/Components/Icons';
@@ -50,6 +51,11 @@ const ViewReceiptScreen = () => {
   const { data, isFetching } = useReceiptUri('viewReceiptQuery', currentReceiptId);
 
   const onUploadReceiptFromGalleryFinished = () => {
+    Toast.show({
+      type: 'success',
+      text1: t('toasts.receiptUploadedSuccessfully'),
+    });
+
     navigation.navigate(MainScreens.TransactionDetails, {
       cardId,
       transactionId: accountActivityId,

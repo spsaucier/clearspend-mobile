@@ -8,6 +8,7 @@ import { format, parseISO } from 'date-fns';
 import MapView, { Marker } from 'react-native-maps';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Pdf from 'react-native-pdf';
+import Toast from 'react-native-toast-message';
 
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, Button, CSText } from '@/Components';
@@ -88,6 +89,11 @@ const TransactionDetailScreenContent = () => {
 
   const onUploadReceiptFromGalleryFinished = () => {
     refetch();
+
+    Toast.show({
+      type: 'success',
+      text1: t('toasts.receiptUploadedSuccessfully'),
+    });
   };
 
   const { uploadReceipt, isUploading } = useUploadReceipt({

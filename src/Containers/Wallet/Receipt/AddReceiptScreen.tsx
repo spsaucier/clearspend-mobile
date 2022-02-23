@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 
 import { ActivityIndicator, Button } from '@/Components';
 import { CloseIcon, LightningIcon, LightningOffIcon } from '@/Components/Icons';
@@ -27,7 +28,12 @@ const AddReceiptScreen = () => {
 
   const { uploadReceiptState, uploadReceipt, isUploading } = useUploadReceipt({
     accountActivityId,
-    onUploadFinished: () => {},
+    onUploadFinished: () => {
+      Toast.show({
+        type: 'success',
+        text1: t('toasts.receiptUploadedSuccessfully'),
+      });
+    },
   });
   const { receiptId, linked } = uploadReceiptState;
 
