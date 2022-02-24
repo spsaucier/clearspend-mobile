@@ -2,12 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 import Config from 'react-native-config';
 import jwtDecode from 'jwt-decode';
 import { Session } from '@/Store/Session';
-import { mixpanel } from '../utils/analytics';
-
-const handleError = (ex: any, apiRequest: string) => {
-  mixpanel.track('API Error', {apiRequest, error: ex});
-  return Promise.reject(ex?.response?.data || ex.response || ex);
-}
 
 const parseLoginResponse = (res: AxiosResponse) => {
   let decoded = {
@@ -40,7 +34,7 @@ export const sendEnrollment2FA = async (formattedMobile: string, userId: string,
       method,
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((e) => handleError(e, 'sendEnrollment2FA'));
+  }).catch((ex) => Promise.reject(ex.response));
 
 export const disableEnrollment2FA = async (
   recoveryCode: string,
@@ -54,7 +48,7 @@ export const disableEnrollment2FA = async (
       'content-type': 'application/json',
       'x-fusionauth-tenantid': '933328da-3f46-0236-6ec6-4a04a689f99e',
     },
-  }).catch((e) => handleError(e, 'disableEnrollment2FA'));
+  }).catch((ex) => Promise.reject(ex.response));
 
 export const submitEnrollment2FACode = async (
   code: string,
@@ -72,7 +66,7 @@ export const submitEnrollment2FACode = async (
       mobilePhone: parseInt(formattedMobile, 10),
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((e) => handleError(e, 'submitEnrollment2FACode'));
+  }).catch((ex) => Promise.reject(ex.response));
   return response.data;
 };
 
@@ -84,7 +78,7 @@ const send2FA = async (twoFactorId: string, methodId: string) =>
       methodId,
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((e) => handleError(e, 'send2FA'));
+  }).catch((ex) => Promise.reject(ex.response));
 
 export const login = async (username: string, password: string) => {
   const response = await axios({
@@ -96,7 +90,7 @@ export const login = async (username: string, password: string) => {
       applicationId: Config.FA_CLIENT_ID,
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((e) => handleError(e, 'login'));
+  }).catch((ex) => Promise.reject(ex.response));
 
   switch (response.status) {
     case 203:
@@ -149,7 +143,7 @@ export const login2FA = async (twoFactorId: string, code: string) => {
       applicationId: Config.FA_CLIENT_ID,
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((e) => handleError(e, 'login2FA'));
+  }).catch((ex) => Promise.reject(ex.response));
   return parseLoginResponse(response);
 };
 
@@ -163,7 +157,7 @@ export const changePassword = async (
     url: `${Config.FA_URL}/api/user/change-password/${changePasswordId}`,
     headers: { 'content-type': 'application/json' },
     data: { password, currentPassword },
-  }).catch((e) => handleError(e, 'changePassword'));
+  }).catch((ex) => Promise.reject(ex.response.data));
   return response;
 };
 
@@ -177,7 +171,7 @@ export const loginUsingOneTimePass = async (loginId: string, oneTimePassword: st
       oneTimePassword,
       applicationId: Config.FA_CLIENT_ID,
     },
-  }).catch((e) => handleError(e, 'loginUsingOneTimePass'));
+  }).catch((ex) => ex.response);
   return parseLoginResponse(response);
 };
 
@@ -187,7 +181,7 @@ export const getNewAccessToken = async (refreshToken: string) => {
     url: `${Config.FA_URL}/api/jwt/refresh`,
     data: { refreshToken },
     headers: { 'content-type': 'application/json' },
-  }).catch((e) => handleError(e, 'getNewAccessToken'));
+  }).catch((ex) => Promise.reject(ex.response));
 
   return parseLoginResponse(response);
 };
