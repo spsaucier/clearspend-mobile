@@ -1,4 +1,4 @@
-package com.clearspendmobile;
+package com.clearspend.android;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
