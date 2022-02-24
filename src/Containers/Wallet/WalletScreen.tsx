@@ -15,6 +15,7 @@ import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens } from '../../Navigators/NavigatorTypes';
 import { useAuthentication } from '../../Hooks/useAuthentication';
 import useRequireOnboarding from '../../Hooks/useRequireOnboarding';
+import LinearGradientWithOpacity from '@/Components/Svg/LinearGradientWithOpacity';
 
 const { width: screenWidth } = Dimensions.get('screen');
 
@@ -238,6 +239,8 @@ const WalletScreen = () => {
       </View>
 
       {selectedCard?.card?.cardId && <Transactions cardId={selectedCard?.card?.cardId} />}
+
+      <LinearGradientWithOpacity style={tw`h-20 w-full absolute bottom-0`} />
     </SafeAreaView>
   );
 };

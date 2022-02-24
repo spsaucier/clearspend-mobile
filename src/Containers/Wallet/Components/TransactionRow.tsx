@@ -87,45 +87,44 @@ export const TransactionRow = ({
 
   return (
     <TouchableOpacity
-      style={tw`flex-row justify-between px-6 py-2`}
+      style={tw`flex-row px-6 py-2`}
       key={transactionId}
       onPress={handleItemOnPress}
     >
-      <View style={tw`flex-row`}>
-        <View
-          style={[
-            tw`h-8 w-8 rounded-full overflow-hidden items-center justify-center ${
-              !merchantLogoUrl ? 'bg-primary' : ''
-            }`,
-          ]}
+      <View
+        style={[
+          tw`h-8 w-8 bg-black rounded-full items-center justify-center ${
+            !merchantLogoUrl ? 'bg-primary' : ''
+          }`,
+          { aspectRatio: 1 },
+        ]}
+      >
+        {merchantLogoUrl ? (
+          <Image
+            source={{
+              uri: merchantLogoUrl,
+            }}
+            style={tw`w-full h-full rounded-full`}
+            resizeMode="cover"
+          />
+        ) : (
+          <MerchantCategoryIcon style={tw`w-5 h-5`} merchantCategoryGroup={merchantCategoryGroup} />
+        )}
+      </View>
+      <View style={tw`flex-1`}>
+        <AnimatedCSText
+          numberOfLines={1}
+          style={[tw`text-base text-black ml-3 z-1 w-full`, merchantAnimatedStyle]}
         >
-          {merchantLogoUrl ? (
-            <Image
-              source={{
-                uri: merchantLogoUrl,
-              }}
-              style={tw`w-full h-full rounded-full`}
-              resizeMode="cover"
-            />
-          ) : (
-            <MerchantCategoryIcon
-              style={tw`w-5 h-5`}
-              merchantCategoryGroup={merchantCategoryGroup}
-            />
-          )}
-        </View>
+          {merchantName}
+        </AnimatedCSText>
 
-        <View style={tw`flex justify-center`}>
-          <AnimatedCSText style={[tw`text-base text-black ml-3 z-1`, merchantAnimatedStyle]}>
-            {merchantName}
-          </AnimatedCSText>
-          <AnimatedCSText style={[tw`text-xs text-black ml-3`, timeAnimatedStyle]}>
-            {formatTime}
-          </AnimatedCSText>
-        </View>
+        <AnimatedCSText style={[tw`text-xs text-black ml-3`, timeAnimatedStyle]}>
+          {formatTime}
+        </AnimatedCSText>
       </View>
 
-      <View style={tw`flex-row`}>
+      <View style={tw`bg-white`}>
         <Animated.View style={addReceiptAnimatedStyle}>
           {!receiptId && (
             <TouchableOpacity
@@ -138,13 +137,13 @@ export const TransactionRow = ({
             </TouchableOpacity>
           )}
         </Animated.View>
-        <View style={tw`w-20 items-end`}>
+        <View style={tw`items-end`}>
           <AnimatedCSText
-            style={tw.style(
-              'text-base text-black z-1',
-              statusDeclined && 'text-error',
+            style={[
+              tw`text-base text-black z-1`,
+              tw.style(statusDeclined && 'text-error'),
               amountAnimatedStyle,
-            )}
+            ]}
           >
             {formatCurrency(amount)}
           </AnimatedCSText>
