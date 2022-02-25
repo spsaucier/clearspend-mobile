@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AxiosResponse } from 'axios';
 import Toast from 'react-native-toast-message';
-import Config from 'react-native-config';
 
 import { useMMKVBoolean } from 'react-native-mmkv';
 import tw from '@/Styles/tailwind';
@@ -24,8 +23,7 @@ import { useAuthentication } from '../../Hooks/useAuthentication';
 import { OTPView } from './OTPView';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { SHOW_2FA_PROMPT_KEY } from '../../Store/keys';
-
-const forgotPassowordURL = `${Config.WEB_URL}/forgot-password`;
+import { Constants } from '@/consts';
 
 const LoginScreen = () => {
   const { t } = useTranslation();
@@ -112,8 +110,8 @@ const LoginScreen = () => {
   }, [email, password]);
 
   const launchForgotPassword = () =>
-    Linking.canOpenURL(forgotPassowordURL).then((canOpen) => {
-      if (canOpen) Linking.openURL(forgotPassowordURL);
+    Linking.canOpenURL(Constants.FORGOT_PASSWORD_URL).then((canOpen) => {
+      if (canOpen) Linking.openURL(Constants.FORGOT_PASSWORD_URL);
     });
 
   return (

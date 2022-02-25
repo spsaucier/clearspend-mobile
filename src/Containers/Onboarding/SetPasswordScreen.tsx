@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { KeyboardAvoidingView, Linking, View } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/core';
 import { useDispatch } from 'react-redux';
@@ -12,18 +12,22 @@ import { OnboardingTextInput } from '@/Components/OnboardingTextInput';
 import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
 import { Session, updateSession } from '@/Store/Session';
 import { mixpanel } from '@/Services/utils/analytics';
+import { CheckBoxInput } from '@/Components/CheckBoxInput';
+import { Constants } from '@/consts';
 
 const validPassword = new RegExp('^(?=.*?[A-Za-z])(?=.*?[0-9]).{10,30}$');
 
 const SetPasswordScreen = () => {
-  const [password, setPassword] = useState('');
-  const [buttonDisabled, setButtonDisabled] = useState(true);
-  const { t } = useTranslation();
-  const [pwdError, setPwdError] = useState(false);
-  const [submissionError, setSubmissionError] = useState('');
+  const dispatch = useDispatch();
   const route = useRoute<any>();
   const { params } = route;
-  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  const [password, setPassword] = useState('');
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [pwdError, setPwdError] = useState(false);
+  const [submissionError, setSubmissionError] = useState('');
+  const [conditionsAccepted, setConditionsAccepted] = useState(false);
 
   const { changePasswordId } = params;
   const { email, password: currentPassword } = params;
@@ -56,8 +60,8 @@ const SetPasswordScreen = () => {
   };
 
   useEffect(() => {
-    setButtonDisabled(!validPassword.test(password));
-  }, [password]);
+    setButtonDisabled(!validPassword.test(password) || !conditionsAccepted);
+  }, [password, conditionsAccepted]);
 
   const validatePassword = () => {
     setSubmissionError('');
@@ -68,47 +72,76 @@ const SetPasswordScreen = () => {
     }
   };
 
+  const launchURL = (url: string) =>
+    Linking.canOpenURL(url).then((canOpen) => {
+      if (canOpen) Linking.openURL(url);
+    });
+
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary p-6`}>
       <KeyboardAvoidingView style={tw`flex-1 pb-5 justify-between`} behavior="padding">
-        <OnboardingScreenTitle
-          titlePart1={t('setPassword.titlePart1')}
-          titlePart2={t('setPassword.titlePart2')}
-        />
-        <OnboardingTextInput
-          keyboardType="default"
-          containerStyle={tw`mb-8`}
-          secureTextEntry
-          value={password}
-          onChangeText={(value) => {
-            setPassword(value);
-          }}
-          autoFocus
-          onChange={validatePassword}
-        />
-        {pwdError && (
-          <CSText style={tw`text-white mb-5`}>
-            That password cannot be used. Please enter a different password.
-          </CSText>
-        )}
-        {submissionError ? <CSText style={tw`text-white mb-5`}>{submissionError}</CSText> : null}
         <View>
-          <PasswordRuleRow
-            label={t('setPassword.rules.length')}
-            enteredPassword={password.length >= 10}
+          <OnboardingScreenTitle
+            titlePart1={t('setPassword.titlePart1')}
+            titlePart2={t('setPassword.titlePart2')}
           />
+          <OnboardingTextInput
+            keyboardType="default"
+            containerStyle={tw`mb-8`}
+            secureTextEntry
+            value={password}
+            onChangeText={(value) => {
+              setPassword(value);
+            }}
+            autoFocus
+            onChange={validatePassword}
+          />
+          {pwdError && (
+            <CSText style={tw`text-white mb-5`}>
+              That password cannot be used. Please enter a different password.
+            </CSText>
+          )}
+          {submissionError ? <CSText style={tw`text-white mb-5`}>{submissionError}</CSText> : null}
+          <View>
+            <PasswordRuleRow
+              label={t('setPassword.rules.length')}
+              enteredPassword={password.length >= 10}
+            />
+          </View>
         </View>
 
-        <Button
-          containerStyle={[
-            tw`mt-auto mb-4`,
-            !validPassword.test(password) ? tw`bg-gray98` : tw`bg-primary`,
-          ]}
-          onPress={changePass}
-          disabled={buttonDisabled}
-        >
-          {t('setPassword.buttonCta')}
-        </Button>
+        <View style={tw``}>
+          <View style={tw`flex-row mb-6`}>
+            <CheckBoxInput onToggle={setConditionsAccepted} />
+            <CSText style={tw`mx-3 text-base text-white`}>
+              <Trans
+                i18nKey={t('setPassword.termsAndPrivacyAcceptance')}
+                components={{
+                  key1: (
+                    <CSText
+                      style={tw`text-primary underline`}
+                      onPress={() => launchURL(Constants.TERMS_CONDITIONS_URL)}
+                    />
+                  ),
+                  key2: (
+                    <CSText
+                      style={tw`text-primary underline`}
+                      onPress={() => launchURL(Constants.PRIVACY_POLICY_URL)}
+                    />
+                  ),
+                }}
+              />
+            </CSText>
+          </View>
+
+          <Button
+            containerStyle={[tw`mt-auto mb-4`, buttonDisabled ? tw`bg-gray98` : tw`bg-primary`]}
+            onPress={changePass}
+            disabled={buttonDisabled}
+          >
+            {t('setPassword.buttonCta')}
+          </Button>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

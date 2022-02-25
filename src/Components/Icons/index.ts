@@ -3,6 +3,8 @@ export { AppleWalletIcon } from './appleWalletIcon';
 export { BackArrowIcon } from './backArrowIcon';
 export { CameraIcon } from './cameraIcon';
 export { CardSettingsIcon } from './cardSettingsIcon';
+export { CheckBoxIcon } from './checkBoxIcon';
+export { CheckBoxCheckedIcon } from './checkBoxCheckedIcon';
 export { CheckCircleIcon } from './checkCircleIcon';
 export { CheckCircleIconFilled } from './checkCircleIconFilled';
 export { CheckMarkIcon } from './checkmarkIcon';

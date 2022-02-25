@@ -126,6 +126,8 @@ export default {
       special: 'At least one special character, e.g., ! @ # ? ]',
     },
     buttonCta: 'Next',
+    termsAndPrivacyAcceptance:
+      'I am 18 years of age and agree to ClearSpend’s <key1>Terms of Service</key1> and <key2>Privacy Policy</key2>',
   },
   forgotPassword: {
     enterEmail: {
