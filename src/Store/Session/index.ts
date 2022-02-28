@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { mixpanel } from '../../Services/utils/analytics';
+import { mixpanel } from '@/Services/utils/analytics';
 
 export interface Session {
   userId?: string;

@@ -23,7 +23,6 @@ import NotificationScreen from '@/Containers/Notifications/NotificationScreen';
 import CardDetailScreen from '@/Containers/Wallet/CardDetailScreen';
 import CardInfoScreen from '@/Containers/Wallet/CardInfoScreen';
 import TransactionDetailScreen from '@/Containers/Wallet/TransactionDetailScreen';
-import CardSpendControlsScreen from '@/Containers/Wallet/CardSpendControlsScreen';
 import CardSettingsScreen from '@/Containers/Wallet/CardSettingsScreen';
 import CardLostStolen from '@/Containers/Wallet/CardLostStolen';
 import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
@@ -136,11 +135,6 @@ const WalletStack = () => (
       options={{
         ...TransitionPresets.ModalSlideFromBottomIOS,
       }}
-    />
-    <Stack.Screen
-      name={MainScreens.CardSpendControls}
-      component={CardSpendControlsScreen}
-      options={transparentModal}
     />
     <Stack.Screen name={MainScreens.CardSettings} component={CardSettingsScreen} />
     <Stack.Screen name={MainScreens.CardLostStolen} component={CardLostStolen} />

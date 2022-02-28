@@ -52,7 +52,7 @@ export const ActivateCardResultScreen = ({ route }: Props) => {
             <CSText style={tw`font-telegraf text-2xl leading-relaxed pt-5`}>
               {t('activateCard.loadingTitle')}
             </CSText>
-            <CSText style={tw`text-base leading-relaxed opacity-75 pt-1`}>
+            <CSText style={tw`text-base leading-relaxed black-75 pt-1`}>
               {t('activateCard.loadingSubTitle')}
             </CSText>
           </View>
@@ -62,7 +62,7 @@ export const ActivateCardResultScreen = ({ route }: Props) => {
               <CSText style={tw`text-2xl leading-relaxed font-telegraf`}>
                 {t('activateCard.successTitle')}
               </CSText>
-              <CSText style={tw`text-base leading-relaxed pt-5 opacity-75`}>
+              <CSText style={tw`text-base leading-relaxed pt-5 black-75`}>
                 {t('activateCard.successSubTitle')}
               </CSText>
             </View>

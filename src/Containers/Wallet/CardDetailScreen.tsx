@@ -24,7 +24,7 @@ import {
 } from '@/Components/Icons';
 import { useCard, useFreezeCard, useUnFreezeCard } from '@/Queries';
 import { formatCurrency } from '@/Helpers/StringHelpers';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
 
@@ -178,19 +178,6 @@ const CardDetailScreen = ({ route }: Props) => {
               <CSText style={tw`text-2xl mt-1 mb-8 text-white`}>
                 {formatCurrency(balanceAmount)}
               </CSText>
-
-              {/* <TouchableOpacity
-                style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}
-                onPress={() => navigate(MainScreens.CardSpendControls, { cardId })}
-              >
-                <View style={tw`rounded p-2 bg-secondary-light`}>
-                  <CardSettingsIcon color={tw.color('primary')} />
-                </View>
-                <CSText style={tw`flex-grow ml-2 text-sm font-medium text-white`}>
-                  {t('cardProfile.spendControls')}
-                </CSText>
-                <ChevronIcon color={tw.color('white')} />
-              </TouchableOpacity> */}
 
               <TouchableOpacity
                 style={tw`flex-row items-center pt-2 pb-2 mt-1 mb-1`}

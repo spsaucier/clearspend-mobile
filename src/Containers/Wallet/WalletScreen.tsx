@@ -12,9 +12,9 @@ import Transactions from './Transactions';
 import { useFreezeCard, useUnFreezeCard, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
-import { useAuthentication } from '../../Hooks/useAuthentication';
-import useRequireOnboarding from '../../Hooks/useRequireOnboarding';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { useAuthentication } from '@/Hooks/useAuthentication';
+import useRequireOnboarding from '@/Hooks/useRequireOnboarding';
 import LinearGradientWithOpacity from '@/Components/Svg/LinearGradientWithOpacity';
 
 const { width: screenWidth } = Dimensions.get('screen');
@@ -123,7 +123,7 @@ const WalletScreen = () => {
             cardTitle="John Smith"
           />
         </View>
-        <SafeAreaView style={tw`shadow-xl bg-secondary-light w-full z-10`} edges={['bottom']} />
+        <SafeAreaView style={tw`bg-secondary-light w-full z-10 h-20`} edges={['bottom']} />
       </SafeAreaView>
     );
   }

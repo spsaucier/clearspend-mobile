@@ -44,21 +44,16 @@ module.exports = {
       '2xl': '1536px',
     },
     fontSize: {
-      '3xs': '.55rem',
-      '2xs': '.65rem',
-      xs: '.75rem',
-      sm: '.875rem',
-      base: '1rem', // 14px
-      lg: '1.125rem',
-      xl: '1.25rem',
-      '2xl': '1.5rem',
-      '3xl': '1.875rem',
-      '4xl': '2.25rem',
-      '5xl': '3rem',
-      '6xl': '4rem',
-      '7xl': '5rem',
-      '8xl': '6rem',
-      '9xl': '7rem',
+      '3xs': '.5rem', // ~8px
+      '2xs': '.625rem', // ~10px
+      xs: '.75rem', // ~12px
+      sm: '.875rem', // ~14px
+      base: '1rem', // ~16px base
+      lg: '1.125rem', // ~18px
+      xl: '1.25rem', // ~20px
+      '2xl': '1.5rem', // ~24px
+      '3xl': '1.875rem', // ~30px
+      '4xl': '2.25rem', // ~36px
     },
     colors: {
       black: '#000000',
@@ -66,10 +61,10 @@ module.exports = {
       transparent: 'rgba(225,225,225,0)',
 
       // Brand
-      primary: '#43FA76',
-      secondary: '#10292C',
-      forest: '#003333',
-      'secondary-light': '#1C3437',
+      primary: '#43FA76', // Bright Green
+      secondary: '#003333', // Forest Green
+      'secondary-light': '#0D3D3D',
+      'secondary-disabled': '#C2CECE', // Disabled Forest Green
       tan: '#F3F2EF',
 
       // Cards
@@ -82,6 +77,7 @@ module.exports = {
       success: '#059669',
       pending: '#AFFFC6',
       darkError: '#CC0033',
+      buttonDisabled: '#EDEDED',
 
       // Apple Wallet mock flow
       lightBG: '#F1F7FF',
@@ -89,36 +85,26 @@ module.exports = {
       'ios-gray-bg': '#F7F7F6',
 
       // Grayscale
-      gray10: '#1A1A1A',
-      gray20: '#333333',
-      gray30: '#4D4D4D',
-      gray40: '#666666',
-      gray50: '#808080',
-      gray60: '#999999',
-      gray70: '#B2B2B2',
-      gray80: '#CCCCCC',
-      gray90: '#E5E5E5',
-      gray95: '#F9FAFB',
-      gray98: '#F3F2EF',
-
-      // New Grayscale
-      black75: 'rgba(0,0,0,0.75)',
+      'black-5': '#EDEDED',
+      'black-10': '#E1E1E1',
+      'black-20': '#CCCCCC',
+      'black-50': '#7C7C7C',
+      'black-75': '#3F3F3F',
     },
-
-      borderWidth: {
-        DEFAULT: '1px',
-        0: '0',
-        '1/2': '0.5px',
-        1: '1px',
-        2: '2px',
-        3: '3px',
-        4: '4px',
-        5: '5px',
-        6: '6px',
-        7: '7px',
-        8: '8px',
-        9: '9px',
-        10: '10px',
-      },
+    borderWidth: {
+      DEFAULT: '1px',
+      0: '0',
+      '1/2': '0.5px',
+      1: '1px',
+      2: '2px',
+      3: '3px',
+      4: '4px',
+      5: '5px',
+      6: '6px',
+      7: '7px',
+      8: '8px',
+      9: '9px',
+      10: '10px',
+    },
   },
 };

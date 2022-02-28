@@ -8,7 +8,7 @@ import tw from '@/Styles/tailwind';
 import { CardDetailsResponse } from '@/generated/capital';
 import { CSText } from '@/Components';
 import { revealCardKey } from '@/Queries/card';
-import { ActivityIndicator } from '../../../Components/ActivityIndicator';
+import { ActivityIndicator } from '@/Components/ActivityIndicator';
 import { useBusiness } from '@/Queries';
 
 export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse }) => {

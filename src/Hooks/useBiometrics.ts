@@ -6,9 +6,9 @@ import { useMMKVString } from 'react-native-mmkv';
 
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { mixpanel } from '../Services/utils/analytics';
+import { mixpanel } from '@/Services/utils/analytics';
 import { AuthenticationMethods } from './useAvailableBioMethod';
-import { AVAILABLE_BIO_KEY, BIO_STORAGE_KEY } from '../Store/keys';
+import { AVAILABLE_BIO_KEY, BIO_STORAGE_KEY } from '@/Store/keys';
 
 export interface ReturnUseBiometrics {
   loading: boolean;

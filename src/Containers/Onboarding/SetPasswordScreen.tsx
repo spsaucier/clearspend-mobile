@@ -125,7 +125,7 @@ const SetPasswordScreen = () => {
           </View>
 
           <Button
-            containerStyle={[tw`mt-auto mb-4`, buttonDisabled ? tw`bg-gray98` : tw`bg-primary`]}
+            containerStyle={[tw`mt-auto mb-4`, buttonDisabled ? tw`bg-black-5` : tw`bg-primary`]}
             onPress={changePass}
             loading={submitting}
             disabled={buttonDisabled}

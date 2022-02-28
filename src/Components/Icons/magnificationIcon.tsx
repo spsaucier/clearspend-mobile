@@ -6,7 +6,7 @@ import tw from '@/Styles/tailwind';
 import { IconBaseProps } from '@/Components/Icons/types';
 
 export const MagnificationIcon = ({
-  color = tw.color('gray60'),
+  color = tw.color('black-50'),
   style,
   testID,
   size = 20,

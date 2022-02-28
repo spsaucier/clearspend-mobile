@@ -13,7 +13,7 @@ import { useAuthentication } from '@/Hooks/useAuthentication';
 import { PasscodeView } from './Components/Passcode/PasscodeView';
 import { PromptBio } from './Components/PromptBio';
 import { vibrate } from '@/Helpers/vibrate';
-import { MainScreens, MainStackParamTypes } from '../../Navigators/NavigatorTypes';
+import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 
 const ConfirmAuthScreen = () => {
   const { t } = useTranslation();

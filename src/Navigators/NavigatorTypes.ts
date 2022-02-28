@@ -61,7 +61,6 @@ export enum MainScreens {
   CardInfo = 'Card Info',
   CardLostStolen = 'Card Lost Stolen',
   CardSettings = 'Card Settings',
-  CardSpendControls = 'Card Spend Controls',
   NoteInput = 'Note Input',
   Notifications = 'Notifications',
   TransactionDetails = 'Transaction Details',
@@ -108,7 +107,6 @@ export type MainStackParamTypes = {
   [MainScreens.CardInfo]: { cardId: string };
   [MainScreens.CardLostStolen]: { cardId: string };
   [MainScreens.CardSettings]: { cardId: string };
-  [MainScreens.CardSpendControls]: { cardId: string };
   [MainScreens.NoteInput]: { accountActivityId: string; notes: string | null };
   [MainScreens.Notifications]: undefined;
   [MainScreens.TransactionDetails]: { cardId: string; transactionId: string };

@@ -38,7 +38,7 @@ export const OrganizationCard = ({
         )}
         <View style={tw`ml-7`}>
           <CSText style={tw`text-base text-black font-bold mb-2`}>{companyName}</CSText>
-          <CSText style={tw`text-sm text-gray50`}>
+          <CSText style={tw`text-sm text-black-50`}>
             Member Since
             {memberSinceDate}
           </CSText>
@@ -48,7 +48,7 @@ export const OrganizationCard = ({
       <View
         style={tw.style(
           'rounded-full h-5 w-5',
-          isSelected ? 'border-6 border-primary bg-white' : 'border border-gray90 bg-white',
+          isSelected ? 'border-6 border-primary bg-white' : 'border border-black-10 bg-white',
         )}
       />
     </View>

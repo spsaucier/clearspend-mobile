@@ -102,7 +102,7 @@ export const ActivateCardDigitEntryScreen = () => {
         <CSText style={tw`font-telegraf text-2xl leading-snug pl-4`}>
           {t('activateCard.enterDigitsInstruction1')}
         </CSText>
-        <CSText style={tw`text-base leading-normal opacity-75 pt-4 pl-4`}>
+        <CSText style={tw`text-base leading-normal black-75 pt-4 pl-4`}>
           {t('activateCard.enterDigitsInstruction2')}
         </CSText>
 

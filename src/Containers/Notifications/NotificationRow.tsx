@@ -17,9 +17,9 @@ export const NotificationRow = ({ id }: Props) => (
     <View style={tw`flex-1 ml-3`}>
       <View style={tw`flex-row items-center justify-between`}>
         <CSText style={tw`text-sm text-black`}>Card Limit Reached</CSText>
-        <CSText style={tw`text-xs text-gray60`}>20min ago</CSText>
+        <CSText style={tw`text-xs text-black-50`}>20min ago</CSText>
       </View>
-      <CSText style={tw`text-sm text-gray60 mt-2`}>
+      <CSText style={tw`text-sm text-black-50 mt-2`}>
         You have reached monthly card spending limit of $500.00 on your Sales Card
       </CSText>
     </View>

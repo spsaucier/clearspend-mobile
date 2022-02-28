@@ -11,13 +11,8 @@ import Pdf from 'react-native-pdf';
 import Toast from 'react-native-toast-message';
 
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator, CSBottomSheet, Button, CSText } from '@/Components';
-import {
-  CheckCircleIconFilled,
-  ExclamationIcon,
-  PlusCircleFilledIcon,
-  WarningIcon,
-} from '@/Components/Icons';
+import { ActivityIndicator, CSBottomSheet, CSText } from '@/Components';
+import { CheckCircleIconFilled, ExclamationIcon, PlusCircleFilledIcon } from '@/Components/Icons';
 import { detectMimeType, formatCurrency, MediaType, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
 import { useReceiptUri, useTransaction } from '@/Queries';
@@ -40,13 +35,11 @@ type InfoRowProps = {
 
 const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
   <View style={tw`flex-row justify-between items-center mt-2`}>
-    <CSText style={tw`text-sm text-gray50 leading-relaxed`}>{label}</CSText>
+    <CSText style={tw`text-sm text-black-50 leading-relaxed`}>{label}</CSText>
     {value ? <CSText style={tw`text-sm leading-relaxed`}>{value}</CSText> : null}
     {!!children && children}
   </View>
 );
-
-const cardBGImageLight = require('@/Assets/Images/card-bg-light.png');
 
 const ReceiptPreview = ({ receiptIds }: { receiptIds: string[] }) => {
   const { data: receiptData, isFetching } = useReceiptUri('viewReceiptThumbnail', receiptIds[0]);
@@ -189,7 +182,7 @@ const TransactionDetailScreenContent = () => {
       {!!status && (
         <View
           style={tw.style(
-            'flex-row items-center justify-center p-2 bg-gray95 rounded-t-2xl',
+            'flex-row items-center justify-center p-2 bg-black-5 rounded-t-2xl',
             statusApproved && 'bg-primary',
             statusDeclined && 'bg-error',
             statusPending && 'bg-pending',
@@ -217,8 +210,8 @@ const TransactionDetailScreenContent = () => {
           style={tw`bg-white`}
         >
           {/* Map/banner area */}
-          <View style={tw`bg-secondary h-38`}>
-            {!!latitude && !!longitude ? (
+          {!!latitude && !!longitude ? (
+            <View style={tw`bg-white h-38`}>
               <MapView
                 style={tw`h-full`}
                 loadingEnabled
@@ -233,14 +226,10 @@ const TransactionDetailScreenContent = () => {
               >
                 <Marker key={0} coordinate={{ latitude, longitude }} image={{ uri: 'marker' }} />
               </MapView>
-            ) : (
-              <Image
-                source={cardBGImageLight}
-                resizeMode="cover"
-                style={tw`flex-1 opacity-40 w-2/3 self-end`}
-              />
-            )}
-          </View>
+            </View>
+          ) : (
+            <View style={tw`h-16 bg-white`} />
+          )}
 
           {/* Merchant logo */}
           <View style={[tw`flex-row justify-center -top-7`]}>
@@ -285,7 +274,7 @@ const TransactionDetailScreenContent = () => {
 
           <View style={tw`flex-row px-2 pt-6`}>
             <TouchableOpacity
-              style={tw.style('flex-1 rounded overflow-hidden bg-gray90 justify-center m-2', {
+              style={tw.style('flex-1 rounded overflow-hidden bg-tan justify-center m-2', {
                 aspectRatio: 2,
               })}
               onPress={onReceiptModalPress}
@@ -300,7 +289,7 @@ const TransactionDetailScreenContent = () => {
               )}
             </TouchableOpacity>
             <TouchableOpacity
-              style={tw.style('flex-1 rounded bg-gray90 justify-center m-2', {
+              style={tw.style('flex-1 rounded bg-tan justify-center m-2', {
                 aspectRatio: 2,
               })}
               onPress={onAssignCategoryModalPress}
@@ -365,15 +354,7 @@ const TransactionDetailScreenContent = () => {
             />
             <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
           </View>
-
-          <View style={tw`px-6`}>
-            <Button small containerStyle={tw`my-10 bg-gray95`}>
-              <CSText style={tw`mr-1 text-base font-semibold text-gray50`}>
-                {t('wallet.transactionDetails.report')}
-              </CSText>
-              <WarningIcon color={tw.color('gray50')} />
-            </Button>
-          </View>
+          <View style={tw`h-10`} />
         </KeyboardAwareScrollView>
       </NativeViewGestureHandler>
       <AddReceiptPanel

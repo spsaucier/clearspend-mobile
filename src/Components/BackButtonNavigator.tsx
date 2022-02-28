@@ -9,19 +9,24 @@ import { CSText } from '@/Components';
 type Props = {
   backText?: string;
   onBackPress?: () => void;
+  theme?: 'light' | 'dark';
 };
 
-export const BackButtonNavigator = ({ backText, onBackPress }: Props) => {
+export const BackButtonNavigator = ({ backText, onBackPress, theme = 'light' }: Props) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const darkTheme = theme === 'dark';
   return (
     <View style={tw`flex`}>
       <TouchableOpacity
         onPress={() => (onBackPress ? onBackPress() : navigation.goBack())}
-        style={tw`flex-row items-center justify-center self-start mt-4 px-2 py-1 bg-gray98`}
+        style={tw.style(
+          'flex-row items-center justify-center self-start mt-4 px-2 py-1',
+          darkTheme ? 'bg-white bg-opacity-5' : 'bg-tan',
+        )}
       >
-        <ChevronIconLeft />
-        <CSText style={tw`ml-2 text-2xs`}>
+        <ChevronIconLeft color={darkTheme ? 'white' : 'black'} />
+        <CSText style={tw.style('ml-2 my-1 text-2xs', darkTheme ? 'text-white' : 'text-black')}>
           {(typeof backText !== 'undefined' ? backText : t('profile.backNav')).toUpperCase()}
         </CSText>
       </TouchableOpacity>

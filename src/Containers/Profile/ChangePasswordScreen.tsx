@@ -7,7 +7,7 @@ import tw from '@/Styles/tailwind';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextField } from '@/Components/TextField';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 const ChangePasswordScreen = () => {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ const ChangePasswordScreen = () => {
           />
         </View>
         <Button
-          containerStyle={[tw`mb-5`, buttonDisabled ? tw`bg-gray98` : tw`bg-primary`]}
+          containerStyle={[tw`mb-5`, buttonDisabled ? tw`bg-black-5` : tw`bg-primary`]}
           label={t('profile.changePassword.next')}
           disabled={buttonDisabled}
           onPress={() => {

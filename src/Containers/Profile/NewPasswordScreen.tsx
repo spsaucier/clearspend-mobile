@@ -43,7 +43,7 @@ const NewPasswordScreen = () => {
           </View>
         </View>
         <Button
-          containerStyle={[tw`mb-5`, newPassword.length < 10 ? tw`bg-gray98` : tw`bg-primary`]}
+          containerStyle={[tw`mb-5`, newPassword.length < 10 ? tw`bg-black-5` : tw`bg-primary`]}
           disabled={!(newPassword.length >= 10 && newPassword.length <= 30)}
           label={t('profile.changePassword.title')}
           onPress={() => {

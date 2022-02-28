@@ -5,13 +5,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
-import { CSText, FocusAwareStatusBar, CloseIconButton, ActivityIndicator } from '@/Components';
+import { CSText, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { useUser } from '@/Queries';
 import { EmailIcon, PhoneIcon } from '@/Components/Icons';
 import { AddressDisplay } from './Components/AddressDisplay';
 import { formatPhone } from '@/Helpers/StringHelpers';
+import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 
 const ProfileScreen = () => {
   const { navigate } = useNavigation();
@@ -20,12 +21,12 @@ const ProfileScreen = () => {
   const { logout } = useAuthentication();
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-forest`} edges={['top']}>
-      <FocusAwareStatusBar backgroundColor={tw.color('forest')} barStyle="light-content" />
-      <View style={tw`flex-row items-center justify-end pr-6 pt-6`}>
-        <CloseIconButton color={tw.color('white')} />
+    <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
+      <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
+      <View style={tw`p-5`}>
+        <BackButtonNavigator theme="dark" />
       </View>
-      <View style={[tw`h-1/3 flex-col justify-center bg-forest px-5 pt-12 pb-16`]}>
+      <View style={[tw`h-1/3 flex-col justify-center bg-secondary px-5 pt-12 pb-16`]}>
         {isLoading || error || !user ? (
           <ActivityIndicator />
         ) : (
@@ -51,35 +52,35 @@ const ProfileScreen = () => {
         {/* Bottom white area */}
         <View style={tw`bg-white rounded-1`}>
           <ProfileMenuRow
-            label={t('profile.profileMenu.updatePersonalDetails')}
+            title={t('profile.profileMenu.updatePersonalDetails')}
             onPress={() => {
               navigate(MainScreens.UpdateAccount);
             }}
-            style={tw`px-4`}
+            style={tw`h-14 px-4`}
+            showBottomBorder
           />
-          <View style={tw`border-b-1 opacity-10`} />
           <ProfileMenuRow
-            label={t('profile.profileMenu.loginOptions')}
+            title={t('profile.profileMenu.loginOptions')}
             onPress={() => {
               navigate(MainScreens.LoginOptions);
             }}
-            style={tw`px-4`}
+            style={tw`h-14 px-4`}
+            showBottomBorder
           />
-          <View style={tw`border-b-1 opacity-10`} />
           <ProfileMenuRow
-            label={t('profile.profileMenu.activateCard')}
+            title={t('profile.profileMenu.activateCard')}
             onPress={() => {
               navigate(MainScreens.ActivateCard);
             }}
-            style={tw`px-4`}
+            style={tw`h-14 px-4`}
+            showBottomBorder
           />
-          <View style={tw`border-b-1 opacity-10`} />
           <ProfileMenuRow
-            label={t('profile.legalDocs.title')}
+            title={t('profile.legalDocs.title')}
             onPress={() => {
               navigate(MainScreens.LegalDocuments);
             }}
-            style={tw`px-4`}
+            style={tw`h-14 px-4`}
           />
         </View>
         <TouchableOpacity onPress={logout} style={tw`flex-row justify-center mb-10`}>

@@ -184,7 +184,7 @@ export default {
       recentTransactions: 'Recent Transactions',
       allTransactions: 'Transactions',
       searchTransactions: 'Search transactions',
-      noRecent: 'No recent transactions',
+      empty: 'Your recent transactions will show here when you start using this card',
       addReceipt: 'Add receipt',
     },
     cardInfo: {

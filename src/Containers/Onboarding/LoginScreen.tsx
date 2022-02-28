@@ -18,11 +18,11 @@ import { login, login2FA } from '@/Services/Auth';
 import { Session, updateSession } from '@/Store/Session';
 import { ClearSpendIcon } from '@/Components/Svg/ClearSpendIcon';
 import { mixpanel } from '@/Services/utils/analytics';
-import { AuthScreens } from '../../Navigators/NavigatorTypes';
-import { useAuthentication } from '../../Hooks/useAuthentication';
+import { AuthScreens } from '@/Navigators/NavigatorTypes';
+import { useAuthentication } from '@/Hooks/useAuthentication';
 import { OTPView } from './OTPView';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
-import { SHOW_2FA_PROMPT_KEY } from '../../Store/keys';
+import { SHOW_2FA_PROMPT_KEY } from '@/Store/keys';
 import { Constants } from '@/consts';
 
 const LoginScreen = () => {
@@ -128,13 +128,12 @@ const LoginScreen = () => {
         <View style={tw`p-5 justify-center`}>
           <Logo style={tw`w-30 mb-3`} />
           <CSText
-            style={tw.style('text-3xl text-white mb-10 mt-6 font-telegraf leading-10', {
+            style={tw.style('text-4xl text-white mb-10 mt-6 font-telegraf leading-10', {
               fontWeight: '300',
             })}
           >
             {t('login.heading')}
           </CSText>
-
           {show2faEntry ? (
             <View>
               <BackButtonNavigator onBackPress={() => setShow2faEntry('')} />
@@ -189,7 +188,7 @@ const LoginScreen = () => {
             </View>
           )}
           <TouchableOpacity onPress={launchForgotPassword} testID="forgotPasswordLink">
-            <CSText style={tw`text-base text-primary mt-6 self-center`}>
+            <CSText style={tw`text-sm text-primary mt-6 self-center`}>
               {t('login.forgotPassword')}
             </CSText>
           </TouchableOpacity>
@@ -198,10 +197,10 @@ const LoginScreen = () => {
         <View style={tw`flex-row justify-center items-center p-5`}>
           <ClearSpendIcon style={tw`w-14`} />
           <View style={tw`flex-1 ml-3`}>
-            <CSText style={tw`text-base text-white`}>
+            <CSText style={tw`text-sm text-white`}>
               {t('login.businessSection.copy')}
               <CSText
-                style={tw`text-base text-primary`}
+                style={tw`text-sm text-primary`}
                 onPress={() => {
                   Linking.openURL('https://www.clearspend.com/').catch((err) => {
                     // eslint-disable-next-line no-console

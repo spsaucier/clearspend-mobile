@@ -11,7 +11,7 @@ import { ActivityIndicator, Button } from '@/Components';
 import { CloseIcon, LightningIcon, LightningOffIcon } from '@/Components/Icons';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import tw from '@/Styles/tailwind';
-import { MainScreens } from '../../../Navigators/NavigatorTypes';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 
 const AddReceiptScreen = () => {
@@ -88,7 +88,7 @@ const AddReceiptScreen = () => {
               <CloseIcon color={tw.color('white')} size={32} />
             </TouchableOpacity>
           </View>
-          <View style={tw`flex-grow border-1 border-gray20 rounded-10 overflow-hidden`}>
+          <View style={tw`flex-grow border-1 border-black-75 rounded-10 overflow-hidden`}>
             {previewURI ? (
               <View style={tw`flex-1`}>
                 <Image style={tw`flex-1`} source={{ uri: previewURI }} />

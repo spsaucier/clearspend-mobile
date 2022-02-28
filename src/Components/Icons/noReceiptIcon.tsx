@@ -6,7 +6,7 @@ import tw from '@/Styles/tailwind';
 import { IconBaseProps } from '@/Components/Icons/types';
 
 export const NoReceiptIcon = ({
-  color = tw.color('gray70'),
+  color = tw.color('black-20'),
   style,
   testID,
   size = 24,

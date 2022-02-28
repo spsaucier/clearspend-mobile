@@ -5,7 +5,7 @@ import {
   MainScreens,
   TopScreens,
   TopParams,
-} from '../../../Navigators/NavigatorTypes';
+} from '@/Navigators/NavigatorTypes';
 
 export enum BioPasscodeScreens {
   SetBioOrPasscode = 'SetBioOrPasscode',

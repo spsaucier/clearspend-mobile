@@ -12,7 +12,6 @@ import BottomSheet, {
 import { FlatList } from 'react-native-gesture-handler';
 
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
-import { NoTransactionsSvg } from '@/Components/Svg/NoTransactions';
 import { TWSearchInput } from '@/Components/SearchInput';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
@@ -116,14 +115,12 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   return (
     <View style={tw`h-full`}>
       <View style={[tw`flex m-6 mt-2 content-start`]}>
-        <Animated.Text
-          style={[tw`text-base font-bold self-start`, transactionsTitleScaleAnimatedStyle]}
-        >
+        <Animated.Text style={[tw`text-base self-start`, transactionsTitleScaleAnimatedStyle]}>
           {t('wallet.transactions.recentTransactions')}
         </Animated.Text>
 
         <View style={[tw`flex-row mt-4 justify-between`]}>
-          <View style={tw`flex-grow pr-2`}>
+          <View style={tw`flex-grow`}>
             <TWSearchInput
               onChangeText={onChangeSearch}
               placeholder={t('wallet.transactions.searchTransactions')}
@@ -153,9 +150,9 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
               const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
 
               return (
-                <View style={tw`pb-2`}>
-                  <View style={tw`flex-row justify-between bg-gray95 px-6 py-2 mb-2`}>
-                    <CSText style={tw`text-sm text-gray50`}>
+                <View style={tw`pb-2 mt-2`}>
+                  <View style={tw`flex-row justify-between bg-tan px-6 py-2 mb-2`}>
+                    <CSText style={tw`text-sm text-black-50`}>
                       {format(dateParsed, 'MMM dd, yyyy')}
                     </CSText>
                   </View>
@@ -181,9 +178,10 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
             keyExtractor={(item) => item.date}
           />
         ) : (
-          <View style={tw`items-center justify-center`}>
-            <NoTransactionsSvg />
-            <CSText style={tw`mt-3 font-semibold`}>{t('wallet.transactions.noRecent')}</CSText>
+          <View style={tw`items-center justify-center m-12`}>
+            <CSText style={tw`text-base text-center text-black-50`}>
+              {t('wallet.transactions.empty')}
+            </CSText>
           </View>
         )}
       </Animated.View>
@@ -212,8 +210,8 @@ const Transactions = ({ cardId }: TransactionProps) => {
     <BottomSheet
       enableHandlePanningGesture
       snapPoints={snapPointMemo}
-      handleStyle={[tw`flex self-center bg-transparent w-12 rounded-full mt-3`]}
-      handleIndicatorStyle={tw`bg-gray80`}
+      handleStyle={[tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`]}
+      handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
       onChange={(e) => {
         setExpanded(e === 1);
       }}

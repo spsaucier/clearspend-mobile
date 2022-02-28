@@ -7,7 +7,7 @@ import { ReturnUseBiometrics, useBiometrics } from '@/Hooks/useBiometrics';
 import { usePasscode } from '@/Hooks/usePasscode';
 import { mixpanel } from '../utils/analytics';
 import { MainScreens, TopScreens } from '@/Navigators/NavigatorTypes';
-import { IS_AUTHED, JUST_SET_2FA_KEY, LAST_ACTIVE_KEY } from '../../Store/keys';
+import { IS_AUTHED, JUST_SET_2FA_KEY, LAST_ACTIVE_KEY } from '@/Store/keys';
 import { useRequireAuth } from '@/Hooks/useRequireAuth';
 import { navigationRef } from '@/Navigators/Root';
 

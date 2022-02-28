@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 import { StackNavigationProp } from '@react-navigation/stack';
 import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
 import { useUser, useUpdateUser } from '@/Queries';
 import { sendEnrollment2FA } from '@/Services/Auth';
@@ -92,7 +92,7 @@ const EnterMobileScreen = () => {
             flagButtonStyle={{ width: 40 }}
             countryPickerProps={{ countryCodes: ['US'] }}
             disableArrowIcon
-            codeTextStyle={tw`text-gray60 font-telegraf text-xl font-normal`}
+            codeTextStyle={tw`text-black-50 font-telegraf text-xl font-normal`}
             textContainerStyle={tw`bg-transparent`}
             textInputStyle={tw`text-white font-telegraf text-xl`}
             textInputProps={{
@@ -105,7 +105,10 @@ const EnterMobileScreen = () => {
         )}
         {mobileNumError && <CSText style={tw`text-white mt-1`}>{t('enterMobile.error')}</CSText>}
         <Button
-          containerStyle={[tw`mt-auto mb-4`, mobile.length !== 10 ? tw`bg-gray98` : tw`bg-primary`]}
+          containerStyle={[
+            tw`mt-auto mb-4`,
+            mobile.length !== 10 ? tw`bg-black-5` : tw`bg-primary`,
+          ]}
           onPress={onSubmit}
           disabled={mobileNumError || mobile.length !== 10 || loading}
         >

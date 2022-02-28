@@ -8,10 +8,10 @@ import Toast from 'react-native-toast-message';
 import tw from '@/Styles/tailwind';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
-import { useUser, useUpdateUser } from '../../Queries/user';
+import { useUser, useUpdateUser } from '@/Queries/user';
 import { Address, UpdateUserRequest } from '@/generated/capital';
 import { AddressDisplay } from './Components/AddressDisplay';
-import { useAddressSuggestions } from '../../Hooks/useAddressSuggestions';
+import { useAddressSuggestions } from '@/Hooks/useAddressSuggestions';
 
 interface AutocompleteItem {
   id: string;
@@ -123,13 +123,13 @@ const UpdateAddressScreen = () => {
           {selectedAddress() ? (
             <View style={tw`m-5 mx-0`}>
               <CSText style={tw`mb-2 text-sm`}>{t('profile.updateAddress.selectedAddress')}</CSText>
-              <View style={tw`border-1 border-gray80 p-3 rounded-4`}>
+              <View style={tw`border-1 border-black-20 p-3 rounded-4`}>
                 <AddressDisplay address={address} color="black" />
               </View>
             </View>
           ) : null}
           <Button
-            containerStyle={[tw`${selectedAddress() ? 'bg-primary' : 'bg-gray98'}`]}
+            containerStyle={[tw`${selectedAddress() ? 'bg-primary' : 'bg-black-5'}`]}
             onPress={onSubmit}
             disabled={!selectedAddress()}
           >

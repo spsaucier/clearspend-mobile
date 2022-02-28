@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { MMKV, useMMKVString } from 'react-native-mmkv';
-import { mixpanel } from '../Services/utils/analytics';
+import { mixpanel } from '@/Services/utils/analytics';
 import { useIsMounted } from './useIsMounted';
 import { useBiometrics } from './useBiometrics';
-import { AVAILABLE_BIO_KEY, IS_AUTHED, LAST_ACTIVE_KEY } from '../Store/keys';
+import { AVAILABLE_BIO_KEY, IS_AUTHED, LAST_ACTIVE_KEY } from '@/Store/keys';
 
 const useBiometricLogin = (
   onSuccessCallback?: () => void,

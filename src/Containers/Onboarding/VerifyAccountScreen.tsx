@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
 import { OnboardingHeader } from '@/Containers/Onboarding/Components/OnboardingHeader';
-import { AuthScreens } from '../../Navigators/NavigatorTypes';
+import { AuthScreens } from '@/Navigators/NavigatorTypes';
 
 type BoxProps = {
   value: string;

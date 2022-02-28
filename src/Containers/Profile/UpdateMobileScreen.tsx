@@ -8,8 +8,8 @@ import Toast from 'react-native-toast-message';
 import tw from '@/Styles/tailwind';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
-import { MainScreens } from '../../Navigators/NavigatorTypes';
-import { updateUser, useUser } from '../../Queries/user';
+import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { updateUser, useUser } from '@/Queries/user';
 import { disableEnrollment2FA, sendEnrollment2FA } from '@/Services/Auth';
 import { useSensitiveInfo } from '@/Hooks/useSensitiveInfo';
 import { RECOVERY_CODE_KEY } from '@/Store/keys';
@@ -110,12 +110,12 @@ const UpdateMobileScreen = () => {
             flagButtonStyle={{ width: 40 }}
             countryPickerProps={{ countryCodes: ['US'] }}
             disableArrowIcon
-            codeTextStyle={tw`text-gray60 font-telegraf text-xl font-normal`}
+            codeTextStyle={tw`text-black-50 font-telegraf text-xl font-normal`}
             textContainerStyle={tw`bg-transparent`}
             textInputStyle={tw`text-black font-telegraf text-xl`}
             textInputProps={{
               selectionColor: tw.color('bg-primary'),
-              placeholderTextColor: tw.color('gray80'),
+              placeholderTextColor: tw.color('black-20'),
             }}
             autoFocus
           />
@@ -124,7 +124,7 @@ const UpdateMobileScreen = () => {
         <Button
           containerStyle={[
             tw`mt-auto mb-4`,
-            mobile.length !== 10 || isSame ? tw`bg-gray98` : tw`bg-primary`,
+            mobile.length !== 10 || isSame ? tw`bg-black-5` : tw`bg-primary`,
           ]}
           onPress={onSubmit}
           disabled={mobileNumError || mobile.length !== 10 || isSame || loading}

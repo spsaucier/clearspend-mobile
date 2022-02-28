@@ -44,12 +44,12 @@ export const CSTextInput = React.forwardRef(
         {label && <CSText style={tw`text-white pl-1 mb-3`}>{label}</CSText>}
         <View style={tw.style('flex-row items-center h-16 px-5 bg-secondary-light rounded-lg')}>
           <TextInput
-            style={[tw.style('flex-1 rounded-2xl text-base text-white'), style]}
+            style={[tw.style('flex-1 rounded-2xl text-sm text-white'), style]}
             testID={testID}
             autoCapitalize="none"
             autoCorrect={false}
             underlineColorAndroid="rgba(0,0,0,0)"
-            placeholderTextColor={tw.color('gray95')}
+            placeholderTextColor={tw.color('black-5')}
             selectionColor={tw.color('white')}
             ref={ref}
             secureTextEntry={showSecureInput}
