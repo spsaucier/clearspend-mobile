@@ -22,6 +22,7 @@
     "reinstall-modules": "watchman watch-del-all && rm -rf ./node_modules && rm -rf /tmp/metro-* && yarn install",
     "reinstall-pods": "rm -rf ios/Pods && yarn podinstall",
     "reinstall": "yarn reinstall-modules && yarn reinstall-pods",
+    "bump-build-number": "ts-node ./scripts/bumpBuildNumber.ts",
     "generate": "ts-node ./scripts/generateTypes.ts && prettier --write ./src/generated/capital.ts && git add ./src/generated/capital.ts"
   },
   "dependencies": {
@@ -95,6 +96,7 @@
     "@types/fbemitter": "^2.0.32",
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.175",
+    "@types/plist": "^3.0.2",
     "@types/react": "^17.0.24",
     "@types/react-native": "^0.65.1",
     "@types/react-native-snap-carousel": "^3.8.4",
@@ -120,6 +122,7 @@
     "metro-react-native-babel-preset": "^0.66.0",
     "msw": "^0.36.8",
     "nodemon": "^2.0.15",
+    "plist": "^3.0.4",
     "prettier": "^2.4.1",
     "react-native-codegen": "^0.0.7",
     "react-test-renderer": "17.0.2",

@@ -1,22 +1,33 @@
 image: node:16.14.0
 pipelines:
   pull-requests:
-    '**': #this runs as default for any branch not elsewhere defined
+    '**': # This runs as default for any branch not elsewhere defined
       - step:
+          caches:
+            - node
           script:
             - yarn
             - yarn check-format
             - yarn type-check
             - yarn lint
             - yarn test
-#    feature/*: #any branch with a feature prefix
-#      - step:
-#          script:
-#            - ...
-#  branches: #these will run on every push of the branch
-#    main:
-#      - step:
-#          script:
-#            - yarn
-#            - yarn run lint
-#            - yarn run check-format
+  custom: # Pipelines that can only be triggered manually or by a schedule
+    qa-nightly-build:
+      - step:
+          name: "Bump build numbers"
+          caches:
+            - node
+          script:
+            - if [ "$BITBUCKET_BRANCH" != 'main' ]; then echo "This pipeline must be run on main branch" && exit 1; fi
+            - git fetch --unshallow
+            - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+            - git fetch origin
+            - git diff origin/main..origin/qa --quiet && echo "No changes between main and qa, exiting" && exit 0 || echo "New changes in main not present in qa"
+            - yarn
+            - echo "Bumping build numbers" && BUMP_BUILD_OUTPUT=$(yarn bump-build-number | tail -2 | head -1)
+            - BUILD_DETAILS=($BUMP_BUILD_OUTPUT)
+            - git commit -am "[skip ci] Bump to Version ${BUILD_DETAILS[0]} (Build ${BUILD_DETAILS[1]})"
+            - git tag "release/${BUILD_DETAILS[0]}/build/${BUILD_DETAILS[1]}"
+            - git merge main qa
+            - git push origin main
+            - git push origin qa
