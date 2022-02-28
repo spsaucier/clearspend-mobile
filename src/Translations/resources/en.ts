@@ -120,7 +120,7 @@ export default {
     rules: {
       mustInclude: 'Must include',
       mix: 'Mixture of letters and numbers',
-      length: 'Must be a minimum of 10 characters',
+      length: 'Must be between 10 and 30 characters',
       upperCase: 'At least 1 character in uppercase',
       lowerCase: 'At least 1 character in lowercase',
       special: 'At least one special character, e.g., ! @ # ? ]',

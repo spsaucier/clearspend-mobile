@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Linking, View } from 'react-native';
 import { Trans, useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/core';
 import { useDispatch } from 'react-redux';
+import { inRange } from 'lodash';
+
 import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
 import { PasswordRuleRow } from '@/Containers/Onboarding/Components/PasswordRuleRow';
@@ -15,8 +17,6 @@ import { mixpanel } from '@/Services/utils/analytics';
 import { CheckBoxInput } from '@/Components/CheckBoxInput';
 import { Constants } from '@/consts';
 
-const validPassword = new RegExp('^(?=.*?[A-Za-z])(?=.*?[0-9]).{10,30}$');
-
 const SetPasswordScreen = () => {
   const dispatch = useDispatch();
   const route = useRoute<any>();
@@ -25,14 +25,15 @@ const SetPasswordScreen = () => {
 
   const [password, setPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [pwdError, setPwdError] = useState(false);
-  const [submissionError, setSubmissionError] = useState('');
+  const [submissionError, setSubmissionError] = useState();
+  const [submitting, setSubmitting] = useState(false);
   const [conditionsAccepted, setConditionsAccepted] = useState(false);
 
   const { changePasswordId } = params;
   const { email, password: currentPassword } = params;
 
   const changePass = () => {
+    setSubmitting(true);
     changePassword(changePasswordId, password, currentPassword)
       .then((res) => {
         if (res.status === 200) {
@@ -44,33 +45,26 @@ const SetPasswordScreen = () => {
             }
           });
         } else {
-          // eslint-disable-next-line no-console
-          console.log(res);
+          // TODO: handle other cases
         }
       })
       .catch((ex) => {
-        // eslint-disable-next-line no-console
-        console.log('Field errors: ', JSON.stringify(ex.fieldErrors));
         if (ex?.fieldErrors?.password?.[0]?.code === '[previouslyUsed]password') {
           setSubmissionError(t('setPassword.samePasswordError'));
         } else {
           setSubmissionError(ex.message);
         }
+      })
+      .finally(() => {
+        setSubmitting(false);
       });
   };
 
-  useEffect(() => {
-    setButtonDisabled(!validPassword.test(password) || !conditionsAccepted);
-  }, [password, conditionsAccepted]);
+  const passwordValid = useCallback(() => inRange(password.length, 10, 31), [password.length]);
 
-  const validatePassword = () => {
-    setSubmissionError('');
-    if (password.length > 10 && !validPassword.test(password)) {
-      setPwdError(true);
-    } else if (password.length === 1 || validPassword.test(password)) {
-      setPwdError(false);
-    }
-  };
+  useEffect(() => {
+    setButtonDisabled(!passwordValid || !conditionsAccepted);
+  }, [password, conditionsAccepted, passwordValid]);
 
   const launchURL = (url: string) =>
     Linking.canOpenURL(url).then((canOpen) => {
@@ -92,21 +86,17 @@ const SetPasswordScreen = () => {
             value={password}
             onChangeText={(value) => {
               setPassword(value);
+              setSubmissionError(undefined);
             }}
             autoFocus
-            onChange={validatePassword}
           />
-          {pwdError && (
-            <CSText style={tw`text-white mb-5`}>
-              That password cannot be used. Please enter a different password.
+          {submissionError ? (
+            <CSText testID="submissionErrorText" style={tw`text-white mb-5`}>
+              {submissionError}
             </CSText>
-          )}
-          {submissionError ? <CSText style={tw`text-white mb-5`}>{submissionError}</CSText> : null}
+          ) : null}
           <View>
-            <PasswordRuleRow
-              label={t('setPassword.rules.length')}
-              enteredPassword={password.length >= 10}
-            />
+            <PasswordRuleRow label={t('setPassword.rules.length')} matchingRule={passwordValid()} />
           </View>
         </View>
 
@@ -137,6 +127,7 @@ const SetPasswordScreen = () => {
           <Button
             containerStyle={[tw`mt-auto mb-4`, buttonDisabled ? tw`bg-gray98` : tw`bg-primary`]}
             onPress={changePass}
+            loading={submitting}
             disabled={buttonDisabled}
           >
             {t('setPassword.buttonCta')}

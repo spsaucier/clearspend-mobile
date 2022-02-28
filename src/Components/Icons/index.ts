@@ -10,6 +10,7 @@ export { CheckCircleIconFilled } from './checkCircleIconFilled';
 export { CheckMarkIcon } from './checkmarkIcon';
 export { ChevronIcon } from './chevronIcon';
 export { ChevronIconLeft } from './chevronIconLeft';
+export { CircleIcon } from './circleIcon';
 export { CloseIcon } from './closeIcon';
 export { CoinIcon } from './coinIcon';
 export { CopyIcon } from './copyIcon';
