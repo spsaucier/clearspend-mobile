@@ -12,6 +12,7 @@ import { useUser, useUpdateUser } from '@/Queries/user';
 import { Address, UpdateUserRequest } from '@/generated/capital';
 import { AddressDisplay } from './Components/AddressDisplay';
 import { useAddressSuggestions } from '@/Hooks/useAddressSuggestions';
+import { CloseIcon } from '@/Components/Icons';
 
 interface AutocompleteItem {
   id: string;
@@ -57,7 +58,7 @@ const UpdateAddressScreen = () => {
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-      <KeyboardAvoidingView style={tw`flex-1 p-5 justify-between`} behavior="padding">
+      <KeyboardAvoidingView style={tw`flex-1 p-5 mb-5 justify-between`} behavior="padding">
         <View style={Platform.select({ ios: { zIndex: 1 } })}>
           <BackButtonNavigator />
 
@@ -88,7 +89,7 @@ const UpdateAddressScreen = () => {
               }
             }}
             debounce={600}
-            suggestionsListMaxHeight={Dimensions.get('window').height * 0.4}
+            suggestionsListMaxHeight={Dimensions.get('window').height * 0.3}
             // onClear={onClearPress}
             //  onSubmit={(e) => onSubmitSearch(e.nativeEvent.text)}
             // onOpenSuggestionsList={onOpenSuggestionsList}
@@ -100,11 +101,12 @@ const UpdateAddressScreen = () => {
               autoCapitalize: 'none',
               style: {
                 backgroundColor: 'transparent',
+                color: 'black',
               },
             }}
+            ClearIconComponent={<CloseIcon color={tw.color('gray50')} />}
             rightButtonsContainerStyle={{
               borderRadius: 25,
-              right: 8,
               height: 30,
               top: 10,
               alignSelf: 'center',
