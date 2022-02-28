@@ -31,7 +31,7 @@ export const PasscodeConfirm = ({
         text1: t('profile.updateAuth.success', { method: 'PIN' }),
       });
       navigation.popToTop();
-      navigation.navigate(MainScreens.Wallet);
+      navigation.replace(MainScreens.Wallet);
     } else {
       setCurrentError(t('loginOptions.passcode.tryAgain'));
       vibrate();

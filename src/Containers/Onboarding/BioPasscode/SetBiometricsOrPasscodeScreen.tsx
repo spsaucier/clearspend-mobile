@@ -24,7 +24,7 @@ export const RoundedBox: React.FC = ({ children }) => (
 const SetBiometricsOrPasscodeScreen = () => {
   const { t } = useTranslation();
   const { enableBiometrics, biometricsEnabled, loggedIn, setLoggedIn } = useAuthentication();
-  const { navigate } = useNavigation<BioPasscodeNavigationProp>();
+  const { navigate, replace } = useNavigation<BioPasscodeNavigationProp>();
   const [availableBio] = useMMKVString(AVAILABLE_BIO_KEY);
 
   const onEnableBiometrics = async () => {
@@ -37,7 +37,7 @@ const SetBiometricsOrPasscodeScreen = () => {
         type: 'success',
         text1: t('profile.updateAuth.success', { method: availableBio }),
       });
-      navigate(MainScreens.Wallet);
+      replace(MainScreens.Wallet);
     }
   };
 

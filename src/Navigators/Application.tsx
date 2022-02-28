@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'react-native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -16,6 +15,8 @@ import { mixpanel } from '@/Services/utils/analytics';
 import { TopParams, TopScreens } from './NavigatorTypes';
 import AuthProvider from '@/Services/Auth/AuthProvider';
 import { GlobalToast } from '@/Components/GlobalToast';
+import tw from '@/Styles/tailwind';
+import { FocusAwareStatusBar } from '@/Components';
 
 const Stack = createStackNavigator<TopParams>();
 
@@ -56,9 +57,18 @@ const ApplicationNavigator = () => {
             routeNameRef.current = navigationRef?.current?.getCurrentRoute()?.name || '';
           }}
           onStateChange={onStateChange}
+          theme={{
+            ...DefaultTheme,
+            colors: { ...DefaultTheme.colors, background: tw.color('bg-secondary')! },
+          }}
         >
           <AuthProvider>
-            <StatusBar barStyle="dark-content" />
+            <FocusAwareStatusBar
+              barStyle="light-content"
+              backgroundColor="transparent"
+              translucent
+            />
+
             <Stack.Navigator screenOptions={{ headerShown: false }}>
               <Stack.Screen name={TopScreens.Startup} component={StartupScreen} />
               <Stack.Screen
