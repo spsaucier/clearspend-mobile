@@ -28,6 +28,8 @@ pipelines:
             - BUILD_DETAILS=($BUMP_BUILD_OUTPUT)
             - git commit -am "[skip ci] Bump to Version ${BUILD_DETAILS[0]} (Build ${BUILD_DETAILS[1]})"
             - git tag "release/${BUILD_DETAILS[0]}/build/${BUILD_DETAILS[1]}"
+            - git push origin "release/${BUILD_DETAILS[0]}/build/${BUILD_DETAILS[1]}"
             - git checkout --track origin/qa
             - git merge main
-            - git push
+            - git push origin main
+            - git push origin qa
