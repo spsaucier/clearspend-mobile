@@ -40,7 +40,7 @@ export const OnboardingTextInput = ({
   const renderEye = () => (
     <TouchableOpacity
       style={tw`h-10 w-10 items-center justify-center`}
-      onPress={() => setShowSecureInput(!showSecureInput)}
+      onPress={() => setShowSecureInput((show) => !show)}
     >
       {showSecureInput ? (
         <EyeIcon color={tw.color('white')} />

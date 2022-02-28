@@ -1,3 +1,5 @@
+[![Build status](https://build.appcenter.ms/v0.1/apps/348fdd6b-755a-4285-a825-ac20cb8dffab/branches/main/badge)](https://appcenter.ms)
+
 # Setup
 
 Follow general React Native setup: (React Native CLI Quickstart): https://reactnative.dev/docs/environment-setup

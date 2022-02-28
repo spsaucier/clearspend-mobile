@@ -2,6 +2,12 @@ import axios, { AxiosResponse } from 'axios';
 import Config from 'react-native-config';
 import jwtDecode from 'jwt-decode';
 import { Session } from '@/Store/Session';
+import { mixpanel } from '../utils/analytics';
+
+const handleError = (ex: any, apiRequest: string) => {
+  mixpanel.track('API Error', {apiRequest, error: ex?.response?.data});
+  return Promise.reject(ex?.response?.data || ex.response || ex);
+}
 
 const parseLoginResponse = (res: AxiosResponse) => {
   let decoded = {
@@ -34,7 +40,7 @@ export const sendEnrollment2FA = async (formattedMobile: string, userId: string,
       method,
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((ex) => Promise.reject(ex.response));
+  }).catch((e) => handleError(e, 'sendEnrollment2FA'));
 
 export const disableEnrollment2FA = async (
   recoveryCode: string,
@@ -48,7 +54,7 @@ export const disableEnrollment2FA = async (
       'content-type': 'application/json',
       'x-fusionauth-tenantid': '933328da-3f46-0236-6ec6-4a04a689f99e',
     },
-  }).catch((ex) => Promise.reject(ex.response));
+  }).catch((e) => handleError(e, 'disableEnrollment2FA'));
 
 export const submitEnrollment2FACode = async (
   code: string,
@@ -66,7 +72,7 @@ export const submitEnrollment2FACode = async (
       mobilePhone: parseInt(formattedMobile, 10),
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((ex) => Promise.reject(ex.response));
+  }).catch((e) => handleError(e, 'submitEnrollment2FACode'));
   return response.data;
 };
 
@@ -78,7 +84,7 @@ const send2FA = async (twoFactorId: string, methodId: string) =>
       methodId,
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((ex) => Promise.reject(ex.response));
+  }).catch((e) => handleError(e, 'send2FA'));
 
 export const login = async (username: string, password: string) => {
   const response = await axios({
@@ -90,7 +96,7 @@ export const login = async (username: string, password: string) => {
       applicationId: Config.FA_CLIENT_ID,
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((ex) => Promise.reject(ex.response));
+  }).catch((e) => handleError(e, 'login'));
 
   switch (response.status) {
     case 203:
@@ -109,14 +115,14 @@ export const login = async (username: string, password: string) => {
           const twoFactorMethodId = method.id;
           const twoFactorMethod = method?.method;
           if (['sms', 'email'].includes(twoFactorMethod)) {
-            send2FA(twoFactorId, twoFactorMethodId);
+            await send2FA(twoFactorId, twoFactorMethodId);
           }
           return {
             twoFactorId,
             twoFactorMethod,
           };
         } catch (e) {
-          return Promise.reject(e);
+          return handleError(e, 'send2FA');
         }
       }
       return Promise.reject(new Error('MFA requested, but no MFA method found'));
@@ -143,7 +149,7 @@ export const login2FA = async (twoFactorId: string, code: string) => {
       applicationId: Config.FA_CLIENT_ID,
     },
     headers: { 'content-type': 'application/json' },
-  }).catch((ex) => Promise.reject(ex.response));
+  }).catch((e) => handleError(e, 'login2FA'));
   return parseLoginResponse(response);
 };
 
@@ -157,7 +163,7 @@ export const changePassword = async (
     url: `${Config.FA_URL}/api/user/change-password/${changePasswordId}`,
     headers: { 'content-type': 'application/json' },
     data: { password, currentPassword },
-  }).catch((ex) => Promise.reject(ex.response.data));
+  }).catch((e) => handleError(e, 'changePassword'));
   return response;
 };
 
@@ -171,7 +177,7 @@ export const loginUsingOneTimePass = async (loginId: string, oneTimePassword: st
       oneTimePassword,
       applicationId: Config.FA_CLIENT_ID,
     },
-  }).catch((ex) => ex.response);
+  }).catch((e) => handleError(e, 'loginUsingOneTimePass'));
   return parseLoginResponse(response);
 };
 
@@ -181,7 +187,7 @@ export const getNewAccessToken = async (refreshToken: string) => {
     url: `${Config.FA_URL}/api/jwt/refresh`,
     data: { refreshToken },
     headers: { 'content-type': 'application/json' },
-  }).catch((ex) => Promise.reject(ex.response));
+  }).catch((e) => handleError(e, 'getNewAccessToken'));
 
   return parseLoginResponse(response);
 };

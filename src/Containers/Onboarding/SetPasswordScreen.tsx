@@ -51,8 +51,10 @@ const SetPasswordScreen = () => {
       .catch((ex) => {
         if (ex?.fieldErrors?.password?.[0]?.code === '[previouslyUsed]password') {
           setSubmissionError(t('setPassword.samePasswordError'));
+        } else if (ex?.generalErrors?.[0]?.message) {
+          setSubmissionError(ex?.generalErrors?.[0]?.message);
         } else {
-          setSubmissionError(ex.message);
+          setSubmissionError(t('setPassword.genericPasswordError'));
         }
       })
       .finally(() => {

@@ -13,7 +13,7 @@ import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
 import { OTPView } from './OTPView';
 import { sendEnrollment2FA, submitEnrollment2FACode } from '../../Services/Auth/index';
 import { useUser, useUpdateUser } from '@/Queries';
-import { JUST_SET_2FA_KEY, RECOVERY_CODE_KEY } from '@/Store/keys';
+import { JUST_SET_2FA_KEY, RECOVERY_CODE_KEY, SHOW_2FA_PROMPT_KEY } from '@/Store/keys';
 import { navigationRef } from '@/Navigators/Root';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { UpdateUserRequest } from '../../generated/capital';
@@ -31,6 +31,7 @@ const EnterOTPScreen = () => {
   const [hasError, setHasError] = useState(false);
   const { setItem: setRecoveryCode } = useSensitiveInfo(RECOVERY_CODE_KEY);
   const [, setJustSet2FA] = useMMKVBoolean(JUST_SET_2FA_KEY);
+  const [, setShow2faPrompt] = useMMKVBoolean(SHOW_2FA_PROMPT_KEY);
 
   const { mutate } = useUpdateUser();
 
@@ -57,7 +58,8 @@ const EnterOTPScreen = () => {
         params.phone,
       );
       await setRecoveryCode(`${recoveryCodes[0]}|${user?.userId}`);
-      setJustSet2FA(true);
+      await setJustSet2FA(true);
+      await setShow2faPrompt(false);
       await mutate({ ...user, phone: params.phone } as UpdateUserRequest);
       // Remove old 2FA method info from storage of session
       store.dispatch(remove2FA());

@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { AxiosResponse } from 'axios';
 import Toast from 'react-native-toast-message';
 
 import { useMMKVBoolean } from 'react-native-mmkv';
@@ -16,7 +15,7 @@ import { Logo } from '@/Components/Svg/Logo';
 import { login, login2FA } from '@/Services/Auth';
 
 import { Session, updateSession } from '@/Store/Session';
-import { ClearSpendIcon } from '@/Components/Svg/ClearSpendIcon';
+// import { ClearSpendIcon } from '@/Components/Svg/ClearSpendIcon';
 import { mixpanel } from '@/Services/utils/analytics';
 import { AuthScreens } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
@@ -40,9 +39,15 @@ const LoginScreen = () => {
   const passwordRef = createRef<TextInput>();
   const [, setShow2faPrompt] = useMMKVBoolean(SHOW_2FA_PROMPT_KEY);
 
-  const handleError = (ex: AxiosResponse) => {
+  const handleError = (ex: any) => {
     if (ex.status === 404) {
       setError(t('login.invalidCredentials'));
+    }
+    if (ex?.fieldErrors?.methodId?.[0]?.code === '[invalid]methodId') {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid two-factor auth configuration. Please contact ClearSpend support to resolve.',
+      });
     }
     setProcessing(false);
     setLoginButtonDisabled(false);
@@ -194,7 +199,7 @@ const LoginScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={tw`flex-row justify-center items-center p-5`}>
+        {/* <View style={tw`flex-row justify-center items-center p-5`}>
           <ClearSpendIcon style={tw`w-14`} />
           <View style={tw`flex-1 ml-3`}>
             <CSText style={tw`text-sm text-white`}>
@@ -212,7 +217,7 @@ const LoginScreen = () => {
               </CSText>
             </CSText>
           </View>
-        </View>
+        </View> */}
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );
