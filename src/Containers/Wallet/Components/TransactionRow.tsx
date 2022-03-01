@@ -93,8 +93,8 @@ export const TransactionRow = ({
     >
       <View
         style={[
-          tw`h-8 w-8 bg-black rounded-full items-center justify-center ${
-            !merchantLogoUrl ? 'bg-primary' : ''
+          tw`h-8 w-8 items-center justify-center ${
+            !merchantLogoUrl ? 'bg-primary rounded-full' : ''
           }`,
           { aspectRatio: 1 },
         ]}
@@ -104,7 +104,7 @@ export const TransactionRow = ({
             source={{
               uri: merchantLogoUrl,
             }}
-            style={tw`w-full h-full rounded-full`}
+            style={tw`w-full h-full rounded-1`}
             resizeMode="cover"
           />
         ) : (

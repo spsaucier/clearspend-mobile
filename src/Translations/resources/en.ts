@@ -340,7 +340,8 @@ export default {
       title: 'New address',
       cta: 'Save Address',
       selectedAddress: 'Selected address:',
-      placeholder: 'Type 4+ characters',
+      placeholder: 'Address line 1',
+      line2Placeholder: 'Address line 2 (optional)',
     },
     updateAuth: {
       disabled: '{{method}} authentication disabled',
