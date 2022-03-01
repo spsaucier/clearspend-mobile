@@ -1,0 +1,7 @@
+{title} (#{id})
+
+{sourceBranch} => {targetBranch}
+
+{description}
+
+{approvedByList}

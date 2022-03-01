@@ -1,5 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { View, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  Dimensions,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { chain, debounce } from 'lodash';
@@ -114,20 +120,22 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
 
   return (
     <View style={tw`h-full`}>
-      <View style={[tw`flex m-6 mt-2 content-start`]}>
-        <Animated.Text style={[tw`text-base self-start`, transactionsTitleScaleAnimatedStyle]}>
-          {t('wallet.transactions.recentTransactions')}
-        </Animated.Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={[tw`flex m-6 mt-2 content-start`]}>
+          <Animated.Text style={[tw`text-base self-start`, transactionsTitleScaleAnimatedStyle]}>
+            {t('wallet.transactions.recentTransactions')}
+          </Animated.Text>
 
-        <View style={[tw`flex-row mt-4 justify-between`]}>
-          <View style={tw`flex-grow`}>
-            <TWSearchInput
-              onChangeText={onChangeSearch}
-              placeholder={t('wallet.transactions.searchTransactions')}
-            />
+          <View style={[tw`flex-row mt-4 justify-between`]}>
+            <View style={tw`flex-grow`}>
+              <TWSearchInput
+                onChangeText={onChangeSearch}
+                placeholder={t('wallet.transactions.searchTransactions')}
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
 
       <Animated.View style={[tw`flex-1 bg-white`, transactionsContainerAnimatedStyle]}>
         {isLoading ? (
