@@ -3,10 +3,11 @@ pipelines:
   pull-requests:
     '**': # This runs as default for any branch not elsewhere defined
       - step:
+          name: "Verify Dependencies, Formatting, Typechecking, Linting and Tests"
           caches:
             - node
           script:
-            - yarn
+            - yarn install --frozen-lockfile
             - yarn check-format
             - yarn type-check
             - yarn lint
@@ -30,6 +31,6 @@ pipelines:
             - git tag "release/${BUILD_DETAILS[0]}/build/${BUILD_DETAILS[1]}"
             - git push origin "release/${BUILD_DETAILS[0]}/build/${BUILD_DETAILS[1]}"
             - git checkout --track origin/qa
-            - git merge main
-            - git push origin main
+            - git merge -X theirs main
             - git push origin qa
+            - git push origin main
