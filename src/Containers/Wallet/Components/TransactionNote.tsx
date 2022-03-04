@@ -34,7 +34,7 @@ export const TransactionNote = ({ notes = '', accountActivityId }: Props) => {
       <View style={tw`flex justify-center items-center my-3`}>
         <TouchableOpacity
           onPress={navToNoteInput}
-          style={tw`flex-row justify-center items-center py-2 px-4 rounded-full bg-tan`}
+          style={tw`flex-row justify-center items-center py-2 px-3 rounded-full bg-tan`}
         >
           <PlusCircleFilledIcon />
           <CSText style={tw`ml-2 text-secondary`}>

@@ -12,7 +12,13 @@ import Toast from 'react-native-toast-message';
 
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSBottomSheet, CSText } from '@/Components';
-import { CheckCircleIconFilled, ExclamationIcon, PlusCircleFilledIcon } from '@/Components/Icons';
+import {
+  CheckCircleIconFilled,
+  ExclamationIcon,
+  ExpenseIcon,
+  PlusWithBorderIcon,
+  ReceiptIcon,
+} from '@/Components/Icons';
 import { detectMimeType, formatCurrency, MediaType, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
 import { useReceiptUri, useTransaction } from '@/Queries';
@@ -283,7 +289,14 @@ const TransactionDetailScreenContent = () => {
                 <ReceiptPreview receiptIds={receipt!.receiptId!} />
               ) : (
                 <View style={tw`self-center justify-center items-center`}>
-                  <PlusCircleFilledIcon />
+                  <View style={tw`flex-row`}>
+                    <ReceiptIcon />
+                    <PlusWithBorderIcon
+                      style={tw`absolute -ml-2.5 mt-0.5`}
+                      color={tw.color('black')}
+                      size={14}
+                    />
+                  </View>
                   <CSText style={tw`pt-2`}>{t('wallet.transactionDetails.addReceipt')}</CSText>
                 </View>
               )}
@@ -311,12 +324,19 @@ const TransactionDetailScreenContent = () => {
                     <CSText style={tw`pt-1`}>{expenseDetails.categoryName}</CSText>
                   </>
                 ) : (
-                  <>
-                    <PlusCircleFilledIcon />
+                  <View style={tw`self-center justify-center items-center`}>
+                    <View style={tw`flex-row`}>
+                      <ExpenseIcon />
+                      <PlusWithBorderIcon
+                        style={tw`absolute -ml-2.5 mt-0.5`}
+                        color={tw.color('black')}
+                        size={14}
+                      />
+                    </View>
                     <CSText style={tw`pt-2`}>
-                      {t('wallet.transactionDetails.assignCategory')}
+                      {t('wallet.transactionDetails.expenseCategory')}
                     </CSText>
-                  </>
+                  </View>
                 )}
               </View>
             </TouchableOpacity>

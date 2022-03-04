@@ -34,8 +34,9 @@ type TransactionType = {
   };
   amount: { amount: number };
   status: Status;
-  receipt: { receiptId: string };
+  receipt: { receiptId: string[] };
   activityTime: string;
+  expenseDetails: { categoryName: string; iconRef: number };
 };
 
 type TransactionsContentProps = {
@@ -156,7 +157,6 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
             renderItem={({ item }) => {
               const { date, transactions } = item;
               const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
-
               return (
                 <View style={tw`pb-2 mt-2`}>
                   <View style={tw`flex-row justify-between bg-tan px-6 py-2 mb-2`}>
@@ -172,12 +172,13 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
                       merchantName={transaction.merchant.name}
                       amount={transaction.amount.amount}
                       status={transaction.status}
-                      receiptId={transaction.receipt?.receiptId}
+                      receiptIds={transaction.receipt?.receiptId}
                       time={transaction.activityTime}
                       merchantLogoUrl={transaction.merchant.merchantLogoUrl}
                       merchantCategoryGroup={transaction.merchant.merchantCategoryGroup}
                       animatedIndex={animatedIndex}
                       animatedPosition={animatedPosition}
+                      expenseDetails={transaction.expenseDetails}
                     />
                   ))}
                 </View>

@@ -2,13 +2,13 @@ import { Image, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, parseISO } from 'date-fns';
-import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
-import { useTranslation } from 'react-i18next';
+import { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import tw from '@/Styles/tailwind';
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
-import { AnimatedCSText, CSText } from '@/Components';
+import { AnimatedCSText } from '@/Components';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
+import { ExpenseIcon, PlusWithBorderIcon, ReceiptIcon } from '@/Components/Icons';
 
 export type Status = 'PENDING' | 'DECLINED' | 'APPROVED';
 
@@ -20,10 +20,11 @@ type Props = {
   merchantLogoUrl?: string;
   merchantCategoryGroup: string;
   status: Status;
-  receiptId: string;
+  receiptIds: string[];
   time: string;
   animatedIndex?: any;
   animatedPosition?: any;
+  expenseDetails?: any;
 };
 
 export const TransactionRow = ({
@@ -34,21 +35,17 @@ export const TransactionRow = ({
   merchantLogoUrl,
   merchantCategoryGroup,
   status,
-  receiptId,
+  receiptIds,
   time = '',
   animatedIndex,
   animatedPosition,
+  expenseDetails,
 }: Props) => {
   const { navigate } = useNavigation();
   const handleItemOnPress = () => {
     navigate(MainScreens.TransactionDetails, { cardId, transactionId });
   };
 
-  const handleAddReceiptOnPress = () => {
-    navigate(MainScreens.AddReceipt, { accountActivityId: transactionId, cardId });
-  };
-
-  const { t } = useTranslation();
   const statusDeclined = status === 'DECLINED';
   const statusFormatted = sentenceCase(status);
 
@@ -81,9 +78,7 @@ export const TransactionRow = ({
     opacity: interpolate(derivedAnimatedIndex.value, [0.5, 1], [0, 1]),
   }));
 
-  const addReceiptAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(derivedAnimatedIndex.value, [0.5, 1], [0, 1]),
-  }));
+  const hasReceipts = receiptIds.length > 0;
 
   return (
     <TouchableOpacity
@@ -114,43 +109,48 @@ export const TransactionRow = ({
       <View style={tw`flex-1`}>
         <AnimatedCSText
           numberOfLines={1}
-          style={[tw`text-base text-black ml-3 z-1 w-full`, merchantAnimatedStyle]}
+          style={[tw`text-base text-black pl-3 z-1 w-full`, merchantAnimatedStyle]}
         >
           {merchantName}
         </AnimatedCSText>
 
-        <AnimatedCSText style={[tw`text-xs text-black ml-3`, timeAnimatedStyle]}>
+        <AnimatedCSText style={[tw`text-xs text-black pl-3`, timeAnimatedStyle]}>
           {formatTime}
         </AnimatedCSText>
       </View>
 
-      <View style={tw`bg-white`}>
-        <Animated.View style={addReceiptAnimatedStyle}>
-          {!receiptId && (
-            <TouchableOpacity
-              style={tw`bg-black py-1 px-2 rounded-1`}
-              onPress={handleAddReceiptOnPress}
-            >
-              <CSText style={tw`text-primary text-xs`}>
-                {t('wallet.transactions.addReceipt')}
-              </CSText>
-            </TouchableOpacity>
-          )}
-        </Animated.View>
-        <View style={tw`items-end`}>
-          <AnimatedCSText
-            style={[
-              tw`text-base text-black z-1`,
-              tw.style(statusDeclined && 'text-error'),
-              amountAnimatedStyle,
-            ]}
-          >
-            {formatCurrency(amount)}
-          </AnimatedCSText>
-          <AnimatedCSText style={[tw`text-xs text-black ml-3`, statusAnimatedStyle]}>
-            {statusFormatted}
-          </AnimatedCSText>
-        </View>
+      <View style={tw`flex-row justify-end items-center w-10`}>
+        {(!expenseDetails || !hasReceipts) && (
+          <PlusWithBorderIcon
+            style={{ marginRight: -4, zIndex: 2 }}
+            color={tw.color('black')}
+            size={14}
+          />
+        )}
+        {!hasReceipts && (
+          <ReceiptIcon
+            style={{
+              marginRight: !expenseDetails ? -6 : 0,
+              zIndex: 1,
+            }}
+          />
+        )}
+        {!expenseDetails && <ExpenseIcon />}
+      </View>
+
+      <View style={tw`bg-white items-end w-18`}>
+        <AnimatedCSText
+          style={[
+            tw`text-base text-black z-1`,
+            tw.style(statusDeclined && 'text-error'),
+            amountAnimatedStyle,
+          ]}
+        >
+          {formatCurrency(amount)}
+        </AnimatedCSText>
+        <AnimatedCSText style={[tw`text-xs text-black ml-3`, statusAnimatedStyle]}>
+          {statusFormatted}
+        </AnimatedCSText>
       </View>
     </TouchableOpacity>
   );
