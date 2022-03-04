@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { useDeviceContext } from 'twrnc';
 import { setLogger } from 'react-query';
+import { AxiosError } from 'axios';
 import { store, persistor } from '@/Store';
 import { ApplicationNavigator } from '@/Navigators';
 import { mixpanel } from '@/Services/utils/analytics';
@@ -17,10 +18,15 @@ const App = () => {
   useEffect(() => {
     mixpanel.init();
     setLogger({
-      log: (message) => mixpanel.track('API Log', {message}),
-      warn: (message) => mixpanel.track('API Warn', {message}),
-      error: (error) => mixpanel.track('API Error', {error}),
-    })
+      log: (message) => mixpanel.track('API Log', { message }),
+      warn: (message) => mixpanel.track('API Warn', { message }),
+      error: (error: AxiosError) =>
+        mixpanel.track('API Error', {
+          url: error?.config?.url,
+          status: error?.response?.status,
+          errorMessage: error?.message,
+        }),
+    });
   }, []);
 
   useDeviceContext(tw);
