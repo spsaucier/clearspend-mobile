@@ -17,7 +17,6 @@ export enum AuthScreens {
   LoginStack = 'Login Stack',
   SelectOrganization = 'Select Organization',
   SetPassword = 'Set Password',
-  VerifyAccount = 'Verify Account',
 }
 
 export type AuthStackParamTypes = {
@@ -27,7 +26,6 @@ export type AuthStackParamTypes = {
   [AuthScreens.LoginStack]: undefined;
   [AuthScreens.SelectOrganization]: undefined;
   [AuthScreens.SetPassword]: { changePasswordId: string; email: string; password: string };
-  [AuthScreens.VerifyAccount]: undefined;
 };
 
 export enum MainScreens {

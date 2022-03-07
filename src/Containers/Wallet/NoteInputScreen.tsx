@@ -67,6 +67,7 @@ const NoteInputScreen = () => {
             value={note}
             onBlur={() => Keyboard.dismiss()}
             selectionColor={tw.color('black')}
+            onSubmitEditing={() => !buttonDisabled && submitNote()}
             scrollEnabled
           />
         </View>
@@ -75,7 +76,7 @@ const NoteInputScreen = () => {
             <CSText style={tw.style(charCount > maxCharCount ? 'text-error' : 'text-black')}>
               {charCount}
             </CSText>
-            <CSText style={tw`black-50`}>{` / ${maxCharCount}`}</CSText>
+            <CSText style={tw`text-black-50`}>{` / ${maxCharCount}`}</CSText>
           </View>
           <Button
             onPress={submitNote}

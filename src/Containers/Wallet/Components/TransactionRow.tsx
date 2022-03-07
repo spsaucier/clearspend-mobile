@@ -100,7 +100,7 @@ export const TransactionRow = ({
               uri: merchantLogoUrl,
             }}
             style={tw`w-full h-full rounded-1`}
-            resizeMode="cover"
+            resizeMode="contain"
           />
         ) : (
           <MerchantCategoryIcon style={tw`w-5 h-5`} merchantCategoryGroup={merchantCategoryGroup} />
