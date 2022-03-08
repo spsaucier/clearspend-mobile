@@ -3,6 +3,8 @@ import plist from 'plist';
 import fs from 'fs';
 import { execSync } from 'child_process';
 
+const isMacOs = process.platform === 'darwin';
+
 const MAIN_INFO_PLIST_PATH = './ios/ClearSpendMobile/Info.plist';
 const IOS_VERSION_PLIST_PATHS = [MAIN_INFO_PLIST_PATH, './ios/ClearSpendMobileTests/Info.plist'];
 const ANDROID_BUILD_GRADLE_PATH = './android/app/build.gradle';
@@ -37,7 +39,9 @@ console.log(`Writing ${ANDROID_BUILD_GRADLE_PATH}`);
 
 // won't work on macOS unless "" is added after -i
 execSync(
-  `sed -i "s/versionCode[ ][0-9]*$/versionCode "${nextBuildNumber}"/g" ${ANDROID_BUILD_GRADLE_PATH}`,
+  `sed -i ${
+    isMacOs ? '"" ' : ''
+  }"s/versionCode[ ][0-9]*$/versionCode "${nextBuildNumber}"/g" ${ANDROID_BUILD_GRADLE_PATH}`,
 );
 
 // Write the build name and number stdout so the pipeline script can pick up the build number

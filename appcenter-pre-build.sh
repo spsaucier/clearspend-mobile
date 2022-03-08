@@ -11,7 +11,13 @@ set | egrep -e $ENV_WHITELIST | sed 's/^CS_//g' > .env
 printf "\n.env created with contents:\n\n"
 cat .env
 
-#cd ${APPCENTER_SOURCE_DIRECTORY}
-#echo "BASE_URL=${BASE_URL}" > .env
-#echo "FAQ_URL=${FAQ_URL}" >> .env
-#echo "SOME_API_KEY=${INPUT_FROM_FORM}" >> .env
+# iOS/Android specific pre build setup
+if [[ "$APPCENTER_XCODE_PROJECT" ]]; then
+  echo "iOS specific post build script"
+  echo "Setting app center key in AppCenter-Config.plist"
+  sed -i.bak "s/SECRET_REPLACED_HERE/${APPCENTER_SECRET_KEY}/g" ios/AppCenter-Config.plist
+else
+  echo "Android specific post build script"
+  echo "Setting app center key in appcenter-config.json"
+  sed -i.bak "s/SECRET_REPLACED_HERE/${APPCENTER_SECRET_KEY}/g" android/app/src/main/assets/appcenter-config.json
+fi

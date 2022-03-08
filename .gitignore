@@ -5,6 +5,9 @@
 # Env vars
 #
 .env
+.env.dev
+.env.uat
+.env.prod
 
 # Xcode
 #

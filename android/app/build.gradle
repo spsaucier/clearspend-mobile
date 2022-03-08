@@ -126,11 +126,25 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    flavorDimensions "default"
+
+    productFlavors {
+        dev {
+            applicationId "com.clearspend.android.dev"
+        }
+        uat {
+            applicationId "com.clearspend.android.uat"
+        }
+        prod {
+            applicationId "com.clearspend.android"
+        }
+    }
+
     defaultConfig {
         applicationId "com.clearspend.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 103
+        versionCode 104
         versionName "1.1"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
