@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import {
   CodeField,
   useBlurOnFulfill,
@@ -96,16 +96,6 @@ export const PasscodeView: React.FC<Props> = ({
     }
   };
 
-  // Animations for error handling
-  const errorAnimationValue = useRef(new Animated.Value(0));
-  useEffect(() => {
-    Animated.timing(errorAnimationValue.current, {
-      toValue: error ? 1 : 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  }, [error]);
-
   return (
     <SafeAreaView style={tw.style('pt-10')}>
       {preface}
@@ -125,9 +115,9 @@ export const PasscodeView: React.FC<Props> = ({
         />
       </View>
       <View style={tw.style('items-center')}>
-        {error ? <Animated.Text style={tw`text-white mt-3`}>{errorTitle}</Animated.Text> : null}
+        {error ? <CSText style={tw`text-white mt-3`}>{errorTitle}</CSText> : null}
         {(error || messaging) && (
-          <Animated.Text style={tw`text-white`}>{error || messaging}</Animated.Text>
+          <CSText style={tw`text-white`}>{error || messaging}</CSText>
         )}
       </View>
     </SafeAreaView>

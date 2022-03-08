@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import {
   CodeField,
   useBlurOnFulfill,
@@ -94,16 +94,6 @@ export const OTPView: React.FC<Props> = ({
     }
   };
 
-  // Animations for error handling
-  const errorAnimationValue = useRef(new Animated.Value(0));
-  useEffect(() => {
-    Animated.timing(errorAnimationValue.current, {
-      toValue: error ? 1 : 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  }, [error]);
-
   return (
     <View>
       {title || null}
@@ -122,7 +112,7 @@ export const OTPView: React.FC<Props> = ({
         />
       </View>
       <View style={tw.style('items-center')}>
-        {error ? <Animated.Text style={tw`text-white mt-3`}>{errorTitle}</Animated.Text> : null}
+        {error ? <CSText style={tw`text-white mt-3`}>{errorTitle}</CSText> : null}
       </View>
     </View>
   );
