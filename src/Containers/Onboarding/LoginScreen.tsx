@@ -48,6 +48,11 @@ const LoginScreen = () => {
         type: 'error',
         text1: 'Invalid two-factor auth configuration. Please contact ClearSpend support to resolve.',
       });
+    } else if (ex.message) {
+      Toast.show({
+        type: 'error',
+        text1: ex.message,
+      });
     }
     setProcessing(false);
     setLoginButtonDisabled(false);
@@ -65,7 +70,6 @@ const LoginScreen = () => {
     setError(undefined);
     setProcessing(true);
     setLoginButtonDisabled(true);
-
     login(email, password)
       .then((res) => {
         setProcessing(false);
