@@ -205,8 +205,8 @@ type TransactionProps = {
 const Transactions = ({ cardId }: TransactionProps) => {
   // (dimensions.height / dimensions.width) < 2 means the device is short and wider
   // like old devices Pixel 2, iphone 5
-  const initialSnapPoint = dimensions.height / dimensions.width < 2 ? '40%' : '50%';
-  const expandedSnapPoint = '95%';
+  const initialSnapPoint = dimensions.height / dimensions.width < 2 ? '42%' : '50%';
+  const expandedSnapPoint = '90%';
 
   const snapPointMemo = useMemo(
     () => [initialSnapPoint, expandedSnapPoint],

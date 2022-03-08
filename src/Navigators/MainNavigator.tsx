@@ -1,11 +1,7 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import {
-  createStackNavigator,
-  StackNavigationOptions,
-  TransitionPresets,
-} from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { StackHeaderOptions } from '@react-navigation/stack/lib/typescript/src/types';
 import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
 import { CSText } from '@/Components';
@@ -21,7 +17,6 @@ import LoginOptionsScreen from '@/Containers/Profile/LoginOptions';
 import LegalDocumentsScreen from '@/Containers/Profile/LegalDocuments';
 import NotificationScreen from '@/Containers/Notifications/NotificationScreen';
 import CardDetailScreen from '@/Containers/Wallet/CardDetailScreen';
-import CardInfoScreen from '@/Containers/Wallet/CardInfoScreen';
 import TransactionDetailScreen from '@/Containers/Wallet/TransactionDetailScreen';
 import CardSettingsScreen from '@/Containers/Wallet/CardSettingsScreen';
 import CardLostStolen from '@/Containers/Wallet/CardLostStolen';
@@ -117,11 +112,6 @@ const WalletStack = () => (
     <Stack.Screen name={MainScreens.Wallet} component={WalletScreen} />
     <Stack.Screen name={MainScreens.Notifications} component={NotificationScreen} />
     <Stack.Screen
-      name={MainScreens.CardInfo}
-      component={CardInfoScreen}
-      options={transparentModal}
-    />
-    <Stack.Screen
       name={MainScreens.TransactionDetails}
       component={TransactionDetailScreen}
       options={transparentModal}
@@ -132,9 +122,7 @@ const WalletStack = () => (
     <Stack.Screen
       name={MainScreens.CardDetails}
       component={CardDetailScreen}
-      options={{
-        ...TransitionPresets.ModalSlideFromBottomIOS,
-      }}
+      options={transparentModal}
     />
     <Stack.Screen name={MainScreens.CardSettings} component={CardSettingsScreen} />
     <Stack.Screen name={MainScreens.CardLostStolen} component={CardLostStolen} />

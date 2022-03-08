@@ -1,14 +1,15 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleProp, View, ViewStyle, TouchableOpacity, ImageBackground, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import tw from '@/Styles/tailwind';
 
 import { Logo } from '@/Components/Svg/Logo';
 import { Visa } from '@/Components/Svg/Visa';
-import { SnowflakeIcon } from '@/Components/Icons';
+import { InfoIcon, SnowflakeIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
 import { formatCurrency } from '@/Helpers/StringHelpers';
+import { CardOptionsButton } from '@/Containers/Wallet/Components/CardOptionsButton';
 
 export type CardType = {
   cardId: string;
@@ -25,6 +26,8 @@ type Props = {
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   width?: any;
+  onCardBalanceInfoPress?: () => void;
+  onCardOptionsPress?: () => void;
 } & CardType;
 
 const cardBGImageDark = require('@/Assets/Images/card-bg-dark.png');
@@ -48,6 +51,8 @@ export const Card = ({
   onPress,
   width,
   showSensitiveInformation = false,
+  onCardBalanceInfoPress,
+  onCardOptionsPress,
 }: Props) => {
   const { t } = useTranslation();
 
@@ -61,11 +66,11 @@ export const Card = ({
       key={cardId}
       style={[
         tw.style(
-          'flex bg-card-primary w-full rounded-2xl shadow-xl overflow-hidden',
+          `flex bg-card-primary w-full rounded-2xl ${Platform.OS === 'ios' ? 'shadow-xl' : ''} overflow-hidden`,
           isVirtual && 'bg-card-light',
           isFrozen && 'bg-card-dark',
         ),
-        { aspectRatio: 328 / 208, width },
+        { aspectRatio: 1.6, width },
         style,
       ]}
       onPress={onPress}
@@ -80,7 +85,8 @@ export const Card = ({
         >
           {/* Top Row */}
           <View style={tw`flex flex-row`}>
-            <View style={tw`flex mt-4`}>
+            <View style={tw`flex-row items-center`}>
+              <CardOptionsButton theme={isFrozen ? 'dark' : 'light'} onPress={onCardOptionsPress} />
               {isFrozen && (
                 <View style={tw.style('flex-row items-center justify-center mt-1')}>
                   <SnowflakeIcon color={tw.color('primary')} />
@@ -122,9 +128,14 @@ export const Card = ({
               </CSText>
 
               {!showSensitiveInformation && (
-                <CSText style={tw.style('text-2xl', darkContent ? 'text-black' : 'text-white')}>
-                  {formatCurrency(balance)}
-                </CSText>
+                <View style={tw`flex-row items-center`}>
+                  <CSText style={tw.style('text-2xl', darkContent ? 'text-black' : 'text-white')}>
+                    {formatCurrency(balance)}
+                  </CSText>
+                  <TouchableOpacity style={tw`p-2`} onPress={onCardBalanceInfoPress}>
+                    <InfoIcon color={darkContent ? 'black' : 'white'} />
+                  </TouchableOpacity>
+                </View>
               )}
             </View>
 

@@ -119,12 +119,7 @@ export default {
     passwordInputLabel: 'New password',
     passwordInputPlaceholder: 'Enter a new password',
     rules: {
-      mustInclude: 'Must include',
-      mix: 'Mixture of letters and numbers',
       length: 'Must be between 10 and 30 characters',
-      upperCase: 'At least 1 character in uppercase',
-      lowerCase: 'At least 1 character in lowercase',
-      special: 'At least one special character, e.g., ! @ # ? ]',
     },
     buttonCta: 'Next',
     termsAndPrivacyAcceptance:
@@ -254,11 +249,20 @@ export default {
     card: 'Card',
     balance: 'Balance',
     frozen: 'Frozen',
-    showCardInfo: 'Show Card Info',
-    freezeCard: 'Freeze Card',
-    unfreezeCard: 'Unfreeze Card',
     validThru: 'Valid Thru',
     cvv: 'CVV',
+    options: {
+      cardOptions: 'Card Options',
+      showCardInfo: 'Show Card Info',
+      freezeCard: 'Freeze Card',
+      unfreezeCard: 'Unfreeze Card',
+      freezingCard: 'Freezing...',
+      unfreezingCard: 'Unfreezing...',
+      freezeSuccessToast: 'Card has been frozen',
+      unfreezeSuccessToast: 'Card has been unfrozen',
+      freezeErrorToast: 'Card could not be frozen',
+      unfreezeErrorToast: 'Card could not be unfrozen',
+    },
   },
   activateCard: {
     activateCSCard: 'Activate your ClearSpend card',
@@ -297,7 +301,9 @@ export default {
     dismiss: 'Dismiss',
     cardNumber: 'CARD NUMBER',
     copyCVV: 'Copy CVV',
-    billingAddress: 'BILLING ADDRESS',
+    billingAddress: 'CARD BILLING ADDRESS',
+    billingAddressInfo:
+      "This is your company's main address. Use this address as your billing address for e-commerce payments.",
   },
   profile: {
     profileInfo: 'View profile info',
@@ -365,24 +371,5 @@ export default {
   notifications: {
     title: 'Notifications',
     youHaveNew: 'You have {{newNotifications}} new notifications',
-  },
-  spendControls: {
-    back: 'BACK',
-    title: 'Spend Controls',
-    limits: 'Limits',
-    howMuchSpent: 'Configure how much can be spent on this card',
-    limitSection: {
-      dailyLimit: 'Daily Limit',
-      monthlyLimit: 'Monthly Limit',
-    },
-    channelsTitle: 'Channels',
-    howOftenCardUsed: 'Configure where and how often this card can be used',
-    channelsSection: {
-      atm: 'ATM',
-      validUntil: 'Valid until:',
-      cardLimit: 'Limit: $100.00',
-      cardValidity: 'Card Validity',
-      oneTimeUse: 'One time use',
-    },
   },
 };

@@ -1,21 +1,23 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Dimensions, StatusBar } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from 'react-native-snap-carousel';
 import { useNavigation } from '@react-navigation/native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import tw from '@/Styles/tailwind';
-import { Button, ActivityIndicator, CSText } from '@/Components';
-import { SnowflakeIcon, EyeIcon } from '@/Components/Icons';
+import { Button, ActivityIndicator, CSText, InfoPanel } from '@/Components';
 import { Card } from '@/Containers/Wallet/Components/Card';
 import Transactions from './Transactions';
-import { useFreezeCard, useUnFreezeCard, useUserCards } from '@/Queries';
+import { useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import useRequireOnboarding from '@/Hooks/useRequireOnboarding';
 import LinearGradientWithOpacity from '@/Components/Svg/LinearGradientWithOpacity';
+import { AddToWalletButton } from '@/Containers/Wallet/Components/AddToWalletButton';
+import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 
 const { width: screenWidth } = Dimensions.get('screen');
 
@@ -28,7 +30,14 @@ const WalletScreen = () => {
   const cardStatus = selectedCard?.card?.status;
   const isFrozen = cardStatus === 'INACTIVE';
   const { logout } = useAuthentication();
-
+  const balanceInfoPanelRef = useRef<BottomSheetModal>(null);
+  const cardOptionsPanelRef = useRef<BottomSheetModal>(null);
+  const onCardBalanceInfoPress = () => {
+    balanceInfoPanelRef.current?.present();
+  };
+  const onCardOptionsPress = () => {
+    cardOptionsPanelRef.current?.present();
+  };
   const {
     data: allCardsData,
     isLoading: cardsLoading,
@@ -49,12 +58,6 @@ const WalletScreen = () => {
       }) ?? [],
     [allCardsData],
   );
-
-  const { mutate: freeze, isLoading: isFreezing } = useFreezeCard(selectedCard?.card?.cardId!);
-  const { mutate: unfreeze, isLoading: isUnfreezing } = useUnFreezeCard(
-    selectedCard?.card?.cardId!,
-  );
-  const freezingOrUnfreezing = isUnfreezing || isFreezing;
 
   useEffect(() => {
     if (activeCards.length) {
@@ -168,6 +171,8 @@ const WalletScreen = () => {
                     lastDigits={lastFour || ''}
                     cardTitle={cardTitle}
                     onPress={() => navigate(MainScreens.CardDetails, { cardId })}
+                    onCardBalanceInfoPress={onCardBalanceInfoPress}
+                    onCardOptionsPress={onCardOptionsPress}
                   />
                 </View>
               );
@@ -197,50 +202,18 @@ const WalletScreen = () => {
           })}
       </View>
 
-      {/* Buttons */}
-      <View style={tw`flex-1 flex-row items-start justify-center self-center py-2 px-4`}>
-        <Button
-          containerStyle={tw`flex-1 mr-1`}
-          disabled={!selectedCard?.card?.cardId}
-          onPress={() => navigate(MainScreens.CardInfo, { cardId: selectedCard?.card?.cardId! })}
-          small
-          theme="dark"
-        >
-          <EyeIcon style={tw`mr-2`} color={tw.color('primary')} />
-          <CSText style={tw`text-base text-white`}>{t('card.showCardInfo')}</CSText>
-        </Button>
-
-        <Button
-          containerStyle={tw.style('flex-1 ml-1', isFrozen && 'bg-white')}
-          small
-          disabled={freezingOrUnfreezing}
-          theme="dark"
-          onPress={() => {
-            if (!isFrozen) freeze();
-            else unfreeze();
-          }}
-        >
-          {freezingOrUnfreezing ? (
-            <ActivityIndicator style={tw`h-5 w-5`} />
-          ) : (
-            <View style={tw`flex-row`}>
-              <SnowflakeIcon
-                style={tw`mr-2`}
-                color={isFrozen ? tw.color('black') : tw.color('primary')}
-              />
-              {!cardsLoading && isFrozen ? (
-                <CSText style={tw`text-base text-black`}>{t('card.unfreezeCard')}</CSText>
-              ) : (
-                <CSText style={tw`text-base text-white`}>{t('card.freezeCard')}</CSText>
-              )}
-            </View>
-          )}
-        </Button>
-      </View>
+      <AddToWalletButton hide={false} />
 
       {selectedCard?.card?.cardId && <Transactions cardId={selectedCard?.card?.cardId} />}
 
       <LinearGradientWithOpacity style={tw`h-20 w-full absolute bottom-0`} />
+      <InfoPanel
+        ref={balanceInfoPanelRef}
+        title={t('cardProfile.availableToSpendMeans')}
+        description={t('cardProfile.availableToSpendMeansDescription')}
+        okButtonText={t('cardProfile.okGotIt')}
+      />
+      <CardOptionsBottomSheet ref={cardOptionsPanelRef} cardId={selectedCard?.card?.cardId} />
     </SafeAreaView>
   );
 };

@@ -73,7 +73,10 @@ export const CSBottomSheet = ({
         tw`flex self-center bg-transparent w-12 rounded-full my-3`,
         { display: panningEnabled && showHandle ? 'flex' : 'none' },
       ]}
-      handleIndicatorStyle={tw`${translucidBackground ? 'bg-black-20' : 'bg-black-75'}`}
+      handleIndicatorStyle={tw.style(
+        'w-14 h-1',
+        translucidBackground ? 'bg-black-20' : 'bg-black-75',
+      )}
     >
       <BottomSheetView onLayout={handleContentLayout}>
         <FocusAwareStatusBar />

@@ -47,7 +47,7 @@ export const InfoPanel = forwardRef(
           ref={ref}
           snapPoints={snapPointMemo}
           backdropComponent={renderBackdrop}
-          handleIndicatorStyle={tw`bg-black-20`}
+          handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
           backgroundStyle={tw`bg-secondary`}
         >
           <SafeAreaView style={tw`flex-1 p-4`} edges={['bottom']}>

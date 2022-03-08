@@ -69,7 +69,7 @@ module.exports = {
 
       // Cards
       'card-light': '#F3F2EF',
-      'card-dark': '#1C3437',
+      'card-dark': '#063838',
       'card-primary': '#43FA76',
 
       // Functional
@@ -84,12 +84,18 @@ module.exports = {
       'ios-link': '#008de1',
       'ios-gray-bg': '#F7F7F6',
 
+      // White Scale
+      'white-5': 'rgba(255,255,255,0.05)',
+      'white-10': 'rgba(255,255,255,0.1)',
+      'white-20': 'rgba(255,255,255,0.2)',
+
       // Grayscale
-      'black-5': '#EDEDED',
-      'black-10': '#E1E1E1',
-      'black-20': '#CCCCCC',
-      'black-50': '#7C7C7C',
-      'black-75': '#3F3F3F',
+      'black-5': 'rgba(0,0,0,0.05)',
+      'black-10': 'rgba(0,0,0,0.1)',
+      'black-20': 'rgba(0,0,0,0.2)',
+      'black-30': 'rgba(0,0,0,0.3)',
+      'black-50': 'rgba(0,0,0,0.5)',
+      'black-75': 'rgba(0,0,0,0.75)',
     },
     borderWidth: {
       DEFAULT: '1px',

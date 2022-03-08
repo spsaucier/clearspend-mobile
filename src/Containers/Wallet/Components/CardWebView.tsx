@@ -1,24 +1,25 @@
 import React, { useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
-import { View, Dimensions, TouchableOpacity } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { View, Dimensions, Platform } from 'react-native';
 import Config from 'react-native-config';
+import Toast from 'react-native-toast-message';
 import { Card } from './Card';
 import tw from '@/Styles/tailwind';
 import { CardDetailsResponse } from '@/generated/capital';
-import { CSText } from '@/Components';
 import { revealCardKey } from '@/Queries/card';
 import { ActivityIndicator } from '@/Components/ActivityIndicator';
-import { useBusiness } from '@/Queries';
 
-export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse }) => {
+type Props = {
+  onCardOptionsPress: () => void;
+  cardData: CardDetailsResponse;
+};
+
+export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
   const { card, availableBalance } = cardData;
   const [loading, setLoading] = useState(true);
   const [readyCount, setReadyCount] = useState(0);
-  const { t } = useTranslation();
 
   const { cardId, lastFour, type, status, externalRef } = card;
-  const { data: business } = useBusiness();
   const { amount: balanceAmount } = availableBalance;
 
   const isFrozen = status === 'INACTIVE';
@@ -33,54 +34,64 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
   const textColor = isFrozen ? 'white' : 'black';
 
   return (
-    <View style={tw`flex-1 px-4 pt-15`}>
-      <View style={tw`justify-center relative`}>
-        <Card
-          cardId={cardId!}
-          balance={balanceAmount}
-          lastDigits={lastFour!}
-          isVirtual={isVirtual}
-          isFrozen={isFrozen}
-          showSensitiveInformation
-        />
-        <View
-          style={{
-            height: Dimensions.get('window').width * 0.63,
-            position: 'absolute',
-            width: '100%',
-            left: 15,
-          }}
-        >
-          <WebView
-            ref={webviewRef}
-            originWhitelist={['*']}
-            bounces={false}
-            style={{ backgroundColor: 'transparent', opacity: loading ? 0 : 1 }}
-            showsHorizontalScrollIndicator={false}
-            onMessage={async (event: any) => {
-              const { data } = event.nativeEvent;
-              if (data.indexOf('ephkn_pub') === 0) {
-                const result = await revealCardKey({ nonce: data, cardId });
-                sendDataToWebView(result?.ephemeralKey!);
-              } else if (loading) {
-                try {
-                  const dataObj = JSON.parse(data);
-                  if (dataObj.message.payload.event === 'ready') {
-                    // Stripe sends six ready events en route to complete rendering
-                    // probably one per field and one per Copy icon
-                    if (readyCount + 1 === 6) {
-                      setLoading(false);
-                    }
-                    setReadyCount(readyCount + 1);
+    <View style={tw`flex-1 justify-center relative`}>
+      <Card
+        cardId={cardId!}
+        balance={balanceAmount}
+        lastDigits={lastFour!}
+        isVirtual={isVirtual}
+        isFrozen={isFrozen}
+        showSensitiveInformation
+        onCardOptionsPress={onCardOptionsPress}
+      />
+      <View
+        style={[
+          tw`absolute w-full bottom-0`,
+          {
+            height: Dimensions.get('window').width * 0.3,
+          },
+        ]}
+      >
+        <WebView
+          ref={webviewRef}
+          originWhitelist={['*']}
+          bounces={false}
+          style={[tw`bg-transparent`, { opacity: loading ? 0 : 1 }]}
+          showsHorizontalScrollIndicator={false}
+          onMessage={async (event: any) => {
+            const { data } = event.nativeEvent;
+            if (data.indexOf('ephkn_pub') === 0) {
+              const result = await revealCardKey({ nonce: data, cardId });
+              sendDataToWebView(result?.ephemeralKey!);
+            } else if (loading) {
+              try {
+                const dataObj = JSON.parse(data);
+                if (dataObj.message.payload.event === 'ready') {
+                  // Stripe sends six ready events en route to complete rendering
+                  // probably one per field and one per Copy icon
+                  if (readyCount + 1 === 6) {
+                    setLoading(false);
                   }
-                } catch {
-                  // ignore
+                  setReadyCount(readyCount + 1);
                 }
+              } catch {
+                // ignore
               }
-            }}
-            source={{
-              // eslint-disable-next-line global-require
-              html: /* html */ `
+            } else {
+              try {
+                const dataObj = JSON.parse(data);
+                if (dataObj?.message?.payload?.event === 'click') {
+                  // We do not know which one was clicked
+                  Toast.show({type: 'success', text1: 'Copied to clipboard'})
+                }
+              } catch {
+                // Do nothing
+              }
+            }
+          }}
+          source={{
+            // eslint-disable-next-line global-require
+            html: /* html */ `
 <html>
   <head>
     <title>ClearSpend Card</title>
@@ -97,13 +108,13 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
       #card-back {
         position: relative;
         width: 100vw;
-        height: 63.54vw;
+        height: 30vw;
       }
       
       #card-details {
         position: absolute;
-        left: 3vw;
-        bottom: 3vw;
+        left: 6vw;
+        bottom: 2vw;
       
         color: ${textColor};
         font-size: 5vw;
@@ -174,15 +185,13 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
         <div class="row">
           <div id="card-number"></div>
           <div class="copy-icon" id="card-number-copy"></div>
-          <div class="copy-icon-success" id="card-number-copy-success"></div>
         </div>
         <div id="expiry-cvc-wrapper">
           <div id="expiry-wrapper">
-            <div id="exp-text">VALID UNTIL</div>
+            <div id="exp-text">VALID THRU</div>
             <div class="row">
               <div id="card-expiry"></div>
               <div class="copy-icon" id="card-expiry-copy"></div>
-              <div class="copy-icon-success" id="card-expiry-copy-success"></div>
             </div>
           </div>
           <div id="cvc-wrapper">
@@ -190,7 +199,6 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
             <div class="row">
               <div id="card-cvc"></div>
               <div class="copy-icon" id="card-cvc-copy"></div>
-              <div class="copy-icon-success" id="card-cvc-copy-success"></div>
             </div>
           </div>
         </div>
@@ -223,6 +231,14 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
               window.ReactNativeWebView.postMessage(message.data);
             }
           });
+          ${Platform.OS === 'android' ? `
+            // Android needs to listen on 'document' for messages from React Native
+            document.addEventListener("message", message => {
+              if (message.data.indexOf('ek_') === 0) {
+                return resolve(message.data);
+              }
+            });
+          ` : ''}
           window.ReactNativeWebView.postMessage(nonceResult.nonce);
         });
 
@@ -291,8 +307,8 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
         cvc.mount("#card-cvc");
 
         numberCopy.mount('#card-number-copy');
-        cvcCopy.mount('#card-cvc-copy');
         expiryCopy.mount('#card-expiry-copy');
+        cvcCopy.mount('#card-cvc-copy');
       };
 
       renderCard();
@@ -300,44 +316,16 @@ export const CardInfoContent = ({ cardData }: { cardData: CardDetailsResponse })
   </body>
 </html>
             `,
-            }}
-          />
-          {loading && (
-            <View
-              style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                marginLeft: -35,
-                marginTop: -30,
-              }}
-            >
-              <ActivityIndicator />
-            </View>
-          )}
-        </View>
-      </View>
-
-      {!!business?.address?.streetLine1 && (
-        <>
-          {/* Address Section */}
-          <View style={tw`mt-6`}>
-            <CSText style={tw`text-white text-xs`}>{t('cardInfo.billingAddress')}</CSText>
-            <TouchableOpacity
-              style={tw`mt-2 p-4 bg-white rounded-md flex flex-row justify-between items-center`}
-            >
-              <View style={tw`flex`}>
-                <CSText style={tw`font-montreal`}>
-                  {`${business.address.streetLine1} ${business.address.streetLine2}`}
-                </CSText>
-                <CSText style={tw`mt-1 font-montreal`}>
-                  {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
-                </CSText>
-              </View>
-            </TouchableOpacity>
+          }}
+        />
+        {loading && (
+          <View
+            style={[tw`absolute w-full bottom-0 items-center justify-center`, { aspectRatio: 1.6 }]}
+          >
+            <ActivityIndicator style={tw`w-8`} bgColor={isFrozen ? 'white' : 'black'} />
           </View>
-        </>
-      )}
+        )}
+      </View>
     </View>
   );
 };
