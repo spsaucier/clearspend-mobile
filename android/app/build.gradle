@@ -147,6 +147,7 @@ android {
         versionCode 104
         versionName "1.1"
         missingDimensionStrategy 'react-native-camera', 'general'
+        resValue "string", "build_config_package", "com.clearspend.android"
     }
     splits {
         abi {
