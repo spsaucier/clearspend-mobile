@@ -1,3 +1,4 @@
 import { Mixpanel } from 'mixpanel-react-native';
+import Config from 'react-native-config';
 
-export const mixpanel = new Mixpanel('fae11a3a59ea09ae6e4e9192a99220fb');
+export const mixpanel = new Mixpanel(Config.MIXPANEL_PROJECT_TOKEN);
