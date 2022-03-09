@@ -52,6 +52,7 @@ export const disableEnrollment2FA = async (
     url: `${Config.FA_URL}/api/user/two-factor/${userId}?code=${recoveryCode}&methodId=${twoFactorMethodId}`,
     headers: {
       'content-type': 'application/json',
+      // TODO: Remove or use env var
       'x-fusionauth-tenantid': '933328da-3f46-0236-6ec6-4a04a689f99e',
     },
   }).catch((e) => handleError(e, 'disableEnrollment2FA'));

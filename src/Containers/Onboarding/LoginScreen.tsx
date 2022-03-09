@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 import { useMMKVBoolean } from 'react-native-mmkv';
+import CookieManager from '@react-native-cookies/cookies';
 import tw from '@/Styles/tailwind';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
@@ -65,27 +66,29 @@ const LoginScreen = () => {
     dispatch(updateSession(sessionPayload));
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     Keyboard.dismiss();
     setError(undefined);
     setProcessing(true);
     setLoginButtonDisabled(true);
-    login(email, password)
-      .then((res) => {
-        setProcessing(false);
-        setLoginButtonDisabled(false);
-        if ('accessToken' in res) {
-          setShow2faPrompt(true);
-          loginSuccess(res);
-        } else if ('changePasswordId' in res) {
-          const { changePasswordId } = res;
-          navigate(AuthScreens.SetPassword, { changePasswordId, email, password });
-        } else if ('twoFactorMethod' in res) {
-          setTwoFactorId(res.twoFactorId);
-          setShow2faEntry(res.twoFactorMethod);
-        }
-      })
-      .catch(handleError);
+    await CookieManager.clearAll();
+    try {
+      const res = await login(email, password)
+      setProcessing(false);
+      setLoginButtonDisabled(false);
+      if ('accessToken' in res) {
+        setShow2faPrompt(true);
+        loginSuccess(res);
+      } else if ('changePasswordId' in res) {
+        const { changePasswordId } = res;
+        navigate(AuthScreens.SetPassword, { changePasswordId, email, password });
+      } else if ('twoFactorMethod' in res) {
+        setTwoFactorId(res.twoFactorId);
+        setShow2faEntry(res.twoFactorMethod);
+      }
+    } catch(e) {
+      handleError(e);
+    };
   };
 
   const handle2faLogin = (code: string) => {

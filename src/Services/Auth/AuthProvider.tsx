@@ -1,6 +1,7 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { MMKV, useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
+import CookieManager from '@react-native-cookies/cookies';
 import { persistor, store } from '@/Store';
 import { killSession } from '@/Store/Session';
 import { ReturnUseBiometrics, useBiometrics } from '@/Hooks/useBiometrics';
@@ -89,6 +90,7 @@ const AuthProvider: FC = ({ children }) => {
     setJustSet2FA(false);
     await bioProps.disableBiometrics();
     await passcodeProps.disablePasscode();
+    await CookieManager.clearAll();
     persistor.purge();
     store.dispatch(killSession());
   };
