@@ -10,10 +10,8 @@ import {
   CSText,
   FocusAwareStatusBar,
   InfoPanel,
-  LinearProgressBar,
 } from '@/Components';
 import { useBusiness, useCard } from '@/Queries';
-import { formatCurrency } from '@/Helpers/StringHelpers';
 import { CardWebView } from '@/Containers/Wallet/Components/CardWebView';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
@@ -55,21 +53,8 @@ const CardDetailScreen = ({ route }: Props) => {
     );
   }
   if (data) {
-    // TODO: CALCULATIONS WILL BE DONE PROPERLY WHEN API INTEGRATED
-    const tempData = {
-      amountSpentToday: 12.05,
-      dailySpendLimit: 30.0,
-      amountSpentCurrentMonth: 300.05,
-      monthlySpendLimit: 500,
-    };
-
-    const { amountSpentToday, dailySpendLimit, amountSpentCurrentMonth, monthlySpendLimit } =
-      tempData;
-    const dailyRemaining = Math.abs(dailySpendLimit - amountSpentToday);
-    const monthlyRemaining = Math.abs(monthlySpendLimit - amountSpentCurrentMonth);
-
     return (
-      <SafeAreaView style={tw`bg-secondary`}>
+      <SafeAreaView style={tw`bg-secondary flex-1`}>
         <FocusAwareStatusBar translucent backgroundColor="transparent" />
 
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -84,54 +69,6 @@ const CardDetailScreen = ({ route }: Props) => {
           {/* Card */}
           <View style={tw`flex-1 p-5`}>
             <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
-          </View>
-
-          <View style={tw`bg-white m-5 px-5 py-2 rounded-md bg-black-30`}>
-            {/* Spent Today */}
-            <View style={tw`my-4`}>
-              <View style={tw`flex-row justify-between mt-2`}>
-                <CSText style={tw`text-xs text-white uppercase`}>
-                  {t('cardProfile.spentToday')}
-                </CSText>
-                <View style={tw`flex-row`}>
-                  <CSText style={tw`text-sm text-white`}>
-                    {t('cardProfile.limit', { amount: `${formatCurrency(dailySpendLimit)}` })}
-                  </CSText>
-                </View>
-              </View>
-              <LinearProgressBar progress={(amountSpentToday / dailySpendLimit) * 100} />
-              <View style={tw`flex-row justify-between items-start`}>
-                <CSText style={tw`text-lg mt-1 text-white`}>
-                  {formatCurrency(amountSpentToday)}
-                </CSText>
-                <CSText style={tw`text-sm text-black mt-1 text-white`}>
-                  {t('cardProfile.remaining', { amount: `${formatCurrency(dailyRemaining)}` })}
-                </CSText>
-              </View>
-            </View>
-
-            {/* Spent this month */}
-            <View style={tw`mb-4 mt-4`}>
-              <View style={tw`flex-row justify-between mt-2`}>
-                <CSText style={tw`text-xs text-white uppercase`}>
-                  {t('cardProfile.spentCurrentMonth')}
-                </CSText>
-                <View style={tw`flex-row`}>
-                  <CSText style={tw`text-sm text-white`}>
-                    {t('cardProfile.limit', { amount: `${formatCurrency(monthlySpendLimit)}` })}
-                  </CSText>
-                </View>
-              </View>
-              <LinearProgressBar progress={(amountSpentCurrentMonth / monthlySpendLimit) * 100} />
-              <View style={tw`flex-row justify-between items-start`}>
-                <CSText style={tw`text-lg mt-1 text-white`}>
-                  {formatCurrency(amountSpentCurrentMonth)}
-                </CSText>
-                <CSText style={tw`text-sm text-black mt-1 text-white`}>
-                  {t('cardProfile.remaining', { amount: `${formatCurrency(monthlyRemaining)}` })}
-                </CSText>
-              </View>
-            </View>
           </View>
 
           {/* Address */}
