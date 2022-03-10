@@ -65,12 +65,6 @@ export default {
     buttonCta: 'Verified',
     incorrect: 'The entered OTP was incorrect',
   },
-  verifyAccount: {
-    title: 'Verify your account',
-    subTitle: 'Enter the verification code send to your mobile number',
-    resendCta: 'Didn’t receive a code? Resend Code (in 15 seconds)',
-    buttonCta: 'Verify',
-  },
   loginOptions: {
     title: 'Login options',
     subTitle:

@@ -24,6 +24,7 @@ import { OTPView } from './OTPView';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { SHOW_2FA_PROMPT_KEY } from '@/Store/keys';
 import { Constants } from '@/consts';
+import { LoginTitle } from './Components/OnboardingScreenTitle';
 
 const LoginScreen = () => {
   const { t } = useTranslation();
@@ -47,7 +48,8 @@ const LoginScreen = () => {
     if (ex?.fieldErrors?.methodId?.[0]?.code === '[invalid]methodId') {
       Toast.show({
         type: 'error',
-        text1: 'Invalid two-factor auth configuration. Please contact ClearSpend support to resolve.',
+        text1:
+          'Invalid two-factor auth configuration. Please contact ClearSpend support to resolve.',
       });
     } else if (ex.message) {
       Toast.show({
@@ -66,14 +68,14 @@ const LoginScreen = () => {
     dispatch(updateSession(sessionPayload));
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (isResend?: boolean) => {
     Keyboard.dismiss();
     setError(undefined);
     setProcessing(true);
     setLoginButtonDisabled(true);
     await CookieManager.clearAll();
     try {
-      const res = await login(email, password)
+      const res = await login(email, password);
       setProcessing(false);
       setLoginButtonDisabled(false);
       if ('accessToken' in res) {
@@ -85,10 +87,16 @@ const LoginScreen = () => {
       } else if ('twoFactorMethod' in res) {
         setTwoFactorId(res.twoFactorId);
         setShow2faEntry(res.twoFactorMethod);
+        if (isResend) {
+          Toast.show({
+            type: 'success',
+            text1: 'Code re-sent to your phone',
+          });
+        }
       }
-    } catch(e) {
+    } catch (e) {
       handleError(e);
-    };
+    }
   };
 
   const handle2faLogin = (code: string) => {
@@ -138,23 +146,17 @@ const LoginScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={tw`p-5 justify-center`}>
-          <Logo style={tw`w-30 mb-3`} />
-          <CSText
-            style={tw.style('text-4xl text-white mb-10 mt-6 font-telegraf leading-10', {
-              fontWeight: '300',
-            })}
-          >
-            {t('login.heading')}
-          </CSText>
           {show2faEntry ? (
-            <View>
+            <View style={tw`flex-1`}>
               <BackButtonNavigator onBackPress={() => setShow2faEntry('')} />
               <View style={tw`mb-5 h-1/2`}>
                 <OTPView
                   title={
-                    <CSText style={tw`text-white mt-6`}>
-                      {t(`login.twoFactor.${show2faEntry}.label`)}
-                    </CSText>
+                    <LoginTitle
+                      titlePart1={t(`otp.titlePart1`)}
+                      titlePart2={t(`otp.titlePart2`)}
+                      titlePart3={t(`otp.titlePart3`)}
+                    />
                   }
                   error={!!authError}
                   errorTitle={t('otp.incorrect')}
@@ -162,48 +164,63 @@ const LoginScreen = () => {
                   onSuccessFinished={handle2faLogin}
                 />
               </View>
+              <TouchableOpacity onPress={() => handleLogin(true)} testID="resendOtpLink" disabled={loginButtonDisabled}>
+                <CSText style={tw`text-sm text-primary mt-20 self-center`}>
+                  {t('otp.resendCode')}
+                </CSText>
+              </TouchableOpacity>
             </View>
           ) : (
-            <View>
-              <CSTextInput
-                label={t('login.emailLabel')}
-                placeholder={t('login.emailPlaceholder')}
-                keyboardType="email-address"
-                containerStyle={tw`mb-8`}
-                onChangeText={(value) => setEmail(value)}
-                value={email}
-                onSubmitEditing={() => passwordRef?.current?.focus()}
-                returnKeyType="next"
-                autoFocus
-              />
+            <>
+              <Logo style={tw`w-30 mb-3`} />
+              <CSText
+                style={tw.style('text-4xl text-white mb-10 mt-6 font-telegraf leading-10', {
+                  fontWeight: '300',
+                })}
+              >
+                {t('login.heading')}
+              </CSText>
+              <View>
+                <CSTextInput
+                  label={t('login.emailLabel')}
+                  placeholder={t('login.emailPlaceholder')}
+                  keyboardType="email-address"
+                  containerStyle={tw`mb-8`}
+                  onChangeText={(value) => setEmail(value)}
+                  value={email}
+                  onSubmitEditing={() => passwordRef?.current?.focus()}
+                  returnKeyType="next"
+                  autoFocus
+                />
 
-              <CSTextInput
-                ref={passwordRef}
-                label={t('login.passwordLabel')}
-                returnKeyType="done"
-                placeholder={t('login.passwordPlaceholder')}
-                keyboardType="default"
-                containerStyle={tw`mb-4`}
-                onChangeText={(value) => setPassword(value)}
-                value={password}
-                secureTextEntry
-                onSubmitEditing={handleLogin}
-              />
+                <CSTextInput
+                  ref={passwordRef}
+                  label={t('login.passwordLabel')}
+                  returnKeyType="done"
+                  placeholder={t('login.passwordPlaceholder')}
+                  keyboardType="default"
+                  containerStyle={tw`mb-4`}
+                  onChangeText={(value) => setPassword(value)}
+                  value={password}
+                  secureTextEntry
+                  onSubmitEditing={() => handleLogin()}
+                />
 
-              <View style={tw`items-center mb-4`}>
-                {authError && <CSText style={tw`text-white `}>{authError}</CSText>}
+                <View style={tw`items-center mb-4`}>
+                  {authError && <CSText style={tw`text-white `}>{authError}</CSText>}
+                </View>
+
+                <Button onPress={() => handleLogin()} disabled={loginButtonDisabled} loading={processing}>
+                  {t('login.buttonLogin')}
+                </Button>
               </View>
-
-              <Button onPress={handleLogin} disabled={loginButtonDisabled} loading={processing}>
-                {t('login.buttonLogin')}
-              </Button>
-            </View>
+              <TouchableOpacity onPress={launchForgotPassword} testID="forgotPasswordLink">
+                <CSText style={tw`text-sm text-primary mt-6 self-center`}>
+                  {t('login.forgotPassword')}
+                </CSText>
+              </TouchableOpacity>
+            </>
           )}
-          <TouchableOpacity onPress={launchForgotPassword} testID="forgotPasswordLink">
-            <CSText style={tw`text-sm text-primary mt-6 self-center`}>
-              {t('login.forgotPassword')}
-            </CSText>
-          </TouchableOpacity>
         </View>
 
         {/* <View style={tw`flex-row justify-center items-center p-5`}>
