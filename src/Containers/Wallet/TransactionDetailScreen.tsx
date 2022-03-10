@@ -253,7 +253,7 @@ const TransactionDetailScreenContent = () => {
                       uri: merchant.merchantLogoUrl,
                     }}
                     style={tw`w-full h-full`}
-                    resizeMode="cover"
+                    resizeMode="contain"
                   />
                 ) : (
                   <MerchantCategoryIcon
