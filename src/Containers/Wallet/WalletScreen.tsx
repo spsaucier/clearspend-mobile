@@ -202,7 +202,7 @@ const WalletScreen = () => {
           })}
       </View>
 
-      <AddToWalletButton hide={false} />
+      <AddToWalletButton hide />
 
       {selectedCard?.card?.cardId && <Transactions cardId={selectedCard?.card?.cardId} />}
 

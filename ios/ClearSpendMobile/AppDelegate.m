@@ -35,12 +35,18 @@ static void InitializeFlipper(UIApplication *application) {
 
 @implementation AppDelegate
 
+NSNumber* blur = 0;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
 
+  [[NSNotificationCenter defaultCenter] addObserver:self
+          selector:@selector(receiveTestNotification:)
+          name:@"onBlur"
+          object:nil];
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
@@ -69,6 +75,32 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void) receiveTestNotification:(NSNotification *) notification
+  {
+      if ([[notification name] isEqualToString:@"onBlur"]){
+          NSDictionary* userInfo = notification.userInfo;
+          NSNumber* isBlur = (NSNumber*)userInfo[@"isBlur"];
+          blur = isBlur;
+          NSLog (@"%@", isBlur);
+      }   
+  }
+
+- (void)applicationWillResignActive:(UIApplication *)application{
+    if(blur.intValue == 1){
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        //always fill the view
+        blurEffectView.frame = self.window.bounds;
+        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        blurEffectView.tag = 181099;
+        [self.window addSubview:blurEffectView];
+    }
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application{
+    [[self.window viewWithTag:181099] removeFromSuperview];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

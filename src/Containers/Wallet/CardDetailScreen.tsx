@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import MultitaskBlur from "react-native-multitask-blur";
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -33,6 +34,11 @@ const CardDetailScreen = ({ route }: Props) => {
 
   const { data, error, isLoading } = useCard(cardId);
   const { data: business } = useBusiness();
+
+  useEffect(() => {
+    MultitaskBlur.blur(); // For blur on multitask switch mode
+    return () => MultitaskBlur.unBlur();
+  }, []);
 
   const onCardOptionsPress = () => {
     cardOptionsPanelRef.current?.present();

@@ -68,6 +68,7 @@
     "react-native-image-picker": "^4.7.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-mmkv": "^2.0.0",
+    "react-native-multitask-blur": "^0.1.5",
     "react-native-pdf": "^6.4.0",
     "react-native-permissions": "^3.2.0",
     "react-native-phone-number-input": "^2.1.0",

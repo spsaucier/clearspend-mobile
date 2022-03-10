@@ -349,6 +349,8 @@ PODS:
   - react-native-mmkv (2.0.0):
     - MMKV
     - React-Core
+  - react-native-multitask-blur (0.1.5):
+    - React-Core
   - react-native-pdf (6.4.0):
     - React-Core
   - react-native-safe-area-context (3.3.2):
@@ -528,6 +530,7 @@ DEPENDENCIES:
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
+  - react-native-multitask-blur (from `../node_modules/react-native-multitask-blur`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
@@ -645,6 +648,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
+  react-native-multitask-blur:
+    :path: "../node_modules/react-native-multitask-blur"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
   react-native-safe-area-context:
@@ -750,6 +755,7 @@ SPEC CHECKSUMS:
   react-native-flipper: e30ae82a1536e8f6f4f34012353ebdf1d8aa5157
   react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
   react-native-mmkv: 0eda0c2a8af66073f5e7067558189bb920867aee
+  react-native-multitask-blur: b6353653283cb6b1a60f1892dbd4d7352e50e01f
   react-native-pdf: a6a5a3f0bdf340eb2eed6c96034424d2cc3f84b0
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-sensitive-info: 400c6e3d27945e15c8cddb5b4b92233c85ee06f8

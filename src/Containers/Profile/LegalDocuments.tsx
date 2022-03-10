@@ -7,6 +7,7 @@ import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSe
 import { FocusAwareStatusBar } from '@/Components';
 import { LegalIcon } from '@/Components/Icons';
 import { ProfileMenuRow } from './Components/ProfileMenuRow';
+import { Constants } from '@/consts';
 
 const LegalDocumentsScreen = () => {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ const LegalDocumentsScreen = () => {
               <ProfileMenuRow
                 title={t('profile.legalDocs.terms')}
                 onPress={() => {
-                  Linking.openURL('https://www.clearspend.com/terms-and-conditions').catch(
+                  Linking.openURL(Constants.TERMS_CONDITIONS_URL).catch(
                     (err) => {
                       // eslint-disable-next-line no-console
                       console.error('Failed to open ClearSpend website: ', err);
@@ -38,7 +39,7 @@ const LegalDocumentsScreen = () => {
               <ProfileMenuRow
                 title={t('profile.legalDocs.privacy')}
                 onPress={() => {
-                  Linking.openURL('https://www.clearspend.com/privacy-policy').catch((err) => {
+                  Linking.openURL(Constants.PRIVACY_POLICY_URL).catch((err) => {
                     // eslint-disable-next-line no-console
                     console.error('Failed to open ClearSpend website: ', err);
                   });
@@ -49,7 +50,7 @@ const LegalDocumentsScreen = () => {
               <ProfileMenuRow
                 title={t('profile.legalDocs.cardholder')}
                 onPress={() => {
-                  Linking.openURL('https://www.clearspend.com/terms-and-conditions').catch((err) => {
+                  Linking.openURL(Constants.TERMS_CONDITIONS_URL).catch((err) => {
                     // eslint-disable-next-line no-console
                     console.error('Failed to open ClearSpend website: ', err);
                   });

@@ -7907,6 +7907,11 @@ react-native-mmkv@^2.0.0:
   resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-2.0.0.tgz"
   integrity sha512-Dhy3HrwpWdA7r4vNclKLaD/PgdpsLz0mTzvnNUqbQss1yh3D2ThgFVn8rVKToXHyipxs+Y5eDMLMGGDQyIOV2Q==
 
+react-native-multitask-blur@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-multitask-blur/-/react-native-multitask-blur-0.1.5.tgz#8b7029da3999f7d45d6ff82300363633342f4cf3"
+  integrity sha512-qaS1TYldsq8KfW1bsBV/aQJGsAl6JiDZKXW8FnNtdp7XEbrZOcW4ViScleYzErGHY6eueyUT7dqeUvikQQqmuA==
+
 react-native-pdf@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/react-native-pdf/-/react-native-pdf-6.4.0.tgz#e3aa583e3a2ccce0838dcc0ac5a29987774eea4f"

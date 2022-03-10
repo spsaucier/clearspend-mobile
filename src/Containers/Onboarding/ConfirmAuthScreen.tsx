@@ -33,9 +33,9 @@ const ConfirmAuthScreen = () => {
   const onSuccess = () => {
     setAuthed(true);
     if (navigation.getState().routeNames.find((r) => r === MainScreens.Home)) {
-      navigation.navigate(MainScreens.Home);
+      navigation.replace(MainScreens.Home);
     } else if (navigation.getState().routeNames.find((r) => r === MainScreens.Profile)) {
-      navigation.navigate(MainScreens.Profile);
+      navigation.replace(MainScreens.Profile);
     } else {
       // eslint-disable-next-line no-console
       console.warn('Unknown navigation state:', navigation.getState());
