@@ -16,10 +16,28 @@ Follow general React Native setup: (React Native CLI Quickstart): https://reactn
   - Alternatively, open the workspace in Xcode and build & run the app from there
 - Run the Android app (remember to start a simulator or connect a device): `yarn android`
 
-### Set up .env file
+### Set up .env files
 
-Create an .env file and copy the contents of .env.example into it
-Get the missing vars from 1password and paste into respective fields
+The app is built for 3 different environments: DEV, UAT and PROD. 
+Each of these variants sources its environment variables from files named `.env.dev`, `.env.uat` and `.env.prod` respectively.
+
+Follow the instructions in `.env.example` to create each of these files, no env files or values should be committed to version control.
+
+Values for different environments can be found in 1Password or App Center.
+
+Each of the different variants has yarn command for each platform:
+
+```
+ yarn ios/android -> DEV
+ yarn ios-uat/android-uat -> UAT
+ yarn ios-prod/android-prod -> PROD 
+```
+**Important:** The yarn commands set up the correct environment file for each build. Running a build in XCode/Android studio or with `react-native-cli` directly will use variables from the `.env` file. 
+This is how the variables are provided during App Center builds.
+
+## Build Process
+
+See [Build Process Document](./docs/build_process.md)
 
 ## Setup Issues
 
@@ -54,7 +72,15 @@ This project uses tailwind-react-native-classnames for styling: https://github.c
 
 # Testing
 
-TBC
+## Unit testing
+- Jest
+- React Native Testing Library
+- MSW for mocking requests
+
+See `@Helpers/testing` for custom test helpers
+
+## Integration/Device testing
+- TBC
 
 ## Snyk tests - Security checks
 
@@ -79,3 +105,4 @@ Test new packages that are added with `snyk test packagename`
 
 1. Run the `yarn restserver` script from the main directory. Alternately, run `node index.js` from the `restserver` directory to start local server.
 2. You should see output `REST server listening on port 8000!`
+3. `yarn restserver` runs the server with `nodemon` so changes made in the `restserver` directory should cause the server to restart and reflect the changes.
