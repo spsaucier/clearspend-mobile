@@ -71,9 +71,8 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
               try {
                 const dataObj = JSON.parse(data);
                 if (dataObj.message.payload.event === 'ready') {
-                  // Stripe sends six ready events en route to complete rendering
-                  // probably one per field and one per Copy icon
-                  if (readyCount + 1 === 6) {
+                  // Stripe sends one ready event per field/copy icon
+                  if (readyCount + 1 === 4) {
                     setLoading(false);
                   }
                   setReadyCount(readyCount + 1);
