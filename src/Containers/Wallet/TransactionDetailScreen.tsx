@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
-import MapView, { Marker } from 'react-native-maps';
+// import MapView, { Marker } from 'react-native-maps';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Pdf from 'react-native-pdf';
 import Toast from 'react-native-toast-message';
@@ -218,20 +218,20 @@ const TransactionDetailScreenContent = () => {
           {/* Map/banner area */}
           {!!latitude && !!longitude ? (
             <View style={tw`bg-white h-38`}>
-              <MapView
-                style={tw`h-full`}
-                loadingEnabled
-                showsUserLocation={false}
-                scrollEnabled={false}
-                initialRegion={{
-                  latitude,
-                  longitude,
-                  latitudeDelta: 0.002,
-                  longitudeDelta: 0.002,
-                }}
-              >
-                <Marker key={0} coordinate={{ latitude, longitude }} image={{ uri: 'marker' }} />
-              </MapView>
+              {/* <MapView */}
+              {/*  style={tw`h-full`} */}
+              {/*  loadingEnabled */}
+              {/*  showsUserLocation={false} */}
+              {/*  scrollEnabled={false} */}
+              {/*  initialRegion={{ */}
+              {/*    latitude, */}
+              {/*    longitude, */}
+              {/*    latitudeDelta: 0.002, */}
+              {/*    longitudeDelta: 0.002, */}
+              {/*  }} */}
+              {/* > */}
+              {/*  <Marker key={0} coordinate={{ latitude, longitude }} image={{ uri: 'marker' }} /> */}
+              {/* </MapView> */}
             </View>
           ) : (
             <View style={tw`h-16 bg-white`} />
