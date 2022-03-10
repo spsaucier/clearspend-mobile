@@ -75,7 +75,7 @@ export const CSBottomSheet = ({
       ]}
       handleIndicatorStyle={tw.style(
         'w-14 h-1',
-        translucidBackground ? 'bg-black-20' : 'bg-black-75',
+        translucidBackground ? 'bg-black-20' : 'bg-gray-75',
       )}
     >
       <BottomSheetView onLayout={handleContentLayout}>

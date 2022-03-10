@@ -142,7 +142,7 @@ const UpdateAddressScreen = () => {
         </View>
         <View>
           <Button
-            containerStyle={[tw`${selectedAddress() ? 'bg-primary' : 'bg-black-5'}`]}
+            containerStyle={[tw`${selectedAddress() ? 'bg-primary' : 'bg-gray-5'}`]}
             onPress={onSubmit}
             disabled={!selectedAddress() || isEqual(address, user?.address)}
           >

@@ -61,7 +61,7 @@ const NoteInputScreen = () => {
             testID="noteField"
             underlineColorAndroid="rgba(0,0,0,0)"
             placeholder={t('wallet.transactionDetails.notes.addANote')}
-            placeholderTextColor={tw.color('black-50')}
+            placeholderTextColor={tw.color('gray-50')}
             keyboardType="default"
             onChangeText={onChangeText}
             value={note}
@@ -76,7 +76,7 @@ const NoteInputScreen = () => {
             <CSText style={tw.style(charCount > maxCharCount ? 'text-error' : 'text-black')}>
               {charCount}
             </CSText>
-            <CSText style={tw`text-black-50`}>{` / ${maxCharCount}`}</CSText>
+            <CSText style={tw`text-gray-50`}>{` / ${maxCharCount}`}</CSText>
           </View>
           <Button
             onPress={submitNote}

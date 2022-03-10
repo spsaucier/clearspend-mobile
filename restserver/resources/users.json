@@ -18,7 +18,7 @@
         "country": "USA"
       },
       "email": "test1@gmail.com",
-      "phone": "+14804422352",
+      "phone": "+11111111111",
       "archived": false
     }
   },
@@ -41,7 +41,7 @@
         "country": "USA"
       },
       "email": "test2@gmail.com",
-      "phone": "+14804422352",
+      "phone": "",
       "archived": false
     }
   }

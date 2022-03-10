@@ -21,6 +21,26 @@ import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomShe
 
 const { width: screenWidth } = Dimensions.get('screen');
 
+export interface LimitTypeMap {
+  limitType?:
+    | 'ACH_DEPOSIT'
+    | 'ACH_WITHDRAW'
+    | 'ACH_PUSH_IN'
+    | 'ACH_PULL_OUT'
+    | 'PURCHASE'
+    | 'ATM_WITHDRAW';
+  PURCHASE: {
+    DAILY: {
+      amount: number;
+      usedAmount: number;
+    };
+    MONTHLY: {
+      amount: number;
+      usedAmount: number;
+    };
+  };
+}
+
 const WalletScreen = () => {
   useRequireOnboarding();
   const { navigate } = useNavigation();

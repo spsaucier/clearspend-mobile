@@ -110,7 +110,7 @@ const UpdateMobileScreen = () => {
             flagButtonStyle={{ width: 40 }}
             countryPickerProps={{ countryCodes: ['US'] }}
             disableArrowIcon
-            codeTextStyle={tw`text-black-50 font-telegraf text-xl font-normal`}
+            codeTextStyle={tw`text-gray-50 font-telegraf text-xl font-normal`}
             textContainerStyle={tw`bg-transparent`}
             textInputStyle={tw`text-black font-telegraf text-xl`}
             textInputProps={{
@@ -124,7 +124,7 @@ const UpdateMobileScreen = () => {
         <Button
           containerStyle={[
             tw`mt-auto mb-4`,
-            mobile.length !== 10 || isSame ? tw`bg-black-5` : tw`bg-primary`,
+            mobile.length !== 10 || isSame ? tw`bg-gray-5` : tw`bg-primary`,
           ]}
           onPress={onSubmit}
           disabled={mobileNumError || mobile.length !== 10 || isSame || loading}

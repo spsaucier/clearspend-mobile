@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle, TouchableOpacity, ImageBackground, Platform } from 'react-native';
+import {
+  StyleProp,
+  View,
+  ViewStyle,
+  TouchableOpacity,
+  ImageBackground,
+  Platform,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import tw from '@/Styles/tailwind';
@@ -66,7 +73,9 @@ export const Card = ({
       key={cardId}
       style={[
         tw.style(
-          `flex bg-card-primary w-full rounded-2xl ${Platform.OS === 'ios' ? 'shadow-xl' : ''} overflow-hidden`,
+          `flex bg-card-primary w-full rounded-2xl ${
+            Platform.OS === 'ios' ? 'shadow-xl' : ''
+          } overflow-hidden`,
           isVirtual && 'bg-card-light',
           isFrozen && 'bg-card-dark',
         ),

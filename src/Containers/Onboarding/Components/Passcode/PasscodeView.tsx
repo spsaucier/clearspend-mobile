@@ -116,9 +116,7 @@ export const PasscodeView: React.FC<Props> = ({
       </View>
       <View style={tw.style('items-center')}>
         {error ? <CSText style={tw`text-white mt-3`}>{errorTitle}</CSText> : null}
-        {(error || messaging) && (
-          <CSText style={tw`text-white`}>{error || messaging}</CSText>
-        )}
+        {(error || messaging) && <CSText style={tw`text-white`}>{error || messaging}</CSText>}
       </View>
     </SafeAreaView>
   );

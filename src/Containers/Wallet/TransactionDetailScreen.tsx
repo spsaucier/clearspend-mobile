@@ -41,7 +41,7 @@ type InfoRowProps = {
 
 const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
   <View style={tw`flex-row justify-between items-center mt-2`}>
-    <CSText style={tw`text-sm text-black-50 leading-relaxed`}>{label}</CSText>
+    <CSText style={tw`text-sm text-gray-50 leading-relaxed`}>{label}</CSText>
     {value ? <CSText style={tw`text-sm leading-relaxed`}>{value}</CSText> : null}
     {!!children && children}
   </View>
@@ -188,7 +188,7 @@ const TransactionDetailScreenContent = () => {
       {!!status && (
         <View
           style={tw.style(
-            'flex-row items-center justify-center p-2 bg-black-5 rounded-t-2xl',
+            'flex-row items-center justify-center p-2 bg-gray-5 rounded-t-2xl',
             statusApproved && 'bg-primary',
             statusDeclined && 'bg-error',
             statusPending && 'bg-pending',

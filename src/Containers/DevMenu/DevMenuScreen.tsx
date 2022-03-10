@@ -11,7 +11,7 @@ import { MainScreens } from '@/Navigators/NavigatorTypes';
 const DevMenuScreen = () => {
   const { navigate } = useNavigation();
   return (
-    <SafeAreaView style={tw`flex-1 bg-black-10`}>
+    <SafeAreaView style={tw`flex-1 bg-gray-10`}>
       <CSText style={tw`text-2xl pl-4`}>Dev Menu</CSText>
       <View style={tw`flex-1 mt-5 pl-2 pr-2`}>
         <CSText style={tw`text-xl pb-4`}>Icons</CSText>

@@ -164,7 +164,11 @@ const LoginScreen = () => {
                   onSuccessFinished={handle2faLogin}
                 />
               </View>
-              <TouchableOpacity onPress={() => handleLogin(true)} testID="resendOtpLink" disabled={loginButtonDisabled}>
+              <TouchableOpacity
+                onPress={() => handleLogin(true)}
+                testID="resendOtpLink"
+                disabled={loginButtonDisabled}
+              >
                 <CSText style={tw`text-sm text-primary mt-20 self-center`}>
                   {t('otp.resendCode')}
                 </CSText>
@@ -210,7 +214,11 @@ const LoginScreen = () => {
                   {authError && <CSText style={tw`text-white `}>{authError}</CSText>}
                 </View>
 
-                <Button onPress={() => handleLogin()} disabled={loginButtonDisabled} loading={processing}>
+                <Button
+                  onPress={() => handleLogin()}
+                  disabled={loginButtonDisabled}
+                  loading={processing}
+                >
                   {t('login.buttonLogin')}
                 </Button>
               </View>

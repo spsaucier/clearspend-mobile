@@ -160,7 +160,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
               return (
                 <View style={tw`pb-2 mt-2`}>
                   <View style={tw`flex-row justify-between bg-tan px-6 py-2 mb-2`}>
-                    <CSText style={tw`text-sm text-black-50`}>
+                    <CSText style={tw`text-sm text-gray-50`}>
                       {format(dateParsed, 'MMM dd, yyyy')}
                     </CSText>
                   </View>
@@ -188,7 +188,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
           />
         ) : (
           <View style={tw`items-center justify-center m-12`}>
-            <CSText style={tw`text-base text-center text-black-50`}>
+            <CSText style={tw`text-base text-center text-gray-50`}>
               {t('wallet.transactions.empty')}
             </CSText>
           </View>

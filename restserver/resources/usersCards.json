@@ -29,6 +29,23 @@
         "country": "USA"
       }
     },
+    "limits": [
+      {
+        "currency": "USD",
+        "typeMap": {
+          "PURCHASE": {
+            "DAILY": {
+              "amount": 100,
+              "usedAmount": 45
+            },
+            "MONTHLY": {
+              "amount": 3000,
+              "usedAmount": 1080
+            }
+          }
+        }
+      }
+    ],
     "ledgerBalance": {
       "currency": "USD",
       "amount": 0
@@ -69,6 +86,23 @@
         "country": "USA"
       }
     },
+    "limits": [
+      {
+        "currency": "USD",
+        "typeMap": {
+          "PURCHASE": {
+            "DAILY": {
+              "amount": 100,
+              "usedAmount": 10
+            },
+            "MONTHLY": {
+              "amount": 3000,
+              "usedAmount": 10
+            }
+          }
+        }
+      }
+    ],
     "ledgerBalance": {
       "currency": "USD",
       "amount": 0
@@ -109,6 +143,12 @@
         "country": "USA"
       }
     },
+    "limits": [
+      {
+        "currency": "USD",
+        "typeMap": {}
+      }
+    ],
     "ledgerBalance": {
       "currency": "USD",
       "amount": 0

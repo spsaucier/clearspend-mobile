@@ -12,7 +12,7 @@ import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
 import { useUser, useUpdateUser } from '@/Queries';
 import { sendEnrollment2FA } from '@/Services/Auth';
-import { UpdateUserRequest } from '../../generated/capital';
+import { UpdateUserRequest } from '@/generated/capital';
 
 const EnterMobileScreen = () => {
   const [mobile, setMobile] = useState('');
@@ -92,7 +92,7 @@ const EnterMobileScreen = () => {
             flagButtonStyle={{ width: 40 }}
             countryPickerProps={{ countryCodes: ['US'] }}
             disableArrowIcon
-            codeTextStyle={tw`text-black-50 font-telegraf text-xl font-normal`}
+            codeTextStyle={tw`text-gray-50 font-telegraf text-xl font-normal`}
             textContainerStyle={tw`bg-transparent`}
             textInputStyle={tw`text-white font-telegraf text-xl`}
             textInputProps={{
@@ -107,7 +107,7 @@ const EnterMobileScreen = () => {
         <Button
           containerStyle={[
             tw`mt-auto mb-4`,
-            mobile.length !== 10 ? tw`bg-black-5` : tw`bg-primary`,
+            mobile.length !== 10 ? tw`bg-gray-5` : tw`bg-primary`,
           ]}
           onPress={onSubmit}
           disabled={mobileNumError || mobile.length !== 10 || loading}

@@ -18,7 +18,7 @@ export const IconDemoScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-black-10`}>
+    <SafeAreaView style={tw`flex-1 bg-gray-10`}>
       <CSText style={tw`text-2xl ml-4`}>All Icons</CSText>
 
       <SectionList

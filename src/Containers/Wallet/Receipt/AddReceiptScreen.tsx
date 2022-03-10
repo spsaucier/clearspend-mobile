@@ -88,7 +88,7 @@ const AddReceiptScreen = () => {
               <CloseIcon color={tw.color('white')} size={32} />
             </TouchableOpacity>
           </View>
-          <View style={tw`flex-grow border-1 border-black-75 rounded-10 overflow-hidden`}>
+          <View style={tw`flex-grow border-1 border-gray-75 rounded-10 overflow-hidden`}>
             {previewURI ? (
               <View style={tw`flex-1`}>
                 <Image style={tw`flex-1`} source={{ uri: previewURI }} />

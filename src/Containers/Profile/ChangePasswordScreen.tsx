@@ -37,7 +37,7 @@ const ChangePasswordScreen = () => {
           />
         </View>
         <Button
-          containerStyle={[tw`mb-5`, buttonDisabled ? tw`bg-black-5` : tw`bg-primary`]}
+          containerStyle={[tw`mb-5`, buttonDisabled ? tw`bg-gray-5` : tw`bg-primary`]}
           label={t('profile.changePassword.next')}
           disabled={buttonDisabled}
           onPress={() => {

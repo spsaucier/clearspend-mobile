@@ -34,7 +34,9 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
   const textColor = isFrozen ? 'white' : 'black';
 
   const en = encodeURIComponent;
-  const search = `?externalRef=${en(externalRef || '')}&STRIPE_PUBLISHABLE_KEY=${en(Config.STRIPE_PUBLISHABLE_KEY)}&STRIPE_ACCOUNT=${en(Config.STRIPE_ACCOUNT)}&OS=${en(Platform.OS)}&textColor=${en(textColor)}`
+  const search = `?externalRef=${en(externalRef || '')}&STRIPE_PUBLISHABLE_KEY=${en(
+    Config.STRIPE_PUBLISHABLE_KEY,
+  )}&STRIPE_ACCOUNT=${en(Config.STRIPE_ACCOUNT)}&OS=${en(Platform.OS)}&textColor=${en(textColor)}`;
   const uri = `${Config.WEB_URL}/stripe-reveal.html${search}`;
 
   return (
@@ -85,7 +87,7 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
                 const dataObj = JSON.parse(data);
                 if (dataObj?.message?.payload?.event === 'click') {
                   // We do not know which one was clicked
-                  Toast.show({type: 'success', text1: 'Copied to clipboard'})
+                  Toast.show({ type: 'success', text1: 'Copied to clipboard' });
                 }
               } catch {
                 // Do nothing

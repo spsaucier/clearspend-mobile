@@ -1,18 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import MultitaskBlur from "react-native-multitask-blur";
+import MultitaskBlur from 'react-native-multitask-blur';
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
-import {
-  ActivityIndicator,
-  CSText,
-  FocusAwareStatusBar,
-  InfoPanel,
-} from '@/Components';
+import { ActivityIndicator, CSText, FocusAwareStatusBar, InfoPanel } from '@/Components';
 import { useBusiness, useCard } from '@/Queries';
+import { LimitSection } from '@/Containers/Wallet/Components/LimitSection';
 import { CardWebView } from '@/Containers/Wallet/Components/CardWebView';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
@@ -59,10 +55,14 @@ const CardDetailScreen = ({ route }: Props) => {
     );
   }
   if (data) {
+    const { limits } = data;
+    // TODO Remove ts-ignore when limit backend changes + types are ready
+    // @ts-ignore
+    const purchaseLimits = limits && limits[0].typeMap.PURCHASE;
+
     return (
       <SafeAreaView style={tw`bg-secondary flex-1`}>
         <FocusAwareStatusBar translucent backgroundColor="transparent" />
-
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* Back button & Profile Icon */}
           <View style={tw`flex flex-row items-center justify-between px-5 mt-4`}>
@@ -77,6 +77,25 @@ const CardDetailScreen = ({ route }: Props) => {
             <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
           </View>
 
+          {purchaseLimits && (purchaseLimits.DAILY || purchaseLimits.MONTHLY) && (
+            <View style={tw`flex py-2 mx-5 rounded-md bg-black-30`}>
+              {purchaseLimits.DAILY && (
+                <LimitSection
+                  label={t('cardProfile.spentToday')}
+                  amountUsed={purchaseLimits.DAILY && purchaseLimits.DAILY.usedAmount}
+                  limit={purchaseLimits.DAILY && purchaseLimits.DAILY.amount}
+                />
+              )}
+              {purchaseLimits.MONTHLY && (
+                <LimitSection
+                  label={t('cardProfile.spentCurrentMonth')}
+                  amountUsed={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.usedAmount}
+                  limit={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.amount}
+                />
+              )}
+            </View>
+          )}
+
           {/* Address */}
           {business?.address?.streetLine1 ? (
             <View style={tw`mt-6 px-5`}>
@@ -90,7 +109,7 @@ const CardDetailScreen = ({ route }: Props) => {
                     {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
                   </CSText>
                 </View>
-                <View style={tw`border-b-1 border-black-10`} />
+                <View style={tw`border-b-1 border-gray-10`} />
                 <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
               </View>
             </View>

@@ -51,8 +51,6 @@ export default {
     titlePart1: 'Enter your',
     titlePart2: ' mobile number',
     subTitle: 'We’ll send a verification code to this number.',
-    mobileInputLabel: 'Mobile Number',
-    mobileInputPlaceholder: 'Enter your mobile number',
     buttonCta: 'Send Verification Code',
     error: 'Invalid phone number',
   },

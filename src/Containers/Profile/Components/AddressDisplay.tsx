@@ -12,13 +12,18 @@ interface AddressDisplayProps {
   inline?: boolean;
 }
 
-export const AddressDisplay = ({ address, color = 'white', inline, hideLine2 }: AddressDisplayProps) =>
+export const AddressDisplay = ({
+  address,
+  color = 'white',
+  inline,
+  hideLine2,
+}: AddressDisplayProps) =>
   'streetLine1' in address && address.streetLine1 ? (
     <View style={tw`flex-row overflow-hidden`}>
       <MapPinIcon size={20} color={color} />
       <View style={tw`ml-3 ${inline ? 'flex-row' : ''}`}>
         <CSText style={tw`text-${color} text-sm leading-5 mr-1`}>{address?.streetLine1}</CSText>
-        {address.streetLine2 && !hideLine2  ? (
+        {address.streetLine2 && !hideLine2 ? (
           <CSText style={tw`text-${color} text-sm leading-5 mr-1`}>{address?.streetLine2}</CSText>
         ) : null}
         {address?.locality && address.region ? (

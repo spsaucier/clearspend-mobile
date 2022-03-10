@@ -18,7 +18,7 @@ export const LoginTitle = ({ titlePart1, titlePart2, titlePart3 }: Omit<Props, '
       <CSText style={tw`font-telegraf text-2xl text-white mb-3 mt-6`}>{titlePart3}</CSText>
     ) : null}
   </CSText>
-)
+);
 
 export const OnboardingScreenTitle = ({ titlePart1, titlePart2, titlePart3, subTitle }: Props) => (
   <View style={tw`mb-5`}>

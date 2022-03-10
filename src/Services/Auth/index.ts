@@ -5,9 +5,9 @@ import { Session } from '@/Store/Session';
 import { mixpanel } from '../utils/analytics';
 
 const handleError = (ex: any, apiRequest: string) => {
-  mixpanel.track('API Error', {apiRequest, error: ex?.response?.data});
+  mixpanel.track('API Error', { apiRequest, error: ex?.response?.data });
   return Promise.reject(ex?.response?.data || ex.response || ex);
-}
+};
 
 const parseLoginResponse = (res: AxiosResponse) => {
   let decoded = {

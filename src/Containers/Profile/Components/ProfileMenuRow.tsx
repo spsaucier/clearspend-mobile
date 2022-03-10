@@ -36,13 +36,13 @@ export const ProfileMenuRow = ({
           <CSText style={[tw.style('text-base', label ? 'mb-2' : ''), titleStyle]}>{title}</CSText>
         ) : null}
         {label ? (
-          <CSText style={[tw.style('text-sm', title ? 'text-black-75' : ''), labelStyle]}>
+          <CSText style={[tw.style('text-sm', title ? 'text-gray-75' : ''), labelStyle]}>
             {label}
           </CSText>
         ) : null}
       </View>
       <ChevronIconThin />
     </TouchableOpacity>
-    {showBottomBorder ? <View style={tw`border-b-1 border-black-10`} /> : null}
+    {showBottomBorder ? <View style={tw`border-b-1 border-gray-10`} /> : null}
   </>
 );

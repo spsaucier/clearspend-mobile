@@ -78,7 +78,7 @@ export const TransactionRow = ({
     opacity: interpolate(derivedAnimatedIndex.value, [0.5, 1], [0, 1]),
   }));
 
-  const hasReceipts = receiptIds.length > 0;
+  const hasReceipts = receiptIds && receiptIds.length > 0;
 
   return (
     <TouchableOpacity

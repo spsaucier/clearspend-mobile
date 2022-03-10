@@ -89,13 +89,21 @@ module.exports = {
       'white-10': 'rgba(255,255,255,0.1)',
       'white-20': 'rgba(255,255,255,0.2)',
 
-      // Grayscale
+      // Transparent Black scale
       'black-5': 'rgba(0,0,0,0.05)',
       'black-10': 'rgba(0,0,0,0.1)',
       'black-20': 'rgba(0,0,0,0.2)',
       'black-30': 'rgba(0,0,0,0.3)',
       'black-50': 'rgba(0,0,0,0.5)',
       'black-75': 'rgba(0,0,0,0.75)',
+
+      // Grayscale
+      'gray-5': '#EDEDED',
+      'gray-10': '#E1E1E1',
+      'gray-20': '#CCCCCC',
+      'gray-50': '#7C7C7C',
+      'gray-75': '#3F3F3F',
+
     },
     borderWidth: {
       DEFAULT: '1px',
