@@ -105,10 +105,7 @@ const EnterMobileScreen = () => {
         )}
         {mobileNumError && <CSText style={tw`text-white mt-1`}>{t('enterMobile.error')}</CSText>}
         <Button
-          containerStyle={[
-            tw`mt-auto mb-4`,
-            mobile.length !== 10 ? tw`bg-gray-5` : tw`bg-primary`,
-          ]}
+          containerStyle={[tw`mt-auto mb-4`, mobile.length !== 10 ? tw`bg-gray-5` : tw`bg-primary`]}
           onPress={onSubmit}
           disabled={mobileNumError || mobile.length !== 10 || loading}
         >

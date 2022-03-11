@@ -99,12 +99,14 @@ export const ActivateCardDigitEntryScreen = () => {
     <>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="white" translucent />
       <View style={tw`flex-1 bg-white pt-8`}>
-        <CSText style={tw`font-telegraf text-2xl leading-snug pl-4`}>
-          {t('activateCard.enterDigitsInstruction1')}
-        </CSText>
-        <CSText style={tw`text-base leading-normal text-gray-75 pt-4 pl-4`}>
-          {t('activateCard.enterDigitsInstruction2')}
-        </CSText>
+        <View style={tw`pl-4 pr-8`}>
+          <CSText style={tw`font-telegraf text-2xl leading-snug font-light`}>
+            {t('activateCard.enterDigitsInstruction1')}
+          </CSText>
+          <CSText style={tw`text-base leading-normal text-gray-75 pt-4`}>
+            {t('activateCard.enterDigitsInstruction2')}
+          </CSText>
+        </View>
 
         <View style={tw`items-center justify-center h-30`}>
           <CodeField

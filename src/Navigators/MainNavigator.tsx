@@ -30,7 +30,6 @@ import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen
 import EnterMobileScreen from '@/Containers/Onboarding/EnterMobileScreen';
 import EnterOTPScreen from '@/Containers/Onboarding/EnterOTPScreen';
 import { ActivateCardDigitEntryScreen } from '@/Containers/ActivateCard/ActivateCardDigitEntryScreen';
-import { ActivateCardGetStartedScreen } from '@/Containers/ActivateCard/ActivateCardGetStartedScreen';
 import { ActivateCardResultScreen } from '@/Containers/ActivateCard/ActivateCardResultScreen';
 import DevMenuScreen from '@/Containers/DevMenu/DevMenuScreen';
 import { IconDemoScreen } from '@/Containers/DevMenu/IconDemoScreen';
@@ -66,15 +65,11 @@ const ActivateCardStack = () => {
   const { t } = useTranslation();
   return (
     <Stack.Navigator
-      initialRouteName={MainScreens.ActivateCardGetStarted}
+      initialRouteName={MainScreens.ActivateCardDigitEntry}
       screenOptions={{
-        ...sharedStackHeaderConfig(t('profile.profileMenu.activateCard'), t('general.back')),
+        ...sharedStackHeaderConfig('', t('general.back')),
       }}
     >
-      <Stack.Screen
-        name={MainScreens.ActivateCardGetStarted}
-        component={ActivateCardGetStartedScreen}
-      />
       <Stack.Screen
         name={MainScreens.ActivateCardDigitEntry}
         component={ActivateCardDigitEntryScreen}

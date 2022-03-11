@@ -65,7 +65,6 @@ export enum MainScreens {
   ViewReceipt = 'View Receipt',
   DeleteReceipt = 'Delete Receipt',
   Wallet = 'Wallet',
-  ActivateCardGetStarted = 'Activate Card Get Started',
   ActivateCardDigitEntry = 'Activate Card Digit Entry',
   ActivateCardResult = 'Activate Card Result',
 
@@ -111,7 +110,6 @@ export type MainStackParamTypes = {
   [MainScreens.ViewReceipt]: { accountActivityId: string; receiptIds: string[]; cardId: string };
   [MainScreens.DeleteReceipt]: { cardId: string; accountActivityId: string; receiptId: string };
   [MainScreens.Wallet]: undefined;
-  [MainScreens.ActivateCardGetStarted]: undefined;
   [MainScreens.ActivateCardDigitEntry]: undefined;
   [MainScreens.ActivateCardResult]: { lastFour: string };
 
