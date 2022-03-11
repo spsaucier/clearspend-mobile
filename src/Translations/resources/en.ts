@@ -284,9 +284,9 @@ export default {
     remaining: 'Remaining: {{amount}}',
     cardIsFrozenForSecurity: 'Card is frozen for security reasons.',
     addToAppleWallet: 'Add to Apple Wallet',
-    availableToSpendMeans: 'What does <key>`Available to spend`</key> mean?',
+    availableToSpendMeans: 'Available balance',
     availableToSpendMeansDescription:
-      'Available to spend is based on your card’s allocation balance and spending limits.',
+      'Amount shown is the balance available to this card, minus any pending transaction holds. Actual spending power may be limited by daily, monthly, or single-transaction limits set by your company.',
     okGotIt: 'Ok, got it',
   },
   cardInfo: {
