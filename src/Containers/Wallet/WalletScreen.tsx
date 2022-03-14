@@ -176,7 +176,6 @@ const WalletScreen = () => {
               const { cardId, lastFour, cardLine3, type } = card;
 
               const isVirtual = type === 'VIRTUAL';
-              const cardTitle = cardLine3 || allocationName;
 
               const { amount } = availableBalance;
 
@@ -189,7 +188,8 @@ const WalletScreen = () => {
                     isFrozen={isFrozen}
                     isVirtual={isVirtual}
                     lastDigits={lastFour || ''}
-                    cardTitle={cardTitle}
+                    cardTitle={cardLine3}
+                    allocation={allocationName}
                     onPress={() => navigate(MainScreens.CardDetails, { cardId })}
                     onCardBalanceInfoPress={onCardBalanceInfoPress}
                     onCardOptionsPress={onCardOptionsPress}

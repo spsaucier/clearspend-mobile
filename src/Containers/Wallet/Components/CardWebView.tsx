@@ -15,11 +15,11 @@ type Props = {
 };
 
 export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
-  const { card, availableBalance } = cardData;
+  const { card, availableBalance, allocationName } = cardData;
   const [loading, setLoading] = useState(true);
   const [readyCount, setReadyCount] = useState(0);
 
-  const { cardId, lastFour, type, status, externalRef } = card;
+  const { cardId, lastFour, type, status, externalRef, cardLine3 } = card;
   const { amount: balanceAmount } = availableBalance;
 
   const isFrozen = status === 'INACTIVE';
@@ -49,10 +49,12 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
         isFrozen={isFrozen}
         showSensitiveInformation
         onCardOptionsPress={onCardOptionsPress}
+        allocation={allocationName}
+        cardTitle={cardLine3}
       />
       <View
         style={[
-          tw`absolute w-full bottom-0`,
+          tw`absolute w-full bottom-0 ml-2`,
           {
             height: Dimensions.get('window').width * 0.3,
           },
@@ -98,7 +100,10 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
         />
         {loading && (
           <View
-            style={[tw`absolute w-full bottom-0 items-center justify-center`, { aspectRatio: 1.6 }]}
+            style={[
+              tw`absolute w-full bottom-0 -ml-2 items-center justify-center`,
+              { aspectRatio: 1.6 },
+            ]}
           >
             <ActivityIndicator style={tw`w-8`} bgColor={isFrozen ? 'white' : 'black'} />
           </View>
