@@ -178,8 +178,8 @@ const TransactionDetailScreenContent = () => {
     });
   };
 
-  const onFileOrPhotoSelected = (uri: string) => {
-    uploadReceipt(uri);
+  const onFileOrPhotoSelected = (uri: string, name: string, type: string) => {
+    uploadReceipt(uri, name, type);
   };
 
   return (

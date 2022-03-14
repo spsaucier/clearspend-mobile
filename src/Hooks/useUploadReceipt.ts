@@ -20,17 +20,14 @@ const useUploadReceipt = ({
   const { mutateAsync, isLoading: uploadingReceipt } = useUploadReceiptRemote();
   const queryClient = useQueryClient();
 
-  const uploadReceipt = (uri: string) => {
-    const fileName = uri.split('/').pop();
-    const extension = fileName?.split('.').pop();
+  const uploadReceipt = (uri: string, name: string, type: string) => {
     mutateAsync({
       receipt: {
         uri,
-        type: `image/${extension}`,
-        name: fileName,
+        type,
+        name,
       },
-      // TODO: TS freakout
-    } as unknown as void).then((data) => {
+    } as any).then((data) => {
       const { receiptId } = data;
       setUploadReceiptState({
         ...initialState,

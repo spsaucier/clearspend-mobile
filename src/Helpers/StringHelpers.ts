@@ -31,8 +31,8 @@ export const enum MediaType {
 }
 
 const mimeTypeSignatures = {
-  [MediaType.pdf]: ['data:application/pdf'],
-  [MediaType.image]: ['data:image/png', 'data:image/jpg', 'data:image/jpeg'],
+  [MediaType.pdf]: ['JVBERi'], // PDF
+  [MediaType.image]: ['iVBORw0', '/9j/'], // PNG, JPEG || JPG
 };
 
 export const detectMimeType = (base64: string) => {

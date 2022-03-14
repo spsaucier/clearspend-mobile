@@ -22,6 +22,7 @@ const AddReceiptScreen = () => {
   const { accountActivityId, cardId } = params as any;
   const [hasCameraAccess, setHasCameraAccess] = useState<boolean>(false);
   const [previewURI, setPreviewURI] = useState<string>();
+  const imageType = 'jpeg';
 
   const [flashOn, setFlashOn] = useState(false);
   const cameraRef = useRef<RNCamera>(null);
@@ -38,14 +39,18 @@ const AddReceiptScreen = () => {
   const { receiptId, linked } = uploadReceiptState;
 
   const onTakePic = async () => {
-    const data = await cameraRef.current?.takePictureAsync({ quality: 0.5, imageType: 'jpeg' });
+    const data = await cameraRef.current?.takePictureAsync({ quality: 0.5, imageType });
+
     const { uri } = data!;
 
     setPreviewURI(uri);
   };
 
   const submitReceipt = () => {
-    if (previewURI) uploadReceipt(previewURI);
+    if (previewURI) {
+      const fileName = previewURI.split('/').pop();
+      uploadReceipt(previewURI, fileName!, `image/${imageType}`);
+    }
   };
 
   useEffect(() => {

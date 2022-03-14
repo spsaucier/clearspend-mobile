@@ -44,14 +44,13 @@ const AddReceiptPanel = forwardRef((props: any, ref: any) => {
     ref?.current.close();
     launchImageLibrary({
       mediaType: 'photo',
-      includeBase64: false,
     }).then((result) => {
       const { assets } = result;
       if (!assets) return;
 
       const [first] = assets!;
-      const { uri } = first;
-      onFileOrPhotoSelected(uri);
+      const { uri, fileName: name, type } = first;
+      onFileOrPhotoSelected(uri, name, type);
     });
   };
 
@@ -62,8 +61,8 @@ const AddReceiptPanel = forwardRef((props: any, ref: any) => {
     })
       .then((file) => {
         const [first] = file;
-        const { uri } = first;
-        onFileOrPhotoSelected(uri);
+        const { uri, name, type } = first;
+        onFileOrPhotoSelected(uri, name, type);
       })
       .catch(() => {});
   };

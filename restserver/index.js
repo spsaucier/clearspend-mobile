@@ -293,11 +293,13 @@ app.listen(port, () => {
 exitHook((callback) => {
   console.log('cleaning up uploads...');
   const uploadPath = `${__dirname}/uploads`;
+
+  const typesToDelete = ['jpg', 'jpeg', 'png', 'pdf'];
   fs.readdir(uploadPath, (err, files) => {
     if (err) throw err;
 
     for (const file of files) {
-      if (file.endsWith('jpg') || file.endsWith('png')) {
+      if (typesToDelete.find((t) => file.endsWith(t))) {
         fs.unlink(path.join(uploadPath, file), (err) => {
           if (err) throw err;
         });

@@ -26,10 +26,16 @@ export const linkReceiptAsync = (accountActivityId: string, receiptId: string) =
     .post(`/users/account-activity/${accountActivityId}/receipts/${receiptId}/link`)
     .then((r) => r.data);
 
-const blobToUri = (res: { data: Blob }) =>
+const handleDataHeader = (data: string) =>
+  data.replace('application/octet-stream', 'application/pdf');
+
+const blobToUri = (res: any) =>
   new Promise((resolve) => {
     const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
+    reader.onloadend = () => {
+      const result = reader.result as string;
+      resolve(handleDataHeader(result));
+    };
     reader.readAsDataURL(res.data);
   });
 
