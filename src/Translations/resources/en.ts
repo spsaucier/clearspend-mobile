@@ -302,7 +302,7 @@ export default {
     profileMenu: {
       updatePersonalDetails: 'Update personal details',
       loginOptions: 'Log in options',
-      activateCard: 'Activate Card',
+      activateCard: 'Activate card',
       biometrics: 'Biometrics',
       faceId: 'Face ID',
       changePassword: 'Change Password',
@@ -317,8 +317,8 @@ export default {
     },
     legalDocs: {
       title: 'Legal documents',
-      terms: 'Terms of use',
-      privacy: 'Privacy policy',
+      terms: 'Terms of Service',
+      privacy: 'Privacy Policy',
       cardholder: 'Cardholder agreement',
     },
     updateAccount: {

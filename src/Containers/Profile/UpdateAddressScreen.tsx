@@ -118,7 +118,7 @@ const UpdateAddressScreen = () => {
                   style: inputStyle,
                   placeholderTextColor: tw.color('secondary-disabled'),
                 }}
-                ClearIconComponent={<CloseIcon color={tw.color('gray50')} />}
+                ClearIconComponent={<CloseIcon color={tw.color('gray-50')} />}
                 rightButtonsContainerStyle={{
                   borderRadius: 25,
                   height: 30,
