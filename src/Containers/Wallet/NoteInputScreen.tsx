@@ -46,33 +46,31 @@ const NoteInputScreen = () => {
   }, [isSuccess, navigation]);
 
   return (
-    <SafeAreaView style={tw`flex-1 justify-between p-6 bg-white`} edges={['top', 'bottom']}>
+    <SafeAreaView style={tw`flex-1 p-6 bg-white`} edges={['top', 'bottom']}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-      <KeyboardAvoidingView style={tw`flex-1`} behavior="padding">
+      <KeyboardAvoidingView style={tw`flex-1 `} behavior="padding">
         <View style={tw`flex-1`}>
-          <CSText style={tw`text-2xl py-10 text-center`}>
+          <CSText style={tw`text-2xl pt-6 text-center`}>
             {t('wallet.transactionDetails.notes.addANote')}
           </CSText>
           <TextInput
-            style={tw`text-black w-full`}
+            style={tw`text-black w-full py-1`}
             multiline
-            autoCorrect
             autoFocus
+            autoCorrect
             testID="noteField"
             underlineColorAndroid="rgba(0,0,0,0)"
             placeholder={t('wallet.transactionDetails.notes.addANote')}
             placeholderTextColor={tw.color('gray-50')}
-            keyboardType="default"
             onChangeText={onChangeText}
             value={note}
             onBlur={() => Keyboard.dismiss()}
-            selectionColor={tw.color('black')}
             onSubmitEditing={() => !buttonDisabled && submitNote()}
             scrollEnabled
           />
         </View>
-        <View>
-          <View style={tw`flex-row items-center justify-end mb-3`}>
+        <View style={tw`mt-12`}>
+          <View style={tw`flex-row items-center justify-end m-1`}>
             <CSText style={tw.style(charCount > maxCharCount ? 'text-error' : 'text-black')}>
               {charCount}
             </CSText>
@@ -83,6 +81,7 @@ const NoteInputScreen = () => {
             testID="setNoteButton"
             disabled={buttonDisabled || isSaving}
             loading={isSaving}
+            small
           >
             {t('wallet.transactionDetails.notes.setNote')}
           </Button>
@@ -91,6 +90,7 @@ const NoteInputScreen = () => {
             testID="cancelButton"
             containerStyle={tw`bg-white`}
             textStyle={tw`text-secondary`}
+            small
             disabled={isSaving}
           >
             {t('wallet.transactionDetails.notes.cancel')}
