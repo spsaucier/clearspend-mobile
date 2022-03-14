@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, QueryClient } from 'react-query';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 import {
@@ -39,6 +39,9 @@ export const useCardTransactions = ({
       },
     },
   );
+
+export const invalidateTransactions = (queryClient: QueryClient) =>
+  queryClient.invalidateQueries('transactions');
 
 export const useUpdateTransaction = (accountActivityId: string, existingNote?: string) => {
   const queryClient = useQueryClient();

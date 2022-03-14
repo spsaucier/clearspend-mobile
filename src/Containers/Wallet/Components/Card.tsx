@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  StyleProp,
-  View,
-  ViewStyle,
-  TouchableOpacity,
-  ImageBackground,
-  Platform,
-  Image,
-} from 'react-native';
+import { StyleProp, View, ViewStyle, ImageBackground, Platform, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import tw from '@/Styles/tailwind';
 
@@ -109,7 +102,7 @@ export const Card = ({
   );
 
   return (
-    <TouchableOpacity
+    <TouchableWithoutFeedback
       key={cardId}
       style={[
         tw.style(
@@ -211,6 +204,6 @@ export const Card = ({
           </View>
         </View>
       </CardBackground>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
