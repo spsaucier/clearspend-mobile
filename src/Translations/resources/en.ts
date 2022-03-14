@@ -310,6 +310,7 @@ export default {
       changeCompany: 'Change Company',
       logOut: 'Log out',
     },
+    appVersion: 'App version: {{appVersion}}',
     loginOptions: {
       title: 'Log in options',
       pin: 'Update PIN',

@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
+import { getBuildNumber, getVersion } from 'react-native-device-info';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { CSText, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
@@ -19,9 +20,10 @@ const ProfileScreen = () => {
   const { t } = useTranslation();
   const { isLoading, error, data: user } = useUser();
   const { logout } = useAuthentication();
-
+  const version = getVersion();
+  const buildNumber = getBuildNumber();
   return (
-    <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
+    <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top', 'bottom']}>
       <FocusAwareStatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
       <View style={tw`p-5`}>
         <BackButtonNavigator theme="dark" />
@@ -85,9 +87,16 @@ const ProfileScreen = () => {
             style={tw`h-14 px-4`}
           />
         </View>
+
         <TouchableOpacity onPress={logout} style={tw`flex-row justify-center mb-10`}>
           <CSText style={tw`text-primary py-3`}>{t('profile.profileMenu.logOut')}</CSText>
         </TouchableOpacity>
+
+        <View style={tw`items-center mb-2`}>
+          <CSText style={tw`text-sm text-white pb-2`}>
+            {t('profile.appVersion', { appVersion: `${version} (${buildNumber})` })}
+          </CSText>
+        </View>
       </View>
     </SafeAreaView>
   );

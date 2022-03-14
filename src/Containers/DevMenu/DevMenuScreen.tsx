@@ -4,16 +4,25 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useNavigation } from '@react-navigation/core';
 import Toast from 'react-native-toast-message';
+import { getBuildNumber, getVersion } from 'react-native-device-info';
 import { Button, CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 
 const DevMenuScreen = () => {
   const { navigate } = useNavigation();
+  const version = getVersion();
+  const buildNumber = getBuildNumber();
   return (
-    <SafeAreaView style={tw`flex-1 bg-gray-10`}>
-      <CSText style={tw`text-2xl pl-4`}>Dev Menu</CSText>
+    <SafeAreaView style={tw`flex-1 bg-white p-4`}>
+      <BackButtonNavigator />
+      <CSText style={tw`text-2xl pt-3`}>Dev Menu</CSText>
       <View style={tw`flex-1 mt-5 pl-2 pr-2`}>
+        <CSText style={tw`text-xl pb-4`}>App Info</CSText>
+        <CSText style={tw`text-base pb-2`}>Version: {version}</CSText>
+        <CSText style={tw`text-base pb-4`}>Build number: {buildNumber}</CSText>
+
         <CSText style={tw`text-xl pb-4`}>Icons</CSText>
         <Button
           label="Available Icon List"

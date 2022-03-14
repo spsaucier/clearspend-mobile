@@ -5,6 +5,7 @@ import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import * as categoryIcons from '@/Components/Icons/Categories';
 import * as icons from '@/Components/Icons';
+import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 
 export const IconDemoScreen = () => {
   const data = [
@@ -18,9 +19,9 @@ export const IconDemoScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-gray-10`}>
-      <CSText style={tw`text-2xl ml-4`}>All Icons</CSText>
-
+    <SafeAreaView style={tw`flex-1 bg-white p-4`}>
+      <BackButtonNavigator />
+      <CSText style={tw`text-2xl mt-3`}>All Icons</CSText>
       <SectionList
         sections={data}
         renderItem={({ item }) => {
