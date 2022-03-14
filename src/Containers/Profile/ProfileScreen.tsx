@@ -38,12 +38,14 @@ const ProfileScreen = () => {
               <EmailIcon size={20} />
               <CSText style={tw`text-white text-sm ml-3 leading-5`}>{user.email}</CSText>
             </View>
-            {user.phone ? <View style={tw`flex-row mb-3`}>
-              <PhoneIcon size={20} />
-              <CSText style={tw`text-white text-sm ml-3 leading-5`}>
-                {formatPhone(user.phone)}
-              </CSText>
-            </View> : null}
+            {user.phone ? (
+              <View style={tw`flex-row mb-3`}>
+                <PhoneIcon size={20} />
+                <CSText style={tw`text-white text-sm ml-3 leading-5`}>
+                  {formatPhone(user.phone)}
+                </CSText>
+              </View>
+            ) : null}
             <AddressDisplay address={user.address || {}} />
           </>
         )}

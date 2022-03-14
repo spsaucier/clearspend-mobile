@@ -1,11 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  ActivityIndicator,
-  Dimensions,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { View, Dimensions, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { chain, debounce } from 'lodash';
@@ -20,7 +14,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { TWSearchInput } from '@/Components/SearchInput';
 import tw from '@/Styles/tailwind';
-import { CSText } from '@/Components';
+import { ActivityIndicator, CSText } from '@/Components';
 import { useCardTransactions } from '@/Queries';
 
 const dimensions = Dimensions.get('screen');
@@ -49,10 +43,11 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const transactionsListRef = useRef<any>(null);
   const [searchText, setSearchText] = useState('');
-  const { data, isLoading, error, refetch, hasNextPage, fetchNextPage } = useCardTransactions({
-    cardId,
-    searchText,
-  });
+  const { data, isLoading, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useCardTransactions({
+      cardId,
+      searchText,
+    });
 
   useEffect(() => {
     if (!expanded) {
@@ -148,44 +143,56 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
             <CSText>{error?.message}</CSText>
           </View>
         ) : transactionsGroupedByDate.length > 0 ? (
-          <FlatList
-            scrollEnabled={expanded}
-            data={transactionsGroupedByDate}
-            showsVerticalScrollIndicator={false}
-            ref={transactionsListRef}
-            onEndReached={loadMore}
-            renderItem={({ item }) => {
-              const { date, transactions } = item;
-              const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
-              return (
-                <View style={tw`pb-2 mt-2`}>
-                  <View style={tw`flex-row justify-between bg-tan px-6 py-2 mb-2`}>
-                    <CSText style={tw`text-sm text-gray-50`}>
-                      {format(dateParsed, 'MMM dd, yyyy')}
-                    </CSText>
+          <>
+            <FlatList
+              scrollEnabled={expanded}
+              data={transactionsGroupedByDate}
+              showsVerticalScrollIndicator={false}
+              ref={transactionsListRef}
+              onEndReached={loadMore}
+              onEndReachedThreshold={0}
+              contentContainerStyle={tw.style(
+                'pb-2',
+                !isFetchingNextPage && !hasNextPage ? 'pb-20' : 'pb-2',
+              )}
+              renderItem={({ item }) => {
+                const { date, transactions } = item;
+                const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
+                return (
+                  <View style={tw`pb-2 mt-2`}>
+                    <View style={tw`flex-row justify-between bg-tan px-6 py-2 mb-2`}>
+                      <CSText style={tw`text-sm text-gray-50`}>
+                        {format(dateParsed, 'MMM dd, yyyy')}
+                      </CSText>
+                    </View>
+                    {transactions.map((transaction: TransactionType) => (
+                      <TransactionRow
+                        key={transaction.accountActivityId}
+                        cardId={cardId}
+                        transactionId={transaction.accountActivityId}
+                        merchantName={transaction.merchant.name}
+                        amount={transaction.amount.amount}
+                        status={transaction.status}
+                        receiptIds={transaction.receipt?.receiptId}
+                        time={transaction.activityTime}
+                        merchantLogoUrl={transaction.merchant.merchantLogoUrl}
+                        merchantCategoryGroup={transaction.merchant.merchantCategoryGroup}
+                        animatedIndex={animatedIndex}
+                        animatedPosition={animatedPosition}
+                        expenseDetails={transaction.expenseDetails}
+                      />
+                    ))}
                   </View>
-                  {transactions.map((transaction: TransactionType) => (
-                    <TransactionRow
-                      key={transaction.accountActivityId}
-                      cardId={cardId}
-                      transactionId={transaction.accountActivityId}
-                      merchantName={transaction.merchant.name}
-                      amount={transaction.amount.amount}
-                      status={transaction.status}
-                      receiptIds={transaction.receipt?.receiptId}
-                      time={transaction.activityTime}
-                      merchantLogoUrl={transaction.merchant.merchantLogoUrl}
-                      merchantCategoryGroup={transaction.merchant.merchantCategoryGroup}
-                      animatedIndex={animatedIndex}
-                      animatedPosition={animatedPosition}
-                      expenseDetails={transaction.expenseDetails}
-                    />
-                  ))}
-                </View>
-              );
-            }}
-            keyExtractor={(item) => item.date}
-          />
+                );
+              }}
+              keyExtractor={(item) => item.date}
+            />
+            {isFetchingNextPage && (
+              <View style={tw`flex-row justify-center items-center h-20 bg-white`}>
+                <ActivityIndicator style={tw`w-6`} bgColor="black" />
+              </View>
+            )}
+          </>
         ) : (
           <View style={tw`items-center justify-center m-12`}>
             <CSText style={tw`text-base text-center text-gray-50`}>
