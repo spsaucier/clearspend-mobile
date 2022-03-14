@@ -99,26 +99,30 @@ const LoginScreen = () => {
     }
   };
 
-  const handle2faLogin = (code: string) => {
+  const handle2faLogin = async (code: string) => {
     Keyboard.dismiss();
 
     setProcessing(true);
     setLoginButtonDisabled(true);
 
-    login2FA(twoFactorId, code)
-      .then((res) => {
+    try {
+      const res = await login2FA(twoFactorId, code);
+      if ('accessToken' in res) {
         setProcessing(false);
         setLoginButtonDisabled(false);
         loginSuccess(res);
-      })
-      .catch(() => {
-        Toast.show({
-          type: 'error',
-          text1: t('login.twoFactor.error'),
-        });
-        setProcessing(false);
-        setLoginButtonDisabled(false);
+      } else if ('changePasswordId' in res) {
+        const { changePasswordId } = res;
+        navigate(AuthScreens.SetPassword, { changePasswordId, email, password });
+      }
+    } catch {
+      Toast.show({
+        type: 'error',
+        text1: t('login.twoFactor.error'),
       });
+      setProcessing(false);
+      setLoginButtonDisabled(false);
+    }
   };
 
   useEffect(() => {

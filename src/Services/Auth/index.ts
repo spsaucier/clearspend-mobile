@@ -151,7 +151,23 @@ export const login2FA = async (twoFactorId: string, code: string) => {
     },
     headers: { 'content-type': 'application/json' },
   }).catch((e) => handleError(e, 'login2FA'));
-  return parseLoginResponse(response);
+
+  switch (response.status) {
+    case 203:
+      return {
+        changePasswordId: response.data?.changePasswordId,
+      };
+      break;
+    case 200:
+    case 202:
+      return parseLoginResponse(response);
+      break;
+    default:
+      // eslint-disable-next-line no-console
+      console.error('Unhandled response:', response.status, response.data);
+      return response.data;
+      break;
+  }
 };
 
 export const changePassword = async (

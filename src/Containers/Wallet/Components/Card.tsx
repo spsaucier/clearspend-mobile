@@ -96,8 +96,8 @@ export const Card = ({
   );
 
   const CardNameAndAllocation = () => (
-    <View style={tw`mt-5`}>
-      <CSText style={tw.style('text-xl mb-2', darkContent ? 'text-black' : 'text-white')}>
+    <View style={tw`mt-4`}>
+      <CSText style={tw.style('text-xl', darkContent ? 'text-black' : 'text-white')}>
         {cardTitle}
       </CSText>
       {allocation ? (
