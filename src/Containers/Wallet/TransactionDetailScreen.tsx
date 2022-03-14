@@ -106,17 +106,17 @@ const TransactionDetailScreenContent = () => {
     }, [refetch]),
   );
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return (
-      <View style={tw`h-full items-center justify-center p-6`}>
-        <ActivityIndicator />
+      <View style={tw`h-full items-center justify-center bg-white rounded-t-3xl`}>
+        <ActivityIndicator bgColor="black" />
       </View>
     );
   }
 
-  if (error) {
+  if (error || !data) {
     return (
-      <View style={tw`h-full items-center justify-center p-6`}>
+      <View style={tw`h-full items-center justify-center bg-white rounded-t-3xl`}>
         <CSText style={tw`text-base text-error mb-2`}>{error?.message}</CSText>
       </View>
     );
@@ -396,7 +396,7 @@ const TransactionDetailScreenContent = () => {
 };
 
 const TransactionDetailScreen = () => (
-  <CSBottomSheet snapPoints={['95%']} showHandle={false} translucidBackground>
+  <CSBottomSheet snapPoints={['96%']} translucidBackground>
     <TransactionDetailScreenContent />
   </CSBottomSheet>
 );
