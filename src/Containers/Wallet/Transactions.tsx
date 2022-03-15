@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Dimensions, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { chain, debounce } from 'lodash';
@@ -16,6 +16,8 @@ import { TWSearchInput } from '@/Components/SearchInput';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSText } from '@/Components';
 import { useCardTransactions } from '@/Queries';
+
+const dimensions = Dimensions.get('screen');
 
 type TransactionType = {
   accountActivityId: string;
@@ -41,7 +43,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const transactionsListRef = useRef<any>(null);
   const [searchText, setSearchText] = useState('');
-  const { data, isFetching, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  const { data, isLoading, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useCardTransactions({
       cardId,
       searchText,
@@ -132,7 +134,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
       </TouchableWithoutFeedback>
 
       <Animated.View style={[tw`flex-1 bg-white`, transactionsContainerAnimatedStyle]}>
-        {isFetching ? (
+        {isLoading ? (
           <View style={tw`items-center justify-center`}>
             <ActivityIndicator style={tw`w-5`} />
           </View>
@@ -204,12 +206,14 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
 };
 
 type TransactionProps = {
-  initialSnapPoint: number;
   cardId: string;
 };
 
-const Transactions = ({ cardId, initialSnapPoint }: TransactionProps) => {
-  const expandedSnapPoint = '100%'; // ref its parent height, not screen!
+const Transactions = ({ cardId }: TransactionProps) => {
+  // (dimensions.height / dimensions.width) < 2 means the device is short and wider
+  // like old devices Pixel 2, iphone 5
+  const initialSnapPoint = dimensions.height / dimensions.width < 2 ? '42%' : '50%';
+  const expandedSnapPoint = '90%';
 
   const snapPointMemo = useMemo(
     () => [initialSnapPoint, expandedSnapPoint],

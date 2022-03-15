@@ -6,7 +6,7 @@ import tw from '@/Styles/tailwind';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { DevMenuButton } from '@/Containers/DevMenu/DevMenuButton';
 
-export const HeaderIcons = ({ onLayout }: { onLayout: any }) => {
+export const HeaderIcons = () => {
   const { navigate } = useNavigation();
   return (
     <View style={tw`w-full flex-row items-center justify-end my-3 pr-6`} onLayout={onLayout}>
