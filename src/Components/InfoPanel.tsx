@@ -39,7 +39,7 @@ export const InfoPanel = forwardRef(
     };
 
     const dimens = useWindowDimensions();
-    const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '35%' : '48%'], [dimens.scale]);
+    const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '45%' : '55%'], [dimens.scale]);
 
     return (
       <BottomSheetModalProvider>

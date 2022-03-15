@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel from 'react-native-snap-carousel';
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import Toast from 'react-native-toast-message';
 import tw from '@/Styles/tailwind';
 import { Button, ActivityIndicator, CSText, InfoPanel } from '@/Components';
 import { Card } from '@/Containers/Wallet/Components/Card';
@@ -20,26 +21,6 @@ import { AddToWalletButton } from '@/Containers/Wallet/Components/AddToWalletBut
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 
 const { width: screenWidth } = Dimensions.get('screen');
-
-export interface LimitTypeMap {
-  limitType?:
-    | 'ACH_DEPOSIT'
-    | 'ACH_WITHDRAW'
-    | 'ACH_PUSH_IN'
-    | 'ACH_PULL_OUT'
-    | 'PURCHASE'
-    | 'ATM_WITHDRAW';
-  PURCHASE: {
-    DAILY: {
-      amount: number;
-      usedAmount: number;
-    };
-    MONTHLY: {
-      amount: number;
-      usedAmount: number;
-    };
-  };
-}
 
 const WalletScreen = () => {
   useRequireOnboarding();
@@ -67,15 +48,13 @@ const WalletScreen = () => {
 
   const activeCards = useMemo(
     () =>
-      allCardsData?.filter((cardDetails) => {
-        if (
-          cardDetails.card.status === 'CANCELLED' ||
-          (cardDetails.card.type === 'PHYSICAL' && cardDetails.card.activated === false)
-        ) {
-          return false;
-        }
-        return true;
-      }) ?? [],
+      allCardsData?.filter(
+        (cardDetails) =>
+          !(
+            cardDetails.card.status === 'CANCELLED' ||
+            (cardDetails.card.type === 'PHYSICAL' && cardDetails.card.activated === false)
+          ),
+      ) ?? [],
     [allCardsData],
   );
 
@@ -190,7 +169,16 @@ const WalletScreen = () => {
                     lastDigits={lastFour || ''}
                     cardTitle={cardLine3}
                     allocation={allocationName}
-                    onPress={() => navigate(MainScreens.CardDetails, { cardId })}
+                    onPress={() => {
+                      if (isFrozen) {
+                        Toast.show({
+                          type: 'success',
+                          text1: t('toasts.cantAccessCardScreenIfFrozenToast'),
+                        });
+                      } else {
+                        navigate(MainScreens.CardDetails, { cardId });
+                      }
+                    }}
                     onCardBalanceInfoPress={onCardBalanceInfoPress}
                     onCardOptionsPress={onCardOptionsPress}
                   />

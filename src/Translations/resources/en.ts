@@ -143,6 +143,8 @@ export default {
     updatePasswordSuccess: 'Your password has been successfully updated',
     verificationResent: 'Verification code re-sent to {{number}}',
     receiptUploadedSuccessfully: 'Receipt uploaded successfully',
+    cantAccessCardScreenIfFrozenToast:
+      'This card needs to be unfrozen before you can view the card details',
   },
   categories: {
     merchant: {

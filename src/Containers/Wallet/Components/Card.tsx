@@ -128,8 +128,8 @@ export const Card = ({
       <CardBackground isFrozen={isFrozen} isVirtual={isVirtual}>
         <View
           style={tw.style(
-            'flex-1 justify-between pr-5 pl-8 pt-3',
-            showSensitiveInformation ? 'pb-5' : 'pb-4',
+            'flex-1 justify-between pr-5',
+            showSensitiveInformation ? 'pb-3 pl-7 pt-2' : 'pb-4 pl-8 pt-3',
           )}
         >
           {/* Top Row */}

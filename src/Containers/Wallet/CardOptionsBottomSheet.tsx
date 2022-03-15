@@ -104,7 +104,7 @@ export const CardOptionsBottomSheet = forwardRef(
     );
 
     const dimens = useWindowDimensions();
-    const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '30%' : '45%'], [dimens.scale]);
+    const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '30%' : '40%'], [dimens.scale]);
 
     return (
       <BottomSheetModalProvider>
@@ -117,16 +117,6 @@ export const CardOptionsBottomSheet = forwardRef(
         >
           <SafeAreaView style={tw`flex-1 py-4 px-6`} edges={['bottom']}>
             <CSText style={tw`text-lg font-medium mb-4`}>{t('card.options.showCardInfo')}</CSText>
-
-            {!hideCardInfoButton && (
-              <TouchableOpacity
-                style={tw`flex-row items-center py-4`}
-                onPress={navigateToCardScreen}
-              >
-                <EyeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
-                <CSText style={tw`text-base`}>{t('card.options.showCardInfo')}</CSText>
-              </TouchableOpacity>
-            )}
 
             <TouchableOpacity
               style={tw`flex-row items-center py-4`}
@@ -149,6 +139,16 @@ export const CardOptionsBottomSheet = forwardRef(
                 </CSText>
               )}
             </TouchableOpacity>
+
+            {!hideCardInfoButton && !isFrozen && !isFreezing && !isUnfreezing && (
+              <TouchableOpacity
+                style={tw`flex-row items-center py-4`}
+                onPress={navigateToCardScreen}
+              >
+                <EyeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
+                <CSText style={tw`text-base`}>{t('card.options.showCardInfo')}</CSText>
+              </TouchableOpacity>
+            )}
           </SafeAreaView>
         </BottomSheetModal>
       </BottomSheetModalProvider>

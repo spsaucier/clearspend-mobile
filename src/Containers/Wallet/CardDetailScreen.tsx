@@ -73,12 +73,12 @@ const CardDetailScreen = ({ route }: Props) => {
           </View>
 
           {/* Card */}
-          <View style={tw`flex-1 p-5`}>
+          <View style={tw`flex-1 p-4`}>
             <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
           </View>
 
           {purchaseLimits && (purchaseLimits.DAILY || purchaseLimits.MONTHLY) && (
-            <View style={tw`flex py-2 mx-5 rounded-md bg-black-30`}>
+            <View style={tw`flex py-2 mx-4 rounded-md bg-black-30`}>
               {purchaseLimits.DAILY && (
                 <LimitSection
                   label={t('cardProfile.spentToday')}
@@ -98,7 +98,7 @@ const CardDetailScreen = ({ route }: Props) => {
 
           {/* Address */}
           {business?.address?.streetLine1 ? (
-            <View style={tw`mt-6 px-5`}>
+            <View style={tw`mt-6 px-4`}>
               <CSText style={tw`text-white text-xs`}>{t('cardInfo.billingAddress')}</CSText>
               <View style={tw`mt-2 bg-white rounded-md flex`}>
                 <View style={tw`flex p-5`}>
