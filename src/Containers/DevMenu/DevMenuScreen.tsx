@@ -1,6 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Crashes from 'appcenter-crashes';
 
 import { useNavigation } from '@react-navigation/core';
 import Toast from 'react-native-toast-message';
@@ -18,11 +19,10 @@ const DevMenuScreen = () => {
     <SafeAreaView style={tw`flex-1 bg-white p-4`}>
       <BackButtonNavigator />
       <CSText style={tw`text-2xl pt-3`}>Dev Menu</CSText>
-      <View style={tw`flex-1 mt-5 pl-2 pr-2`}>
+      <ScrollView style={tw`flex-1 mt-5 pl-2 pr-2`}>
         <CSText style={tw`text-xl pb-4`}>App Info</CSText>
         <CSText style={tw`text-base pb-2`}>Version: {version}</CSText>
         <CSText style={tw`text-base pb-4`}>Build number: {buildNumber}</CSText>
-
         <CSText style={tw`text-xl pb-4`}>Icons</CSText>
         <Button
           label="Available Icon List"
@@ -50,7 +50,22 @@ const DevMenuScreen = () => {
             })
           }
         />
-      </View>
+        <CSText style={tw`text-xl pb-4`}>Errors</CSText>
+        <Button
+          label="Trigger plain js test crash"
+          containerStyle={tw`mb-4 bg-error`}
+          onPress={() => {
+            throw new Error('Test Crash Triggered');
+          }}
+        />
+        <Button
+          label="Trigger app center test crash"
+          containerStyle={tw`mb-4 bg-error`}
+          onPress={() => {
+            Crashes.generateTestCrash();
+          }}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
