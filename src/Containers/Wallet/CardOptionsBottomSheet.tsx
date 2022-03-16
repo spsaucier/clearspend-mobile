@@ -57,6 +57,7 @@ export const CardOptionsBottomSheet = forwardRef(
     }, [isLoading, data, error]);
 
     useEffect(() => {
+      Toast.hide();
       if (isFreezing) {
         setIsFrozen(true);
       }
@@ -77,17 +78,21 @@ export const CardOptionsBottomSheet = forwardRef(
     }, [isFreezeError, isUnfreezeError, t]);
 
     useEffect(() => {
-      if (isFreezeSuccess || isUnfreezeSuccess) {
-        Toast.show({
-          type: 'success',
-          text1: t(
-            isFreezeSuccess
-              ? 'card.options.freezeSuccessToast'
-              : 'card.options.unfreezeSuccessToast',
-          ),
-        });
+      if (!(isFreezing || isUnfreezing)) {
+        if (isFreezeSuccess && isFrozen) {
+          Toast.show({
+            type: 'success',
+            text1: t('card.options.freezeSuccessToast'),
+          });
+        }
+        if (isUnfreezeSuccess && !isFrozen) {
+          Toast.show({
+            type: 'success',
+            text1: t('card.options.unfreezeSuccessToast'),
+          });
+        }
       }
-    }, [isFreezeSuccess, isUnfreezeSuccess, t]);
+    }, [isFrozen, isFreezeSuccess, isUnfreezeSuccess, isFreezing, isUnfreezing, t]);
 
     const renderBackdrop = useCallback(
       ({ animatedIndex, animatedPosition, style }: BottomSheetDefaultBackdropProps) => (
