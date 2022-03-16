@@ -89,7 +89,7 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
                 const dataObj = JSON.parse(data);
                 if (dataObj?.message?.payload?.event === 'click') {
                   // We do not know which one was clicked
-                  Toast.show({ type: 'success', text1: 'Copied to clipboard' });
+                  Toast.show({ type: 'success', text1: 'This card number has been copied to the clipboard' });
                 }
               } catch {
                 // Do nothing
