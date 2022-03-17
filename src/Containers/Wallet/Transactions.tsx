@@ -14,7 +14,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { TWSearchInput } from '@/Components/SearchInput';
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator, CSText } from '@/Components';
+import { ActivityIndicator, AnimatedCSText, CSText } from '@/Components';
 import { useCardTransactions } from '@/Queries';
 
 const dimensions = Dimensions.get('screen');
@@ -118,9 +118,9 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
     <View style={tw`h-full`}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={[tw`flex m-6 mt-2 content-start`]}>
-          <Animated.Text style={[tw`text-base self-start`, transactionsTitleScaleAnimatedStyle]}>
+          <AnimatedCSText style={[tw`text-base self-start`, transactionsTitleScaleAnimatedStyle]}>
             {t('wallet.transactions.recentTransactions')}
-          </Animated.Text>
+          </AnimatedCSText>
 
           <View style={[tw`flex-row mt-4 justify-between`]}>
             <View style={tw`flex-grow`}>
