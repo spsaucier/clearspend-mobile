@@ -3,7 +3,7 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import MultitaskBlur from 'react-native-multitask-blur';
 import { useNavigation } from '@react-navigation/native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSText, FocusAwareStatusBar, InfoPanel } from '@/Components';
@@ -61,71 +61,73 @@ const CardDetailScreen = ({ route }: Props) => {
     const purchaseLimits = limits && limits[0].typeMap.PURCHASE;
 
     return (
-      <SafeAreaView style={tw`bg-secondary flex-1`}>
-        <FocusAwareStatusBar translucent backgroundColor="transparent" />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Back button & Profile Icon */}
-          <View style={tw`flex flex-row items-center justify-between px-5 mt-4`}>
-            <BackButtonNavigator theme="dark" />
-            <TouchableOpacity onPress={() => navigate(MainScreens.Profile)}>
-              <ProfileIcon color={tw.color('white')} size={26} />
-            </TouchableOpacity>
-          </View>
-
-          {/* Card */}
-          <View style={tw`flex-1 p-4`}>
-            <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
-          </View>
-
-          {purchaseLimits && (purchaseLimits.DAILY || purchaseLimits.MONTHLY) && (
-            <View style={tw`flex py-2 mx-4 rounded-md bg-black-30`}>
-              {purchaseLimits.DAILY && (
-                <LimitSection
-                  label={t('cardProfile.spentToday')}
-                  amountUsed={purchaseLimits.DAILY && purchaseLimits.DAILY.usedAmount}
-                  limit={purchaseLimits.DAILY && purchaseLimits.DAILY.amount}
-                />
-              )}
-              {purchaseLimits.MONTHLY && (
-                <LimitSection
-                  label={t('cardProfile.spentCurrentMonth')}
-                  amountUsed={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.usedAmount}
-                  limit={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.amount}
-                />
-              )}
+      <BottomSheetModalProvider>
+        <SafeAreaView style={tw`bg-secondary flex-1`}>
+          <FocusAwareStatusBar translucent backgroundColor="transparent" />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {/* Back button & Profile Icon */}
+            <View style={tw`flex flex-row items-center justify-between px-5 mt-4`}>
+              <BackButtonNavigator theme="dark" />
+              <TouchableOpacity onPress={() => navigate(MainScreens.Profile)}>
+                <ProfileIcon color={tw.color('white')} size={26} />
+              </TouchableOpacity>
             </View>
-          )}
 
-          {/* Address */}
-          {business?.address?.streetLine1 ? (
-            <View style={tw`mt-6 px-4`}>
-              <CSText style={tw`text-white text-xs`}>{t('cardInfo.billingAddress')}</CSText>
-              <View style={tw`mt-2 bg-white rounded-md flex`}>
-                <View style={tw`flex p-5`}>
-                  <CSText style={tw`font-montreal`}>
-                    {`${business.address.streetLine1} ${business.address.streetLine2}`}
-                  </CSText>
-                  <CSText style={tw`mt-1 font-montreal`}>
-                    {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
-                  </CSText>
-                </View>
-                <View style={tw`border-b-1 border-gray-10`} />
-                <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
+            {/* Card */}
+            <View style={tw`flex-1 p-4`}>
+              <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
+            </View>
+
+            {purchaseLimits && (purchaseLimits.DAILY || purchaseLimits.MONTHLY) && (
+              <View style={tw`flex py-2 mx-4 rounded-md bg-black-30`}>
+                {purchaseLimits.DAILY && (
+                  <LimitSection
+                    label={t('cardProfile.spentToday')}
+                    amountUsed={purchaseLimits.DAILY && purchaseLimits.DAILY.usedAmount}
+                    limit={purchaseLimits.DAILY && purchaseLimits.DAILY.amount}
+                  />
+                )}
+                {purchaseLimits.MONTHLY && (
+                  <LimitSection
+                    label={t('cardProfile.spentCurrentMonth')}
+                    amountUsed={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.usedAmount}
+                    limit={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.amount}
+                  />
+                )}
               </View>
-            </View>
-          ) : (
-            <View />
-          )}
-          <View style={tw`h-30`} />
-        </ScrollView>
-        <InfoPanel
-          ref={balanceInfoPanelRef}
-          title={t('cardProfile.availableToSpendMeans')}
-          description={t('cardProfile.availableToSpendMeansDescription')}
-          okButtonText={t('cardProfile.okGotIt')}
-        />
-        <CardOptionsBottomSheet ref={cardOptionsPanelRef} cardId={cardId} hideCardInfoButton />
-      </SafeAreaView>
+            )}
+
+            {/* Address */}
+            {business?.address?.streetLine1 ? (
+              <View style={tw`mt-6 px-4`}>
+                <CSText style={tw`text-white text-xs`}>{t('cardInfo.billingAddress')}</CSText>
+                <View style={tw`mt-2 bg-white rounded-md flex`}>
+                  <View style={tw`flex p-5`}>
+                    <CSText style={tw`font-montreal`}>
+                      {`${business.address.streetLine1} ${business.address.streetLine2}`}
+                    </CSText>
+                    <CSText style={tw`mt-1 font-montreal`}>
+                      {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
+                    </CSText>
+                  </View>
+                  <View style={tw`border-b-1 border-gray-10`} />
+                  <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
+                </View>
+              </View>
+            ) : (
+              <View />
+            )}
+            <View style={tw`h-30`} />
+          </ScrollView>
+          <InfoPanel
+            ref={balanceInfoPanelRef}
+            title={t('cardProfile.availableToSpendMeans')}
+            description={t('cardProfile.availableToSpendMeansDescription')}
+            okButtonText={t('cardProfile.okGotIt')}
+          />
+          <CardOptionsBottomSheet ref={cardOptionsPanelRef} cardId={cardId} hideCardInfoButton />
+        </SafeAreaView>
+      </BottomSheetModalProvider>
     );
   }
   return null;

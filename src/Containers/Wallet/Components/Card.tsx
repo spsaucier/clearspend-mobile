@@ -110,6 +110,8 @@ export const Card = ({
 
   return (
     <TouchableOpacity
+      onLongPress={() => {}}
+      activeOpacity={0.8}
       key={cardId}
       style={[
         tw.style(

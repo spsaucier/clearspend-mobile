@@ -166,6 +166,7 @@ export default {
     },
   },
   wallet: {
+    refreshCardAndTransactions: 'Refreshing card and transactions',
     empty: {
       title: 'Looks like you don’t have any cards.',
       subTitle: 'When you’re assigned a card, you’ll be able to view and control it from here.',

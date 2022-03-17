@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { View, Dimensions, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { chain, debounce } from 'lodash';
@@ -16,8 +16,6 @@ import { TWSearchInput } from '@/Components/SearchInput';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, AnimatedCSText, CSText } from '@/Components';
 import { useCardTransactions } from '@/Queries';
-
-const dimensions = Dimensions.get('screen');
 
 type TransactionType = {
   accountActivityId: string;
@@ -207,13 +205,11 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
 
 type TransactionProps = {
   cardId: string;
+  initialSnapPoint: number;
 };
 
-const Transactions = ({ cardId }: TransactionProps) => {
-  // (dimensions.height / dimensions.width) < 2 means the device is short and wider
-  // like old devices Pixel 2, iphone 5
-  const initialSnapPoint = dimensions.height / dimensions.width < 2 ? '42%' : '50%';
-  const expandedSnapPoint = '90%';
+const Transactions = ({ cardId, initialSnapPoint }: TransactionProps) => {
+  const expandedSnapPoint = '100%';
 
   const snapPointMemo = useMemo(
     () => [initialSnapPoint, expandedSnapPoint],
@@ -228,9 +224,7 @@ const Transactions = ({ cardId }: TransactionProps) => {
       snapPoints={snapPointMemo}
       handleStyle={[tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`]}
       handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
-      onChange={(e) => {
-        setExpanded(e === 1);
-      }}
+      onChange={(e) => setExpanded(e === 1)}
     >
       <BottomSheetView onLayout={handleContentLayout}>
         <TransactionsContent cardId={cardId} expanded={expanded} />

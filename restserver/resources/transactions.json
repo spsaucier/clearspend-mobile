@@ -1,5 +1,28 @@
 [
   {
+    "accountActivityId": "e0c728f8-a2c5-4430-8d8c-f58086f22842",
+    "activityTime": "2021-11-24T07:19:18.098Z",
+    "accountName": "string",
+    "card": {
+      "cardId": "1111"
+    },
+    "merchant": {
+      "name": "Kmart",
+      "type": "UTILITIES",
+      "merchantNumber": "string",
+      "merchantCategoryCode": 1,
+      "merchantLogoUrl": "https://variety.com/wp-content/uploads/2013/09/kmart-logo.jpg"
+    },
+    "type": "BANK_LINK",
+    "amount": {
+      "currency": "USD",
+      "amount": 100.99
+    },
+    "status": "PENDING",
+    "receipt": null,
+    "note": "Office stationery"
+  },
+  {
     "accountActivityId": "e0c728f8-a2c5-4430-8d8c-f58086f22840",
     "activityTime": "2021-11-24T07:19:18.098Z",
     "accountName": "string",

@@ -1,8 +1,4 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import React, { forwardRef, useCallback, useMemo } from 'react';
 import { Trans } from 'react-i18next';
@@ -42,36 +38,34 @@ export const InfoPanel = forwardRef(
     const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '45%' : '55%'], [dimens.scale]);
 
     return (
-      <BottomSheetModalProvider>
-        <BottomSheetModal
-          ref={ref}
-          snapPoints={snapPointMemo}
-          backdropComponent={renderBackdrop}
-          handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
-          backgroundStyle={tw`bg-secondary`}
-        >
-          <SafeAreaView style={tw`flex-1 p-4`} edges={['bottom']}>
-            <CSText style={tw`text-xl text-white`} testID="infoPanelTitleText">
-              <Trans
-                i18nKey={title as string}
-                components={{
-                  key: (
-                    <CSText style={tw`text-xl text-primary`} testID="infoPanelHighlightedText" />
-                  ),
-                }}
-              />
-            </CSText>
-            <CSText style={tw`text-white mt-4`} testID="infoPanelDescriptionTest">
-              {description}
-            </CSText>
-            <View style={tw`flex-1 justify-end`}>
-              <Button onPress={onOkButtonPress} testID="infoPanelButtonDismiss">
-                {okButtonText}
-              </Button>
-            </View>
-          </SafeAreaView>
-        </BottomSheetModal>
-      </BottomSheetModalProvider>
+      // <BottomSheetModalProvider>
+      <BottomSheetModal
+        ref={ref}
+        snapPoints={snapPointMemo}
+        backdropComponent={renderBackdrop}
+        handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
+        backgroundStyle={tw`bg-secondary`}
+      >
+        <SafeAreaView style={tw`flex-1 p-4`} edges={['bottom']}>
+          <CSText style={tw`text-xl text-white`} testID="infoPanelTitleText">
+            <Trans
+              i18nKey={title as string}
+              components={{
+                key: <CSText style={tw`text-xl text-primary`} testID="infoPanelHighlightedText" />,
+              }}
+            />
+          </CSText>
+          <CSText style={tw`text-white mt-4`} testID="infoPanelDescriptionTest">
+            {description}
+          </CSText>
+          <View style={tw`flex-1 justify-end`}>
+            <Button onPress={onOkButtonPress} testID="infoPanelButtonDismiss">
+              {okButtonText}
+            </Button>
+          </View>
+        </SafeAreaView>
+      </BottomSheetModal>
+      // </BottomSheetModalProvider>
     );
   },
 );

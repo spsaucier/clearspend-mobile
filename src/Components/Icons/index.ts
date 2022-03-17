@@ -1,4 +1,5 @@
 export { AppleWalletIcon } from './appleWalletIcon';
+export { ArrowUpIcon } from './arrowUpIcon';
 export { BackArrowIcon } from './backArrowIcon';
 export { CameraIcon } from './cameraIcon';
 export { CardSettingsIcon } from './cardSettingsIcon';
