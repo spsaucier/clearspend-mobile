@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Keyboard, KeyboardAvoidingView, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation, useRoute } from '@react-navigation/core';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import tw from '@/Styles/tailwind';
 import { useUpdateTransaction } from '@/Queries/transaction';
@@ -46,30 +47,38 @@ const NoteInputScreen = () => {
   }, [isSuccess, navigation]);
 
   return (
-    <SafeAreaView style={tw`flex-1 p-6 bg-white`} edges={['top', 'bottom']}>
+    <SafeAreaView style={tw`flex-1 bg-white`} edges={['top', 'bottom']}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-      <KeyboardAvoidingView style={tw`flex-1 `} behavior="padding">
+      <KeyboardAvoidingView style={tw`flex-1`} behavior="padding">
         <View style={tw`flex-1`}>
-          <CSText style={tw`text-2xl pt-6 text-center`}>
-            {t('wallet.transactionDetails.notes.addANote')}
-          </CSText>
-          <TextInput
-            style={tw`text-black w-full py-1`}
-            multiline
-            autoFocus
-            autoCorrect
-            testID="noteField"
-            underlineColorAndroid="rgba(0,0,0,0)"
-            placeholder={t('wallet.transactionDetails.notes.addANote')}
-            placeholderTextColor={tw.color('gray-50')}
-            onChangeText={onChangeText}
-            value={note}
-            onBlur={() => Keyboard.dismiss()}
-            onSubmitEditing={() => !buttonDisabled && submitNote()}
-            scrollEnabled
-          />
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            containerStyle={tw`flex-1`}
+            style={tw`flex-1 px-6 pt-6`}
+          >
+            <CSText style={tw`text-2xl pt-6 text-center`}>
+              {t('wallet.transactionDetails.notes.addANote')}
+            </CSText>
+            <View style={tw`flex-1`}>
+              <TextInput
+                style={tw`text-black h-full`}
+                multiline
+                autoFocus
+                autoCorrect
+                textAlignVertical="top"
+                testID="noteField"
+                underlineColorAndroid="rgba(0,0,0,0)"
+                placeholder={t('wallet.transactionDetails.notes.addANote')}
+                placeholderTextColor={tw.color('gray-50')}
+                onChangeText={onChangeText}
+                value={note}
+                onBlur={Keyboard.dismiss}
+                scrollEnabled
+              />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-        <View style={tw`mt-12`}>
+        <View style={tw`mt-1 px-6 pb-6`}>
           <View style={tw`flex-row items-center justify-end m-1`}>
             <CSText style={tw.style(charCount > maxCharCount ? 'text-error' : 'text-black')}>
               {charCount}
