@@ -228,7 +228,6 @@ const ContentWallet = ({
         <AddToWalletButton
           hide={Platform.OS !== 'ios'}
           onPress={() => {
-            AppleWallet.canAddPaymentPass();
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             if (
               Platform.OS === 'ios' &&

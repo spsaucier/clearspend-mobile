@@ -1,4 +1,5 @@
 import { Alert, NativeModules } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 const { AppleWalletModule } = NativeModules;
 
@@ -18,15 +19,7 @@ export const AppleWallet = {
     AppleWalletModule.beginPushProvisioning(options, accessToken, cardId);
   },
 
-  canAddPaymentPass: async () => {
-    const passes = await AppleWalletModule.getPaymentPasses();
-    // eslint-disable-next-line no-console
-    console.warn('existing passes', passes);
-    Alert.alert('Existing passes', JSON.stringify(passes));
+  canAddPaymentPass: async () => AppleWalletModule.canAddPaymentPass(),
 
-    const canAdd = await AppleWalletModule.canAddPaymentPass();
-    // eslint-disable-next-line no-console
-    console.warn(`can add payment pass: ${canAdd}`);
-    Alert.alert('Can add pass', canAdd);
-  },
+  getPaymentPasses: async () => AppleWalletModule.getPaymentPasses(),
 };

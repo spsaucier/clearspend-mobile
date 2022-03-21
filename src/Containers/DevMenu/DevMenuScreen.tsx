@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Crashes from 'appcenter-crashes';
 
@@ -10,6 +10,7 @@ import { Button, CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
+import { AppleWallet } from '@/NativeModules/AppleWallet/AppleWallet';
 
 const DevMenuScreen = () => {
   const { navigate } = useNavigation();
@@ -63,6 +64,23 @@ const DevMenuScreen = () => {
           containerStyle={tw`mb-4 bg-error`}
           onPress={() => {
             Crashes.generateTestCrash();
+          }}
+        />
+        <CSText style={tw`text-xl pb-4`}>Digital Wallets</CSText>
+        <Button
+          label="Apple Wallet: Show Existing Passes"
+          containerStyle={tw`mb-4`}
+          onPress={async () => {
+            const passes = await AppleWallet.getPaymentPasses();
+            Alert.alert('Existing passes', JSON.stringify(passes));
+          }}
+        />
+        <Button
+          label="Apple Wallet: Can Add Payment Pass"
+          containerStyle={tw`mb-4`}
+          onPress={async () => {
+            const canAdd = await AppleWallet.canAddPaymentPass();
+            Alert.alert(`Can add payment pass: ${canAdd}`);
           }}
         />
       </ScrollView>
