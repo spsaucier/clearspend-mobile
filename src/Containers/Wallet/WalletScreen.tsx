@@ -16,6 +16,7 @@ import Animated, {
   Easing,
   Extrapolate,
   interpolate,
+  runOnJS,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -43,6 +44,7 @@ import { invalidateTransactions } from '@/Queries/transaction';
 import { ArrowUpIcon } from '@/Components/Icons';
 import { AppleWallet } from '@/NativeModules/AppleWallet/AppleWallet';
 import { Session } from '@/Store/Session';
+import { lightFeedback } from '@/Helpers/HapticFeedback';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const { StatusBarManager } = NativeModules;
@@ -168,7 +170,7 @@ const ContentWallet = ({
             activeOffsetX: [-10, 10],
           }}
           modeConfig={{
-            parallaxScrollingScale: 0.9,
+            parallaxScrollingScale: 0.88,
             parallaxScrollingOffset: 50,
           }}
           onSnapToItem={(index: any) => setSelectedCard(activeCards[index])}
@@ -306,13 +308,18 @@ const WalletScreen = () => {
   }, [isRefetching, translationYSV, queryClient]);
 
   const handler = useAnimatedGestureHandler({
-    onStart: (_, ctx: { startY: number; startedAt: number }) => {
+    onStart: (_, ctx: { startY: number; hapticTriggered: boolean }) => {
       ctx.startY = translationYSV.value;
-      ctx.startedAt = Date.now();
+      ctx.hapticTriggered = false;
     },
     onActive: (event, ctx) => {
       if (event.translationY < 0) return;
       if (event.translationY > pullToRefreshThreshold) return;
+
+      if (event.translationY > pullToRefreshThreshold / 2 && !ctx.hapticTriggered) {
+        ctx.hapticTriggered = true;
+        runOnJS(lightFeedback)();
+      }
       translationYSV.value = ctx.startY + event.translationY;
     },
     onEnd: (event) => {
@@ -347,15 +354,6 @@ const WalletScreen = () => {
       opacity: interpolate(translationYSV.value, [0, pullToRefreshThreshold / 2], [0, 1]),
     };
   });
-
-  useEffect(() => {
-    if (!isRefetching) {
-      translationYSV.value = withTiming(0);
-    } else {
-      // invalidate sub queries
-      invalidateTransactions(queryClient);
-    }
-  }, [isRefetching, translationYSV, queryClient]);
 
   const showError = !cardsLoading && cardsError;
   const showCardsEmpty = !cardsLoading && !cardsError && (!activeCards || activeCards.length === 0);

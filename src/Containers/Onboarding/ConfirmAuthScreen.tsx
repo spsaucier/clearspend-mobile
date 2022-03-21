@@ -12,7 +12,7 @@ import { Logo } from '@/Components/Svg/Logo';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { PasscodeView } from './Components/Passcode/PasscodeView';
 import { PromptBio } from './Components/PromptBio';
-import { vibrate } from '@/Helpers/vibrate';
+import { longFeedback } from '@/Helpers/HapticFeedback';
 import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 
 const ConfirmAuthScreen = () => {
@@ -48,7 +48,7 @@ const ConfirmAuthScreen = () => {
       onSuccess();
     } else {
       setCurrentError(t('loginOptions.passcode.tryAgain'));
-      vibrate();
+      longFeedback();
       if (failedAttempts > 4) {
         logout();
       }

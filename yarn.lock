@@ -7898,6 +7898,11 @@ react-native-gesture-handler@^1.10.3:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-haptic-feedback@^1.13.1:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/react-native-haptic-feedback/-/react-native-haptic-feedback-1.13.1.tgz#f3b429732f1373b2b0f9d8a07e213feb59bc4d86"
+  integrity sha512-aP4AhnxMPnlMEeG0ZVit5+ji85mhzvqQjWkGuOpNwjlJuWJ7IkUvLv/H32+S+Kb41eAl78z9k3FG9waPmLv/IQ==
+
 react-native-image-picker@^4.7.3:
   version "4.7.3"
   resolved "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-4.7.3.tgz"

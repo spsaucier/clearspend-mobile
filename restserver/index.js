@@ -28,12 +28,10 @@ app.use(
 );
 
 const toJWTResponse = (user, res) => {
+  const exp = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
   const { profile, refreshToken } = user;
   const { userId, email } = profile;
-  const token = jwt.sign(
-    { userId, email, exp: Math.floor(Date.now() / 1000) + 60 * 60 },
-    TOKEN_KEY,
-  );
+  const token = jwt.sign({ userId, email, exp }, TOKEN_KEY);
   res.json({
     token,
     refreshToken,

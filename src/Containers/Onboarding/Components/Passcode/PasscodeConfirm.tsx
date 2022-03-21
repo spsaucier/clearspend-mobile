@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 
 import { BioPasscodeNavigationProps, BioPasscodeScreens } from '../../BioPasscode/BioPasscodeTypes';
 import { PasscodeView } from './PasscodeView';
-import { vibrate } from '@/Helpers/vibrate';
+import { longFeedback } from '@/Helpers/HapticFeedback';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
@@ -34,7 +34,7 @@ export const PasscodeConfirm = ({
       navigation.replace(MainScreens.Wallet);
     } else {
       setCurrentError(t('loginOptions.passcode.tryAgain'));
-      vibrate();
+      longFeedback();
     }
   };
 
