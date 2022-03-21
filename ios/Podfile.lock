@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.5.0)
   - appcenter-analytics (4.4.3):
     - AppCenter/Analytics (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
@@ -469,11 +470,27 @@ PODS:
     - React
   - RNVectorIcons (9.0.0):
     - React-Core
+  - Stripe (21.12.0):
+    - Stripe/Stripe3DS2 (= 21.12.0)
+    - StripeApplePay (= 21.12.0)
+    - StripeCore (= 21.12.0)
+    - StripeUICore (= 21.12.0)
+  - Stripe/Stripe3DS2 (21.12.0):
+    - StripeApplePay (= 21.12.0)
+    - StripeCore (= 21.12.0)
+    - StripeUICore (= 21.12.0)
+  - StripeApplePay (21.12.0):
+    - StripeCore (= 21.12.0)
+  - StripeCore (21.12.0)
+  - StripeUICore (21.12.0):
+    - StripeCore (= 21.12.0)
+  - SwiftLint (0.46.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
+  - Alamofire
   - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
   - appcenter-core (from `../node_modules/appcenter/ios`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
@@ -558,10 +575,13 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - Stripe
+  - SwiftLint
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - AppCenter
     - AppCenterReactNativeShared
     - boost-for-react-native
@@ -582,6 +602,11 @@ SPEC REPOS:
     - MMKV
     - MMKVCore
     - OpenSSL-Universal
+    - Stripe
+    - StripeApplePay
+    - StripeCore
+    - StripeUICore
+    - SwiftLint
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -707,6 +732,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
   appcenter-analytics: 1b32062da2e250c5e1396c678df8c6011ccbcf5a
   appcenter-core: 6ea4754df4a3d8917a5803e2681a58179d7f7a21
@@ -786,9 +812,14 @@ SPEC CHECKSUMS:
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
+  Stripe: c3692f360abcdfeef9751e3c240e7efbc68b921f
+  StripeApplePay: 14db90fdf89abb2809ce41fc68bc6b1a86221408
+  StripeCore: 5e38cdea3dc176a32d8797ef312fe1ab41571272
+  StripeUICore: c28e371b385f968388ae38bedb93a2723c078442
+  SwiftLint: ae76d82f056734f853c8cd0371503252c606c482
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: fe5bd8a576862211f036fe30883adf12a90388eb
+PODFILE CHECKSUM: 91b930c13325d12a94a77769b2f29165a1a76aea
 
 COCOAPODS: 1.11.2

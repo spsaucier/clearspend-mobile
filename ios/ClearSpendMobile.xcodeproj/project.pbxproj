@@ -16,6 +16,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		13FB8C36AD0B49AA97DBE4C4 /* PPNeueMontreal-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 71018FA8739B4597AEB11603 /* PPNeueMontreal-BoldItalic.ttf */; };
 		1E450C06480644EABA6A9479 /* PPNeueMontreal-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5DB793C6E384284BB055B1A /* PPNeueMontreal-MediumItalic.ttf */; };
+		1F5A481227D69F8E00951D47 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F5A481127D69F8E00951D47 /* PassKit.framework */; };
+		1F8E53B327C49846007400C8 /* AppleWalletModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8E53B127C49846007400C8 /* AppleWalletModule.m */; };
+		1F8E53B427C49846007400C8 /* AppleWalletModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8E53B227C49846007400C8 /* AppleWalletModule.swift */; };
 		40709B87E0584C138808F101 /* PPNeueMontreal-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D08645A16A54D56AB47974D /* PPNeueMontreal-Bold.ttf */; };
 		431103B0273D085C0009F367 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 431103AF273D085C0009F367 /* AppCenter-Config.plist */; };
 		46C98FE072B24FA28BBEF469 /* PPNeueMontreal-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB59EF2C7CBD44E4A958FB77 /* PPNeueMontreal-Thin.ttf */; };
@@ -68,6 +71,12 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ClearSpendMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ClearSpendMobile/main.m; sourceTree = "<group>"; };
 		1DD797DB42F4481B925B1A61 /* PPTelegraf-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Regular.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Regular.ttf"; sourceTree = "<group>"; };
+		1F1F35DD27E812F7005D963E /* ClearSpendMobile-DEV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "ClearSpendMobile-DEV.entitlements"; path = "ClearSpendMobile/Entitlements/ClearSpendMobile-DEV.entitlements"; sourceTree = SOURCE_ROOT; };
+		1F1F35DE27E812FE005D963E /* ClearSpendMobile-PROD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "ClearSpendMobile-PROD.entitlements"; path = "ClearSpendMobile/Entitlements/ClearSpendMobile-PROD.entitlements"; sourceTree = SOURCE_ROOT; };
+		1F5A481127D69F8E00951D47 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
+		1F8E53B127C49846007400C8 /* AppleWalletModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppleWalletModule.m; path = ClearSpendMobile/AppleWallet/AppleWalletModule.m; sourceTree = SOURCE_ROOT; };
+		1F8E53B227C49846007400C8 /* AppleWalletModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleWalletModule.swift; path = ClearSpendMobile/AppleWallet/AppleWalletModule.swift; sourceTree = SOURCE_ROOT; };
+		1FFB387727C321A60090B6D8 /* ClearSpendMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ClearSpendMobile-Bridging-Header.h"; path = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		236F0195D4E04677BE171B1D /* PPNeueMontreal-BookItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-BookItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-BookItalic.ttf"; sourceTree = "<group>"; };
 		2ED8FC2EF5514850AAFC1996 /* PPNeueMontreal-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-SemiBold.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-SemiBold.ttf"; sourceTree = "<group>"; };
 		3677E433CB2F46878BE575BB /* PPTelegraf-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Light.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Light.ttf"; sourceTree = "<group>"; };
@@ -83,7 +92,6 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClearSpendMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B84307E5339D7D3648F2B55 /* Pods-ClearSpendMobile-ClearSpendMobileTests.dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile-ClearSpendMobileTests.dev.debug.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile-ClearSpendMobileTests/Pods-ClearSpendMobile-ClearSpendMobileTests.dev.debug.xcconfig"; sourceTree = "<group>"; };
 		9D81E2DEFF7E00BE9E87B17B /* Pods-ClearSpendMobile.uat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile.uat.release.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile/Pods-ClearSpendMobile.uat.release.xcconfig"; sourceTree = "<group>"; };
-		A02DEFAF2762BAE700A7018F /* ClearSpendMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ClearSpendMobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		A1527ED11B7ECE4FA9B2885C /* Pods-ClearSpendMobile.dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile.dev.release.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile/Pods-ClearSpendMobile.dev.release.xcconfig"; sourceTree = "<group>"; };
 		A4BC80EE56F84D59BF1BA500 /* PPNeueMontreal-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-Light.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-Light.ttf"; sourceTree = "<group>"; };
 		AAA4560D9777B812CCA23E95 /* Pods-ClearSpendMobile.dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClearSpendMobile.dev.debug.xcconfig"; path = "Target Support Files/Pods-ClearSpendMobile/Pods-ClearSpendMobile.dev.debug.xcconfig"; sourceTree = "<group>"; };
@@ -118,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F5A481227D69F8E00951D47 /* PassKit.framework in Frameworks */,
 				D45B9D84896788117F0DE57E /* libPods-ClearSpendMobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -176,20 +185,41 @@
 		13B07FAE1A68108700A75B9A /* ClearSpendMobile */ = {
 			isa = PBXGroup;
 			children = (
+				1F505EAA27DEB69C00AE162D /* Entitlements */,
+				1F8E53B027C4954A007400C8 /* AppleWallet */,
+				1FFB387727C321A60090B6D8 /* ClearSpendMobile-Bridging-Header.h */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				A02DEFAF2762BAE700A7018F /* ClearSpendMobile-Bridging-Header.h */,
 			);
 			name = ClearSpendMobile;
+			sourceTree = "<group>";
+		};
+		1F505EAA27DEB69C00AE162D /* Entitlements */ = {
+			isa = PBXGroup;
+			children = (
+				1F1F35DE27E812FE005D963E /* ClearSpendMobile-PROD.entitlements */,
+				1F1F35DD27E812F7005D963E /* ClearSpendMobile-DEV.entitlements */,
+			);
+			path = Entitlements;
+			sourceTree = "<group>";
+		};
+		1F8E53B027C4954A007400C8 /* AppleWallet */ = {
+			isa = PBXGroup;
+			children = (
+				1F8E53B127C49846007400C8 /* AppleWalletModule.m */,
+				1F8E53B227C49846007400C8 /* AppleWalletModule.swift */,
+			);
+			path = AppleWallet;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1F5A481127D69F8E00951D47 /* PassKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				F243A0E93BD2FC643D2FBB25 /* libPods-ClearSpendMobile.a */,
 				03A07999C3D928377FD42A96 /* libPods-ClearSpendMobile-ClearSpendMobileTests.a */,
@@ -278,6 +308,7 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ClearSpendMobile" */;
 			buildPhases = (
 				66D10C4FBF31866B9ADBA6E3 /* [CP] Check Pods Manifest.lock */,
+				1F70209527CDB502006C8715 /* SwiftLint */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -389,6 +420,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		1F70209527CDB502006C8715 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" --fix --format ./ClearSpendMobile\n\"${PODS_ROOT}/SwiftLint/swiftlint\" ./ClearSpendMobile\n";
 		};
 		46A821537071276DD947A654 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -537,7 +586,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				1F8E53B327C49846007400C8 /* AppleWalletModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				1F8E53B427C49846007400C8 /* AppleWalletModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,6 +607,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0BB39BBBAF893E4937E8BDB2 /* Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -587,6 +639,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C1101426D51910CF1247F0EE /* Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
@@ -617,6 +670,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "ClearSpendMobile/Entitlements/ClearSpendMobile-PROD.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -640,7 +694,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clearspend.clearspend;
 				PRODUCT_NAME = ClearSpend;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -653,6 +707,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "ClearSpendMobile/Entitlements/ClearSpendMobile-PROD.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -674,7 +729,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clearspend.clearspend;
 				PRODUCT_NAME = ClearSpend;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -741,6 +796,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 			};
 			name = dev.Debug;
 		};
@@ -750,6 +806,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDEV;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "ClearSpendMobile/Entitlements/ClearSpendMobile-DEV.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -773,7 +830,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clearspend.clearspend.dev;
 				PRODUCT_NAME = "ClearSpend DEV";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -784,6 +841,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9B84307E5339D7D3648F2B55 /* Pods-ClearSpendMobile-ClearSpendMobileTests.dev.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -872,6 +930,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 			};
 			name = uat.Debug;
 		};
@@ -881,6 +940,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconUAT;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "ClearSpendMobile/Entitlements/ClearSpendMobile-DEV.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -904,7 +964,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clearspend.clearspend.uat;
 				PRODUCT_NAME = "ClearSpend UAT";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -915,6 +975,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6B71F9C91448DE35E47D583 /* Pods-ClearSpendMobile-ClearSpendMobileTests.uat.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -995,6 +1056,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = dev.Release;
@@ -1005,6 +1067,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDEV;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "ClearSpendMobile/Entitlements/ClearSpendMobile-DEV.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1026,7 +1089,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clearspend.clearspend.dev;
 				PRODUCT_NAME = "ClearSpend DEV";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1036,6 +1099,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BFCCD915DC6D5742EC0B67EC /* Pods-ClearSpendMobile-ClearSpendMobileTests.dev.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
@@ -1113,6 +1177,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = uat.Release;
@@ -1123,6 +1188,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconUAT;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "ClearSpendMobile/Entitlements/ClearSpendMobile-DEV.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1144,7 +1210,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clearspend.clearspend.uat;
 				PRODUCT_NAME = "ClearSpend UAT";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1154,6 +1220,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CEA0D971E85CB46B3E8C22CA /* Pods-ClearSpendMobile-ClearSpendMobileTests.uat.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
@@ -1239,6 +1306,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1295,6 +1363,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

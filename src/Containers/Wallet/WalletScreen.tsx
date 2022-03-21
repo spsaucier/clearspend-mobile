@@ -25,11 +25,12 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useQueryClient } from 'react-query';
 import Carousel from 'react-native-reanimated-carousel';
 
+import { useSelector } from 'react-redux';
 import tw from '@/Styles/tailwind';
 import { Button, ActivityIndicator, CSText, InfoPanel, AnimatedCSText } from '@/Components';
 import { Card } from '@/Containers/Wallet/Components/Card';
 import Transactions from './Transactions';
-import { useUserCards } from '@/Queries';
+import { useUser, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
@@ -40,6 +41,8 @@ import { AddToWalletButton } from '@/Containers/Wallet/Components/AddToWalletBut
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 import { invalidateTransactions } from '@/Queries/transaction';
 import { ArrowUpIcon } from '@/Components/Icons';
+import { AppleWallet } from '@/NativeModules/AppleWallet/AppleWallet';
+import { Session } from '@/Store/Session';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const { StatusBarManager } = NativeModules;
@@ -113,10 +116,13 @@ const ContentWallet = ({
   const { navigate } = useNavigation();
   const { t } = useTranslation();
 
+  const { data: user } = useUser();
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
   const balanceInfoPanelRef = useRef<BottomSheetModal>(null);
   const cardOptionsPanelRef = useRef<BottomSheetModal>(null);
   const [carouselHeight, setCarouselHeight] = useState<number>();
+
+  const accessToken = useSelector((state: { session: Session }) => state.session.accessToken);
 
   const onCardBalanceInfoPress = () => {
     balanceInfoPanelRef.current?.present();
@@ -219,7 +225,31 @@ const ContentWallet = ({
             })}
         </View>
 
-        <AddToWalletButton hide />
+        <AddToWalletButton
+          hide={Platform.OS !== 'ios'}
+          onPress={() => {
+            AppleWallet.canAddPaymentPass();
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            if (
+              Platform.OS === 'ios' &&
+              user &&
+              selectedCard?.card?.cardId &&
+              selectedCard?.card?.lastFour
+            ) {
+              AppleWallet.beginPushProvisioning(
+                // TODO what values?
+                {
+                  withName: `${user?.firstName} ${user?.lastName}`,
+                  description: 'ClearSpend Card',
+                  last4: selectedCard?.card?.lastFour,
+                },
+                accessToken ?? '',
+                selectedCard?.card?.cardId,
+              );
+            }
+            // GooglePay.test('name', 'description');
+          }}
+        />
       </View>
 
       {selectedCard?.card?.cardId && carouselHeight && (
