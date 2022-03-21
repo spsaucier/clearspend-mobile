@@ -1264,6 +1264,7 @@ export interface AccountActivityRequest {
     | 'NETWORK_AUTHORIZATION'
     | 'NETWORK_CAPTURE'
     | 'REALLOCATE'
+    | 'FEE'
   )[];
 
   /** @format date-time */
@@ -1293,9 +1294,11 @@ export interface AccountActivityResponse {
     | 'MANUAL'
     | 'NETWORK_AUTHORIZATION'
     | 'NETWORK_CAPTURE'
-    | 'REALLOCATE';
+    | 'REALLOCATE'
+    | 'FEE';
   status?: 'PENDING' | 'DECLINED' | 'APPROVED' | 'CANCELED' | 'CREDIT' | 'PROCESSED';
   amount?: Amount;
+  requestedAmount?: Amount;
   receipt?: ReceiptDetails;
   notes?: string;
   expenseDetails?: ExpenseDetails;
@@ -2564,9 +2567,6 @@ export interface Receipt {
 
   /** @format uuid */
   accountId?: string;
-
-  /** @format uuid */
-  adjustmentId?: string;
   amount: Amount;
 }
 
@@ -2620,6 +2620,14 @@ export interface UserRolesAndPermissionsRecord {
     | 'CUSTOMER_SERVICE_MANAGER'
     | 'SYSTEM'
   )[];
+}
+
+export interface TermsAndConditionsResponse {
+  user?: User;
+  isAcceptedTermsAndConditions?: boolean;
+
+  /** @format date-time */
+  documentTimestamp?: string;
 }
 
 export interface CreateTestDataResponse {

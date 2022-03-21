@@ -14,6 +14,7 @@ import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { ProfileIcon } from '@/Components/Icons';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
+import { formatCurrency } from '@/Helpers/StringHelpers';
 
 type Props = {
   route: any;
@@ -56,9 +57,15 @@ const CardDetailScreen = ({ route }: Props) => {
   }
   if (data) {
     const { limits } = data;
-    // TODO Remove ts-ignore when limit backend changes + types are ready
+    // TODO Remove ts-ignore when limit backend types are ready
     // @ts-ignore
     const purchaseLimits = limits && limits[0].typeMap.PURCHASE;
+    const showDailyLimit = purchaseLimits && purchaseLimits.DAILY && !!purchaseLimits.DAILY.amount;
+    const showMonthlyLimit =
+      purchaseLimits && purchaseLimits.MONTHLY && !!purchaseLimits.MONTHLY.amount;
+    const showTransactionLimit =
+      purchaseLimits && purchaseLimits.INSTANT && !!purchaseLimits.INSTANT.amount;
+    const showLimitsSection = showDailyLimit || showMonthlyLimit || showTransactionLimit;
 
     return (
       <BottomSheetModalProvider>
@@ -73,21 +80,35 @@ const CardDetailScreen = ({ route }: Props) => {
               </TouchableOpacity>
             </View>
 
-            {/* Card */}
-            <View style={tw`flex-1 p-4`}>
-              <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
-            </View>
+          {/* Card */}
+          <View style={tw`flex-1 p-4`}>
+            <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
+          </View>
 
-            {purchaseLimits && (purchaseLimits.DAILY || purchaseLimits.MONTHLY) && (
-              <View style={tw`flex py-2 mx-4 rounded-md bg-black-30`}>
-                {purchaseLimits.DAILY && (
+          {showLimitsSection && (
+            <View style={tw`mt-8 px-4`}>
+              <CSText style={tw`text-white text-xs uppercase tracking-widest mb-4`}>
+                {t('cardProfile.cardLimits')}
+              </CSText>
+              <View style={tw`flex rounded-md bg-black-30 px-4 pt-5`}>
+                {showTransactionLimit && (
+                  <View style={tw`flex-row items-center justify-between mb-5`}>
+                    <CSText style={tw`text-xs text-white uppercase tracking-widest`}>
+                      {t('cardProfile.singleTransaction')}
+                    </CSText>
+                    <CSText style={tw`text-sm text-white`}>
+                      {formatCurrency(purchaseLimits.INSTANT.amount)}
+                    </CSText>
+                  </View>
+                )}
+                {showDailyLimit && (
                   <LimitSection
                     label={t('cardProfile.spentToday')}
                     amountUsed={purchaseLimits.DAILY && purchaseLimits.DAILY.usedAmount}
                     limit={purchaseLimits.DAILY && purchaseLimits.DAILY.amount}
                   />
                 )}
-                {purchaseLimits.MONTHLY && (
+                {showMonthlyLimit && (
                   <LimitSection
                     label={t('cardProfile.spentCurrentMonth')}
                     amountUsed={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.usedAmount}
@@ -95,26 +116,29 @@ const CardDetailScreen = ({ route }: Props) => {
                   />
                 )}
               </View>
-            )}
+            </View>
+          )}
 
-            {/* Address */}
-            {business?.address?.streetLine1 ? (
-              <View style={tw`mt-6 px-4`}>
-                <CSText style={tw`text-white text-xs`}>{t('cardInfo.billingAddress')}</CSText>
-                <View style={tw`mt-2 bg-white rounded-md flex`}>
-                  <View style={tw`flex p-5`}>
-                    <CSText style={tw`font-montreal`}>
-                      {`${business.address.streetLine1} ${business.address.streetLine2}`}
-                    </CSText>
-                    <CSText style={tw`mt-1 font-montreal`}>
-                      {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
-                    </CSText>
-                  </View>
-                  <View style={tw`border-b-1 border-gray-10`} />
-                  <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
+          {/* Address */}
+          {business?.address?.streetLine1 ? (
+            <View style={tw`mt-8 px-4`}>
+              <CSText style={tw`text-white text-xs mb-5 tracking-widest`}>
+                {t('cardInfo.billingAddress')}
+              </CSText>
+              <View style={tw`bg-white rounded-md flex`}>
+                <View style={tw`flex p-5`}>
+                  <CSText style={tw`font-montreal`}>
+                    {`${business.address.streetLine1} ${business.address.streetLine2}`}
+                  </CSText>
+                  <CSText style={tw`mt-1 font-montreal`}>
+                    {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
+                  </CSText>
                 </View>
               </View>
-            ) : (
+            <View style={tw`border-b-1 border-gray-10`} />
+            <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
+            </View>
+          ) : (
               <View />
             )}
             <View style={tw`h-30`} />

@@ -34,13 +34,17 @@
         "currency": "USD",
         "typeMap": {
           "PURCHASE": {
+            "INSTANT": {
+              "amount": 200,
+              "usedAmount": 0
+            },
             "DAILY": {
-              "amount": 100,
-              "usedAmount": 45
+              "amount": 200,
+              "usedAmount": 50
             },
             "MONTHLY": {
               "amount": 3000,
-              "usedAmount": 1080
+              "usedAmount": 1200
             }
           }
         }
@@ -54,7 +58,7 @@
       "currency": "USD",
       "amount": 200.0
     },
-    "allocationName": "Kuhn, Kunde and Nicolas"
+    "allocationName": "Dovetail"
   },
   {
     "card": {
@@ -91,6 +95,10 @@
         "currency": "USD",
         "typeMap": {
           "PURCHASE": {
+            "INSTANT": {
+              "amount": 100,
+              "usedAmount": 0
+            },
             "DAILY": {
               "amount": 100,
               "usedAmount": 10
@@ -146,7 +154,22 @@
     "limits": [
       {
         "currency": "USD",
-        "typeMap": {}
+        "typeMap": {
+          "PURCHASE": {
+            "INSTANT": {
+              "amount": 100,
+              "usedAmount": 0
+            },
+            "DAILY": {
+              "amount": 100,
+              "usedAmount": 10
+            },
+            "MONTHLY": {
+              "amount": 3000,
+              "usedAmount": 10
+            }
+          }
+        }
       }
     ],
     "ledgerBalance": {
