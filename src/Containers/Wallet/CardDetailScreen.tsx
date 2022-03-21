@@ -80,65 +80,65 @@ const CardDetailScreen = ({ route }: Props) => {
               </TouchableOpacity>
             </View>
 
-          {/* Card */}
-          <View style={tw`flex-1 p-4`}>
-            <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
-          </View>
-
-          {showLimitsSection && (
-            <View style={tw`mt-8 px-4`}>
-              <CSText style={tw`text-white text-xs uppercase tracking-widest mb-4`}>
-                {t('cardProfile.cardLimits')}
-              </CSText>
-              <View style={tw`flex rounded-md bg-black-30 px-4 pt-5`}>
-                {showTransactionLimit && (
-                  <View style={tw`flex-row items-center justify-between mb-5`}>
-                    <CSText style={tw`text-xs text-white uppercase tracking-widest`}>
-                      {t('cardProfile.singleTransaction')}
-                    </CSText>
-                    <CSText style={tw`text-sm text-white`}>
-                      {formatCurrency(purchaseLimits.INSTANT.amount)}
-                    </CSText>
-                  </View>
-                )}
-                {showDailyLimit && (
-                  <LimitSection
-                    label={t('cardProfile.spentToday')}
-                    amountUsed={purchaseLimits.DAILY && purchaseLimits.DAILY.usedAmount}
-                    limit={purchaseLimits.DAILY && purchaseLimits.DAILY.amount}
-                  />
-                )}
-                {showMonthlyLimit && (
-                  <LimitSection
-                    label={t('cardProfile.spentCurrentMonth')}
-                    amountUsed={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.usedAmount}
-                    limit={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.amount}
-                  />
-                )}
-              </View>
+            {/* Card */}
+            <View style={tw`flex-1 p-4`}>
+              <CardWebView cardData={data} onCardOptionsPress={onCardOptionsPress} />
             </View>
-          )}
 
-          {/* Address */}
-          {business?.address?.streetLine1 ? (
-            <View style={tw`mt-8 px-4`}>
-              <CSText style={tw`text-white text-xs mb-5 tracking-widest`}>
-                {t('cardInfo.billingAddress')}
-              </CSText>
-              <View style={tw`bg-white rounded-md flex`}>
-                <View style={tw`flex p-5`}>
-                  <CSText style={tw`font-montreal`}>
-                    {`${business.address.streetLine1} ${business.address.streetLine2}`}
-                  </CSText>
-                  <CSText style={tw`mt-1 font-montreal`}>
-                    {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
-                  </CSText>
+            {showLimitsSection && (
+              <View style={tw`mt-8 px-4`}>
+                <CSText style={tw`text-white text-xs uppercase tracking-widest mb-4`}>
+                  {t('cardProfile.cardLimits')}
+                </CSText>
+                <View style={tw`flex rounded-md bg-black-30 px-4 pt-5`}>
+                  {showTransactionLimit && (
+                    <View style={tw`flex-row items-center justify-between mb-5`}>
+                      <CSText style={tw`text-xs text-white uppercase tracking-widest`}>
+                        {t('cardProfile.singleTransaction')}
+                      </CSText>
+                      <CSText style={tw`text-sm text-white`}>
+                        {formatCurrency(purchaseLimits.INSTANT.amount)}
+                      </CSText>
+                    </View>
+                  )}
+                  {showDailyLimit && (
+                    <LimitSection
+                      label={t('cardProfile.spentToday')}
+                      amountUsed={purchaseLimits.DAILY && purchaseLimits.DAILY.usedAmount}
+                      limit={purchaseLimits.DAILY && purchaseLimits.DAILY.amount}
+                    />
+                  )}
+                  {showMonthlyLimit && (
+                    <LimitSection
+                      label={t('cardProfile.spentCurrentMonth')}
+                      amountUsed={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.usedAmount}
+                      limit={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.amount}
+                    />
+                  )}
                 </View>
               </View>
-            <View style={tw`border-b-1 border-gray-10`} />
-            <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
-            </View>
-          ) : (
+            )}
+
+            {/* Address */}
+            {business?.address?.streetLine1 ? (
+              <View style={tw`mt-8 px-4`}>
+                <CSText style={tw`text-white text-xs mb-5 tracking-widest`}>
+                  {t('cardInfo.billingAddress')}
+                </CSText>
+                <View style={tw`bg-white rounded-md flex`}>
+                  <View style={tw`flex p-5`}>
+                    <CSText style={tw`font-montreal`}>
+                      {`${business.address.streetLine1} ${business.address.streetLine2}`}
+                    </CSText>
+                    <CSText style={tw`mt-1 font-montreal`}>
+                      {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
+                    </CSText>
+                  </View>
+                </View>
+                <View style={tw`border-b-1 border-gray-10`} />
+                <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
+              </View>
+            ) : (
               <View />
             )}
             <View style={tw`h-30`} />

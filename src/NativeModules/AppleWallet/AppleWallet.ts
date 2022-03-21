@@ -1,5 +1,4 @@
-import { Alert, NativeModules } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { NativeModules } from 'react-native';
 
 const { AppleWalletModule } = NativeModules;
 

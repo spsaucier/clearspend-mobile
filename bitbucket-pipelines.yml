@@ -12,6 +12,18 @@ pipelines:
             - yarn type-check
             - yarn lint
             - yarn test
+  branches:
+    main:
+      - step:
+          name: "Verify Dependencies, Formatting, Typechecking, Linting and Tests"
+          caches:
+            - node
+          script:
+            - yarn install --frozen-lockfile
+            - yarn check-format
+            - yarn type-check
+            - yarn lint
+            - yarn test
   custom: # Pipelines that can only be triggered manually or by a schedule
     qa-nightly-build:
       - step:

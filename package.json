@@ -13,6 +13,7 @@
     "devices-android": "adb devices",
     "devices-ios": "xcrun xctrace list devices",
     "restserver": "nodemon restserver/index.js",
+    "verify": "yarn check-format && yarn lint && yarn type-check && yarn test",
     "test": "jest",
     "type-check": "tsc",
     "format": "yarn prettier && yarn lint --fix",
