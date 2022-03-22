@@ -138,7 +138,7 @@ export const TransactionRow = ({
         {!expenseDetails && <ExpenseIcon />}
       </View>
 
-      <View style={tw`bg-white items-end w-18`}>
+      <View style={tw`bg-white items-end`}>
         <AnimatedCSText
           style={[
             tw`text-base text-black z-1`,
