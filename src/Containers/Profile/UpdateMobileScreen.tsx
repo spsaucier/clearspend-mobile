@@ -9,11 +9,12 @@ import tw from '@/Styles/tailwind';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
-import { updateUser, useUser } from '@/Queries/user';
+import { useUpdateUser, useUser } from '@/Queries/user';
 import { disableEnrollment2FA, sendEnrollment2FA } from '@/Services/Auth';
 import { useSensitiveInfo } from '@/Hooks/useSensitiveInfo';
 import { RECOVERY_CODE_KEY } from '@/Store/keys';
 import { store } from '@/Store';
+import { UpdateUserRequest } from '@/generated/capital';
 
 export const validRecoveryCode = (code: string | null, userId: string) =>
   !!code && code.split('|')[1] === userId;
@@ -27,6 +28,7 @@ const UpdateMobileScreen = () => {
   const [mobileNumError, setMobileNumError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { data: user } = useUser();
+  const { mutate } = useUpdateUser();
   const phoneInput = useRef<PhoneInput>(null);
   const { data: recoveryCode } = useSensitiveInfo(RECOVERY_CODE_KEY);
 
@@ -40,7 +42,7 @@ const UpdateMobileScreen = () => {
   const onSubmit = async () => {
     if (formattedValue === '+11111111111') {
       // Workaround for dev/qa who do not want a number
-      await updateUser({ ...user, phone: formattedValue });
+      await mutate({ ...user, phone: formattedValue } as UpdateUserRequest);
       Toast.show({
         type: 'success',
         text1: t('toasts.mobileSaved'),

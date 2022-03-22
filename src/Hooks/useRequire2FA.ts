@@ -12,24 +12,25 @@ const useRequire2FA = () => {
   const storage = new MMKV();
 
   useEffect(() => {
-    if (user) {
+    if (user && session) {
       setLoading(true);
       const checkShouldAct = async () => {
         const justSetUp2Fa = await storage.getBoolean(JUST_SET_2FA_KEY);
-        if (!(await storage.getBoolean(SHOW_2FA_PROMPT_KEY))) {
-          setShouldAct(false);
-        } else if (!user?.phone) {
-          setShouldAct(true);
-        } else if (!session?.twoFactor?.methods?.length && !justSetUp2Fa) {
-          if (user?.phone === '+11111111111') {
+        const mayShow2FaPrompt = await storage.getBoolean(SHOW_2FA_PROMPT_KEY);
+        switch (true) {
+          case !mayShow2FaPrompt:
+          case justSetUp2Fa:
+          case user?.phone === '+11111111111':
             setShouldAct(false);
-          } else {
+            break;
+          case !session.twoFactor?.methods?.length:
+            storage.set(SHOW_2FA_PROMPT_KEY, false);
             setShouldAct(true);
-          }
-        } else {
-          setShouldAct(false);
+            break;
+          default:
+            setShouldAct(false);
+            break;
         }
-        storage.set(JUST_SET_2FA_KEY, false);
         setLoading(false);
       };
       checkShouldAct();

@@ -22,7 +22,6 @@ import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { formatPhone } from '@/Helpers/StringHelpers';
 import { store } from '@/Store';
 import { remove2FA } from '@/Store/Session';
-import { updateUser } from '@/Queries/user';
 
 const EnterOTPScreen = () => {
   const { t } = useTranslation();
@@ -59,10 +58,9 @@ const EnterOTPScreen = () => {
         params.phone,
       );
       await setRecoveryCode(`${recoveryCodes[0]}|${user?.userId}`);
-      await updateUser({ ...user, phone: params.phone });
+      await mutate({ ...user, phone: params.phone } as UpdateUserRequest);
       await setJustSet2FA(true);
       await setShow2faPrompt(false);
-      await mutate({ ...user, phone: params.phone } as UpdateUserRequest);
       // Remove old 2FA method info from storage of session
       store.dispatch(remove2FA());
       Toast.show({
