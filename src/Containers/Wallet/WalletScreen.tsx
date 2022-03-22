@@ -253,9 +253,9 @@ const ContentWallet = ({
         />
       </View>
 
-      {selectedCard?.card?.cardId && carouselHeight && (
+      {selectedCard?.card?.cardId && carouselHeight ? (
         <Transactions cardId={selectedCard?.card?.cardId} initialSnapPoint={initialSnapPoint} />
-      )}
+      ) : null}
 
       <LinearGradientWithOpacity style={tw`h-20 w-full absolute bottom-0`} />
       <InfoPanel
