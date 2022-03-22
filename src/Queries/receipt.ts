@@ -26,17 +26,19 @@ export const linkReceiptAsync = (accountActivityId: string, receiptId: string) =
     .post(`/users/account-activity/${accountActivityId}/receipts/${receiptId}/link`)
     .then((r) => r.data);
 
-const handleDataHeader = (data: string) =>
-  data.replace('application/octet-stream', 'application/pdf');
-
 const blobToUri = (res: any) =>
   new Promise((resolve) => {
+    const contentType = res.headers['content-type'];
+    let toBeRead;
+    if (!res.data.type) {
+      toBeRead = new Blob([res.data], { type: contentType, lastModified: Date.now() });
+    } else toBeRead = res.data;
     const reader = new FileReader();
     reader.onloadend = () => {
       const result = reader.result as string;
-      resolve(handleDataHeader(result));
+      return resolve({ data: result, contentType });
     };
-    reader.readAsDataURL(res.data);
+    reader.readAsDataURL(toBeRead);
   });
 
 const viewReceipt = (receiptId: string) =>

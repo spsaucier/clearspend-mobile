@@ -31,14 +31,22 @@ export const enum MediaType {
 }
 
 const mimeTypeSignatures = {
-  [MediaType.pdf]: ['JVBERi'], // PDF
-  [MediaType.image]: ['iVBORw0', '/9j/'], // PNG, JPEG || JPG
+  [MediaType.pdf]: ['application/pdf', 'JVBERi'], // PDF
+  [MediaType.image]: ['image/jpg', 'image/jpeg', 'image/png', 'iVBORw0KGgo'], // PNG, JPEG || JPG
 };
 
-export const detectMimeType = (base64: string) => {
+export const detectMimeType = (contentType: string, base64: string) => {
   const values = Object.values(mimeTypeSignatures);
-  const detectedValue = values.find((value) => value.find((x) => base64.indexOf(x) !== -1));
+  const byContentType = values.find((value) => value.find((x) => contentType === x));
 
-  const key = findKey(mimeTypeSignatures, (x) => x === detectedValue);
+  let key;
+  if (byContentType) {
+    key = findKey(mimeTypeSignatures, (x) => x === byContentType);
+  } else {
+    const bySignature = values.find((value) => value.find((x) => base64.indexOf(x) !== -1));
+    key = findKey(mimeTypeSignatures, (x) => x === bySignature);
+  }
+
+  // console.log(contentType, base64.substring(0, 100), key);
   return Number(key!);
 };

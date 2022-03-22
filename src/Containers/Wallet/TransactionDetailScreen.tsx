@@ -57,10 +57,14 @@ const ReceiptPreview = ({ receiptIds }: { receiptIds: string[] }) => {
           <View style={tw`flex-1 justify-center items-center`}>
             <ActivityIndicator color="black" style={tw`w-10`} />
           </View>
-        ) : detectMimeType(receiptData) === MediaType.image ? (
-          <Image source={{ uri: receiptData }} style={tw`w-full h-full `} resizeMode="cover" />
+        ) : detectMimeType(receiptData.contentType, receiptData.data) === MediaType.image ? (
+          <Image source={{ uri: receiptData.data }} style={tw`w-full h-full `} resizeMode="cover" />
         ) : (
-          <Pdf source={{ uri: receiptData }} singlePage style={{ width: '100%', height: '100%' }} />
+          <Pdf
+            source={{ uri: receiptData.data }}
+            singlePage
+            style={{ width: '100%', height: '100%' }}
+          />
         )}
       </View>
       <View
