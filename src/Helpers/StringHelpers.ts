@@ -46,7 +46,5 @@ export const detectMimeType = (contentType: string, base64: string) => {
     const bySignature = values.find((value) => value.find((x) => base64.indexOf(x) !== -1));
     key = findKey(mimeTypeSignatures, (x) => x === bySignature);
   }
-
-  // console.log(contentType, base64.substring(0, 100), key);
   return Number(key!);
 };

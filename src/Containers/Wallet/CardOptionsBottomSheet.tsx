@@ -9,33 +9,26 @@ import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import { EyeIcon, SnowflakeIcon } from '@/Components/Icons';
-import { useCard, useFreezeCard, useUnFreezeCard } from '@/Queries';
+import { useFreezeCard, useUnFreezeCard } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 type Props = {
   cardId: string | undefined;
   hideCardInfoButton?: boolean;
+  isCardFrozen: boolean;
 };
 
 export const CardOptionsBottomSheet = forwardRef(
-  ({ cardId, hideCardInfoButton = false }: Props, ref: any) => {
+  ({ cardId, hideCardInfoButton = false, isCardFrozen }: Props, ref: any) => {
     const { t } = useTranslation();
     const { navigate } = useNavigation();
-    const [isFrozen, setIsFrozen] = useState<boolean>(false);
+    const dimens = useWindowDimensions();
+    const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '30%' : '40%'], [dimens.scale]);
 
-    const {
-      mutate: freeze,
-      isLoading: isFreezing,
-      isError: isFreezeError,
-      isSuccess: isFreezeSuccess,
-    } = useFreezeCard(cardId);
-    const {
-      mutate: unfreeze,
-      isLoading: isUnfreezing,
-      isError: isUnfreezeError,
-      isSuccess: isUnfreezeSuccess,
-    } = useUnFreezeCard(cardId);
-    const { data, error, isLoading } = useCard(cardId);
+    const [isFrozen, setIsFrozen] = useState<boolean>(isCardFrozen);
+
+    const { mutateAsync: mutateFreeze, isLoading: isFreezing } = useFreezeCard(cardId);
+    const { mutateAsync: mutateUnfreeze, isLoading: isUnfreezing } = useUnFreezeCard(cardId);
 
     const closePanel = () => {
       ref.current?.close();
@@ -47,48 +40,42 @@ export const CardOptionsBottomSheet = forwardRef(
     };
 
     useEffect(() => {
-      if (!isLoading && !error && data) {
-        setIsFrozen(data.card && data.card.status === 'INACTIVE');
-      }
-    }, [isLoading, data, error]);
+      setIsFrozen(isCardFrozen);
+    }, [cardId, isCardFrozen]);
 
-    useEffect(() => {
-      Toast.hide();
-      if (isFreezing) {
-        setIsFrozen(true);
-      }
-      if (isUnfreezing) {
-        setIsFrozen(false);
-      }
-    }, [isFreezing, isUnfreezing]);
-
-    useEffect(() => {
-      if (isFreezeError || isUnfreezeError) {
-        Toast.show({
-          type: 'error',
-          text1: t(
-            isFreezeError ? 'card.options.freezeErrorToast' : 'card.options.unfreezeErrorToast',
-          ),
-        });
-      }
-    }, [isFreezeError, isUnfreezeError, t]);
-
-    useEffect(() => {
-      if (!(isFreezing || isUnfreezing)) {
-        if (isFreezeSuccess && isFrozen) {
+    const freeze = useCallback(() => {
+      mutateFreeze()
+        .then(() => {
+          setIsFrozen(true);
           Toast.show({
             type: 'success',
             text1: t('card.options.freezeSuccessToast'),
           });
-        }
-        if (isUnfreezeSuccess && !isFrozen) {
+        })
+        .catch(() => {
+          Toast.show({
+            type: 'error',
+            text1: t('card.options.freezeErrorToast'),
+          });
+        });
+    }, [mutateFreeze, t]);
+
+    const unfreeze = useCallback(() => {
+      mutateUnfreeze()
+        .then(() => {
+          setIsFrozen(false);
           Toast.show({
             type: 'success',
             text1: t('card.options.unfreezeSuccessToast'),
           });
-        }
-      }
-    }, [isFrozen, isFreezeSuccess, isUnfreezeSuccess, isFreezing, isUnfreezing, t]);
+        })
+        .catch(() => {
+          Toast.show({
+            type: 'error',
+            text1: t('card.options.unfreezeErrorToast'),
+          });
+        });
+    }, [mutateUnfreeze, t]);
 
     const renderBackdrop = useCallback(
       ({ animatedIndex, animatedPosition, style }: BottomSheetDefaultBackdropProps) => (
@@ -104,11 +91,7 @@ export const CardOptionsBottomSheet = forwardRef(
       [],
     );
 
-    const dimens = useWindowDimensions();
-    const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '30%' : '40%'], [dimens.scale]);
-
     return (
-      // <BottomSheetModalProvider>
       <BottomSheetModal
         ref={ref}
         snapPoints={snapPointMemo}
@@ -125,12 +108,10 @@ export const CardOptionsBottomSheet = forwardRef(
               if (!isFrozen) freeze();
               else unfreeze();
             }}
-            disabled={isFreezing || isUnfreezing || isLoading}
+            disabled={isFreezing || isUnfreezing}
           >
             <SnowflakeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
-            {isLoading ? (
-              <CSText style={tw`text-base`}>...</CSText>
-            ) : isFreezing || isUnfreezing ? (
+            {isFreezing || isUnfreezing ? (
               <CSText style={tw`text-base`}>
                 {t(isUnfreezing ? 'card.options.unfreezingCard' : 'card.options.freezingCard')}
               </CSText>
@@ -149,7 +130,6 @@ export const CardOptionsBottomSheet = forwardRef(
           )}
         </SafeAreaView>
       </BottomSheetModal>
-      // </BottomSheetModalProvider>
     );
   },
 );

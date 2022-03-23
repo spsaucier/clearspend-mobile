@@ -56,7 +56,7 @@ const CardDetailScreen = ({ route }: Props) => {
     );
   }
   if (data) {
-    const { limits } = data;
+    const { limits, card } = data;
     // TODO Remove ts-ignore when limit backend types are ready
     // @ts-ignore
     const purchaseLimits = limits && limits[0].typeMap.PURCHASE;
@@ -66,6 +66,9 @@ const CardDetailScreen = ({ route }: Props) => {
     const showTransactionLimit =
       purchaseLimits && purchaseLimits.INSTANT && !!purchaseLimits.INSTANT.amount;
     const showLimitsSection = showDailyLimit || showMonthlyLimit || showTransactionLimit;
+
+    const { status } = card;
+    const isCardFrozen = status === 'INACTIVE';
 
     return (
       <BottomSheetModalProvider>
@@ -149,7 +152,12 @@ const CardDetailScreen = ({ route }: Props) => {
             description={t('cardProfile.availableToSpendMeansDescription')}
             okButtonText={t('cardProfile.okGotIt')}
           />
-          <CardOptionsBottomSheet ref={cardOptionsPanelRef} cardId={cardId} hideCardInfoButton />
+          <CardOptionsBottomSheet
+            ref={cardOptionsPanelRef}
+            cardId={cardId}
+            hideCardInfoButton
+            isCardFrozen={isCardFrozen}
+          />
         </SafeAreaView>
       </BottomSheetModalProvider>
     );

@@ -41,7 +41,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const transactionsListRef = useRef<any>(null);
   const [searchText, setSearchText] = useState('');
-  const { data, isLoading, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  const { data, isFetching, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useCardTransactions({
       cardId,
       searchText,
@@ -132,9 +132,9 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
       </TouchableWithoutFeedback>
 
       <Animated.View style={[tw`flex-1 bg-white`, transactionsContainerAnimatedStyle]}>
-        {isLoading ? (
-          <View style={tw`items-center justify-center`}>
-            <ActivityIndicator style={tw`w-5`} />
+        {isFetching ? (
+          <View style={tw`items-center justify-center mt-10`}>
+            <ActivityIndicator style={tw`w-5`} color={tw.color('black')} />
           </View>
         ) : error ? (
           <View style={tw`h-full items-center`}>

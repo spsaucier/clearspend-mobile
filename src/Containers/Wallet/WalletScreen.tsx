@@ -146,8 +146,8 @@ const ContentWallet = ({
     }
   }, [activeCards, selectedCard]);
 
-  const cardStatus = selectedCard?.card?.status;
-  const isFrozen = cardStatus === 'INACTIVE';
+  const selectedCardId = selectedCard?.card?.cardId;
+  const selectedCardFrozen = selectedCard?.card?.status === 'INACTIVE';
 
   const initialSnapPoint =
     screenHeight -
@@ -179,6 +179,9 @@ const ContentWallet = ({
             const { cardId, lastFour, cardLine3, type } = card;
             const isVirtual = type === 'VIRTUAL';
             const { amount } = availableBalance;
+
+            const cardStatus = card?.status;
+            const isFrozen = cardStatus === 'INACTIVE';
 
             return (
               <Card
@@ -212,7 +215,7 @@ const ContentWallet = ({
           {activeCards.length > 1 &&
             activeCards.map(({ card }: any) => {
               const cardId = card?.cardId;
-              const selected = cardId === selectedCard?.card?.cardId;
+              const selected = cardId === selectedCardId;
 
               return (
                 <View
@@ -231,12 +234,7 @@ const ContentWallet = ({
           hide={Platform.OS !== 'ios'}
           onPress={() => {
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            if (
-              Platform.OS === 'ios' &&
-              user &&
-              selectedCard?.card?.cardId &&
-              selectedCard?.card?.lastFour
-            ) {
+            if (Platform.OS === 'ios' && user && selectedCardId && selectedCard?.card?.lastFour) {
               AppleWallet.beginPushProvisioning(
                 // TODO what values?
                 {
@@ -245,7 +243,7 @@ const ContentWallet = ({
                   last4: selectedCard?.card?.lastFour,
                 },
                 accessToken ?? '',
-                selectedCard?.card?.cardId,
+                selectedCardId,
               );
             }
             // GooglePay.test('name', 'description');
@@ -253,8 +251,8 @@ const ContentWallet = ({
         />
       </View>
 
-      {selectedCard?.card?.cardId && carouselHeight ? (
-        <Transactions cardId={selectedCard?.card?.cardId} initialSnapPoint={initialSnapPoint} />
+      {selectedCardId && carouselHeight ? (
+        <Transactions cardId={selectedCardId} initialSnapPoint={initialSnapPoint} />
       ) : null}
 
       <LinearGradientWithOpacity style={tw`h-20 w-full absolute bottom-0`} />
@@ -264,7 +262,11 @@ const ContentWallet = ({
         description={t('cardProfile.availableToSpendMeansDescription')}
         okButtonText={t('cardProfile.okGotIt')}
       />
-      <CardOptionsBottomSheet ref={cardOptionsPanelRef} cardId={selectedCard?.card?.cardId} />
+      <CardOptionsBottomSheet
+        ref={cardOptionsPanelRef}
+        cardId={selectedCardId}
+        isCardFrozen={selectedCardFrozen}
+      />
     </View>
   );
 };
