@@ -61,7 +61,7 @@ const AssignCategoryBottomSheet = forwardRef(
                 </CSText>
                 <BottomSheetFlatList
                   data={categories}
-                  keyExtractor={(item, index) => item?.iconRef?.toString() ?? index.toString()}
+                  keyExtractor={(item, index) => item?.expenseCategoryId ?? index.toString()}
                   renderItem={({ item }) => (
                     <TouchableOpacity
                       style={tw`flex-row items-center mb-5`}

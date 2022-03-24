@@ -28,7 +28,7 @@ type TransactionType = {
   status: Status;
   receipt: { receiptId: string[] };
   activityTime: string;
-  expenseDetails: { categoryName: string; iconRef: number };
+  expenseDetails: { categoryName: string; iconRef: number; expenseCategoryId: string };
 };
 
 type TransactionsContentProps = {

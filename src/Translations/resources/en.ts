@@ -235,6 +235,8 @@ export default {
         fetchCategoriesError: "We couldn't load the expense categories. Please try again later.",
         updateCategoryError:
           'There was a problem setting your expense category. Please try again later',
+        lockedTransactionError:
+          'This transaction category has been synced with your accounting software and can not be changed',
       },
     },
   },

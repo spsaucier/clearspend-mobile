@@ -47,11 +47,15 @@ export const useUpdateTransaction = (accountActivityId: string, existingNote?: s
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<Promise<AccountActivityResponse>, Error, { notes?: string; iconRef?: number }>(
+  return useMutation<
+    Promise<AccountActivityResponse>,
+    Error,
+    { notes?: string; expenseCategoryId?: string }
+  >(
     (context) => {
-      const { notes, iconRef } = context;
+      const { notes, expenseCategoryId } = context;
       return apiClient
-        .patch(`/users/account-activity/${accountActivityId}`, { notes, iconRef })
+        .patch(`/users/account-activity/${accountActivityId}`, { notes, expenseCategoryId })
         .then((res) => res.data);
     },
     {
@@ -68,8 +72,8 @@ export const useUpdateTransaction = (accountActivityId: string, existingNote?: s
                 ? t('wallet.transactionDetails.notes.addNoteError')
                 : t('wallet.transactionDetails.notes.updateNoteError'),
           });
-          // If an iconRef was provided to the mutate function there was an error updating the category
-        } else if (variables.iconRef) {
+          // If an expenseCategoryId was provided to the mutate function there was an error updating the category
+        } else if (variables.expenseCategoryId) {
           Toast.show({
             type: 'error',
             text1: t('wallet.transactionDetails.selectCategory.updateCategoryError'),

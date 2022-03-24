@@ -135,6 +135,7 @@ const TransactionDetailScreenContent = () => {
     receipt,
     notes,
     expenseDetails,
+    syncStatus,
     // country
   } = data;
   // TODO: Delete once API supports it
@@ -172,7 +173,14 @@ const TransactionDetailScreenContent = () => {
   };
 
   const onSelectCategory = (category: ExpenseDetails) => {
-    updateTransaction({ iconRef: category.iconRef, notes: notes ?? '' });
+    if (syncStatus === 'SYNCED_LOCKED') {
+      Toast.show({
+        type: 'error',
+        text1: t('wallet.transactionDetails.selectCategory.lockedTransactionError'),
+      });
+    } else {
+      updateTransaction({ expenseCategoryId: category.expenseCategoryId, notes: notes ?? '' });
+    }
   };
 
   const onTakePhotoPress = () => {
@@ -314,7 +322,7 @@ const TransactionDetailScreenContent = () => {
               <View style={tw`self-center justify-center items-center`}>
                 {isUpdatingTransaction ? (
                   <ActivityIndicator />
-                ) : expenseDetails?.iconRef && expenseDetails?.categoryName ? (
+                ) : expenseDetails?.expenseCategoryId && expenseDetails?.categoryName ? (
                   <>
                     <View
                       style={tw.style('bg-white items-center justify-center', {
