@@ -11,7 +11,7 @@ import { ChevronIconLeft } from '@/Components/Icons';
 // Screens
 import WalletScreen from '@/Containers/Wallet/WalletScreen';
 import ProfileScreen from '@/Containers/Profile/ProfileScreen';
-import ChangePasswordScreen from '@/Containers/Profile/ChangePasswordScreen';
+import ChangePasswordScreen from '@/Containers/Profile/ChangePassword/CurrentPasswordScreen';
 import NotificationSettingScreen from '@/Containers/Profile/NotificationSettingsScreen';
 import LoginOptionsScreen from '@/Containers/Profile/LoginOptions';
 import LegalDocumentsScreen from '@/Containers/Profile/LegalDocuments';
@@ -23,7 +23,7 @@ import CardLostStolen from '@/Containers/Wallet/CardLostStolen';
 import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
 import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
 import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
-import NewPasswordScreen from '@/Containers/Profile/NewPasswordScreen';
+import NewPasswordScreen from '@/Containers/Profile/ChangePassword/NewPasswordScreen';
 import ConfirmAuthScreen from '@/Containers/Onboarding/ConfirmAuthScreen';
 import { SetBioPasscodeNavigator } from '@/Containers/Onboarding/BioPasscode/SetBioPasscodeNavigator';
 import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';

@@ -106,8 +106,9 @@ export default {
     titlePart1: 'Set your own',
     titlePart2: ' password',
     subTitle: 'The password we sent to your email was temporary. Please set your own password now.',
-    samePasswordError: 'The new password cannot be the same as your past passwords.',
+    samePasswordError: 'The new password cannot be the same as your past three passwords.',
     genericPasswordError: 'Unable to set new password',
+    incorrectCurrentPasswordError: 'Incorrect current password',
     passwordInputLabel: 'New password',
     passwordInputPlaceholder: 'Enter a new password',
     rules: {

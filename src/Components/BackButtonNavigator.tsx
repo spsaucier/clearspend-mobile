@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { ChevronIconLeft } from '@/Components/Icons';
-import { CSText } from '@/Components';
+import { CSText } from './Text';
 
 type Props = {
   backText?: string;
