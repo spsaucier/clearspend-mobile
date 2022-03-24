@@ -1,4 +1,5 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
+import { CardDetailsResponse } from '@/generated/capital';
 
 const { AppleWalletModule } = NativeModules;
 
@@ -7,6 +8,13 @@ type PushProvisioningOptions = {
   description: string;
   last4: string;
 };
+
+export type CardDigitalWalletStates = {
+  lastFour: string;
+  canAddPass: boolean;
+}[];
+
+export const WalletEventEmitter = new NativeEventEmitter(AppleWalletModule);
 
 export const AppleWallet = {
   beginPushProvisioning: (
@@ -18,7 +26,22 @@ export const AppleWallet = {
     AppleWalletModule.beginPushProvisioning(options, accessToken, cardId);
   },
 
-  canAddPaymentPass: async () => AppleWalletModule.canAddPaymentPass(),
+  canAddPaymentPass: async (lastFour: string): Promise<boolean> =>
+    AppleWalletModule.canAddPaymentPass(lastFour),
+};
 
-  getPaymentPasses: async () => AppleWalletModule.getPaymentPasses(),
+export const checkCardDigitalWalletStates = async (
+  activeCards: CardDetailsResponse[],
+): Promise<CardDigitalWalletStates> => {
+  const cardLastFours = activeCards.map((card) => card?.card?.lastFour ?? 'empty');
+
+  const cardStates = await Promise.all(
+    cardLastFours.map(async (lastFour) => {
+      const canAddPass = await AppleWallet.canAddPaymentPass(lastFour);
+
+      return { lastFour, canAddPass };
+    }),
+  );
+
+  return cardStates;
 };

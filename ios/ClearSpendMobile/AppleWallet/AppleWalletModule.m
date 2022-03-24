@@ -6,14 +6,14 @@
 //
 
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface RCT_EXTERN_MODULE(AppleWalletModule, NSObject)
+@interface RCT_EXTERN_MODULE(AppleWalletModule, RCTEventEmitter)
 
-RCT_EXTERN_METHOD(canAddPaymentPass: (RCTPromiseResolveBlock *)resolve
-                  rejecter:(RCTPromiseRejectBlock *)reject
-                  )
+RCT_EXTERN_METHOD(supportedEvents)
 
-RCT_EXTERN_METHOD(getPaymentPasses: (RCTPromiseResolveBlock *)resolve
+RCT_EXTERN_METHOD(canAddPaymentPass: (NSString *)lastFour
+                  resolver: (RCTPromiseResolveBlock *)resolve
                   rejecter:(RCTPromiseRejectBlock *)reject
                   )
 

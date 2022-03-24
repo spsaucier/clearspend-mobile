@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { Alert, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Crashes from 'appcenter-crashes';
 
@@ -67,22 +67,18 @@ const DevMenuScreen = () => {
           }}
         />
         <CSText style={tw`text-xl pb-4`}>Digital Wallets</CSText>
-        <Button
-          label="Apple Wallet: Show Existing Passes"
-          containerStyle={tw`mb-4`}
-          onPress={async () => {
-            const passes = await AppleWallet.getPaymentPasses();
-            Alert.alert('Existing passes', JSON.stringify(passes));
-          }}
-        />
-        <Button
-          label="Apple Wallet: Can Add Payment Pass"
-          containerStyle={tw`mb-4`}
-          onPress={async () => {
-            const canAdd = await AppleWallet.canAddPaymentPass();
-            Alert.alert(`Can add payment pass: ${canAdd}`);
-          }}
-        />
+        {Platform.OS === 'ios' ? (
+          <>
+            <Button
+              label="Apple Wallet: Can Add Payment Pass (lastFour 2127)"
+              containerStyle={tw`mb-4`}
+              onPress={async () => {
+                const canAdd = await AppleWallet.canAddPaymentPass('2127');
+                Alert.alert(`Can add payment pass: ${canAdd}`);
+              }}
+            />
+          </>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );

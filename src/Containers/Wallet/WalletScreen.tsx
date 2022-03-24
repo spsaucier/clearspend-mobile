@@ -6,6 +6,7 @@ import {
   NativeModules,
   Platform,
   LayoutChangeEvent,
+  AppState,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -42,13 +43,19 @@ import { AddToWalletButton } from '@/Containers/Wallet/Components/AddToWalletBut
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 import { invalidateTransactions } from '@/Queries/transaction';
 import { ArrowUpIcon } from '@/Components/Icons';
-import { AppleWallet } from '@/NativeModules/AppleWallet/AppleWallet';
+import {
+  AppleWallet,
+  CardDigitalWalletStates,
+  checkCardDigitalWalletStates,
+  WalletEventEmitter,
+} from '@/NativeModules/AppleWallet/AppleWallet';
 import { Session } from '@/Store/Session';
 import { lightFeedback } from '@/Helpers/HapticFeedback';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const { StatusBarManager } = NativeModules;
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
+const CARD_SCALE_CONSTANT = 0.88;
 
 const LoadingWallet = () => (
   <View style={tw`flex-1 justify-center items-center bg-secondary`}>
@@ -110,9 +117,11 @@ const EmptyWallet = () => {
 
 const ContentWallet = ({
   activeCards,
+  cardDigitalWalletStates,
   headerIconsHeight,
 }: {
-  activeCards: any[];
+  activeCards: CardDetailsResponse[];
+  cardDigitalWalletStates: CardDigitalWalletStates;
   headerIconsHeight: number;
 }) => {
   const { navigate } = useNavigation();
@@ -156,7 +165,6 @@ const ContentWallet = ({
     headerIconsHeight -
     (carouselHeight || 0) -
     8 * scale;
-
   return (
     <View style={tw`flex-1`}>
       <View onLayout={(e) => setCarouselHeight(e.nativeEvent.layout.height)}>
@@ -170,7 +178,7 @@ const ContentWallet = ({
             activeOffsetX: [-10, 10],
           }}
           modeConfig={{
-            parallaxScrollingScale: 0.88,
+            parallaxScrollingScale: CARD_SCALE_CONSTANT,
             parallaxScrollingOffset: 50,
           }}
           onSnapToItem={(index: any) => setSelectedCard(activeCards[index])}
@@ -209,7 +217,6 @@ const ContentWallet = ({
             );
           }}
         />
-
         {/* Slider dots */}
         <View style={tw`flex-row justify-center my-1`}>
           {activeCards.length > 1 &&
@@ -231,15 +238,20 @@ const ContentWallet = ({
         </View>
 
         <AddToWalletButton
-          hide={Platform.OS !== 'ios'}
+          isVisible={
+            Platform.OS === 'ios' &&
+            cardDigitalWalletStates.some(
+              (cardState) =>
+                cardState.lastFour === selectedCard?.card?.lastFour && cardState.canAddPass,
+            )
+          }
+          style={tw.style('mt-1 h-12', { width: screenWidth * CARD_SCALE_CONSTANT })}
           onPress={() => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             if (Platform.OS === 'ios' && user && selectedCardId && selectedCard?.card?.lastFour) {
               AppleWallet.beginPushProvisioning(
-                // TODO what values?
                 {
                   withName: `${user?.firstName} ${user?.lastName}`,
-                  description: 'ClearSpend Card',
+                  description: t('card.appleWalletDescription'),
                   last4: selectedCard?.card?.lastFour,
                 },
                 accessToken ?? '',
@@ -274,8 +286,13 @@ const ContentWallet = ({
 const WalletScreen = () => {
   useRequireOnboarding();
   const { t } = useTranslation();
+  const appState = useRef(AppState.currentState);
 
   const [headerIconsHeight, setHeaderIconsHeight] = useState<number>();
+  const [cardDigitalWalletStates, setCardDigitalWalletStates] = useState<CardDigitalWalletStates>(
+    [],
+  );
+
   const translationYSV = useSharedValue(0);
   const pullToRefreshThreshold = screenHeight * (0.45 / scale);
   const queryClient = useQueryClient();
@@ -299,6 +316,53 @@ const WalletScreen = () => {
       ) ?? [],
     [allCardsData],
   );
+
+  useEffect(() => {
+    // Check digital wallet state of all cards
+    if (activeCards.length > 0) {
+      (async () => {
+        const state = await checkCardDigitalWalletStates(activeCards);
+        setCardDigitalWalletStates(state);
+      })();
+    }
+  }, [activeCards]);
+
+  useEffect(() => {
+    // Recheck the digital wallet state of all cards when the app is returning from the background
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+        (async () => {
+          const state = await checkCardDigitalWalletStates(activeCards);
+          setCardDigitalWalletStates(state);
+        })();
+      }
+
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [activeCards]);
+
+  useEffect(() => {
+    // Recheck the digital wallet state of all cards when a card is successfully added to the wallet
+    const successSubscription = WalletEventEmitter.addListener('onProvisionSuccess', () => {
+      (async () => {
+        const state = await checkCardDigitalWalletStates(activeCards);
+        setCardDigitalWalletStates(state);
+        Toast.show({ text1: 'The card was added to the wallet successfully' });
+      })();
+    });
+    const failureSubscription = WalletEventEmitter.addListener('onProvisionFailure', () => {
+      Toast.show({ text1: 'There was an error adding the card to the wallet', type: 'error' });
+    });
+
+    return () => {
+      successSubscription.remove();
+      failureSubscription.remove();
+    };
+  }, [activeCards]);
 
   useEffect(() => {
     if (!isRefetching) {
@@ -402,6 +466,7 @@ const WalletScreen = () => {
                     {showContent && (
                       <ContentWallet
                         activeCards={activeCards}
+                        cardDigitalWalletStates={cardDigitalWalletStates}
                         headerIconsHeight={headerIconsHeight || 0}
                       />
                     )}

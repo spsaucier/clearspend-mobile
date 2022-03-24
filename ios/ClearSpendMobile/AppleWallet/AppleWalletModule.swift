@@ -11,30 +11,61 @@ import Stripe
 import Alamofire
 
 @objc(AppleWalletModule)
-class AppleWalletModule: UIViewController {
+class AppleWalletModule: RCTEventEmitter {
+
+    public static var emitter: RCTEventEmitter!
 
     var accessToken: String = ""
     var cardId: String = ""
     var pushProvisioningContext: STPPushProvisioningContext?
     var rootPresentedVC: UIViewController?
 
-    @objc static func requiresMainQueueSetup() -> Bool {
+    override static func requiresMainQueueSetup() -> Bool {
         return true
     }
 
-    @objc func canAddPaymentPass(_ resolve: RCTPromiseResolveBlock,
-                                 rejecter reject: RCTPromiseRejectBlock) {
-        let canAdd = PKAddPaymentPassViewController.canAddPaymentPass()
-        print(canAdd)
-        resolve(canAdd)
+    open override func supportedEvents() -> [String] {
+        ["onProvisionSuccess", "onProvisionFailure"]
     }
 
-    @objc func getPaymentPasses(_ resolve: RCTPromiseResolveBlock,
-                                rejecter reject: RCTPromiseRejectBlock) {
+    @objc func canAddPaymentPass(_ lastFour: NSString,
+                                 resolver resolve: RCTPromiseResolveBlock,
+                                 rejecter reject: RCTPromiseRejectBlock) {
+        let canAdd = PKAddPaymentPassViewController.canAddPaymentPass()
+
+        if canAdd == false {
+            resolve(false)
+            return
+        }
+
+        guard let last4 = RCTConvert.nsString(lastFour) else { return }
+
         let passLibrary = PKPassLibrary.init()
-        let passes = passLibrary.passes(of: .payment)
-        print(passes)
-        resolve(passes)
+        let passes = passLibrary.passes()
+
+        // Check if any passes match the given last4
+        let existingPass = passes.first { pass -> Bool in
+            let cardSuffix: String
+            if #available(iOS 13.4, *) {
+                cardSuffix = pass.secureElementPass?.primaryAccountNumberSuffix ?? "empty"
+            } else {
+                cardSuffix = pass.paymentPass?.primaryAccountNumberSuffix ?? "empty"
+            }
+
+            if cardSuffix == last4 {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        if existingPass != nil {
+            resolve(false)
+            return
+        }
+
+        resolve(true)
+
     }
 
     // Reference to use main thread
@@ -112,8 +143,13 @@ extension AppleWalletModule: PKAddPaymentPassViewControllerDelegate {
         _ controller: PKAddPaymentPassViewController, didFinishAdding pass: PKPaymentPass?,
         error: Error?
     ) {
-        // Depending on if `error` is present, show a success or failure screen.
-        // TODO: show failure/success message in app
+        if error != nil {
+            // TODO: send error codes back to JS
+            sendEvent(withName: "onProvisionFailure", body: "error")
+        } else {
+            sendEvent(withName: "onProvisionSuccess", body: "success")
+        }
+
         self.rootPresentedVC?.dismiss(animated: true, completion: nil)
     }
 }
@@ -126,7 +162,6 @@ extension AppleWalletModule: STPIssuingCardEphemeralKeyProvider {
         print(apiUrl!)
         print(apiVersion)
         let headers: HTTPHeaders = [.authorization(bearerToken: self.accessToken)]
-        // This example uses Alamofire for brevity, but you can make the request however you want
         AF.request(
             "\(apiUrl!)/cards/ephemeral-key",
             method: .post,
@@ -146,12 +181,9 @@ extension AppleWalletModule: STPIssuingCardEphemeralKeyProvider {
                     } catch {
                         completion(nil, error)
                     }
-                    // case failure(error):
-                    //   completion(nil, error)
-                    // }
                 }
             case let .failure(error):
-                print(error)
+                completion(nil, error)
             }
         }
     }

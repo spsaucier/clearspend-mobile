@@ -1,35 +1,24 @@
 import React from 'react';
-import { Platform, TouchableOpacity, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { AppleWalletIcon } from '@/Components/Icons';
-import { CSText } from '@/Components';
-import tw from '@/Styles/tailwind';
+import { Platform, StyleProp, ViewStyle } from 'react-native';
+import AddToAppleWalletButton from '@/NativeModules/AppleWallet/AddToAppleWalletButton';
 
 type Props = {
-  hide?: boolean;
+  isVisible: boolean;
   onPress: () => void;
+  style?: StyleProp<ViewStyle>;
 };
 
-export const AddToWalletButton = ({ hide = false, onPress }: Props) => {
-  const { t } = useTranslation();
+export const AddToWalletButton = ({ isVisible = true, onPress, style }: Props) => {
   const displayAppleWalletBtn = Platform.OS === 'ios';
-  if (!hide) {
-    return (
-      <View style={tw`px-4`}>
-        {/* Apple Wallet Button */}
-        {displayAppleWalletBtn && (
-          <TouchableOpacity
-            style={tw`flex-row bg-black rounded-lg p-1 w-full items-center justify-center border-black border-2 mt-5 mb-2`}
-            onPress={onPress}
-          >
-            <AppleWalletIcon style={tw`mr-1`} />
-            <CSText style={tw`text-white ml-1 text-base`}>
-              {t('cardProfile.addToAppleWallet')}
-            </CSText>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
+
+  if (!isVisible) {
+    return null;
   }
+
+  if (displayAppleWalletBtn) {
+    return <AddToAppleWalletButton onPress={onPress} style={style} />;
+  }
+
+  // TODO: google pay native button
   return null;
 };

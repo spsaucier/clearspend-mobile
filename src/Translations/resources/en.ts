@@ -248,6 +248,7 @@ export default {
     frozen: 'Frozen',
     validThru: 'Valid Thru',
     cvv: 'CVV',
+    appleWalletDescription: 'ClearSpend',
     options: {
       cardOptions: 'Card Options',
       showCardInfo: 'Show Card Info',

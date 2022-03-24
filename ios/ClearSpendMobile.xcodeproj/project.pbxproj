@@ -17,6 +17,8 @@
 		13FB8C36AD0B49AA97DBE4C4 /* PPNeueMontreal-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 71018FA8739B4597AEB11603 /* PPNeueMontreal-BoldItalic.ttf */; };
 		1E450C06480644EABA6A9479 /* PPNeueMontreal-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5DB793C6E384284BB055B1A /* PPNeueMontreal-MediumItalic.ttf */; };
 		1F5A481227D69F8E00951D47 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F5A481127D69F8E00951D47 /* PassKit.framework */; };
+		1F835ECF27EA855A00CBA125 /* AppleAddToWalletButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F835ECE27EA855A00CBA125 /* AppleAddToWalletButton.m */; };
+		1F835ED127EA857F00CBA125 /* AppleAddToWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F835ED027EA857F00CBA125 /* AppleAddToWalletButton.swift */; };
 		1F8E53B327C49846007400C8 /* AppleWalletModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8E53B127C49846007400C8 /* AppleWalletModule.m */; };
 		1F8E53B427C49846007400C8 /* AppleWalletModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8E53B227C49846007400C8 /* AppleWalletModule.swift */; };
 		40709B87E0584C138808F101 /* PPNeueMontreal-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D08645A16A54D56AB47974D /* PPNeueMontreal-Bold.ttf */; };
@@ -74,6 +76,8 @@
 		1F1F35DD27E812F7005D963E /* ClearSpendMobile-DEV.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "ClearSpendMobile-DEV.entitlements"; path = "ClearSpendMobile/Entitlements/ClearSpendMobile-DEV.entitlements"; sourceTree = SOURCE_ROOT; };
 		1F1F35DE27E812FE005D963E /* ClearSpendMobile-PROD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "ClearSpendMobile-PROD.entitlements"; path = "ClearSpendMobile/Entitlements/ClearSpendMobile-PROD.entitlements"; sourceTree = SOURCE_ROOT; };
 		1F5A481127D69F8E00951D47 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
+		1F835ECE27EA855A00CBA125 /* AppleAddToWalletButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppleAddToWalletButton.m; path = ClearSpendMobile/AppleWallet/AppleAddToWalletButton.m; sourceTree = SOURCE_ROOT; };
+		1F835ED027EA857F00CBA125 /* AppleAddToWalletButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleAddToWalletButton.swift; path = ClearSpendMobile/AppleWallet/AppleAddToWalletButton.swift; sourceTree = SOURCE_ROOT; };
 		1F8E53B127C49846007400C8 /* AppleWalletModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppleWalletModule.m; path = ClearSpendMobile/AppleWallet/AppleWalletModule.m; sourceTree = SOURCE_ROOT; };
 		1F8E53B227C49846007400C8 /* AppleWalletModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleWalletModule.swift; path = ClearSpendMobile/AppleWallet/AppleWalletModule.swift; sourceTree = SOURCE_ROOT; };
 		1FFB387727C321A60090B6D8 /* ClearSpendMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ClearSpendMobile-Bridging-Header.h"; path = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -211,7 +215,9 @@
 			isa = PBXGroup;
 			children = (
 				1F8E53B127C49846007400C8 /* AppleWalletModule.m */,
+				1F835ED027EA857F00CBA125 /* AppleAddToWalletButton.swift */,
 				1F8E53B227C49846007400C8 /* AppleWalletModule.swift */,
+				1F835ECE27EA855A00CBA125 /* AppleAddToWalletButton.m */,
 			);
 			path = AppleWallet;
 			sourceTree = "<group>";
@@ -585,7 +591,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F835ECF27EA855A00CBA125 /* AppleAddToWalletButton.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				1F835ED127EA857F00CBA125 /* AppleAddToWalletButton.swift in Sources */,
 				1F8E53B327C49846007400C8 /* AppleWalletModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				1F8E53B427C49846007400C8 /* AppleWalletModule.swift in Sources */,
