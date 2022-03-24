@@ -137,9 +137,9 @@ const CardDetailScreen = ({ route }: Props) => {
                       {`${business.address.locality}, ${business.address.region} ${business.address.postalCode}, ${business.address.country}`}
                     </CSText>
                   </View>
+                  <View style={tw`border-b-1 border-gray-10`} />
+                  <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
                 </View>
-                <View style={tw`border-b-1 border-gray-10`} />
-                <CSText style={tw`text-sm p-5`}>{t('cardInfo.billingAddressInfo')}</CSText>
               </View>
             ) : (
               <View />
