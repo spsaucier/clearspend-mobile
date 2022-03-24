@@ -9,13 +9,14 @@ import { inRange } from 'lodash';
 import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
 import { PasswordRuleRow } from '@/Containers/Onboarding/Components/PasswordRuleRow';
-import { changePassword, login } from '@/Services/Auth';
+import { changePassword, loginUsingOneTimePass } from '@/Services/Auth';
 import { OnboardingTextInput } from '@/Components/OnboardingTextInput';
 import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
 import { Session, updateSession } from '@/Store/Session';
 import { mixpanel } from '@/Services/utils/analytics';
 import { CheckBoxInput } from '@/Components/CheckBoxInput';
 import { Constants } from '@/consts';
+import { acceptTermsAndConditions } from '@/Queries/termsAndConditions';
 
 const SetPasswordScreen = () => {
   const dispatch = useDispatch();
@@ -32,30 +33,52 @@ const SetPasswordScreen = () => {
   const { changePasswordId } = params;
   const { email, password: currentPassword } = params;
 
-  const changePass = () => {
-    setSubmitting(true);
+  const changePasswordCall = () =>
     changePassword(changePasswordId, password, currentPassword)
       .then((res) => {
         if (res.status === 200) {
-          login(email, password).then((response) => {
-            if ('accessToken' in response) {
-              mixpanel.track('Login');
-              const sessionPayload = response as Session;
-              dispatch(updateSession(sessionPayload));
-            }
-          });
-        } else {
-          // TODO: handle other cases
+          return res.data.oneTimePassword;
         }
+
+        throw Error();
       })
       .catch((ex) => {
+        let error;
         if (ex?.fieldErrors?.password?.[0]?.code === '[previouslyUsed]password') {
-          setSubmissionError(t('setPassword.samePasswordError'));
+          error = t('setPassword.samePasswordError');
         } else if (ex?.generalErrors?.[0]?.message) {
-          setSubmissionError(ex?.generalErrors?.[0]?.message);
+          error = ex?.generalErrors?.[0]?.message;
         } else {
-          setSubmissionError(t('setPassword.genericPasswordError'));
+          error = t('setPassword.genericPasswordError');
         }
+        return error;
+      });
+
+  const loginCall = (oneTimePassword: string) =>
+    loginUsingOneTimePass(email, oneTimePassword).then((response) => {
+      if ('accessToken' in response) {
+        mixpanel.track('Login');
+        const sessionPayload = response as Session;
+        return sessionPayload;
+      }
+
+      throw Error();
+    });
+
+  const acceptTermsAndConditionsCall = (sessionPayload: Session) => {
+    const { accessToken } = sessionPayload;
+    return acceptTermsAndConditions(accessToken!).then(() => sessionPayload);
+  };
+
+  const changePasswordOnPress = () => {
+    setSubmitting(true);
+
+    changePasswordCall()
+      .then((oneTimePassword) => loginCall(oneTimePassword))
+      .then((sessionPayload) => acceptTermsAndConditionsCall(sessionPayload!))
+      .then((sessionPayload) => dispatch(updateSession(sessionPayload)))
+      .catch((ex) => {
+        setSubmissionError(ex);
       })
       .finally(() => {
         setSubmitting(false);
@@ -128,7 +151,7 @@ const SetPasswordScreen = () => {
 
           <Button
             containerStyle={[tw`mt-auto mb-4`, buttonDisabled ? tw`bg-gray-5` : tw`bg-primary`]}
-            onPress={changePass}
+            onPress={changePasswordOnPress}
             loading={submitting}
             disabled={buttonDisabled}
           >

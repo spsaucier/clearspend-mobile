@@ -17,8 +17,13 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use((config) => {
   const { accessToken } = store.getState().session;
+
+  // tries to use the current Authorization one in case of accessToken is not avaiable (yet)
+  // in other words, this is just a way to bypass the interceptor when authorization is set in the request itself.
   // eslint-disable-next-line no-param-reassign
-  config.headers.Authorization = `Bearer ${accessToken}`;
+  config.headers.Authorization = accessToken
+    ? `Bearer ${accessToken}`
+    : config.headers.Authorization;
   return config;
 });
 
