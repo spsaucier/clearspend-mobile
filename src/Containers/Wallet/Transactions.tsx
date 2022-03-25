@@ -132,7 +132,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
       </TouchableWithoutFeedback>
 
       <Animated.View style={[tw`flex-1 bg-white`, transactionsContainerAnimatedStyle]}>
-        {isFetching ? (
+        {isFetching && !isFetchingNextPage ? (
           <View style={tw`items-center justify-center mt-10`}>
             <ActivityIndicator style={tw`w-5`} color={tw.color('black')} />
           </View>
