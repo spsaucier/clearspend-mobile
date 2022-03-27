@@ -78,6 +78,7 @@ const ViewReceiptCarousel = ({
         decelerationRate="fast"
         showsHorizontalScrollIndicator={false}
         canCancelContentTouches={false}
+        disableIntervalMomentum
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={viewConfigRef.current}
         renderItem={({ item }) => (

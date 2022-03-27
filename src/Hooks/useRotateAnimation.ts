@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { Animated, Easing } from 'react-native';
 
-export const useRotateAnimation = (running: boolean = true, duration: number = 1000) => {
+export const useRotateAnimation = (duration: number = 1000) => {
   const animation = useMemo(() => new Animated.Value(0), []);
 
   const loop = Animated.loop(
@@ -19,15 +19,9 @@ export const useRotateAnimation = (running: boolean = true, duration: number = 1
   });
 
   useEffect(() => {
-    if (running) {
-      loop.start();
-    } else {
-      animation.setValue(0);
-      loop.stop();
-    }
-
+    loop.start();
     return () => loop.stop();
-  }, [running, loop, animation]);
+  }, []);
 
   return [interpolatedRotate];
 };
