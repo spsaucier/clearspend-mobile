@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
 import { CardDetailsResponse } from '@/generated/capital';
 
 const { AppleWalletModule } = NativeModules;
@@ -30,6 +30,7 @@ export const AppleWallet = {
     AppleWalletModule.canAddPaymentPass(lastFour),
 };
 
+// TODO make generic for google wallet
 export const checkCardDigitalWalletStates = async (
   activeCards: CardDetailsResponse[],
 ): Promise<CardDigitalWalletStates> => {
@@ -37,7 +38,9 @@ export const checkCardDigitalWalletStates = async (
 
   const cardStates = await Promise.all(
     cardLastFours.map(async (lastFour) => {
-      const canAddPass = await AppleWallet.canAddPaymentPass(lastFour);
+      // TODO call google wallet can add function
+      const canAddPass =
+        Platform.OS === 'ios' ? await AppleWallet.canAddPaymentPass(lastFour) : false;
 
       return { lastFour, canAddPass };
     }),
