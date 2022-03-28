@@ -3,15 +3,15 @@ import { SectionList, View } from 'react-native';
 import React from 'react';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
-import * as categoryIcons from '@/Components/Icons/Categories';
+import * as merchantCategoryIcons from '@/Components/Icons/MerchantCategories';
 import * as icons from '@/Components/Icons';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 
 export const IconDemoScreen = () => {
   const data = [
     {
-      title: 'Merchant & Expense Category Icons',
-      data: Object.entries(categoryIcons).filter(
+      title: 'Merchant Category Icons',
+      data: Object.entries(merchantCategoryIcons).filter(
         ([name]) => name !== 'MERCHANT_CATEGORY_ICON_NAME_MAP',
       ),
     },

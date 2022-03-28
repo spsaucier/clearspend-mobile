@@ -13,7 +13,6 @@ import { ActivityIndicator, CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
 import { useExpenseCategories } from '@/Queries/expenseCategory';
 import { ExpenseCategory } from '@/generated/capital';
-import { ExpenseCategoryIcon } from '@/Components/ExpenseCategoryIcon';
 import { FullPageError } from '@/Components/FullPageError';
 
 const AssignCategoryBottomSheet = forwardRef(
@@ -64,10 +63,9 @@ const AssignCategoryBottomSheet = forwardRef(
                   keyExtractor={(item, index) => item?.expenseCategoryId ?? index.toString()}
                   renderItem={({ item }) => (
                     <TouchableOpacity
-                      style={tw`flex-row items-center mb-5`}
+                      style={tw`flex-row items-center mb-5 py-0.3`}
                       onPress={() => onCategoryPress(item)}
                     >
-                      <ExpenseCategoryIcon iconRef={item.iconRef} style={tw`mr-3`} />
                       <CSText>{item.categoryName}</CSText>
                     </TouchableOpacity>
                   )}

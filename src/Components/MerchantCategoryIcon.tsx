@@ -1,5 +1,8 @@
 import React from 'react';
-import { MERCHANT_CATEGORY_ICON_NAME_MAP, OtherMiscIcon } from '@/Components/Icons/Categories';
+import {
+  MERCHANT_CATEGORY_ICON_NAME_MAP,
+  OtherMiscIcon,
+} from '@/Components/Icons/MerchantCategories';
 import { IconBaseProps } from '@/Components/Icons/types';
 
 type Props = {

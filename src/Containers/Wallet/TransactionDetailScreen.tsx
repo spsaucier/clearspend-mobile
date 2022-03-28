@@ -29,8 +29,7 @@ import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import AssignCategoryBottomSheet from '@/Containers/Wallet/Components/AssignCategoryBottomSheet';
 import { ExpenseDetails } from '@/generated/capital';
 import { useUpdateTransaction } from '@/Queries/transaction';
-import { ExpenseCategoryIcon } from '@/Components/ExpenseCategoryIcon';
-import { MERCHANT_CATEGORY_ICON_NAME_MAP } from '@/Components/Icons/Categories';
+import { MERCHANT_CATEGORY_ICON_NAME_MAP } from '@/Components/Icons/MerchantCategories';
 import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 
 type InfoRowProps = {
@@ -324,15 +323,6 @@ const TransactionDetailScreenContent = () => {
                   <ActivityIndicator />
                 ) : expenseDetails?.expenseCategoryId && expenseDetails?.categoryName ? (
                   <>
-                    <View
-                      style={tw.style('bg-white items-center justify-center', {
-                        height: 40,
-                        width: 40,
-                        borderRadius: 40,
-                      })}
-                    >
-                      <ExpenseCategoryIcon iconRef={expenseDetails.iconRef} />
-                    </View>
                     <CSText style={tw`pt-1`}>{expenseDetails.categoryName}</CSText>
                   </>
                 ) : (
