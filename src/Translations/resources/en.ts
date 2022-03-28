@@ -198,6 +198,7 @@ export default {
       deleteConfirmation: 'Are you sure you want to delete this receipt from the transaction?',
       deleteConfirmationSecondary: 'This action is permanent and can not be undone.',
       deleteCancel: 'Cancel',
+      deleteError: 'There was a problem deleting this receipt. Please try again later.',
     },
     transactionDetails: {
       title: 'Transaction Details',

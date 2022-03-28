@@ -1,6 +1,13 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient, InfiniteData } from 'react-query';
+import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next';
 import apiClient from '@/Services';
-import { ReceiptDetails } from '@/generated/capital';
+import {
+  ReceiptDetails,
+  AccountActivityResponse,
+  PagedDataAccountActivityResponse,
+} from '@/generated/capital';
+import { updateTransactionReceipts, updatePagedTransactions } from '../Helpers/ResponseHelpers';
 
 export const uploadReceipt = (data: any) => {
   const formData = new FormData();
@@ -59,3 +66,39 @@ export const useDeleteReceiptLazy = (receiptId: string) =>
     enabled: false,
     retry: false,
   });
+
+export const useDeleteReceipt = (receiptId: string, accountActivityId: string) => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation<any, Error, { receiptId: string }>(
+    (context) => deleteReceipt(context.receiptId),
+    {
+      onSuccess: () => {
+        queryClient.setQueryData<AccountActivityResponse | undefined>(
+          ['transactions', { id: accountActivityId }],
+          (previous) => updateTransactionReceipts(previous, receiptId, true /* deleteMode */),
+        );
+
+        const data = queryClient.getQueryData<AccountActivityResponse | undefined>([
+          'transactions',
+          { id: accountActivityId },
+        ]);
+
+        // update the transaction in the 'paginated' list to avoid a refetch
+        if (data) {
+          queryClient.setQueryData<InfiniteData<PagedDataAccountActivityResponse> | undefined>(
+            ['transactions', { card: data.card?.cardId }],
+            (previous) => updatePagedTransactions(previous, accountActivityId, data),
+          );
+        }
+      },
+      onError: () => {
+        Toast.show({
+          type: 'error',
+          text1: t('wallet.receipt.deleteError'),
+        });
+      },
+    },
+  );
+};

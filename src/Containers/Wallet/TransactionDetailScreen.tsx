@@ -1,8 +1,8 @@
-import React, { ReactNode, useCallback, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
 // import MapView, { Marker } from 'react-native-maps';
@@ -85,13 +85,11 @@ const TransactionDetailScreenContent = () => {
   const addReceiptPanelRef = useRef<BottomSheetModal>(null);
   const assignCategoryBottomSheetRef = useRef<BottomSheetModal>(null);
 
-  const { isLoading, error, data, refetch } = useTransaction(accountActivityId);
+  const { isLoading, error, data } = useTransaction(accountActivityId);
   const { mutate: updateTransaction, isLoading: isUpdatingTransaction } =
     useUpdateTransaction(accountActivityId);
 
   const onUploadReceiptFromGalleryFinished = () => {
-    refetch();
-
     Toast.show({
       type: 'success',
       text1: t('toasts.receiptUploadedSuccessfully'),
@@ -102,12 +100,6 @@ const TransactionDetailScreenContent = () => {
     accountActivityId: accountActivityId!,
     onUploadFinished: onUploadReceiptFromGalleryFinished,
   });
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, [refetch]),
-  );
 
   if (isLoading) {
     return (

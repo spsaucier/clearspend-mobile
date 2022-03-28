@@ -1,4 +1,11 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient, QueryClient } from 'react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  QueryClient,
+  InfiniteData,
+} from 'react-query';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 import {
@@ -7,6 +14,7 @@ import {
   PagedDataAccountActivityResponse,
 } from '@/generated/capital';
 import apiClient from '@/Services';
+import { updatePagedTransactions } from '../Helpers/ResponseHelpers';
 
 export const useTransaction = (accountActivityId: string) =>
   useQuery<AccountActivityResponse, Error>(['transactions', { id: accountActivityId }], () =>
@@ -48,7 +56,7 @@ export const useUpdateTransaction = (accountActivityId: string, existingNote?: s
   const { t } = useTranslation();
 
   return useMutation<
-    Promise<AccountActivityResponse>,
+    AccountActivityResponse,
     Error,
     { notes?: string; expenseCategoryId?: string }
   >(
@@ -61,6 +69,12 @@ export const useUpdateTransaction = (accountActivityId: string, existingNote?: s
     {
       onSuccess: (data) => {
         queryClient.setQueryData(['transactions', { id: accountActivityId }], data);
+
+        // update the transaction in the 'paginated' list to avoid a refetch
+        queryClient.setQueryData<InfiniteData<PagedDataAccountActivityResponse> | undefined>(
+          ['transactions', { card: data.card?.cardId }],
+          (previous) => updatePagedTransactions(previous, accountActivityId, data),
+        );
       },
       onError: (_error, variables) => {
         // If an existing note argument was provided there was an error adding or updating the note

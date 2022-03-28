@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query';
+import { useQueryClient, InfiniteData } from 'react-query';
 import { linkReceiptAsync, useUploadReceiptRemote } from '@/Queries/receipt';
+import { AccountActivityResponse, PagedDataAccountActivityResponse } from '@/generated/capital';
+import { updateTransactionReceipts, updatePagedTransactions } from '../Helpers/ResponseHelpers';
 
 type UploadReceiptState = {
   receiptId?: string;
@@ -45,6 +47,26 @@ const useUploadReceipt = ({
     queryClient.invalidateQueries(['receipt', receiptId], {
       refetchInactive: true,
     });
+
+    if (receiptId) {
+      queryClient.setQueryData<AccountActivityResponse | undefined>(
+        ['transactions', { id: accountActivityId }],
+        (previous) => updateTransactionReceipts(previous, receiptId),
+      );
+
+      const data = queryClient.getQueryData<AccountActivityResponse | undefined>([
+        'transactions',
+        { id: accountActivityId },
+      ]);
+
+      // update the transaction in the 'paginated' list to avoid a refetch
+      if (data) {
+        queryClient.setQueryData<InfiniteData<PagedDataAccountActivityResponse> | undefined>(
+          ['transactions', { card: data.card?.cardId }],
+          (previous) => updatePagedTransactions(previous, accountActivityId, data),
+        );
+      }
+    }
   }, [queryClient, receiptId]);
 
   useEffect(() => {
