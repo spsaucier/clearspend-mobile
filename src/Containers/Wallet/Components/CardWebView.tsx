@@ -66,6 +66,7 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
           bounces={false}
           style={[tw`bg-transparent`, { opacity: loading ? 0 : 1 }]}
           showsHorizontalScrollIndicator={false}
+          textZoom={100}
           onMessage={async (event: any) => {
             const { data } = event.nativeEvent;
             if (data.indexOf('ephkn_pub') === 0) {
