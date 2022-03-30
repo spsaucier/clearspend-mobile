@@ -19,7 +19,7 @@ export const ActivateCardResultScreen = ({ route }: Props) => {
 
   const { t } = useTranslation();
   const { navigate, goBack } = useNavigation();
-  const { mutate: activateCard, isLoading, isSuccess } = useActivateCard();
+  const { mutate: activateCard, data, isLoading, isSuccess } = useActivateCard();
 
   useEffect(() => {
     activateCard(
@@ -69,7 +69,7 @@ export const ActivateCardResultScreen = ({ route }: Props) => {
             <View style={tw`items-center w-full pb-4`}>
               <Button
                 label={t('activateCard.viewCardsButtonCta')}
-                onPress={() => navigate(MainScreens.Wallet)}
+                onPress={() => navigate(MainScreens.Wallet, { initialFocusedCardId: data?.cardId })}
               />
               <Button
                 containerStyle={tw`mt-4 bg-white`}

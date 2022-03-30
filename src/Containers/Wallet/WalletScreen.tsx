@@ -25,9 +25,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useQueryClient } from 'react-query';
-import Carousel from 'react-native-reanimated-carousel';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import { useSelector } from 'react-redux';
+import { useRoute } from '@react-navigation/core';
+import { NativeStackScreenProps } from 'react-native-screens/native-stack';
 import tw from '@/Styles/tailwind';
 import { Button, ActivityIndicator, CSText, InfoPanel, AnimatedCSText } from '@/Components';
 import { Card } from '@/Containers/Wallet/Components/Card';
@@ -35,7 +37,7 @@ import Transactions from './Transactions';
 import { useUser, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import useRequireOnboarding from '@/Hooks/useRequireOnboarding';
 import LinearGradientWithOpacity from '@/Components/Svg/LinearGradientWithOpacity';
@@ -56,6 +58,9 @@ const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('scre
 const { StatusBarManager } = NativeModules;
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
 const CARD_SCALE_CONSTANT = 0.88;
+
+type WalletScreenNavigationProps = NativeStackScreenProps<MainStackParamTypes, MainScreens.Wallet>;
+type WalletScreenRouteProp = WalletScreenNavigationProps['route'];
 
 const LoadingWallet = () => (
   <View style={tw`flex-1 justify-center items-center bg-secondary`}>
@@ -124,16 +129,23 @@ const ContentWallet = ({
   cardDigitalWalletStates: CardDigitalWalletStates;
   headerIconsHeight: number;
 }) => {
-  const { navigate } = useNavigation();
+  const { navigate, setParams } = useNavigation();
+  const route = useRoute<WalletScreenRouteProp>();
+  const { params } = route;
   const { t } = useTranslation();
+  const accessToken = useSelector((state: { session: Session }) => state.session.accessToken);
 
   const { data: user } = useUser();
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
-  const balanceInfoPanelRef = useRef<BottomSheetModal>(null);
-  const cardOptionsPanelRef = useRef<BottomSheetModal>(null);
   const [carouselHeight, setCarouselHeight] = useState<number>();
 
-  const accessToken = useSelector((state: { session: Session }) => state.session.accessToken);
+  const carouselRef = useRef<ICarouselInstance>(null);
+  const balanceInfoPanelRef = useRef<BottomSheetModal>(null);
+  const cardOptionsPanelRef = useRef<BottomSheetModal>(null);
+
+  const initialCardDisplayIndex = activeCards.findIndex(
+    (card) => card.card.cardId === params?.initialFocusedCardId,
+  );
 
   const onCardBalanceInfoPress = () => {
     balanceInfoPanelRef.current?.present();
@@ -145,7 +157,17 @@ const ContentWallet = ({
 
   useEffect(() => {
     if (activeCards.length) {
-      if (!selectedCard) {
+      if (initialCardDisplayIndex !== -1) {
+        // if there is an initial index to display, scroll to it,
+        // update the selected card and clear the relevant navigation param
+        setSelectedCard(activeCards[initialCardDisplayIndex]);
+        const currentIdx = carouselRef?.current?.getCurrentIndex() ?? 0;
+        carouselRef?.current?.scrollTo({
+          count: initialCardDisplayIndex - currentIdx,
+          animated: true,
+        });
+        setParams({ initialFocusedCardId: undefined });
+      } else if (!selectedCard) {
         const [first] = activeCards;
         setSelectedCard(first);
       } else {
@@ -153,7 +175,7 @@ const ContentWallet = ({
         setSelectedCard(card);
       }
     }
-  }, [activeCards, selectedCard]);
+  }, [activeCards, initialCardDisplayIndex, selectedCard, setParams]);
 
   const selectedCardId = selectedCard?.card?.cardId;
   const selectedCardFrozen = selectedCard?.card?.status === 'INACTIVE';
@@ -170,6 +192,7 @@ const ContentWallet = ({
       <View onLayout={(e) => setCarouselHeight(e.nativeEvent.layout.height)}>
         <Carousel
           data={activeCards}
+          ref={carouselRef}
           width={screenWidth}
           mode="parallax"
           loop={false}

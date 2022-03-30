@@ -34,7 +34,13 @@ jest.mock('@react-navigation/native', () => ({
 describe('Activate Card Result Screen', () => {
   // TODO improve mock and test errors as well
   const server = setupServer(
-    rest.patch('*/users/cards/activate', (req, res, ctx) => res(ctx.body({}))),
+    rest.patch('*/users/cards/activate', (req, res, ctx) =>
+      res(
+        ctx.body({
+          cardId: 'mock-card-id',
+        }),
+      ),
+    ),
   );
 
   beforeAll(() => {
@@ -80,7 +86,9 @@ describe('Activate Card Result Screen', () => {
       fireEvent.press(returnToWalletButton);
     });
 
-    expect(mockedNavigate).toHaveBeenCalledWith(MainScreens.Wallet);
+    expect(mockedNavigate).toHaveBeenCalledWith(MainScreens.Wallet, {
+      initialFocusedCardId: 'mock-card-id',
+    });
     expect(mockedNavigate).toHaveBeenCalledTimes(1);
   });
 

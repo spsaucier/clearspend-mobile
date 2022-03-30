@@ -188,8 +188,13 @@ app.patch('/users/cards/activate', (req, res) => {
   } else {
     const { card } = cardItem;
 
-    usersCards[idx] = { ...cardItem, card: { ...card, ...{ status: 'ACTIVE', activated: true } } };
-    res.json({});
+    const updatedCard = {
+      ...cardItem,
+      card: { ...card, ...{ status: 'ACTIVE', activated: true } },
+    };
+
+    usersCards[idx] = updatedCard;
+    res.json(updatedCard.card);
   }
 });
 
