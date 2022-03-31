@@ -55,8 +55,9 @@ import { Session } from '@/Store/Session';
 import { lightFeedback } from '@/Helpers/HapticFeedback';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
+const { height: windowHeight } = Dimensions.get('window');
 const { StatusBarManager } = NativeModules;
-const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
+const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
 const CARD_SCALE_CONSTANT = 0.88;
 
 type WalletScreenNavigationProps = NativeStackScreenProps<MainStackParamTypes, MainScreens.Wallet>;
@@ -180,13 +181,26 @@ const ContentWallet = ({
   const selectedCardId = selectedCard?.card?.cardId;
   const selectedCardFrozen = selectedCard?.card?.status === 'INACTIVE';
 
+  /*
+    On older Android devices `windowHeight` includes the status bar height
+
+    screenHeight - windowHeight = 0 (iOS)
+    screenHeight - windowHeight = bottom nav height (Android new)
+    screenHeight - windowHeight - statusBarHeight = bottom nav height (Android old)
+  */
+
+  let bottomNav = screenHeight - windowHeight;
+
+  // assume that if the value returned for bottom nav
+  // is larger than twice the status bar height then
+  // it's probably not including the status bar e.g. it's old
+  if (bottomNav > 2 * STATUSBAR_HEIGHT) {
+    bottomNav -= STATUSBAR_HEIGHT;
+  }
+
   const initialSnapPoint =
-    screenHeight -
-    STATUSBAR_HEIGHT * scale -
-    StatusBar.currentHeight! -
-    headerIconsHeight -
-    (carouselHeight || 0) -
-    8 * scale;
+    screenHeight - bottomNav - STATUSBAR_HEIGHT - headerIconsHeight - (carouselHeight || 0);
+
   return (
     <View style={tw`flex-1`}>
       <View onLayout={(e) => setCarouselHeight(e.nativeEvent.layout.height)}>
@@ -241,7 +255,7 @@ const ContentWallet = ({
           }}
         />
         {/* Slider dots */}
-        <View style={tw`flex-row justify-center my-1`}>
+        <View style={tw`flex-row justify-center pb-5`}>
           {activeCards.length > 1 &&
             activeCards.map(({ card }: any) => {
               const cardId = card?.cardId;
@@ -268,7 +282,7 @@ const ContentWallet = ({
                 cardState.lastFour === selectedCard?.card?.lastFour && cardState.canAddPass,
             )
           }
-          style={tw.style('mt-1 h-12', { width: screenWidth * CARD_SCALE_CONSTANT })}
+          style={tw.style('mb-5 h-12', { width: screenWidth * CARD_SCALE_CONSTANT })}
           onPress={() => {
             if (Platform.OS === 'ios' && user && selectedCardId && selectedCard?.card?.lastFour) {
               AppleWallet.beginPushProvisioning(
