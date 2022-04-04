@@ -16,14 +16,16 @@ import { CSText, FocusAwareStatusBar } from '@/Components';
 export const CODE_FIELD_LENGTH = 4;
 
 const styles = StyleSheet.create({
-  root: { padding: 20, minHeight: 300, maxWidth: 100 },
+  root: {
+    padding: 20,
+    minHeight: 300,
+    maxWidth: 100,
+  },
   title: { textAlign: 'center', fontSize: 30 },
   codeFieldRoot: { marginTop: 20 },
-  cell: {
+  cellRoot: {
     width: 47,
     height: 47,
-    lineHeight: 47,
-    fontSize: 24,
     borderWidth: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
     borderColor: 'transparent',
@@ -31,13 +33,17 @@ const styles = StyleSheet.create({
     ...tw`rounded`,
     borderRadius: 4,
     marginHorizontal: 4,
-    fontFamily: 'telegraf',
-    fontWeight: '500',
-    color: tw.color('black'),
-    textAlign: 'center',
   },
   focusCell: {
     opacity: 1,
+  },
+  cellText: {
+    lineHeight: 47,
+    fontSize: 24,
+    textAlign: 'center',
+    fontFamily: 'telegraf',
+    fontWeight: '500',
+    color: tw.color('black'),
   },
 });
 
@@ -76,15 +82,14 @@ export const ActivateCardDigitEntryScreen = () => {
     } else if (isFocused) {
       textChild = <Cursor />;
     }
-
     return (
-      <CSText
-        key={index}
-        style={[styles.cell, isFocused && styles.focusCell]}
+      <View
         onLayout={getCellOnLayoutHandler(index)}
+        key={index}
+        style={[styles.cellRoot, isFocused && styles.focusCell]}
       >
-        {textChild}
-      </CSText>
+        <CSText style={styles.cellText}>{textChild}</CSText>
+      </View>
     );
   };
 
