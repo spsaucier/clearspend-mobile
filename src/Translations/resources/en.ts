@@ -375,4 +375,13 @@ export default {
     title: 'Notifications',
     youHaveNew: 'You have {{newNotifications}} new notifications',
   },
+  termsAndPrivacyPolicyUpdated: {
+    title: "We've <key1>updated</key1> our Terms of Service and Privacy Policy",
+    subTitle: 'Please agree to these updated documents to keep using ClearSpend.',
+    termsOfService: 'Terms of Service',
+    privacyPolicy: 'Privacy Policy',
+    acceptAndContinue: 'Accept and continue',
+    cancelAndLogout: 'Cancel and log out',
+    error: 'Unable to accept terms and conditions',
+  },
 };

@@ -18,7 +18,6 @@ jest.mock('@react-navigation/core', () => {
     useNavigation: () => ({
       goBack: mockedGoBack,
     }),
-    useFocusEffect: jest.fn(),
     useRoute: jest.fn().mockReturnValue({
       params: {
         notes: '',
@@ -27,10 +26,6 @@ jest.mock('@react-navigation/core', () => {
     }),
   };
 });
-
-jest.mock('@react-navigation/native', () => ({
-  useIsFocused: jest.fn(() => true),
-}));
 
 describe('Add/Update transactions note Entry', () => {
   const server = setupServer(

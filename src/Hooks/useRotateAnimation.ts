@@ -21,7 +21,7 @@ export const useRotateAnimation = (duration: number = 1000) => {
   useEffect(() => {
     loop.start();
     return () => loop.stop();
-  }, []);
+  }, [loop]);
 
   return [interpolatedRotate];
 };

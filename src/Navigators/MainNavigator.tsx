@@ -36,6 +36,7 @@ import { IconDemoScreen } from '@/Containers/DevMenu/IconDemoScreen';
 import UpdateAccountScreen from '@/Containers/Profile/UpdateAccountScreen';
 import UpdateMobileScreen from '@/Containers/Profile/UpdateMobileScreen';
 import UpdateAddressScreen from '@/Containers/Profile/UpdateAddressScreen';
+import UpdatedTermsAndConditionsScreen from '@/Containers/Onboarding/UpdatedTermsAndConditionsScreen';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -147,6 +148,10 @@ const MainNavigator = () => (
     <Stack.Screen name={MainScreens.ConfirmAuth} component={ConfirmAuthScreen} />
     <Stack.Screen name={MainScreens.EnterMobile} component={EnterMobileScreen} />
     <Stack.Screen name={MainScreens.EnterOTP} component={EnterOTPScreen} />
+    <Stack.Screen
+      name={MainScreens.UpdatedTermsAndConditionsScreen}
+      component={UpdatedTermsAndConditionsScreen}
+    />
   </Stack.Navigator>
 );
 

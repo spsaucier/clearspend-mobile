@@ -39,7 +39,6 @@ import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
-import useRequireOnboarding from '@/Hooks/useRequireOnboarding';
 import LinearGradientWithOpacity from '@/Components/Svg/LinearGradientWithOpacity';
 import { AddToWalletButton } from '@/Containers/Wallet/Components/AddToWalletButton';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
@@ -53,6 +52,7 @@ import {
 } from '@/NativeModules/AppleWallet/AppleWallet';
 import { Session } from '@/Store/Session';
 import { lightFeedback } from '@/Helpers/HapticFeedback';
+import useRequireUserAction from '@/Hooks/useRequireUserAction';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const { height: windowHeight } = Dimensions.get('window');
@@ -321,7 +321,8 @@ const ContentWallet = ({
 };
 
 const WalletScreen = () => {
-  useRequireOnboarding();
+  useRequireUserAction();
+
   const { t } = useTranslation();
   const appState = useRef(AppState.currentState);
 

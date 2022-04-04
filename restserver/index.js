@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const users = require('./resources/users.json');
 const usersCards = require('./resources/usersCards.json');
 const transactions = require('./resources/transactions.json');
+const termsAndConditionsResource = require('./resources/termsAndConditions.json');
 const images = require('./images.js');
 
 const TOKEN_KEY = 'XYZRANDOM';
@@ -283,8 +284,19 @@ app.delete('/users/receipts/:receiptId/delete', (req, res) => {
 app.get('/users/', checkAuthorization, (req, res) => {
   const { userId } = res.locals;
   const currentUser = users.find((x) => x.profile.userId === userId);
-
   res.json(currentUser.profile);
+});
+
+let termsAndConditionsData = { ...termsAndConditionsResource };
+
+app.patch('/terms-and-conditions', checkAuthorization, (req, res) => {
+  const changed = { ...termsAndConditionsData, isAcceptedTermsAndConditions: true };
+  termsAndConditionsData = changed;
+  res.sendStatus(200);
+});
+
+app.get('/terms-and-conditions/timestamp-details', checkAuthorization, (req, res) => {
+  res.json(termsAndConditionsData);
 });
 
 app.use('/images', images);

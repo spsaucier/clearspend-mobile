@@ -15,10 +15,6 @@ jest.mock('@react-navigation/core', () => {
   };
 });
 
-jest.mock('@react-navigation/native', () => ({
-  useIsFocused: jest.fn(() => true),
-}));
-
 describe('Activate Card Digit Entry', () => {
   beforeEach(() => {
     mockedNavigate.mockClear();

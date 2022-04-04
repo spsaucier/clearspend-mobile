@@ -79,6 +79,14 @@ const DevMenuScreen = () => {
             />
           </>
         ) : null}
+
+        <CSText style={tw`text-xl pb-4`}>Interstitial Screens</CSText>
+
+        <Button
+          label="Updated terms and conditions"
+          containerStyle={tw`mb-4`}
+          onPress={() => navigate(MainScreens.UpdatedTermsAndConditionsScreen)}
+        />
       </ScrollView>
     </SafeAreaView>
   );

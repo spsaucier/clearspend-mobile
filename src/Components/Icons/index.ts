@@ -1,3 +1,4 @@
+export { ArrowSquareOutIcon } from './arrowSquareOutIcon';
 export { ArrowUpIcon } from './arrowUpIcon';
 export { BackArrowIcon } from './backArrowIcon';
 export { CameraIcon } from './cameraIcon';

@@ -23,13 +23,8 @@ jest.mock('@react-navigation/core', () => {
     useNavigation: () => ({
       navigate: mockedNavigate,
     }),
-    useFocusEffect: jest.fn(),
   };
 });
-
-jest.mock('@react-navigation/native', () => ({
-  useIsFocused: jest.fn(() => true),
-}));
 
 describe('Activate Card Result Screen', () => {
   // TODO improve mock and test errors as well

@@ -52,6 +52,7 @@ export enum MainScreens {
   NotificationSettings = 'Notification Settings',
   Profile = 'Profile',
   ProfileScreen = 'Profile Screen',
+  UpdatedTermsAndConditionsScreen = 'Updated Terms and Conditions',
 
   // Wallet and Cards
   AddReceipt = 'Add Receipt',
@@ -83,6 +84,9 @@ export type MainStackParamTypes = {
   [MainScreens.SetBiometricsOrPasscode]: undefined;
   [MainScreens.EnterMobile]: undefined;
   [MainScreens.EnterOTP]: { phone: string; nextScreen?: string };
+
+  // Updated terms and conditions
+  [MainScreens.UpdatedTermsAndConditionsScreen]: undefined;
 
   // Profile & Settings
   [MainScreens.UpdateAccount]: undefined;
