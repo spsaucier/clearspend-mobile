@@ -6,7 +6,7 @@ export const MAX_FONT_SCALE = 1.5;
 export const MID_FONT_SCALE = 1.3;
 export const MIN_FONT_SCALE = 1;
 
-interface CSTextProps extends TextProps {
+export interface CSTextProps extends TextProps {
   shrinkForSmall?: boolean;
   limitFontScale?: boolean;
 }

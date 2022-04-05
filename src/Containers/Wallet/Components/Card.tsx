@@ -15,7 +15,7 @@ import tw from '@/Styles/tailwind';
 import { Logo } from '@/Components/Svg/Logo';
 import { Visa } from '@/Components/Svg/Visa';
 import { InfoIcon, SnowflakeIcon } from '@/Components/Icons';
-import { CSText } from '@/Components';
+import { CSText, CSTextProps } from '@/Components/Text';
 import { formatCurrency } from '@/Helpers/StringHelpers';
 import { CardOptionsButton } from '@/Containers/Wallet/Components/CardOptionsButton';
 
@@ -95,13 +95,28 @@ export const Card = ({
     </View>
   );
 
-  const CardNameAndAllocation = () => (
-    <View style={tw`mt-4`}>
-      <CSText style={tw.style('text-xl', darkContent ? 'text-black' : 'text-white')}>
+  const CardNameAndAllocation = ({
+    className = '',
+    titleProps,
+    allocationProps,
+  }: {
+    className?: string;
+    titleProps?: CSTextProps;
+    allocationProps?: CSTextProps;
+  }) => (
+    <View style={tw.style(`mb-2`, className)}>
+      <CSText
+        style={tw.style('text-xl', darkContent ? 'text-black' : 'text-white')}
+        numberOfLines={1}
+        {...titleProps}
+      >
         {cardTitle}
       </CSText>
       {allocation ? (
-        <CSText style={tw.style('text-base mb-2', darkContent ? 'text-black' : 'text-white')}>
+        <CSText
+          style={tw.style('text-base mt-0.5', darkContent ? 'text-black' : 'text-white')}
+          {...allocationProps}
+        >
           {allocation}
         </CSText>
       ) : null}
@@ -159,7 +174,9 @@ export const Card = ({
                 </View>
               )}
 
-              {showSensitiveInformation && <CardNameAndAllocation />}
+              {showSensitiveInformation && (
+                <CardNameAndAllocation className="mt-4" allocationProps={{ numberOfLines: 1 }} />
+              )}
             </View>
 
             {/* ClearSpend logo, card no, card type */}
@@ -194,17 +211,23 @@ export const Card = ({
 
           {/* Bottom Row */}
           <View style={tw.style('flex flex-row items-end', isFrozen && 'opacity-30')}>
-            {!showSensitiveInformation && <CardNameAndAllocation />}
+            {!showSensitiveInformation && (
+              <CardNameAndAllocation className="flex-1" allocationProps={{ numberOfLines: 2 }} />
+            )}
 
             <View style={tw`flex-1 items-end`}>
               {showSensitiveInformation ? (
                 <Visa style={tw`h-8 mt-1 mr-2`} color={tw.color(darkContent ? 'black' : 'white')} />
               ) : (
-                <View style={tw`flex-row items-center`}>
-                  <CSText style={tw.style('text-2xl', darkContent ? 'text-black' : 'text-white')}>
+                <View style={tw`flex-row items-center ml-auto mb-2`}>
+                  <CSText
+                    style={tw.style('text-2xl', darkContent ? 'text-black' : 'text-white')}
+                    numberOfLines={1}
+                    allowFontScaling={false}
+                  >
                     {formatCurrency(balance)}
                   </CSText>
-                  <TouchableOpacity style={tw`p-2`} onPress={onCardBalanceInfoPress}>
+                  <TouchableOpacity onPress={onCardBalanceInfoPress}>
                     <InfoIcon color={darkContent ? 'black' : 'white'} />
                   </TouchableOpacity>
                 </View>
