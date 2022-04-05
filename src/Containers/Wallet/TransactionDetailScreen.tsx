@@ -245,9 +245,8 @@ const TransactionDetailScreenContent = () => {
             <View style={[tw`bg-white justify-center items-center h-18 w-18 rounded-full`]}>
               <View
                 style={[
-                  tw`h-16 w-16 overflow-hidden items-center justify-center rounded-full ${
-                    merchant?.merchantLogoUrl ? '' : 'bg-primary'
-                  }`,
+                  tw`h-16 w-16 overflow-hidden items-center justify-center rounded-full ${merchant?.merchantLogoUrl ? '' : 'bg-primary'
+                    }`,
                 ]}
               >
                 {merchant?.merchantLogoUrl ? (
@@ -335,7 +334,16 @@ const TransactionDetailScreenContent = () => {
               </View>
             </TouchableOpacity>
           </View>
-
+          <View style={tw`self-center justify-center items-center`}>
+            {expenseDetails && expenseDetails?.status === 'DISABLED' && (
+              <View style={tw`flex-row mt-2 h-15 w-89 bg-red-100 justify-between items-center`}>
+                <ExclamationIcon bgColor="red" style={tw`ml-4`} />
+                <CSText style={tw`text-xs pr-2 text-red ml-2 leading-4 flex-1 flex-shrink`}>
+                  {t('wallet.transactionDetails.unsupportedCategoryError')}
+                </CSText>
+              </View>
+            )}
+          </View>
           <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
             {t('wallet.transactionDetails.merchant.title').toUpperCase()}
           </CSText>

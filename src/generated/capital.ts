@@ -1325,6 +1325,7 @@ export interface ExpenseDetails {
   /** @format uuid */
   expenseCategoryId?: string;
   categoryName?: string;
+  status?: string;
 }
 
 export interface Merchant {
@@ -3087,6 +3088,7 @@ export interface ExpenseCategory {
   iconRef?: number;
   categoryName?: string;
   expenseCategoryId?: string;
+  status?: string;
 }
 
 export interface CodatAccountNested {

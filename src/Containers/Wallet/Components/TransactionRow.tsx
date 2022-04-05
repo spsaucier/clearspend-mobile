@@ -130,12 +130,17 @@ export const TransactionRow = ({
         {!hasReceipts && (
           <ReceiptIcon
             style={{
-              marginRight: !expenseDetails ? -6 : 0,
+              marginRight: expenseDetails ? -6 : 0,
               zIndex: 1,
             }}
           />
         )}
-        {!expenseDetails && <ExpenseIcon />}
+
+        {!expenseDetails ? null : expenseDetails?.status === 'DISABLED' ? (
+          <ExpenseIcon bgColor={tw.color('red')} />
+        ) : (
+          <ExpenseIcon bgColor={tw.color('secondary')} />
+        )}
       </View>
 
       <View style={tw`bg-white items-end`}>

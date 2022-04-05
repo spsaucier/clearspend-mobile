@@ -240,6 +240,8 @@ export default {
         lockedTransactionError:
           'This transaction category has been synced with your accounting software and can not be changed',
       },
+      unsupportedCategoryError:
+        "Your company's expense categories have changed. Please re-categorize this transaction.",
     },
   },
   card: {

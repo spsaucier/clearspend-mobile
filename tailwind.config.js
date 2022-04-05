@@ -71,6 +71,7 @@ module.exports = {
       // Brand
       primary: '#43FA76', // Bright Green
       secondary: '#003333', // Forest Green
+      red: '#FF0000', // Red
       'secondary-light': '#0D3D3D',
       'secondary-disabled': '#C2CECE', // Disabled Forest Green
       tan: '#F3F2EF',
@@ -111,6 +112,9 @@ module.exports = {
       'gray-20': '#CCCCCC',
       'gray-50': '#7C7C7C',
       'gray-75': '#3F3F3F',
+
+      //RedScale
+      'red-100': '#fff5f5'
     },
     borderWidth: {
       DEFAULT: '1px',
