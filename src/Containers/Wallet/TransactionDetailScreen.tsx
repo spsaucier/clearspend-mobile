@@ -245,8 +245,9 @@ const TransactionDetailScreenContent = () => {
             <View style={[tw`bg-white justify-center items-center h-18 w-18 rounded-full`]}>
               <View
                 style={[
-                  tw`h-16 w-16 overflow-hidden items-center justify-center rounded-full ${merchant?.merchantLogoUrl ? '' : 'bg-primary'
-                    }`,
+                  tw`h-16 w-16 overflow-hidden items-center justify-center rounded-full ${
+                    merchant?.merchantLogoUrl ? '' : 'bg-primary'
+                  }`,
                 ]}
               >
                 {merchant?.merchantLogoUrl ? (
@@ -290,8 +291,8 @@ const TransactionDetailScreenContent = () => {
               {thereAreReceipts ? (
                 <ReceiptPreview receiptIds={receipt!.receiptId!} />
               ) : (
-                <View style={tw`self-center justify-center items-center`}>
-                  <View style={tw`flex-row`}>
+                <View style={tw`flex-1 justify-center items-center`}>
+                  <View style={tw`flex-row mb-2`}>
                     <ReceiptIcon />
                     <PlusWithBorderIcon
                       style={tw`absolute -ml-2.5 mt-0.5`}
@@ -299,7 +300,9 @@ const TransactionDetailScreenContent = () => {
                       size={14}
                     />
                   </View>
-                  <CSText style={tw`pt-2`}>{t('wallet.transactionDetails.addReceipt')}</CSText>
+                  <CSText allowFontScaling={false}>
+                    {t('wallet.transactionDetails.addReceipt')}
+                  </CSText>
                 </View>
               )}
             </TouchableOpacity>
@@ -309,16 +312,16 @@ const TransactionDetailScreenContent = () => {
               })}
               onPress={onAssignCategoryModalPress}
             >
-              <View style={tw`self-center justify-center items-center`}>
+              <View style={tw`flex-1 justify-center items-center`}>
                 {isUpdatingTransaction ? (
                   <ActivityIndicator />
                 ) : expenseDetails?.expenseCategoryId && expenseDetails?.categoryName ? (
-                  <>
-                    <CSText style={tw`pt-1`}>{expenseDetails.categoryName}</CSText>
-                  </>
+                  <CSText style={tw`text-center`} allowFontScaling={false}>
+                    {expenseDetails.categoryName}
+                  </CSText>
                 ) : (
-                  <View style={tw`self-center justify-center items-center`}>
-                    <View style={tw`flex-row`}>
+                  <View style={tw`flex-1 justify-center items-center`}>
+                    <View style={tw`flex-row mb-2`}>
                       <ExpenseIcon />
                       <PlusWithBorderIcon
                         style={tw`absolute -ml-2.5 mt-0.5`}
@@ -326,7 +329,7 @@ const TransactionDetailScreenContent = () => {
                         size={14}
                       />
                     </View>
-                    <CSText style={tw`pt-2`}>
+                    <CSText allowFontScaling={false}>
                       {t('wallet.transactionDetails.expenseCategory')}
                     </CSText>
                   </View>
