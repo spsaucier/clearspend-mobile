@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
+import { defaultCellInputStyles } from '@/Helpers/StyleHelpers';
 
 interface Props {
   preface?: JSX.Element;
@@ -22,30 +23,7 @@ interface Props {
 
 export const PASSCODE_LENGTH = 4;
 
-const styles = StyleSheet.create({
-  root: { padding: 20, minHeight: 300, maxWidth: 100 },
-  title: { textAlign: 'center', fontSize: 30 },
-  codeFieldRoot: { marginTop: 20 },
-  cellRoot: {
-    width: 50,
-    height: 70,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 5,
-    marginHorizontal: 4,
-  },
-  focusCell: {
-    opacity: 1,
-  },
-  cellText: {
-    lineHeight: 70,
-    fontSize: 24,
-    textAlign: 'center',
-    fontFamily: 'telegraf',
-    fontWeight: '500',
-    color: tw.color('primary'),
-  },
-});
+const styles = StyleSheet.create(defaultCellInputStyles());
 
 export const PasscodeView: React.FC<Props> = ({
   preface,

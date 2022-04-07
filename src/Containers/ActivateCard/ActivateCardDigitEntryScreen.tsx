@@ -12,39 +12,24 @@ import {
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
+import { defaultCellInputStyles } from '@/Helpers/StyleHelpers';
 
 export const CODE_FIELD_LENGTH = 4;
 
+const defaultStyles = defaultCellInputStyles();
+
 const styles = StyleSheet.create({
-  root: {
-    padding: 20,
-    minHeight: 300,
-    maxWidth: 100,
-  },
+  ...defaultStyles,
   title: { textAlign: 'center', fontSize: 30 },
-  codeFieldRoot: { marginTop: 20 },
   cellRoot: {
-    width: 47,
-    height: 47,
-    borderWidth: 1,
+    ...defaultStyles.cellRoot,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    borderColor: 'transparent',
     overflow: 'hidden',
-    ...tw`rounded`,
-    borderRadius: 4,
-    marginHorizontal: 4,
-  },
-  focusCell: {
-    opacity: 1,
   },
   cellText: {
-    lineHeight: 47,
-    fontSize: 24,
-    textAlign: 'center',
-    fontFamily: 'telegraf',
-    fontWeight: '500',
+    ...defaultStyles.cellText,
     color: tw.color('black'),
-  },
+  }
 });
 
 export const ActivateCardDigitEntryScreen = () => {
