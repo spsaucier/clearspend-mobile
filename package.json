@@ -18,7 +18,7 @@
     "type-check": "tsc",
     "format": "yarn prettier && yarn lint --fix",
     "format-server": "yarn prettier-server && yarn lint-server",
-    "check-format": "yarn prettier --check",
+    "check-format": "prettier --check './src/**/*.{js,ts,tsx,json}'",
     "lint": "eslint './src/**/*.{js,ts,tsx,json}'",
     "lint-server": "eslint './restserver/**/*.{js,ts,tsx,json}' --fix",
     "prettier": "prettier --write './src/**/*.{js,ts,tsx,json}'",

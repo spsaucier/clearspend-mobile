@@ -42,7 +42,9 @@ const ProfileScreen = () => {
               </CSText>
               <View style={tw`flex-row mb-3`}>
                 <EmailIcon size={20 * PixelRatio.getFontScale()} />
-                <CSText style={tw`text-white text-sm ml-3 leading-5 flex-shrink-1`}>{user.email}</CSText>
+                <CSText style={tw`text-white text-sm ml-3 leading-5 flex-shrink-1`}>
+                  {user.email}
+                </CSText>
               </View>
               {user.phone ? (
                 <View style={tw`flex-row mb-3`}>
