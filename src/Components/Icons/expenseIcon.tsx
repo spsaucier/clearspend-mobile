@@ -10,7 +10,7 @@ type Props = {
 
 export const ExpenseIcon = ({
   color = tw.color('white'),
-  bgColor,
+  bgColor = tw.color('secondary'),
   style,
   testID,
   size = 20,

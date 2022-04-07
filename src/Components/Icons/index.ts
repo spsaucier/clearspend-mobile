@@ -20,6 +20,7 @@ export { EditIcon } from './editIcon';
 export { EmailIcon } from './emailIcon';
 export { ExclamationIcon } from './exclamationIcon';
 export { ExpenseIcon } from './expenseIcon';
+export { QuestionMarkCircleFilledIcon } from './questionMarkCircleFilledIcon';
 export { EyeIcon } from './eyeIcon';
 export { EyeOpenIcon } from './eyeOpenIcon';
 export { FaceIdIcon } from './faceIdIcon';

@@ -17,6 +17,7 @@ import {
   ExclamationIcon,
   ExpenseIcon,
   PlusWithBorderIcon,
+  QuestionMarkCircleFilledIcon,
   ReceiptIcon,
 } from '@/Components/Icons';
 import { detectMimeType, formatCurrency, MediaType, sentenceCase } from '@/Helpers/StringHelpers';
@@ -313,10 +314,13 @@ const TransactionDetailScreenContent = () => {
               onPress={onAssignCategoryModalPress}
             >
               <View style={tw`flex-1 justify-center items-center`}>
+                {expenseDetails && expenseDetails?.status === 'DISABLED' ? (
+                  <QuestionMarkCircleFilledIcon style={tw`h-10`} />
+                ) : null}
                 {isUpdatingTransaction ? (
                   <ActivityIndicator />
                 ) : expenseDetails?.expenseCategoryId && expenseDetails?.categoryName ? (
-                  <CSText style={tw`text-center`} allowFontScaling={false}>
+                  <CSText style={tw`text-center pt-1`} allowFontScaling={false}>
                     {expenseDetails.categoryName}
                   </CSText>
                 ) : (
@@ -338,14 +342,14 @@ const TransactionDetailScreenContent = () => {
             </TouchableOpacity>
           </View>
           <View style={tw`self-center justify-center items-center`}>
-            {expenseDetails && expenseDetails?.status === 'DISABLED' && (
+            {expenseDetails && expenseDetails?.status === 'DISABLED' ? (
               <View style={tw`flex-row mt-2 h-15 w-89 bg-red-100 justify-between items-center`}>
                 <ExclamationIcon bgColor="red" style={tw`ml-4`} />
                 <CSText style={tw`text-xs pr-2 text-red ml-2 leading-4 flex-1 flex-shrink`}>
                   {t('wallet.transactionDetails.unsupportedCategoryError')}
                 </CSText>
               </View>
-            )}
+            ) : null}
           </View>
           <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
             {t('wallet.transactionDetails.merchant.title').toUpperCase()}
