@@ -6,7 +6,7 @@ export const defaultCellInputStyles = () => {
   const FONT_SIZE = 24;
   const LINE_HEIGHT = FONT_SIZE * 2.5;
   const WIDTH_AR = (FONT_SIZE * 2) / WIDTH;
-  const HEIGHT_AR = (LINE_HEIGHT) / WIDTH;
+  const HEIGHT_AR = LINE_HEIGHT / WIDTH;
 
   return {
     root: { padding: 20, minHeight: 300, maxWidth: 100 },

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   cellText: {
     ...defaultStyles.cellText,
     color: tw.color('black'),
-  }
+  },
 });
 
 export const ActivateCardDigitEntryScreen = () => {
