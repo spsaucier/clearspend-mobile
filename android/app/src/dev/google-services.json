@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "340192547671",
+    "project_id": "firebase-dev-346321",
+    "storage_bucket": "firebase-dev-346321.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340192547671:android:19b39e6b40337138c7e412",
+        "android_client_info": {
+          "package_name": "com.clearspend.android.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340192547671-2m8mp0u8b2puenpikmqfuesbg1oloohd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnpLNf-beZfnJuQhreL13HOG9yY0wF_dc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340192547671-2m8mp0u8b2puenpikmqfuesbg1oloohd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340192547671-ckin3il864e2hf5n7c1ot5simbaifo55.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.clearspend.clearspend.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import messaging from '@react-native-firebase/messaging';
+import Toast from 'react-native-toast-message';
 
 import AuthNavigator from '@/Navigators/AuthNavigator';
 import MainNavigator from '@/Navigators/MainNavigator';
@@ -47,6 +49,22 @@ const ApplicationNavigator = () => {
       } else navigateAndSimpleReset('Auth');
     }
   }, [applicationIsLoading, session]);
+
+  // Register foreground FCM listener
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log('Received foreground FCM message', JSON.stringify(remoteMessage, null, 2));
+      }
+
+      Toast.show({
+        text1: remoteMessage.notification?.body,
+      });
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

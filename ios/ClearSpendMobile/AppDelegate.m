@@ -11,6 +11,7 @@
 #import <AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
+#import <Firebase.h>
 // #import <GoogleMaps/GoogleMaps.h>
 
 #ifdef FB_SONARKIT_ENABLED
@@ -50,6 +51,9 @@ NSNumber* blur = 0;
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+  
+  // Configure firebase
+  [FIRApp configure];
 
 //   [GMSServices provideAPIKey:@"AIzaSyBZwtrtXUIiT27KeIAFro53Exk3XMhTVY4"];
 

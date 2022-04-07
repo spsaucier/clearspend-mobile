@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Platform, ScrollView } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Crashes from 'appcenter-crashes';
 
@@ -11,11 +12,27 @@ import tw from '@/Styles/tailwind';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { AppleWallet } from '@/NativeModules/AppleWallet/AppleWallet';
+import { requestUserNotificationPermission } from '@/Helpers/NotificationHelpers';
 
 const DevMenuScreen = () => {
   const { navigate } = useNavigation();
   const version = getVersion();
   const buildNumber = getBuildNumber();
+
+  const [fcmToken, setFcmToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const setToken = async () => {
+      const token = await messaging().getToken();
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log('FCM TOKEN: ', token);
+      }
+      setFcmToken(token);
+    };
+    setToken();
+  }, []);
+
   return (
     <SafeAreaView style={tw`flex-1 bg-white p-4`}>
       <BackButtonNavigator />
@@ -23,7 +40,12 @@ const DevMenuScreen = () => {
       <ScrollView style={tw`flex-1 mt-5 pl-2 pr-2`}>
         <CSText style={tw`text-xl pb-4`}>App Info</CSText>
         <CSText style={tw`text-base pb-2`}>Version: {version}</CSText>
-        <CSText style={tw`text-base pb-4`}>Build number: {buildNumber}</CSText>
+        <CSText style={tw`text-base pb-2`}>Build number: {buildNumber}</CSText>
+        <CSText style={tw`text-base pb-2`}>FCM Token (long press to copy):</CSText>
+        <CSText style={tw`text-base pb-4`} selectable>
+          {fcmToken}
+        </CSText>
+
         <CSText style={tw`text-xl pb-4`}>Icons</CSText>
         <Button
           label="Available Icon List"
@@ -64,6 +86,15 @@ const DevMenuScreen = () => {
           containerStyle={tw`mb-4 bg-error`}
           onPress={() => {
             Crashes.generateTestCrash();
+          }}
+        />
+        <CSText style={tw`text-xl pb-4`}>Notifications</CSText>
+        <Button
+          label="Request notification permission"
+          containerStyle={tw`mb-4`}
+          onPress={async () => {
+            const notificationsEnabled = await requestUserNotificationPermission();
+            Alert.alert('Notification permission granted', notificationsEnabled.toString());
           }}
         />
         <CSText style={tw`text-xl pb-4`}>Digital Wallets</CSText>
