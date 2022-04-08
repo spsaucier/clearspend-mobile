@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, ScrollView, PixelRatio } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
@@ -14,6 +14,7 @@ import { EmailIcon, PhoneIcon } from '@/Components/Icons';
 import { AddressDisplay } from './Components/AddressDisplay';
 import { formatPhone } from '@/Helpers/StringHelpers';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
+import { getCappedFontScale } from '@/Helpers/StyleHelpers';
 
 const ProfileScreen = () => {
   const { navigate } = useNavigation();
@@ -41,14 +42,14 @@ const ProfileScreen = () => {
                 {`${user.firstName} ${user.lastName}`}
               </CSText>
               <View style={tw`flex-row mb-3`}>
-                <EmailIcon size={20 * PixelRatio.getFontScale()} />
+                <EmailIcon size={20 * getCappedFontScale()} />
                 <CSText style={tw`text-white text-sm ml-3 leading-5 flex-shrink-1`}>
                   {user.email}
                 </CSText>
               </View>
               {user.phone ? (
                 <View style={tw`flex-row mb-3`}>
-                  <PhoneIcon size={20 * PixelRatio.getFontScale()} />
+                  <PhoneIcon size={20 * getCappedFontScale()} />
                   <CSText style={tw`text-white text-sm ml-3 leading-5`}>
                     {formatPhone(user.phone)}
                   </CSText>

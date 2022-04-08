@@ -3,6 +3,7 @@ import React from 'react';
 
 import tw from '@/Styles/tailwind';
 import { MagnificationIcon } from '@/Components/Icons';
+import { getCappedFontScale } from '@/Helpers/StyleHelpers';
 
 export const TWSearchInput = ({
   testID,
@@ -28,6 +29,6 @@ export const TWSearchInput = ({
       style={tw`flex-1 text-black pt-0 pb-0`}
       value={value}
     />
-    <MagnificationIcon />
+    <MagnificationIcon size={20 * getCappedFontScale()} />
   </View>
 );

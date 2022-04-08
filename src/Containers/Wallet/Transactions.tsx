@@ -46,6 +46,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const transactionsListRef = useRef<any>(null);
   const [searchText, setSearchText] = useState('');
+  const [searchYOffset, setSearchYOffset] = useState(0);
   const { data, isFetching, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useCardTransactions({
       cardId,
@@ -101,9 +102,9 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
 
   const transactionsContainerAnimatedStyle = useAnimatedStyle(
     () => ({
-      marginTop: interpolate(animatedIndex.value, [0, 1], [-70, 0]),
+      marginTop: interpolate(animatedIndex.value, [0, 1], [-searchYOffset, 0]),
     }),
-    [animatedPosition],
+    [animatedPosition, searchYOffset],
   );
 
   const onChangeSearch = debounce((newSearch) => {
@@ -120,12 +121,19 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   return (
     <View style={tw`h-full`}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={[tw`flex m-6 mt-2 content-start`]}>
+        <View style={[tw`flex mx-6 content-start`]}>
           <AnimatedCSText style={[tw`text-base self-start`, transactionsTitleScaleAnimatedStyle]}>
             {t('wallet.transactions.recentTransactions')}
           </AnimatedCSText>
 
-          <View style={[tw`flex-row mt-4 justify-between`]}>
+          <View
+            style={[tw`flex-row justify-between py-5`]}
+            onLayout={({
+              nativeEvent: {
+                layout: { height },
+              },
+            }) => setSearchYOffset(height)}
+          >
             <View style={tw`flex-grow`}>
               <TWSearchInput
                 onChangeText={onChangeSearch}

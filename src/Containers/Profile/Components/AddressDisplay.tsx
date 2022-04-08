@@ -4,6 +4,7 @@ import { MapPinIcon } from '@/Components/Icons';
 import { Address } from '@/generated/capital';
 import { CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
+import { getCappedFontScale } from '@/Helpers/StyleHelpers';
 
 interface AddressDisplayProps {
   address: Address | {};
@@ -20,7 +21,7 @@ export const AddressDisplay = ({
 }: AddressDisplayProps) =>
   'streetLine1' in address && address.streetLine1 ? (
     <View style={tw`flex-row overflow-hidden`}>
-      <MapPinIcon size={20} color={color} />
+      <MapPinIcon size={20 * getCappedFontScale()} color={color} />
       <View style={tw`ml-3 ${inline ? 'flex-row' : ''}`}>
         <CSText style={tw`text-${color} text-sm leading-5 mr-1`}>{address?.streetLine1}</CSText>
         {address.streetLine2 && !hideLine2 ? (

@@ -1,5 +1,8 @@
 import { PixelRatio, Dimensions } from 'react-native';
 import tw from '../Styles/tailwind';
+import { MAX_FONT_SCALE } from '@/Components/Text';
+
+export const getCappedFontScale = () => Math.min(PixelRatio.getFontScale(), MAX_FONT_SCALE);
 
 export const defaultCellInputStyles = () => {
   const WIDTH = Dimensions.get('window').width;
@@ -13,7 +16,7 @@ export const defaultCellInputStyles = () => {
     codeFieldRoot: { marginTop: 20 },
     cellRoot: {
       width: WIDTH_AR * WIDTH,
-      height: HEIGHT_AR * WIDTH * PixelRatio.getFontScale(),
+      height: HEIGHT_AR * WIDTH * getCappedFontScale(),
       borderWidth: 1,
       backgroundColor: 'rgba(255, 255, 255, 0.05)',
       borderColor: 'transparent',
