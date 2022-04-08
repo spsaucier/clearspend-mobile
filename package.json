@@ -127,6 +127,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
+    "jira-changelog": "^2.2.0",
     "metro-react-native-babel-preset": "^0.66.0",
     "msw": "^0.36.8",
     "nodemon": "^2.0.15",

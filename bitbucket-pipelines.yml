@@ -27,29 +27,8 @@ pipelines:
   custom: # Pipelines that can only be triggered manually or by a schedule
     qa-nightly-build:
       - step:
-          name: "Bump build numbers"
+          name: "Trigger nightly build"
           caches:
             - node
           script:
-            - if [ "$BITBUCKET_BRANCH" != 'main' ]; then echo "This pipeline must be run on main branch" && exit 1; fi
-            - git fetch --unshallow
-            - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-            - git fetch origin
-            - git diff origin/main..origin/dev --quiet && echo "No changes between main and dev, exiting" && exit 0 || echo "New changes in main not present in dev"
-            - yarn
-            - echo "Bumping build numbers" && BUMP_BUILD_OUTPUT=$(yarn bump-build-number | tail -2 | head -1)
-            - BUILD_DETAILS=($BUMP_BUILD_OUTPUT)
-            - git pull
-            - git commit -am "[skip ci] Bump to Version ${BUILD_DETAILS[0]} (Build ${BUILD_DETAILS[1]})"
-            - git tag "release/${BUILD_DETAILS[0]}/build/${BUILD_DETAILS[1]}"
-            - git push origin main
-            - git push origin "release/${BUILD_DETAILS[0]}/build/${BUILD_DETAILS[1]}"
-            - git checkout --track origin/dev
-            - git merge -X theirs main
-            - git checkout --track origin/uat
-            - git merge -X theirs dev
-            - git checkout --track origin/release
-            - git merge -X theirs uat
-            - git push origin dev
-            - git push origin uat
-            - git push origin release
+            - bash ./scripts/qa-nightly-build.sh
