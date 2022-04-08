@@ -14,7 +14,7 @@ type Props = {
 
 export const LimitSection = ({ label, limit = 1, amountUsed = 1 }: Props) => {
   const { t } = useTranslation();
-  const remaining = Math.abs(limit - amountUsed);
+  // const remaining = Math.abs(limit - amountUsed);
   return (
     <View style={tw`mb-5`}>
       <View style={tw`flex-row justify-between mt-2`}>
@@ -24,12 +24,12 @@ export const LimitSection = ({ label, limit = 1, amountUsed = 1 }: Props) => {
         </CSText>
       </View>
       <LinearProgressBar progressValue={amountUsed} maxValue={limit} />
-      <View style={tw`flex-row justify-between items-start mt-1`}>
+      { /* <View style={tw`flex-row justify-between items-start mt-1`}>
         <CSText style={tw`text-sm mt-1 text-white`}>{formatCurrency(amountUsed)}</CSText>
         <CSText style={tw`text-sm text-white mt-1`}>
           {t('cardProfile.remaining', { amount: `${formatCurrency(remaining)}` })}
         </CSText>
-      </View>
+      </View> */}
     </View>
   );
 };
