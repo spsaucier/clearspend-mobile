@@ -161,7 +161,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
               showsVerticalScrollIndicator={false}
               ref={transactionsListRef}
               onEndReached={loadMore}
-              onEndReachedThreshold={0}
+              onEndReachedThreshold={0.1}
               contentContainerStyle={tw.style(
                 'pb-2',
                 !isFetchingNextPage && !hasNextPage ? 'pb-20' : 'pb-2',
