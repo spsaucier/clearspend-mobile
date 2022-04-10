@@ -24,7 +24,7 @@ export const LimitSection = ({ label, limit = 1, amountUsed = 1 }: Props) => {
         </CSText>
       </View>
       <LinearProgressBar progressValue={amountUsed} maxValue={limit} />
-      { /* <View style={tw`flex-row justify-between items-start mt-1`}>
+      {/* <View style={tw`flex-row justify-between items-start mt-1`}>
         <CSText style={tw`text-sm mt-1 text-white`}>{formatCurrency(amountUsed)}</CSText>
         <CSText style={tw`text-sm text-white mt-1`}>
           {t('cardProfile.remaining', { amount: `${formatCurrency(remaining)}` })}
