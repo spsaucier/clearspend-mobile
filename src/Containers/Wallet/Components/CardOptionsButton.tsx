@@ -13,7 +13,7 @@ export const CardOptionsButton = ({ onPress, theme = 'dark' }: Props) => {
   return (
     <TouchableOpacity
       style={tw.style(
-        'p-2 rounded mr-3',
+        'p-0.75 rounded mr-3',
         darkTheme ? 'bg-secondary-light' : 'bg-black bg-opacity-5',
       )}
       onPress={onPress}
