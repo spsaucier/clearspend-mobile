@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector, TouchableOpacity } from 'react-native-gesture-handler';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
 
@@ -72,16 +72,30 @@ const ViewReceiptScreen = () => {
     setControlsEnabled(true);
   };
 
+  const doubleTap = Gesture.Tap().onEnd(() => {
+    setControlsEnabled(true);
+  });
+  doubleTap.config.numberOfTaps = 2;
+
+  const tap = Gesture.Tap().onEnd(() => {
+    setControlsEnabled(!controlsEnabled);
+  });
+  tap.config.maxDeltaX = 10;
+  tap.config.maxDeltaY = 10;
+  tap.config.maxDist = 10;
+
+  const simultaneousTaps = Gesture.Race(doubleTap, tap);
+
   return (
     <View style={tw`h-full bg-black/75`}>
-      <ViewReceiptCarousel
-        receiptIds={receiptIds}
-        currentReceiptId={currentReceiptId}
-        onCurrentReceiptChanged={onCurrentReceiptChanged}
-        onReceiptPress={() => {
-          setControlsEnabled(!controlsEnabled);
-        }}
-      />
+      <GestureDetector gesture={simultaneousTaps}>
+        <ViewReceiptCarousel
+          receiptIds={receiptIds}
+          currentReceiptId={currentReceiptId}
+          onCurrentReceiptChanged={onCurrentReceiptChanged}
+          horizontalScrollEnabled={controlsEnabled}
+        />
+      </GestureDetector>
       {controlsEnabled && (
         <SafeAreaView>
           <TouchableOpacity
@@ -96,7 +110,7 @@ const ViewReceiptScreen = () => {
       )}
 
       {controlsEnabled && (
-        <SafeAreaView style={tw`absolute w-full bottom-20`} edges={['bottom']}>
+        <SafeAreaView style={tw`absolute right-0 bottom-20`} edges={['bottom']}>
           <TouchableOpacity
             style={tw`flex-row bg-white rounded-full items-center px-2 py-1 self-end m-4`}
             onPress={onAddAnotherReceiptPress}

@@ -155,7 +155,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
           </View>
         ) : transactionsGroupedByDate.length > 0 ? (
           <>
-            <FlatList
+            <FlatList<any>
               scrollEnabled={expanded}
               data={transactionsGroupedByDate}
               showsVerticalScrollIndicator={false}

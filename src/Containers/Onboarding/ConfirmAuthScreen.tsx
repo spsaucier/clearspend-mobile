@@ -32,9 +32,11 @@ const ConfirmAuthScreen = () => {
 
   const onSuccess = () => {
     setAuthed(true);
-    if (navigation.getState().routeNames.find((r) => r === MainScreens.Home)) {
+    if (navigation.getState().routeNames.find((r: MainScreens) => r === MainScreens.Home)) {
       navigation.replace(MainScreens.Home);
-    } else if (navigation.getState().routeNames.find((r) => r === MainScreens.Profile)) {
+    } else if (
+      navigation.getState().routeNames.find((r: MainScreens) => r === MainScreens.Profile)
+    ) {
       navigation.replace(MainScreens.Profile);
     } else {
       // eslint-disable-next-line no-console
