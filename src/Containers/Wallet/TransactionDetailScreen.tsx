@@ -343,9 +343,9 @@ const TransactionDetailScreenContent = () => {
           </View>
           <View style={tw`self-center justify-center items-center`}>
             {expenseDetails && expenseDetails?.status === 'DISABLED' ? (
-              <View style={tw`flex-row mt-2 h-15 w-89 bg-red-100 justify-between items-center`}>
-                <ExclamationIcon bgColor="red" style={tw`ml-4`} />
-                <CSText style={tw`text-xs pr-2 text-red ml-2 leading-4 flex-1 flex-shrink`}>
+              <View style={tw`flex-row mt-2 h-15 w-89 bg-lightError justify-between items-center`}>
+                <ExclamationIcon bgColor={tw.color('error')} style={tw`ml-4`} />
+                <CSText style={tw`text-xs pr-2 text-error ml-2 leading-4 flex-1 flex-shrink`}>
                   {t('wallet.transactionDetails.unsupportedCategoryError')}
                 </CSText>
               </View>

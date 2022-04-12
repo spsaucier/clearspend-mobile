@@ -142,7 +142,7 @@ export const TransactionRow = ({
               marginRight: !hasReceipts ? 0 : -5,
               marginLeft: !hasReceipts ? -6 : 0,
             }}
-            bgColor={tw.color('red')}
+            bgColor={tw.color('error')}
           />
         ) : null}
       </View>
