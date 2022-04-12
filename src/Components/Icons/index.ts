@@ -37,6 +37,7 @@ export { MapPinIcon } from './mapPinIcon';
 export { MerchantIcon } from './merchantIcon';
 export { MinusCircleFilledIcon } from './minusCircleFilledIcon';
 export { NoteIcon } from './noteIcon';
+export { NotificationBellGreenIcon } from './notificationBellGreenIcon';
 export { NotificationIcon } from './notificationIcon';
 export { OptionsIcon } from './optionsIcon';
 export { PhoneIcon } from './phoneIcon';

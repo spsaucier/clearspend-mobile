@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { AppState } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
@@ -6,6 +7,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import messaging from '@react-native-firebase/messaging';
 import Toast from 'react-native-toast-message';
+import { useMMKVBoolean } from 'react-native-mmkv';
+import { checkNotifications } from 'react-native-permissions';
 
 import AuthNavigator from '@/Navigators/AuthNavigator';
 import MainNavigator from '@/Navigators/MainNavigator';
@@ -20,6 +23,8 @@ import { GlobalToast } from '@/Components/GlobalToast';
 import tw from '@/Styles/tailwind';
 import { FocusAwareStatusBar } from '@/Components';
 
+import { Constants } from '@/consts';
+
 const Stack = createStackNavigator<TopParams>();
 
 const queryClient = new QueryClient();
@@ -29,6 +34,9 @@ const ApplicationNavigator = () => {
   const applicationIsLoading = useSelector(
     (state: { startup: StartupState }) => state.startup.loading,
   );
+
+  const [permissionAllNotifications] = useMMKVBoolean(Constants.PERMISSION_ALL_NOTIFICATIONS);
+  const [notificationsBlockedByOS, setNotificationsBlockedByOS] = useState<boolean>(false);
 
   const session = useSelector((state: { session: Session }) => state.session);
 
@@ -50,6 +58,17 @@ const ApplicationNavigator = () => {
     }
   }, [applicationIsLoading, session]);
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState === 'active') {
+        checkNotifications().then(({ status }) => {
+          setNotificationsBlockedByOS(status === 'blocked');
+        });
+      }
+    });
+    return () => subscription.remove();
+  }, [setNotificationsBlockedByOS, notificationsBlockedByOS]);
+
   // Register foreground FCM listener
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
@@ -63,8 +82,12 @@ const ApplicationNavigator = () => {
       });
     });
 
+    if (!permissionAllNotifications || notificationsBlockedByOS) {
+      unsubscribe();
+    }
+
     return unsubscribe;
-  }, []);
+  }, [permissionAllNotifications, notificationsBlockedByOS]);
 
   return (
     <QueryClientProvider client={queryClient}>

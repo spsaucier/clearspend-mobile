@@ -146,6 +146,8 @@ export default {
     receiptUploadedSuccessfully: 'Receipt uploaded successfully',
     cantAccessCardScreenIfFrozenToast:
       'This card needs to be unfrozen before you can view the card details',
+    notificationsBlockedByOS: 'Notifications have been blocked by OS settings',
+    notificationsHaveBeenTurnedOff: 'All notifications have been turned off',
   },
   categories: {
     merchant: {
@@ -315,6 +317,7 @@ export default {
       updatePersonalDetails: 'Update personal details',
       loginOptions: 'Log in options',
       activateCard: 'Activate card',
+      notifications: 'Notifications',
       biometrics: 'Biometrics',
       faceId: 'Face ID',
       changePassword: 'Change Password',
@@ -367,10 +370,14 @@ export default {
     newPassword: {
       title: 'New Password',
       changePassword: 'Change Password',
+      rules: {
+        minLength: 'Must be a minimum of 10 characters',
+        maxLength: 'Must be less than 30 characters',
+      },
     },
-    rules: {
-      minLength: 'Must be a minimum of 10 characters',
-      maxLength: 'Must be less than 30 characters',
+    notificationSettings: {
+      title: 'Notifications',
+      allNotifications: 'All notifications',
     },
   },
   notifications: {

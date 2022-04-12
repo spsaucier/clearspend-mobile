@@ -30,6 +30,7 @@ target 'ClearSpendMobile' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
   pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
 
   # Native iOS pod dependencies (Apple Pay native module)
   pod 'Alamofire'

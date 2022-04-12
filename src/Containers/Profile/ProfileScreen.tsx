@@ -87,6 +87,14 @@ const ProfileScreen = () => {
               showBottomBorder
             />
             <ProfileMenuRow
+              title={t('profile.profileMenu.notifications')}
+              onPress={() => {
+                navigate(MainScreens.NotificationSettings);
+              }}
+              style={tw`h-14 px-4`}
+              showBottomBorder
+            />
+            <ProfileMenuRow
               title={t('profile.legalDocs.title')}
               onPress={() => {
                 navigate(MainScreens.LegalDocuments);

@@ -95,11 +95,11 @@ const NewPasswordScreen = () => {
           />
           <View style={tw`mt-8`}>
             <PasswordRuleCheck
-              label={t('profile.rules.minLength')}
+              label={t('profile.newPassword.rules.minLength')}
               enteredPassword={newPassword.length >= 10}
             />
             <PasswordRuleCheck
-              label={t('profile.rules.maxLength')}
+              label={t('profile.newPassword.rules.maxLength')}
               enteredPassword={newPassword.length <= 30}
             />
           </View>
