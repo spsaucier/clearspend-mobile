@@ -2,7 +2,7 @@ import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import React, { forwardRef, useCallback, useMemo } from 'react';
 import { Trans } from 'react-i18next';
-import { useWindowDimensions, View } from 'react-native';
+import { useWindowDimensions, View, PixelRatio } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from './Button';
 import { CSText } from './Text';
@@ -35,7 +35,10 @@ export const InfoPanel = forwardRef(
     };
 
     const dimens = useWindowDimensions();
-    const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '45%' : '55%'], [dimens.scale]);
+    const snapPointMemo = useMemo(
+      () => [dimens.scale > 2 && PixelRatio.getFontScale() <= 1 ? '45%' : '55%'],
+      [dimens.scale],
+    );
 
     return (
       // <BottomSheetModalProvider>
