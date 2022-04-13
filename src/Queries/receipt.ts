@@ -40,6 +40,7 @@ const blobToUri = (res: any) =>
     if (!res.data.type) {
       toBeRead = new Blob([res.data], { type: contentType, lastModified: Date.now() });
     } else toBeRead = res.data;
+
     const reader = new FileReader();
     reader.onloadend = () => {
       const result = reader.result as string;
@@ -56,16 +57,10 @@ const viewReceipt = (receiptId: string) =>
     .then(blobToUri);
 
 export const useReceiptUri = (queryId = '', receiptId = '') =>
-  useQuery<any, Error>([queryId, receiptId], () => viewReceipt(receiptId));
+  useQuery<any, Error>([queryId, receiptId], () => viewReceipt(receiptId), { retry: 2 });
 
 export const deleteReceipt = (receiptId: string) =>
   apiClient.delete<String>(`/users/receipts/${receiptId}/delete`).then((r) => r.data);
-
-export const useDeleteReceiptLazy = (receiptId: string) =>
-  useQuery<any, Error>(['deleteReceipt', receiptId], () => deleteReceipt(receiptId), {
-    enabled: false,
-    retry: false,
-  });
 
 export const useDeleteReceipt = (receiptId: string, accountActivityId: string) => {
   const queryClient = useQueryClient();

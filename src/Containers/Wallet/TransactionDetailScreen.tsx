@@ -7,7 +7,6 @@ import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { format, parseISO } from 'date-fns';
 // import MapView, { Marker } from 'react-native-maps';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import Pdf from 'react-native-pdf';
 import Toast from 'react-native-toast-message';
 
 import tw from '@/Styles/tailwind';
@@ -20,9 +19,9 @@ import {
   QuestionMarkCircleFilledIcon,
   ReceiptIcon,
 } from '@/Components/Icons';
-import { detectMimeType, formatCurrency, MediaType, sentenceCase } from '@/Helpers/StringHelpers';
+import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
-import { useReceiptUri, useTransaction } from '@/Queries';
+import { useTransaction } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from './Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
@@ -32,6 +31,7 @@ import { ExpenseDetails } from '@/generated/capital';
 import { useUpdateTransaction } from '@/Queries/transaction';
 import { MERCHANT_CATEGORY_ICON_NAME_MAP } from '@/Components/Icons/MerchantCategories';
 import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
+import ViewReceiptThumbnail from './Receipt/ViewReceiptThumbnail';
 
 type InfoRowProps = {
   label: string;
@@ -46,35 +46,6 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
     {!!children && children}
   </View>
 );
-
-const ReceiptPreview = ({ receiptIds }: { receiptIds: string[] }) => {
-  const { data: receiptData, isFetching } = useReceiptUri('viewReceiptThumbnail', receiptIds[0]);
-
-  return (
-    <View style={tw`flex`}>
-      <View style={tw`w-full h-full `}>
-        {isFetching || !receiptData ? (
-          <View style={tw`flex-1 justify-center items-center`}>
-            <ActivityIndicator color="black" style={tw`w-10`} />
-          </View>
-        ) : detectMimeType(receiptData.contentType, receiptData.data) === MediaType.image ? (
-          <Image source={{ uri: receiptData.data }} style={tw`w-full h-full `} resizeMode="cover" />
-        ) : (
-          <Pdf
-            source={{ uri: receiptData.data }}
-            singlePage
-            style={{ width: '100%', height: '100%' }}
-          />
-        )}
-      </View>
-      <View
-        style={tw`rounded-full bg-white h-6 w-6 justify-center items-center absolute right-2 top-2`}
-      >
-        <CSText>{receiptIds.length}</CSText>
-      </View>
-    </View>
-  );
-};
 
 const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
@@ -290,7 +261,7 @@ const TransactionDetailScreenContent = () => {
               onPress={onReceiptModalPress}
             >
               {thereAreReceipts ? (
-                <ReceiptPreview receiptIds={receipt!.receiptId!} />
+                <ViewReceiptThumbnail receiptIds={receipt!.receiptId!} />
               ) : (
                 <View style={tw`flex-1 justify-center items-center`}>
                   <View style={tw`flex-row mb-2`}>

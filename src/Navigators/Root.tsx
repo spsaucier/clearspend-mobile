@@ -9,16 +9,7 @@ import { CommonActions, NavigationContainerRef } from '@react-navigation/native'
 
 export const navigationRef = React.createRef<NavigationContainerRef<any>>();
 
-export function navigateAndReset(routes = [], index = 0) {
-  navigationRef.current?.dispatch(
-    CommonActions.reset({
-      index,
-      routes,
-    }),
-  );
-}
-
-export function navigateAndSimpleReset(name: string, index = 0) {
+export function navigateAndReset(name: string, index = 0) {
   navigationRef.current?.dispatch(
     CommonActions.reset({
       index,

@@ -21,7 +21,10 @@ export const useRotateAnimation = (duration: number = 1000) => {
   useEffect(() => {
     loop.start();
     return () => loop.stop();
-  }, [loop]);
+    // avoided adding loop in the dependency array as we dont want to see the animation
+    // restarting everytime the state of the screen changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return [interpolatedRotate];
 };

@@ -12,7 +12,7 @@ import { checkNotifications } from 'react-native-permissions';
 
 import AuthNavigator from '@/Navigators/AuthNavigator';
 import MainNavigator from '@/Navigators/MainNavigator';
-import { navigateAndSimpleReset, navigationRef } from '@/Navigators/Root';
+import { navigateAndReset, navigationRef } from '@/Navigators/Root';
 import { StartupState } from '@/Store/Startup';
 import StartupScreen from '@/Containers/Startup/StartupScreen';
 import { Session } from '@/Store/Session';
@@ -52,9 +52,14 @@ const ApplicationNavigator = () => {
 
   useEffect(() => {
     if (!applicationIsLoading && navigationRef.current) {
-      if (session.accessToken) {
-        navigateAndSimpleReset('Main');
-      } else navigateAndSimpleReset('Auth');
+      if (!session.accessToken) {
+        navigateAndReset('Auth');
+      } else {
+        const currentRoute = navigationRef.current.getCurrentRoute();
+        if (currentRoute?.name === 'Startup') {
+          navigateAndReset('Main');
+        }
+      }
     }
   }, [applicationIsLoading, session]);
 

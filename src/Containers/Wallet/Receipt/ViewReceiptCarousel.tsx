@@ -3,11 +3,13 @@ import { Image, useWindowDimensions, View, ViewToken } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Pdf from 'react-native-pdf';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { DarkToLightGradient } from '@/Components/Svg/DarkToLightGradient';
-import { ActivityIndicator } from '@/Components';
+import { ActivityIndicator, CSText } from '@/Components';
 import { useReceiptUri } from '@/Queries';
 import { detectMimeType, MediaType } from '@/Helpers/StringHelpers';
+import { InfoIcon } from '@/Components/Icons';
 
 type CachedReceipt = {
   receiptId: string;
@@ -23,6 +25,7 @@ type ViewReceiptCarouselProps = {
 };
 
 const RenderReceiptItem = ({ item, gestureLocked }: any) => {
+  const { t } = useTranslation();
   const dimens = useWindowDimensions();
   const { width: screenWidth, height: screenHeight } = dimens;
 
@@ -36,26 +39,36 @@ const RenderReceiptItem = ({ item, gestureLocked }: any) => {
         },
       ]}
     >
-      {!item.image ? (
-        <ActivityIndicator />
-      ) : detectMimeType(item.image.contentType, item.image.data) === MediaType.image ? (
-        <Image
-          style={[tw`w-full h-full`, { resizeMode: 'contain' }]}
-          source={{ uri: item.image.data }}
-        />
-      ) : (
-        <View pointerEvents={gestureLocked ? 'none' : undefined}>
-          <Pdf
-            enableAntialiasing
-            source={{ uri: item.image.data }}
-            style={{
-              flex: 1,
-              width: screenWidth,
-              height: screenHeight,
-            }}
-          />
+      {item.loading && !item.image ? <ActivityIndicator /> : null}
+
+      {!item.loading && item.error && (
+        <View style={tw`items-center rounded-xl bg-black/50 p-6`}>
+          <InfoIcon />
+          <CSText style={tw`text-base mt-2 text-white`}>
+            {t('wallet.receipt.unableToLoadReceipt')}
+          </CSText>
         </View>
       )}
+      {!item.loading && !item.error && item.image ? (
+        detectMimeType(item.image.contentType, item.image.data) === MediaType.image ? (
+          <Image
+            style={[tw`w-full h-full`, { resizeMode: 'contain' }]}
+            source={{ uri: item.image.data }}
+          />
+        ) : (
+          <View pointerEvents={gestureLocked ? 'none' : undefined}>
+            <Pdf
+              enableAntialiasing
+              source={{ uri: item.image.data }}
+              style={{
+                flex: 1,
+                width: screenWidth,
+                height: screenHeight,
+              }}
+            />
+          </View>
+        )
+      ) : null}
     </View>
   );
 };
@@ -70,7 +83,7 @@ const ViewReceiptCarousel = ({
   const { width: screenWidth } = dimens;
 
   const [localCurrentReceiptId, setCurrentReceiptId] = useState(currentReceiptId);
-  const { data, status } = useReceiptUri('viewReceiptQuery', localCurrentReceiptId);
+  const { data, status, isError } = useReceiptUri('viewReceiptQuery', localCurrentReceiptId);
 
   const pdfScrollHandler = useRef<any>();
   const horizontalScrollHandler = useRef<any>();
@@ -80,7 +93,7 @@ const ViewReceiptCarousel = ({
       ({
         receiptId: id,
         image: undefined,
-        loading: undefined,
+        loading: true,
       } as CachedReceipt),
   );
   const [cachedReceipts, setCachedReceipts] = useState<CachedReceipt[]>(cachedInitialValue);
@@ -107,6 +120,16 @@ const ViewReceiptCarousel = ({
       }
     }
   }, [data, status, localCurrentReceiptId, cachedReceipts]);
+
+  useEffect(() => {
+    if (isError) {
+      const idx = cachedReceipts.findIndex((x) => x.receiptId === localCurrentReceiptId);
+      const receipt = cachedReceipts[idx];
+      const updated = { ...receipt, error: true, loading: false };
+      cachedReceipts[idx] = updated;
+      setCachedReceipts([...cachedReceipts]);
+    }
+  }, [isError]);
 
   return (
     <SafeAreaView style={tw`absolute w-full h-full`}>

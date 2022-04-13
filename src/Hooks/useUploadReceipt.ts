@@ -67,7 +67,7 @@ const useUploadReceipt = ({
         );
       }
     }
-  }, [queryClient, receiptId]);
+  }, [queryClient, accountActivityId, receiptId]);
 
   useEffect(() => {
     if (receiptId && !linked) {

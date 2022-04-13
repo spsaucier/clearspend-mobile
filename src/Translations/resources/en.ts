@@ -201,6 +201,7 @@ export default {
       deleteConfirmationSecondary: 'This action is permanent and can not be undone.',
       deleteCancel: 'Cancel',
       deleteError: 'There was a problem deleting this receipt. Please try again later.',
+      unableToLoadReceipt: 'Unable to load receipt',
     },
     transactionDetails: {
       title: 'Transaction Details',
