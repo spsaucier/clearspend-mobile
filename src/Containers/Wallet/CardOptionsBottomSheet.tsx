@@ -1,8 +1,13 @@
-import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  useBottomSheetDynamicSnapPoints,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import React, { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, useWindowDimensions } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/core';
@@ -22,8 +27,10 @@ export const CardOptionsBottomSheet = forwardRef(
   ({ cardId, hideCardInfoButton = false, isCardFrozen }: Props, ref: any) => {
     const { t } = useTranslation();
     const { navigate } = useNavigation();
-    const dimens = useWindowDimensions();
-    const snapPointMemo = useMemo(() => [dimens.scale > 2 ? '30%' : '40%'], [dimens.scale]);
+
+    const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+    const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
+      useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
     const [isFrozen, setIsFrozen] = useState<boolean>(isCardFrozen);
 
@@ -94,41 +101,48 @@ export const CardOptionsBottomSheet = forwardRef(
     return (
       <BottomSheetModal
         ref={ref}
-        snapPoints={snapPointMemo}
+        snapPoints={animatedSnapPoints}
+        handleHeight={animatedHandleHeight}
+        contentHeight={animatedContentHeight}
         backdropComponent={renderBackdrop}
         handleIndicatorStyle={tw`bg-white w-0 h-0`} // TODO Check on closing UI
         backgroundStyle={tw`bg-white`}
       >
-        <SafeAreaView style={tw`flex-1 py-4 px-6`} edges={['bottom']}>
-          <CSText style={tw`text-lg font-medium mb-4`}>{t('card.options.showCardInfo')}</CSText>
+        <BottomSheetView onLayout={handleContentLayout}>
+          <SafeAreaView style={tw`flex-1 pt-4 pb-8 px-5`} edges={['bottom']}>
+            <CSText style={tw`text-lg font-medium mb-4`}>{t('card.options.cardOptions')}</CSText>
 
-          <TouchableOpacity
-            style={tw`flex-row items-center py-4`}
-            onPress={() => {
-              if (!isFrozen) freeze();
-              else unfreeze();
-            }}
-            disabled={isFreezing || isUnfreezing}
-          >
-            <SnowflakeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
-            {isFreezing || isUnfreezing ? (
-              <CSText style={tw`text-base`}>
-                {t(isUnfreezing ? 'card.options.unfreezingCard' : 'card.options.freezingCard')}
-              </CSText>
-            ) : (
-              <CSText style={tw`text-base`}>
-                {t(isFrozen ? 'card.options.unfreezeCard' : 'card.options.freezeCard')}
-              </CSText>
-            )}
-          </TouchableOpacity>
-
-          {!hideCardInfoButton && !isFrozen && !isFreezing && !isUnfreezing && (
-            <TouchableOpacity style={tw`flex-row items-center py-4`} onPress={navigateToCardScreen}>
-              <EyeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
-              <CSText style={tw`text-base`}>{t('card.options.showCardInfo')}</CSText>
+            <TouchableOpacity
+              style={tw`flex-row items-center py-4`}
+              onPress={() => {
+                if (!isFrozen) freeze();
+                else unfreeze();
+              }}
+              disabled={isFreezing || isUnfreezing}
+            >
+              <SnowflakeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
+              {isFreezing || isUnfreezing ? (
+                <CSText style={tw`text-base`}>
+                  {t(isUnfreezing ? 'card.options.unfreezingCard' : 'card.options.freezingCard')}
+                </CSText>
+              ) : (
+                <CSText style={tw`text-base`}>
+                  {t(isFrozen ? 'card.options.unfreezeCard' : 'card.options.freezeCard')}
+                </CSText>
+              )}
             </TouchableOpacity>
-          )}
-        </SafeAreaView>
+
+            {!hideCardInfoButton && !isFrozen && !isFreezing && !isUnfreezing && (
+              <TouchableOpacity
+                style={tw`flex-row items-center py-4`}
+                onPress={navigateToCardScreen}
+              >
+                <EyeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
+                <CSText style={tw`text-base`}>{t('card.options.showCardInfo')}</CSText>
+              </TouchableOpacity>
+            )}
+          </SafeAreaView>
+        </BottomSheetView>
       </BottomSheetModal>
     );
   },
