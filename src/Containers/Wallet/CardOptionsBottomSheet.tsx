@@ -11,11 +11,14 @@ import { TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/core';
+import Config from 'react-native-config';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
-import { EyeIcon, SnowflakeIcon } from '@/Components/Icons';
-import { useFreezeCard, useUnFreezeCard } from '@/Queries';
+import { EyeIcon, SnowflakeIcon, KeyIcon } from '@/Components/Icons';
+import { useFreezeCard, useUnFreezeCard, useCard, useUser } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { canManagePermissions, getAllocationPermissions } from '@/Helpers/PermissionsHelpers';
+import { useAllPermissions } from '@/Queries/permissions';
 
 type Props = {
   cardId: string | undefined;
@@ -28,7 +31,20 @@ export const CardOptionsBottomSheet = forwardRef(
     const { t } = useTranslation();
     const { navigate } = useNavigation();
 
-    const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+    const { data } = useCard(cardId);
+    const { data: user } = useUser();
+    const { data: permissions } = useAllPermissions(user?.businessId!);
+
+    const allocationPermissions = getAllocationPermissions(
+      permissions?.userRoles,
+      data?.card?.allocationId,
+    );
+    const showSpendControlsRow =
+      Config.SHOW_ADMIN === 'true' &&
+      allocationPermissions &&
+      canManagePermissions(allocationPermissions);
+
+    const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [showSpendControlsRow]);
     const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
       useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
@@ -131,7 +147,6 @@ export const CardOptionsBottomSheet = forwardRef(
                 </CSText>
               )}
             </TouchableOpacity>
-
             {!hideCardInfoButton && !isFrozen && !isFreezing && !isUnfreezing && (
               <TouchableOpacity
                 style={tw`flex-row items-center py-4`}
@@ -139,6 +154,17 @@ export const CardOptionsBottomSheet = forwardRef(
               >
                 <EyeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
                 <CSText style={tw`text-base`}>{t('card.options.showCardInfo')}</CSText>
+              </TouchableOpacity>
+            )}
+            {showSpendControlsRow && (
+              <TouchableOpacity
+                style={tw`flex-row items-center py-4`}
+                onPress={() => {
+                  // TODO: go to spend controls
+                }}
+              >
+                <KeyIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
+                <CSText style={tw`text-base`}>{t('card.options.spendControls')}</CSText>
               </TouchableOpacity>
             )}
           </SafeAreaView>

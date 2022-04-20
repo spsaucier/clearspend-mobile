@@ -100,22 +100,22 @@ const CardDetailScreen = ({ route }: Props) => {
                         {t('cardProfile.singleTransaction')}
                       </CSText>
                       <CSText style={tw`text-sm text-white`}>
-                        {formatCurrency(purchaseLimits.INSTANT.amount)}
+                        {formatCurrency(purchaseLimits.INSTANT?.amount)}
                       </CSText>
                     </View>
                   )}
                   {showDailyLimit && (
                     <LimitSection
                       label={t('cardProfile.spentToday')}
-                      amountUsed={purchaseLimits.DAILY && purchaseLimits.DAILY.usedAmount}
-                      limit={purchaseLimits.DAILY && purchaseLimits.DAILY.amount}
+                      amountUsed={purchaseLimits.DAILY?.usedAmount || 0}
+                      limit={purchaseLimits.DAILY?.amount || 0}
                     />
                   )}
                   {showMonthlyLimit && (
                     <LimitSection
                       label={t('cardProfile.spentCurrentMonth')}
-                      amountUsed={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.usedAmount}
-                      limit={purchaseLimits.MONTHLY && purchaseLimits.MONTHLY.amount}
+                      amountUsed={purchaseLimits.MONTHLY?.usedAmount || 0}
+                      limit={purchaseLimits.MONTHLY?.amount || 0}
                     />
                   )}
                 </View>

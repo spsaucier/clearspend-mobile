@@ -10,11 +10,30 @@
  */
 
 export interface LimitTypeMap {
-  limitType?: 'ACH_DEPOSIT' | 'ACH_WITHDRAW' | 'PURCHASE' | 'ATM_WITHDRAW';
+  ACH_DEPOSIT?: LimitPeriodMap;
+  ACH_WITHDRAW?: LimitPeriodMap;
+  PURCHASE?: LimitPeriodMap;
+}
+
+export interface LimitPeriodMap {
+  INSTANT?: LimitPeriod;
+  DAILY?: LimitPeriod;
+  WEEKLY?: LimitPeriod;
+  MONTHLY?: LimitPeriod;
+}
+
+export interface LimitPeriod {
+  amount?: number;
+  usedAmount?: number;
 }
 
 export interface ControllerError {
   message?: string;
+  param?: string;
+}
+
+export interface SetCreditCardRequest {
+  accountId?: string;
 }
 
 export interface Address {
@@ -274,6 +293,48 @@ export interface Address {
     | 'ZWE';
 }
 
+export interface Business {
+  /** @format uuid */
+  businessId?: string;
+  legalName?: string;
+  businessType?:
+    | 'INDIVIDUAL'
+    | 'SOLE_PROPRIETORSHIP'
+    | 'SINGLE_MEMBER_LLC'
+    | 'MULTI_MEMBER_LLC'
+    | 'PRIVATE_PARTNERSHIP'
+    | 'PUBLIC_PARTNERSHIP'
+    | 'PRIVATE_CORPORATION'
+    | 'PUBLIC_CORPORATION'
+    | 'INCORPORATED_NON_PROFIT';
+  employerIdentificationNumber?: string;
+
+  /**
+   * Phone number in e.164 format
+   * @example +1234567890
+   */
+  businessPhone?: string;
+  address?: Address;
+  onboardingStep?:
+    | 'BUSINESS'
+    | 'BUSINESS_OWNERS'
+    | 'SOFT_FAIL'
+    | 'REVIEW'
+    | 'LINK_ACCOUNT'
+    | 'TRANSFER_MONEY'
+    | 'COMPLETE';
+  knowYourBusinessStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
+  status?: 'ONBOARDING' | 'ACTIVE' | 'SUSPENDED' | 'CLOSED';
+  accountingSetupStep?: 'ADD_CREDIT_CARD' | 'MAP_CATEGORIES' | 'COMPLETE';
+  mcc?: string;
+  businessName?: string;
+  accountNumber?: string;
+  routingNumber?: string;
+  description?: string;
+  url?: string;
+  codatCreditCardId?: string;
+}
+
 export interface CreateUserRequest {
   /**
    * The first name of the person
@@ -378,878 +439,6 @@ export interface UserPageData {
   cardInfoList?: CardInfo[];
 }
 
-export interface Amount {
-  /** @example USD */
-  currency: 'UNSPECIFIED' | 'USD';
-
-  /** @example 100 */
-  amount: number;
-}
-
-export interface NetworkMessageRequest {
-  /** @format uuid */
-  cardId?: string;
-  networkMessageType?: 'AUTH_REQUEST' | 'AUTH_CREATED' | 'AUTH_UPDATED' | 'TRANSACTION_CREATED';
-  amount?: Amount;
-
-  /** @format uuid */
-  priorNetworkMessageId?: string;
-}
-
-export interface NetworkMessageResponse {
-  /** @format uuid */
-  networkMessageId?: string;
-}
-
-export interface KycPassRequest {
-  to?: string;
-  firstName?: string;
-}
-
-export interface KycFailRequest {
-  to?: string;
-  firstName?: string;
-  reasons?: string[];
-}
-
-export interface CreateBusinessOwnerRequest {
-  /** @format uuid */
-  businessId?: string;
-
-  /** @format uuid */
-  businessOwnerId?: string;
-  username?: string;
-  password?: string;
-}
-
-export interface TransactBankAccountRequest {
-  bankAccountTransactType?: 'DEPOSIT' | 'WITHDRAW';
-  amount?: Amount;
-}
-
-export interface CreateAdjustmentResponse {
-  /** @format uuid */
-  adjustmentId?: string;
-}
-
-export interface CreateReceiptResponse {
-  /** @format uuid */
-  receiptId?: string;
-}
-
-export interface CodatError {
-  itemId?: string;
-  message?: string;
-}
-
-export interface CodatSyncDirectCostResponse {
-  status?: string;
-  pushOperationKey?: string;
-  validation?: CodatValidation;
-}
-
-export interface CodatValidation {
-  errors?: CodatError[];
-}
-
-export interface SyncTransactionResponse {
-  status?: string;
-  codatResponse?: CodatSyncDirectCostResponse;
-}
-
-export interface SyncLogRequest {
-  pageRequest: PageRequest;
-}
-
-export interface PagedDataSyncLogResponse {
-  /** @format int32 */
-  pageNumber?: number;
-
-  /** @format int32 */
-  pageSize?: number;
-
-  /** @format int64 */
-  totalElements?: number;
-  content?: SyncLogResponse[];
-}
-
-export interface SyncLogResponse {
-  /** @format date-time */
-  startTime?: string;
-  firstName?: string;
-  lastName?: string;
-  status?: string;
-  transactionId?: string;
-}
-
-export interface CodatCreateBankAccountRequest {
-  accountName?: string;
-  accountNumber?: string;
-  accountType?: string;
-  currency?: string;
-  institution?: string;
-}
-
-export interface CodatCreateBankAccountResponse {
-  validation?: CodatValidation;
-  pushOperationKey?: string;
-  status?: string;
-}
-
-export interface CodatWebhookPushStatusChangedRequest {
-  CompanyId?: string;
-  Data?: CodatWebhookPushStatusData;
-}
-
-export interface CodatWebhookPushStatusData {
-  dataType?: string;
-  status?: string;
-  pushOperationKey?: string;
-}
-
-export interface CodatWebhookConnectionChangedData {
-  dataConnectionId?: string;
-  newStatus?: string;
-}
-
-export interface CodatWebhookConnectionChangedRequest {
-  CompanyId?: string;
-  Data?: CodatWebhookConnectionChangedData;
-}
-
-export interface AddChartOfAccountsMappingRequest {
-  accountRef?: string;
-
-  /** @format int32 */
-  categoryIconRef?: number;
-}
-
-export interface ChartOfAccountsMappingResponse {
-  accountRef?: string;
-
-  /** @format int32 */
-  categoryIconRef?: number;
-}
-
-export interface GetChartOfAccountsMappingResponse {
-  results?: ChartOfAccountsMappingResponse[];
-}
-
-export interface CurrencyLimit {
-  currency: 'UNSPECIFIED' | 'USD';
-  typeMap: LimitTypeMap;
-}
-
-export interface IssueCardRequest {
-  cardType: ('PHYSICAL' | 'VIRTUAL')[];
-
-  /**
-   * @format uuid
-   * @example 28104ecb-1343-4cc1-b6f2-e6cc88e9a80f
-   */
-  allocationId: string;
-
-  /**
-   * @format uuid
-   * @example 38104ecb-1343-4cc1-b6f2-e6cc88e9a80f
-   */
-  userId: string;
-  currency: 'UNSPECIFIED' | 'USD';
-  isPersonal: boolean;
-  limits: CurrencyLimit[];
-  disabledMccGroups: (
-    | 'CHILD_CARE'
-    | 'DIGITAL_GOODS'
-    | 'EDUCATION'
-    | 'ENTERTAINMENT'
-    | 'FOOD_BEVERAGE'
-    | 'GAMBLING'
-    | 'GOVERNMENT'
-    | 'HEALTH'
-    | 'MEMBERSHIPS'
-    | 'MONEY_TRANSFER'
-    | 'SERVICES'
-    | 'SHOPPING'
-    | 'TRAVEL'
-    | 'UTILITIES'
-    | 'OTHER'
-  )[];
-  disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
-
-  /** @example DEBIT */
-  binType?: 'DEBIT';
-
-  /** @example DEBIT */
-  fundingType?: 'POOLED' | 'INDIVIDUAL';
-  shippingAddress?: Address;
-}
-
-export interface IssueCardResponse {
-  /** @format uuid */
-  cardId: string;
-
-  /** Error message for any records that failed. Will be null if successful */
-  errorMessage?: string;
-}
-
-export interface FilterAmount {
-  min?: number;
-  max?: number;
-}
-
-export interface SearchCardRequest {
-  pageRequest: PageRequest;
-  users?: string[];
-  allocations?: string[];
-  searchText?: string;
-  balance?: FilterAmount;
-  statuses?: ('ACTIVE' | 'INACTIVE' | 'CANCELLED')[];
-  types?: ('PHYSICAL' | 'VIRTUAL')[];
-}
-
-export interface ItemTypedIdAllocationId {
-  /** @format uuid */
-  id?: string;
-  name?: string;
-}
-
-export interface PagedDataSearchCardData {
-  /** @format int32 */
-  pageNumber?: number;
-
-  /** @format int32 */
-  pageSize?: number;
-
-  /** @format int64 */
-  totalElements?: number;
-  content?: SearchCardData[];
-}
-
-export interface SearchCardData {
-  /** @format uuid */
-  cardId?: string;
-  cardNumber?: string;
-  user?: UserData;
-  allocation?: ItemTypedIdAllocationId;
-  balance?: Amount;
-  cardStatus?: 'ACTIVE' | 'INACTIVE' | 'CANCELLED';
-  cardType?: 'PHYSICAL' | 'VIRTUAL';
-  activated?: boolean;
-
-  /** @format date-time */
-  activationDate?: string;
-}
-
-export interface RevealCardRequest {
-  /** @format uuid */
-  cardId?: string;
-  nonce?: string;
-}
-
-export interface RevealCardResponse {
-  externalRef?: string;
-  ephemeralKey?: string;
-}
-
-export interface EphemeralKeyRequest {
-  /** @format uuid */
-  cardId?: string;
-  apiVersion?: string;
-}
-
-export interface CardStatementRequest {
-  /** @format uuid */
-  cardId?: string;
-
-  /** @format date-time */
-  startDate?: string;
-
-  /** @format date-time */
-  endDate?: string;
-}
-
-export interface UpdateAllocationBalanceRequest {
-  amount: Amount;
-
-  /** @example CSR credit */
-  notes: string;
-}
-
-export interface UpdateAllocationBalanceResponse {
-  /** @format uuid */
-  adjustmentId?: string;
-  ledgerBalance?: Amount;
-}
-
-export interface UpdateBusiness {
-  legalName?: string;
-  businessName?: string;
-  businessType?:
-    | 'INDIVIDUAL'
-    | 'SOLE_PROPRIETORSHIP'
-    | 'SINGLE_MEMBER_LLC'
-    | 'MULTI_MEMBER_LLC'
-    | 'PRIVATE_PARTNERSHIP'
-    | 'PUBLIC_PARTNERSHIP'
-    | 'PRIVATE_CORPORATION'
-    | 'PUBLIC_CORPORATION'
-    | 'INCORPORATED_NON_PROFIT';
-  employerIdentificationNumber?: string;
-
-  /**
-   * Phone number in e.164 format
-   * @example +1234567890
-   */
-  businessPhone?: string;
-  address?: Address;
-  mcc?: string;
-  description?: string;
-  url?: string;
-}
-
-export interface BusinessReallocationRequest {
-  /** @format uuid */
-  allocationIdFrom?: string;
-
-  /** @format uuid */
-  allocationIdTo?: string;
-  amount?: Amount;
-}
-
-export interface BusinessFundAllocationResponse {
-  /** @format uuid */
-  adjustmentIdFrom?: string;
-  ledgerBalanceFrom?: Amount;
-
-  /** @format uuid */
-  adjustmentIdTo?: string;
-  ledgerBalanceTo?: Amount;
-}
-
-export interface SearchBusinessAllocationRequest {
-  name: string;
-}
-
-export interface Account {
-  /** @format uuid */
-  accountId: string;
-
-  /** @format uuid */
-  businessId: string;
-
-  /** @format uuid */
-  allocationId: string;
-
-  /** @format uuid */
-  ledgerAccountId: string;
-  type: 'ALLOCATION' | 'CARD';
-
-  /** @format uuid */
-  cardId?: string;
-  ledgerBalance: Amount;
-  availableBalance?: Amount;
-}
-
-export interface Allocation {
-  /** @format uuid */
-  allocationId: string;
-  name: string;
-
-  /** @format uuid */
-  ownerId: string;
-  account: Account;
-
-  /** @format uuid */
-  parentAllocationId?: string;
-  childrenAllocationIds?: string[];
-}
-
-export interface UpdateBusinessAccountingStepRequest {
-  accountingSetupStep?: 'ADD_CREDIT_CARD' | 'MAP_CATEGORIES' | 'COMPLETE';
-}
-
-export interface Business {
-  /** @format uuid */
-  businessId?: string;
-  legalName?: string;
-  businessType?:
-    | 'INDIVIDUAL'
-    | 'SOLE_PROPRIETORSHIP'
-    | 'SINGLE_MEMBER_LLC'
-    | 'MULTI_MEMBER_LLC'
-    | 'PRIVATE_PARTNERSHIP'
-    | 'PUBLIC_PARTNERSHIP'
-    | 'PRIVATE_CORPORATION'
-    | 'PUBLIC_CORPORATION'
-    | 'INCORPORATED_NON_PROFIT';
-  employerIdentificationNumber?: string;
-
-  /**
-   * Phone number in e.164 format
-   * @example +1234567890
-   */
-  businessPhone?: string;
-  address?: Address;
-  onboardingStep?:
-    | 'BUSINESS'
-    | 'BUSINESS_OWNERS'
-    | 'SOFT_FAIL'
-    | 'REVIEW'
-    | 'LINK_ACCOUNT'
-    | 'TRANSFER_MONEY'
-    | 'COMPLETE';
-  knowYourBusinessStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
-  status?: 'ONBOARDING' | 'ACTIVE' | 'SUSPENDED' | 'CLOSED';
-  accountingSetupStep?: 'ADD_CREDIT_CARD' | 'MAP_CATEGORIES' | 'COMPLETE';
-  mcc?: string;
-  businessName?: string;
-  accountNumber?: string;
-  routingNumber?: string;
-  description?: string;
-  url?: string;
-}
-
-export interface CreateOrUpdateBusinessProspectRequest {
-  /**
-   * Email address of the prospect
-   * @pattern ^[^@]+@[^@.]+\.[^@]+$
-   * @example johnw@hightable.com
-   */
-  email: string;
-
-  /**
-   * The first name of the person
-   * @example John
-   */
-  firstName: string;
-
-  /**
-   * The last name of the person
-   * @example Wick
-   */
-  lastName: string;
-
-  /**
-   * The Business type
-   * @example SINGLE_MEMBER_LLC
-   */
-  businessType?:
-    | 'INDIVIDUAL'
-    | 'SOLE_PROPRIETORSHIP'
-    | 'SINGLE_MEMBER_LLC'
-    | 'MULTI_MEMBER_LLC'
-    | 'PRIVATE_PARTNERSHIP'
-    | 'PUBLIC_PARTNERSHIP'
-    | 'PRIVATE_CORPORATION'
-    | 'PUBLIC_CORPORATION'
-    | 'INCORPORATED_NON_PROFIT';
-
-  /**
-   * Relationship to business Owner
-   * @example true
-   */
-  relationshipOwner?: boolean;
-
-  /**
-   * Relationship to business Executive
-   * @example true
-   */
-  relationshipExecutive?: boolean;
-
-  /**
-   * Terms of Service and Privacy Policy Acceptance
-   * @example true
-   */
-  tosAndPrivacyPolicyAcceptance: boolean;
-}
-
-export interface CreateBusinessProspectResponse {
-  /** @format uuid */
-  businessProspectId?: string;
-  businessProspectStatus?: 'NEW' | 'EMAIL_VERIFIED' | 'MOBILE_VERIFIED' | 'COMPLETED';
-}
-
-export interface ValidateBusinessProspectIdentifierRequest {
-  /**
-   * Type of Identifier to validate
-   * @example EMAIL
-   */
-  identifierType?: 'EMAIL' | 'PHONE';
-
-  /**
-   * OTP received via email/phone
-   * @example 67890
-   */
-  otp?: string;
-}
-
-export interface ValidateIdentifierResponse {
-  /** @example true */
-  'If email already exist on the system. User can login, reset password or use another email'?: boolean;
-}
-
-export interface SetBusinessProspectPhoneRequest {
-  /**
-   * Phone number in e.164 format
-   * @pattern ^\+[1-9][0-9]{9,14}$
-   * @example +1234567890
-   */
-  phone?: string;
-}
-
-export interface SetBusinessProspectPasswordRequest {
-  /** @example excommunicado */
-  password?: string;
-}
-
-export interface ConvertBusinessProspectRequest {
-  legalName: string;
-
-  /** @pattern ^[1-9][0-9]{8}$ */
-  employerIdentificationNumber: string;
-
-  /**
-   * Phone number in e.164 format
-   * @pattern ^\+[1-9][0-9]{9,14}$
-   * @example +1234567890
-   */
-  businessPhone: string;
-  address?: Address;
-  mcc: string;
-
-  /**
-   * Description
-   * @example Business small description
-   */
-  description: string;
-
-  /**
-   * Doing business as name if is different by company name
-   * @example business
-   */
-  businessName?: string;
-
-  /**
-   * Business url
-   * @example https://fecebook.com/business
-   */
-  url?: string;
-}
-
-export interface ConvertBusinessProspectResponse {
-  business?: Business;
-
-  /** @format uuid */
-  businessOwnerId?: string;
-  errorMessages?: string[];
-}
-
-export interface CreateOrUpdateBusinessOwnerRequest {
-  /** @format uuid */
-  id?: string;
-
-  /**
-   * The first name of the person
-   * @example John
-   */
-  firstName: string;
-
-  /**
-   * The last name of the person
-   * @example Wick
-   */
-  lastName: string;
-
-  /**
-   * Relationship to business Owner
-   * @example true
-   */
-  relationshipOwner?: boolean;
-
-  /**
-   * Relationship to business Executive
-   * @example true
-   */
-  relationshipExecutive?: boolean;
-
-  /**
-   * Percentage Ownership from business
-   * @example 25
-   */
-  percentageOwnership?: number;
-
-  /**
-   * Title on business
-   * @example CEO
-   */
-  title?: string;
-
-  /**
-   * The date of birth of the person
-   * @format date
-   * @example 1990-01-01
-   */
-  dateOfBirth: string;
-
-  /**
-   * The tax identification number of the person
-   * @example 091827364
-   */
-  taxIdentificationNumber: string;
-
-  /**
-   * Email address of the person
-   * @pattern ^[^@]+@[^@.]+\.[^@]+$
-   * @example johnw@hightable.com
-   */
-  email: string;
-
-  /**
-   * Phone address of the person
-   * @pattern ^\+[1-9][0-9]{9,14}$
-   * @example +12345679
-   */
-  phone?: string;
-  address?: Address;
-
-  /**
-   * Indication if business owner is updated during the onboarding process
-   * @example false
-   */
-  isOnboarding?: boolean;
-}
-
-export interface CreateBusinessOwnerResponse {
-  /** @format uuid */
-  businessOwnerId: string;
-
-  /** Error message for any records that failed. Will be null if successful */
-  errorMessages?: string[];
-}
-
-export interface OwnersProvidedRequest {
-  /** No other owners to provide */
-  noOtherOwnersToProvide?: boolean;
-
-  /** No executive to provide */
-  noExecutiveToProvide?: boolean;
-}
-
-export interface OwnersProvidedResponse {
-  business: Business;
-
-  /** Error message for any records that failed. Will be null if successful */
-  errorMessages?: string[];
-}
-
-export interface TwoFactorStartLoggedInResponse {
-  twoFactorId?: string;
-  methodId?: string;
-}
-
-export interface DeviceInfo {
-  description?: string;
-  lastAccessedAddress?: string;
-
-  /** @format date-time */
-  lastAccessedInstant?: string;
-  name?: string;
-  type?:
-    | 'BROWSER'
-    | 'DESKTOP'
-    | 'LAPTOP'
-    | 'MOBILE'
-    | 'OTHER'
-    | 'SERVER'
-    | 'TABLET'
-    | 'TV'
-    | 'UNKNOWN';
-}
-
-export interface EventInfo {
-  data?: Record<string, object>;
-  deviceDescription?: string;
-  deviceName?: string;
-  deviceType?: string;
-  ipAddress?: string;
-  location?: Location;
-  os?: string;
-  userAgent?: string;
-}
-
-export interface Location {
-  city?: string;
-  country?: string;
-
-  /** @format double */
-  latitude?: number;
-
-  /** @format double */
-  longitude?: number;
-  region?: string;
-  zipcode?: string;
-  displayString?: string;
-}
-
-export interface MetaData {
-  device?: DeviceInfo;
-  scopes?: string[];
-}
-
-export interface TwoFactorLoginRequest {
-  eventInfo?: EventInfo;
-
-  /** @format uuid */
-  applicationId?: string;
-  ipAddress?: string;
-  metaData?: MetaData;
-  newDevice?: boolean;
-  noJWT?: boolean;
-  code?: string;
-  trustComputer?: boolean;
-  twoFactorId?: string;
-
-  /** @format uuid */
-  userId?: string;
-}
-
-export interface RelationshipToBusiness {
-  owner?: boolean;
-  executive?: boolean;
-  representative?: boolean;
-  director?: boolean;
-}
-
-export interface UserLoginResponse {
-  twoFactorId?: string;
-  changePasswordId?: string;
-  changePasswordReason?: 'Administrative' | 'Breached' | 'Expired' | 'Validation';
-
-  /** @format uuid */
-  userId?: string;
-
-  /** @format uuid */
-  businessId?: string;
-  type?: 'EMPLOYEE' | 'BUSINESS_OWNER';
-  firstName?: string;
-  lastName?: string;
-  address?: Address;
-  email?: string;
-  phone?: string;
-  archived?: boolean;
-  relationshipToBusiness?: RelationshipToBusiness;
-}
-
-export interface FirstTwoFactorValidateRequest {
-  code?: string;
-  method?: 'email' | 'sms' | 'authenticator';
-  destination?: string;
-}
-
-export interface TwoFactorResponse {
-  recoveryCodes?: string[];
-}
-
-export interface FirstTwoFactorSendRequest {
-  destination?: string;
-  method?: 'email' | 'sms' | 'authenticator';
-}
-
-export interface ResetPasswordRequest {
-  changePasswordId?: string;
-  newPassword?: string;
-}
-
-export interface LoginRequest {
-  username?: string;
-  password?: string;
-}
-
-export interface ForgotPasswordRequest {
-  email?: string;
-}
-
-export interface ChangePasswordRequest {
-  username?: string;
-  currentPassword?: string;
-  newPassword?: string;
-}
-
-export interface ChangePasswordResponse {
-  oneTimePassword?: string;
-  state?: Record<string, object>;
-}
-
-export interface CreateAllocationRequest {
-  /**
-   * name of the department/ allocation
-   * @example advertisement
-   */
-  name: string;
-
-  /**
-   * @format uuid
-   * @example 48104ecb-1343-4cc1-b6f2-e6cc88e9a80f
-   */
-  parentAllocationId: string;
-
-  /** @format uuid */
-  ownerId: string;
-  amount: Amount;
-  limits: CurrencyLimit[];
-  disabledMccGroups: (
-    | 'CHILD_CARE'
-    | 'DIGITAL_GOODS'
-    | 'EDUCATION'
-    | 'ENTERTAINMENT'
-    | 'FOOD_BEVERAGE'
-    | 'GAMBLING'
-    | 'GOVERNMENT'
-    | 'HEALTH'
-    | 'MEMBERSHIPS'
-    | 'MONEY_TRANSFER'
-    | 'SERVICES'
-    | 'SHOPPING'
-    | 'TRAVEL'
-    | 'UTILITIES'
-    | 'OTHER'
-  )[];
-  disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
-}
-
-export interface CreateAllocationResponse {
-  /** @format uuid */
-  allocationId: string;
-}
-
-export interface AllocationFundCardRequest {
-  /**
-   * @format uuid
-   * @example 48104ecb-1343-4cc1-b6f2-e6cc88e9a80f
-   */
-  allocationAccountId: string;
-
-  /**
-   * @format uuid
-   * @example 48104ecb-1343-4cc1-b6f2-e6cc88e9a80f
-   */
-  cardId: string;
-
-  /** @example DEPOSIT */
-  reallocationType: 'ALLOCATION_TO_CARD' | 'CARD_TO_ALLOCATION';
-  amount: Amount;
-}
-
-export interface AllocationFundCardResponse {
-  /** @format uuid */
-  businessAdjustmentId?: string;
-  businessLedgerBalance?: Amount;
-
-  /** @format uuid */
-  allocationAdjustmentId?: string;
-  allocationLedgerBalance?: Amount;
-}
-
 export interface AccountActivityRequest {
   pageRequest: PageRequest;
 
@@ -1263,17 +452,19 @@ export interface AccountActivityRequest {
   cardId?: string;
   searchText?: string;
   types?: (
-    | 'BANK_DEPOSIT'
+    | 'BANK_DEPOSIT_STRIPE'
+    | 'BANK_DEPOSIT_ACH'
+    | 'BANK_DEPOSIT_WIRE'
     | 'BANK_DEPOSIT_RETURN'
-    | 'BANK_LINK'
-    | 'BANK_UNLINK'
     | 'BANK_WITHDRAWAL'
     | 'BANK_WITHDRAWAL_RETURN'
     | 'MANUAL'
     | 'NETWORK_AUTHORIZATION'
     | 'NETWORK_CAPTURE'
+    | 'NETWORK_REFUND'
     | 'REALLOCATE'
     | 'FEE'
+    | 'CARD_FUND_RETURN'
   )[];
 
   /** @format date-time */
@@ -1286,6 +477,13 @@ export interface AccountActivityRequest {
   categories?: string[];
   withReceipt?: boolean;
   withoutReceipt?: boolean;
+  syncStatus?: ('SYNCED_LOCKED' | 'READY' | 'NOT_READY')[];
+  missingExpenseCategory?: boolean;
+}
+
+export interface FilterAmount {
+  min?: number;
+  max?: number;
 }
 
 export interface AccountActivityResponse {
@@ -1298,17 +496,19 @@ export interface AccountActivityResponse {
   card?: CardInfo;
   merchant?: Merchant;
   type?:
-    | 'BANK_DEPOSIT'
+    | 'BANK_DEPOSIT_STRIPE'
+    | 'BANK_DEPOSIT_ACH'
+    | 'BANK_DEPOSIT_WIRE'
     | 'BANK_DEPOSIT_RETURN'
-    | 'BANK_LINK'
-    | 'BANK_UNLINK'
     | 'BANK_WITHDRAWAL'
     | 'BANK_WITHDRAWAL_RETURN'
     | 'MANUAL'
     | 'NETWORK_AUTHORIZATION'
     | 'NETWORK_CAPTURE'
+    | 'NETWORK_REFUND'
     | 'REALLOCATE'
-    | 'FEE';
+    | 'FEE'
+    | 'CARD_FUND_RETURN';
   status?: 'PENDING' | 'DECLINED' | 'APPROVED' | 'CANCELED' | 'CREDIT' | 'PROCESSED';
   amount?: Amount;
   requestedAmount?: Amount;
@@ -1316,6 +516,212 @@ export interface AccountActivityResponse {
   notes?: string;
   expenseDetails?: ExpenseDetails;
   syncStatus?: 'SYNCED_LOCKED' | 'READY' | 'NOT_READY';
+
+  /** @format date-time */
+  lastSyncTime?: string;
+  declineDetails?:
+    | DeclineDetails
+    | AddressPostalCodeMismatch
+    | LimitExceeded
+    | OperationLimitExceeded
+    | SpendControlViolated;
+}
+
+export type AddressPostalCodeMismatch = DeclineDetails & { postalCode?: string };
+
+export interface Amount {
+  currency?:
+    | 'UNSPECIFIED'
+    | 'AED'
+    | 'AFN'
+    | 'ALL'
+    | 'AMD'
+    | 'ANG'
+    | 'AOA'
+    | 'ARS'
+    | 'AUD'
+    | 'AWG'
+    | 'AZN'
+    | 'BAM'
+    | 'BBD'
+    | 'BDT'
+    | 'BGN'
+    | 'BHD'
+    | 'BIF'
+    | 'BMD'
+    | 'BND'
+    | 'BOB'
+    | 'BRL'
+    | 'BSD'
+    | 'BTN'
+    | 'BWP'
+    | 'BYN'
+    | 'BYR'
+    | 'BZD'
+    | 'CAD'
+    | 'CDF'
+    | 'CHF'
+    | 'CLP'
+    | 'CNY'
+    | 'COP'
+    | 'CRC'
+    | 'CUC'
+    | 'CUP'
+    | 'CVE'
+    | 'CZK'
+    | 'DJF'
+    | 'DKK'
+    | 'DOP'
+    | 'DZD'
+    | 'EGP'
+    | 'ERN'
+    | 'ETB'
+    | 'EUR'
+    | 'FJD'
+    | 'FKP'
+    | 'GBP'
+    | 'GEL'
+    | 'GHS'
+    | 'GIP'
+    | 'GMD'
+    | 'GNF'
+    | 'GTQ'
+    | 'GYD'
+    | 'HKD'
+    | 'HNL'
+    | 'HRK'
+    | 'HTG'
+    | 'HUF'
+    | 'IDR'
+    | 'ILS'
+    | 'INR'
+    | 'IQD'
+    | 'IRR'
+    | 'ISK'
+    | 'JMD'
+    | 'JOD'
+    | 'JPY'
+    | 'KES'
+    | 'KGS'
+    | 'KHR'
+    | 'KMF'
+    | 'KPW'
+    | 'KRW'
+    | 'KWD'
+    | 'KYD'
+    | 'KZT'
+    | 'LAK'
+    | 'LBP'
+    | 'LKR'
+    | 'LRD'
+    | 'LSL'
+    | 'LTL'
+    | 'LYD'
+    | 'MAD'
+    | 'MDL'
+    | 'MGA'
+    | 'MKD'
+    | 'MMK'
+    | 'MNT'
+    | 'MOP'
+    | 'MRO'
+    | 'MRU'
+    | 'MUR'
+    | 'MVR'
+    | 'MWK'
+    | 'MXN'
+    | 'MYR'
+    | 'MZN'
+    | 'NAD'
+    | 'NGN'
+    | 'NIO'
+    | 'NOK'
+    | 'NPR'
+    | 'NZD'
+    | 'OMR'
+    | 'PAB'
+    | 'PEN'
+    | 'PGK'
+    | 'PHP'
+    | 'PKR'
+    | 'PLN'
+    | 'PYG'
+    | 'QAR'
+    | 'RON'
+    | 'RSD'
+    | 'RUB'
+    | 'RUR'
+    | 'RWF'
+    | 'SAR'
+    | 'SBD'
+    | 'SCR'
+    | 'SDG'
+    | 'SEK'
+    | 'SGD'
+    | 'SHP'
+    | 'SLL'
+    | 'SOS'
+    | 'SRD'
+    | 'SSP'
+    | 'STD'
+    | 'STN'
+    | 'SVC'
+    | 'SYP'
+    | 'SZL'
+    | 'THB'
+    | 'TJS'
+    | 'TMT'
+    | 'TND'
+    | 'TOP'
+    | 'TRY'
+    | 'TTD'
+    | 'TWD'
+    | 'TZS'
+    | 'UAH'
+    | 'UGX'
+    | 'USD'
+    | 'UYU'
+    | 'UZS'
+    | 'VEF'
+    | 'VES'
+    | 'VND'
+    | 'VUV'
+    | 'WST'
+    | 'XAF'
+    | 'XCD'
+    | 'XOF'
+    | 'XPF'
+    | 'YER'
+    | 'ZAR'
+    | 'ZMW'
+    | 'ZWL';
+  amount?: number;
+}
+
+export interface DeclineDetails {
+  reason?:
+    | 'INSUFFICIENT_FUNDS'
+    | 'INVALID_CARD_STATUS'
+    | 'CARD_NOT_FOUND'
+    | 'LIMIT_EXCEEDED'
+    | 'OPERATION_LIMIT_EXCEEDED'
+    | 'SPEND_CONTROL_VIOLATED'
+    | 'ADDRESS_POSTAL_CODE_MISMATCH'
+    | 'CVC_MISMATCH'
+    | 'EXPIRY_MISMATCH'
+    | 'ST_ACCOUNT_CLOSED'
+    | 'ST_ACCOUNT_FROZEN'
+    | 'ST_BANK_ACCOUNT_RESTRICTED'
+    | 'ST_BANK_OWNERSHIP_CHANGED'
+    | 'ST_COULD_NOT_PROCESS'
+    | 'ST_INVALID_ACCOUNT_NUMBER'
+    | 'ST_INCORRECT_ACCOUNT_HOLDER_NAME'
+    | 'ST_INVALID_CURRENCY'
+    | 'ST_NO_ACCOUNT'
+    | 'ST_DECLINED'
+    | 'ST_FAILED'
+    | 'ST_CANCELLED'
+    | 'ST_UNKNOWN';
 }
 
 export interface ExpenseDetails {
@@ -1325,8 +731,15 @@ export interface ExpenseDetails {
   /** @format uuid */
   expenseCategoryId?: string;
   categoryName?: string;
-  status?: string;
 }
+
+export type LimitExceeded = DeclineDetails & {
+  entityId?: string;
+  entityType?: 'UNKNOWN' | 'ALLOCATION' | 'CARD' | 'BUSINESS';
+  limitType?: 'ACH_DEPOSIT' | 'ACH_WITHDRAW' | 'PURCHASE';
+  limitPeriod?: 'INSTANT' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
+  exceededAmount?: number;
+};
 
 export interface Merchant {
   name?: string;
@@ -1619,6 +1032,7 @@ export interface Merchant {
     | 'WOMENS_ACCESSORY_AND_SPECIALTY_SHOPS'
     | 'WOMENS_READY_TO_WEAR_STORES'
     | 'WRECKING_AND_SALVAGE_YARDS';
+  amount?: Amount;
   merchantNumber?: string;
 
   /** @format int32 */
@@ -1644,6 +1058,13 @@ export interface Merchant {
   merchantLongitude?: number;
 }
 
+export type OperationLimitExceeded = DeclineDetails & {
+  entityId?: string;
+  entityType?: 'UNKNOWN' | 'ALLOCATION' | 'CARD' | 'BUSINESS';
+  limitType?: 'ACH_DEPOSIT' | 'ACH_WITHDRAW' | 'PURCHASE';
+  limitPeriod?: 'INSTANT' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
+};
+
 export interface PagedDataAccountActivityResponse {
   /** @format int32 */
   pageNumber?: number;
@@ -1660,22 +1081,1277 @@ export interface ReceiptDetails {
   receiptId?: string[];
 }
 
+export type SpendControlViolated = DeclineDetails & {
+  entityId?: string;
+  entityType?: 'UNKNOWN' | 'ALLOCATION' | 'CARD' | 'BUSINESS';
+  mccGroup?:
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER';
+  paymentType?: 'POS' | 'ONLINE' | 'MANUAL_ENTRY';
+};
+
+export interface NetworkMessageRequest {
+  /** @format uuid */
+  cardId?: string;
+  networkMessageType?: 'AUTH_REQUEST' | 'AUTH_CREATED' | 'AUTH_UPDATED' | 'TRANSACTION_CREATED';
+  amount?: Amount;
+
+  /** @format uuid */
+  priorNetworkMessageId?: string;
+}
+
+export interface NetworkMessageResponse {
+  /** @format uuid */
+  networkMessageId?: string;
+}
+
+export interface KycPassRequest {
+  to?: string;
+  firstName?: string;
+}
+
+export interface KycFailRequest {
+  to?: string;
+  firstName?: string;
+  reasons?: string[];
+}
+
+export interface CreateBusinessOwnerRequest {
+  /** @format uuid */
+  businessId?: string;
+
+  /** @format uuid */
+  businessOwnerId?: string;
+  username?: string;
+  password?: string;
+}
+
+export interface TransactBankAccountRequest {
+  bankAccountTransactType?: 'DEPOSIT' | 'WITHDRAW';
+  amount?: Amount;
+}
+
+export interface CreateAdjustmentResponse {
+  /** @format uuid */
+  adjustmentId?: string;
+}
+
+export interface CreateReceiptResponse {
+  /** @format uuid */
+  receiptId?: string;
+}
+
+export interface ExpenseCategory {
+  /** @format int32 */
+  iconRef?: number;
+  categoryName?: string;
+  expenseCategoryId?: string;
+  status?: string;
+  pathSegments?: string[];
+}
+
+export interface CodatError {
+  itemId?: string;
+  message?: string;
+}
+
+export interface CodatSyncDirectCostResponse {
+  status?: string;
+  pushOperationKey?: string;
+  validation?: CodatValidation;
+}
+
+export interface CodatValidation {
+  errors?: CodatError[];
+}
+
+export interface SyncTransactionResponse {
+  status?: string;
+  codatResponse?: CodatSyncDirectCostResponse;
+}
+
+export interface SyncLogRequest {
+  pageRequest: PageRequest;
+}
+
+export interface PagedDataSyncLogResponse {
+  /** @format int32 */
+  pageNumber?: number;
+
+  /** @format int32 */
+  pageSize?: number;
+
+  /** @format int64 */
+  totalElements?: number;
+  content?: SyncLogResponse[];
+}
+
+export interface SyncLogResponse {
+  /** @format date-time */
+  startTime?: string;
+  firstName?: string;
+  lastName?: string;
+  status?: string;
+  transactionId?: string;
+}
+
+export interface CreateCreditCardRequest {
+  accountName?: string;
+}
+
+export interface CodatCreateBankAccountResponse {
+  validation?: CodatValidation;
+  pushOperationKey?: string;
+  status?: string;
+}
+
+export interface CodatWebhookPushStatusChangedRequest {
+  CompanyId?: string;
+  Data?: CodatWebhookPushStatusData;
+}
+
+export interface CodatWebhookPushStatusData {
+  dataType?: string;
+  status?: string;
+  pushOperationKey?: string;
+}
+
+export interface CodatWebhookDataSyncCompleteRequest {
+  CompanyId?: string;
+  Data?: CodatWebhookSyncData;
+}
+
+export interface CodatWebhookSyncData {
+  dataType?: string;
+}
+
+export interface CodatWebhookConnectionChangedData {
+  dataConnectionId?: string;
+  newStatus?: string;
+}
+
+export interface CodatWebhookConnectionChangedRequest {
+  CompanyId?: string;
+  Data?: CodatWebhookConnectionChangedData;
+}
+
+export interface ChartOfAccounts {
+  /** @format uuid */
+  businessId?: string;
+  nestedAccounts?: CodatAccountNested[];
+
+  /** @format int64 */
+  version?: number;
+
+  /** @format date-time */
+  created?: string;
+
+  /** @format date-time */
+  updated?: string;
+
+  /** @format uuid */
+  id?: string;
+}
+
+export interface CodatAccountNested {
+  id?: string;
+  name?: string;
+  status?: string;
+  fullyQualifiedCategory?: string;
+  fullyQualifiedName?: string;
+  type?: string;
+  updateStatus?: 'NOT_CHANGED' | 'NEW' | 'DELETED' | 'RENAMED';
+  children?: CodatAccountNested[];
+}
+
+export interface AddChartOfAccountsMappingRequest {
+  accountRef?: string;
+
+  /** @format uuid */
+  expenseCategoryId?: string;
+  expenseCategoryName?: string;
+  fullyQualifiedCategory?: string;
+}
+
+export interface ChartOfAccountsMappingResponse {
+  accountRef?: string;
+
+  /** @format int32 */
+  categoryIconRef?: number;
+
+  /** @format uuid */
+  expenseCategoryId?: string;
+}
+
+export interface GetChartOfAccountsMappingResponse {
+  results?: ChartOfAccountsMappingResponse[];
+}
+
+export interface CurrencyLimit {
+  currency:
+    | 'UNSPECIFIED'
+    | 'AED'
+    | 'AFN'
+    | 'ALL'
+    | 'AMD'
+    | 'ANG'
+    | 'AOA'
+    | 'ARS'
+    | 'AUD'
+    | 'AWG'
+    | 'AZN'
+    | 'BAM'
+    | 'BBD'
+    | 'BDT'
+    | 'BGN'
+    | 'BHD'
+    | 'BIF'
+    | 'BMD'
+    | 'BND'
+    | 'BOB'
+    | 'BRL'
+    | 'BSD'
+    | 'BTN'
+    | 'BWP'
+    | 'BYN'
+    | 'BYR'
+    | 'BZD'
+    | 'CAD'
+    | 'CDF'
+    | 'CHF'
+    | 'CLP'
+    | 'CNY'
+    | 'COP'
+    | 'CRC'
+    | 'CUC'
+    | 'CUP'
+    | 'CVE'
+    | 'CZK'
+    | 'DJF'
+    | 'DKK'
+    | 'DOP'
+    | 'DZD'
+    | 'EGP'
+    | 'ERN'
+    | 'ETB'
+    | 'EUR'
+    | 'FJD'
+    | 'FKP'
+    | 'GBP'
+    | 'GEL'
+    | 'GHS'
+    | 'GIP'
+    | 'GMD'
+    | 'GNF'
+    | 'GTQ'
+    | 'GYD'
+    | 'HKD'
+    | 'HNL'
+    | 'HRK'
+    | 'HTG'
+    | 'HUF'
+    | 'IDR'
+    | 'ILS'
+    | 'INR'
+    | 'IQD'
+    | 'IRR'
+    | 'ISK'
+    | 'JMD'
+    | 'JOD'
+    | 'JPY'
+    | 'KES'
+    | 'KGS'
+    | 'KHR'
+    | 'KMF'
+    | 'KPW'
+    | 'KRW'
+    | 'KWD'
+    | 'KYD'
+    | 'KZT'
+    | 'LAK'
+    | 'LBP'
+    | 'LKR'
+    | 'LRD'
+    | 'LSL'
+    | 'LTL'
+    | 'LYD'
+    | 'MAD'
+    | 'MDL'
+    | 'MGA'
+    | 'MKD'
+    | 'MMK'
+    | 'MNT'
+    | 'MOP'
+    | 'MRO'
+    | 'MRU'
+    | 'MUR'
+    | 'MVR'
+    | 'MWK'
+    | 'MXN'
+    | 'MYR'
+    | 'MZN'
+    | 'NAD'
+    | 'NGN'
+    | 'NIO'
+    | 'NOK'
+    | 'NPR'
+    | 'NZD'
+    | 'OMR'
+    | 'PAB'
+    | 'PEN'
+    | 'PGK'
+    | 'PHP'
+    | 'PKR'
+    | 'PLN'
+    | 'PYG'
+    | 'QAR'
+    | 'RON'
+    | 'RSD'
+    | 'RUB'
+    | 'RUR'
+    | 'RWF'
+    | 'SAR'
+    | 'SBD'
+    | 'SCR'
+    | 'SDG'
+    | 'SEK'
+    | 'SGD'
+    | 'SHP'
+    | 'SLL'
+    | 'SOS'
+    | 'SRD'
+    | 'SSP'
+    | 'STD'
+    | 'STN'
+    | 'SVC'
+    | 'SYP'
+    | 'SZL'
+    | 'THB'
+    | 'TJS'
+    | 'TMT'
+    | 'TND'
+    | 'TOP'
+    | 'TRY'
+    | 'TTD'
+    | 'TWD'
+    | 'TZS'
+    | 'UAH'
+    | 'UGX'
+    | 'USD'
+    | 'UYU'
+    | 'UZS'
+    | 'VEF'
+    | 'VES'
+    | 'VND'
+    | 'VUV'
+    | 'WST'
+    | 'XAF'
+    | 'XCD'
+    | 'XOF'
+    | 'XPF'
+    | 'YER'
+    | 'ZAR'
+    | 'ZMW'
+    | 'ZWL';
+  typeMap: LimitTypeMap;
+}
+
+export interface IssueCardRequest {
+  cardType: ('PHYSICAL' | 'VIRTUAL')[];
+
+  /**
+   * @format uuid
+   * @example 28104ecb-1343-4cc1-b6f2-e6cc88e9a80f
+   */
+  allocationId: string;
+
+  /**
+   * @format uuid
+   * @example 38104ecb-1343-4cc1-b6f2-e6cc88e9a80f
+   */
+  userId: string;
+  currency:
+    | 'UNSPECIFIED'
+    | 'AED'
+    | 'AFN'
+    | 'ALL'
+    | 'AMD'
+    | 'ANG'
+    | 'AOA'
+    | 'ARS'
+    | 'AUD'
+    | 'AWG'
+    | 'AZN'
+    | 'BAM'
+    | 'BBD'
+    | 'BDT'
+    | 'BGN'
+    | 'BHD'
+    | 'BIF'
+    | 'BMD'
+    | 'BND'
+    | 'BOB'
+    | 'BRL'
+    | 'BSD'
+    | 'BTN'
+    | 'BWP'
+    | 'BYN'
+    | 'BYR'
+    | 'BZD'
+    | 'CAD'
+    | 'CDF'
+    | 'CHF'
+    | 'CLP'
+    | 'CNY'
+    | 'COP'
+    | 'CRC'
+    | 'CUC'
+    | 'CUP'
+    | 'CVE'
+    | 'CZK'
+    | 'DJF'
+    | 'DKK'
+    | 'DOP'
+    | 'DZD'
+    | 'EGP'
+    | 'ERN'
+    | 'ETB'
+    | 'EUR'
+    | 'FJD'
+    | 'FKP'
+    | 'GBP'
+    | 'GEL'
+    | 'GHS'
+    | 'GIP'
+    | 'GMD'
+    | 'GNF'
+    | 'GTQ'
+    | 'GYD'
+    | 'HKD'
+    | 'HNL'
+    | 'HRK'
+    | 'HTG'
+    | 'HUF'
+    | 'IDR'
+    | 'ILS'
+    | 'INR'
+    | 'IQD'
+    | 'IRR'
+    | 'ISK'
+    | 'JMD'
+    | 'JOD'
+    | 'JPY'
+    | 'KES'
+    | 'KGS'
+    | 'KHR'
+    | 'KMF'
+    | 'KPW'
+    | 'KRW'
+    | 'KWD'
+    | 'KYD'
+    | 'KZT'
+    | 'LAK'
+    | 'LBP'
+    | 'LKR'
+    | 'LRD'
+    | 'LSL'
+    | 'LTL'
+    | 'LYD'
+    | 'MAD'
+    | 'MDL'
+    | 'MGA'
+    | 'MKD'
+    | 'MMK'
+    | 'MNT'
+    | 'MOP'
+    | 'MRO'
+    | 'MRU'
+    | 'MUR'
+    | 'MVR'
+    | 'MWK'
+    | 'MXN'
+    | 'MYR'
+    | 'MZN'
+    | 'NAD'
+    | 'NGN'
+    | 'NIO'
+    | 'NOK'
+    | 'NPR'
+    | 'NZD'
+    | 'OMR'
+    | 'PAB'
+    | 'PEN'
+    | 'PGK'
+    | 'PHP'
+    | 'PKR'
+    | 'PLN'
+    | 'PYG'
+    | 'QAR'
+    | 'RON'
+    | 'RSD'
+    | 'RUB'
+    | 'RUR'
+    | 'RWF'
+    | 'SAR'
+    | 'SBD'
+    | 'SCR'
+    | 'SDG'
+    | 'SEK'
+    | 'SGD'
+    | 'SHP'
+    | 'SLL'
+    | 'SOS'
+    | 'SRD'
+    | 'SSP'
+    | 'STD'
+    | 'STN'
+    | 'SVC'
+    | 'SYP'
+    | 'SZL'
+    | 'THB'
+    | 'TJS'
+    | 'TMT'
+    | 'TND'
+    | 'TOP'
+    | 'TRY'
+    | 'TTD'
+    | 'TWD'
+    | 'TZS'
+    | 'UAH'
+    | 'UGX'
+    | 'USD'
+    | 'UYU'
+    | 'UZS'
+    | 'VEF'
+    | 'VES'
+    | 'VND'
+    | 'VUV'
+    | 'WST'
+    | 'XAF'
+    | 'XCD'
+    | 'XOF'
+    | 'XPF'
+    | 'YER'
+    | 'ZAR'
+    | 'ZMW'
+    | 'ZWL';
+  isPersonal: boolean;
+  limits: CurrencyLimit[];
+  disabledMccGroups: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+  disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+
+  /** @example DEBIT */
+  binType?: 'DEBIT';
+
+  /** @example DEBIT */
+  fundingType?: 'POOLED' | 'INDIVIDUAL';
+  shippingAddress?: Address;
+}
+
+export interface IssueCardResponse {
+  /** @format uuid */
+  cardId: string;
+
+  /** Error message for any records that failed. Will be null if successful */
+  errorMessage?: string;
+}
+
+export interface SearchCardRequest {
+  pageRequest: PageRequest;
+  users?: string[];
+  allocations?: string[];
+  searchText?: string;
+  balance?: FilterAmount;
+  statuses?: ('ACTIVE' | 'INACTIVE' | 'CANCELLED')[];
+  types?: ('PHYSICAL' | 'VIRTUAL')[];
+}
+
+export interface ItemTypedIdAllocationId {
+  /** @format uuid */
+  id?: string;
+  name?: string;
+}
+
+export interface PagedDataSearchCardData {
+  /** @format int32 */
+  pageNumber?: number;
+
+  /** @format int32 */
+  pageSize?: number;
+
+  /** @format int64 */
+  totalElements?: number;
+  content?: SearchCardData[];
+}
+
+export interface SearchCardData {
+  /** @format uuid */
+  cardId?: string;
+  cardNumber?: string;
+  user?: UserData;
+  allocation?: ItemTypedIdAllocationId;
+  balance?: Amount;
+  cardStatus?: 'ACTIVE' | 'INACTIVE' | 'CANCELLED';
+  cardType?: 'PHYSICAL' | 'VIRTUAL';
+  activated?: boolean;
+
+  /** @format date-time */
+  activationDate?: string;
+}
+
+export interface RevealCardRequest {
+  /** @format uuid */
+  cardId?: string;
+  nonce?: string;
+}
+
+export interface RevealCardResponse {
+  externalRef?: string;
+  ephemeralKey?: string;
+}
+
+export interface EphemeralKeyRequest {
+  /** @format uuid */
+  cardId?: string;
+  apiVersion?: string;
+}
+
+export interface CardStatementRequest {
+  /** @format uuid */
+  cardId?: string;
+
+  /** @format date-time */
+  startDate?: string;
+
+  /** @format date-time */
+  endDate?: string;
+}
+
+export interface UpdateAllocationBalanceRequest {
+  amount: Amount;
+
+  /** @example CSR credit */
+  notes: string;
+}
+
+export interface UpdateAllocationBalanceResponse {
+  /** @format uuid */
+  adjustmentId?: string;
+  ledgerBalance?: Amount;
+}
+
+export interface UpdateBusiness {
+  legalName?: string;
+  businessName?: string;
+  businessType?:
+    | 'INDIVIDUAL'
+    | 'SOLE_PROPRIETORSHIP'
+    | 'SINGLE_MEMBER_LLC'
+    | 'MULTI_MEMBER_LLC'
+    | 'PRIVATE_PARTNERSHIP'
+    | 'PUBLIC_PARTNERSHIP'
+    | 'PRIVATE_CORPORATION'
+    | 'PUBLIC_CORPORATION'
+    | 'INCORPORATED_NON_PROFIT';
+  employerIdentificationNumber?: string;
+
+  /**
+   * Phone number in e.164 format
+   * @example +1234567890
+   */
+  businessPhone?: string;
+  address?: Address;
+  mcc?: string;
+  description?: string;
+  url?: string;
+}
+
+export interface BusinessReallocationRequest {
+  /** @format uuid */
+  allocationIdFrom?: string;
+
+  /** @format uuid */
+  allocationIdTo?: string;
+  amount?: Amount;
+}
+
+export interface BusinessFundAllocationResponse {
+  /** @format uuid */
+  adjustmentIdFrom?: string;
+  ledgerBalanceFrom?: Amount;
+
+  /** @format uuid */
+  adjustmentIdTo?: string;
+  ledgerBalanceTo?: Amount;
+}
+
+export interface SearchBusinessAllocationRequest {
+  name: string;
+}
+
+export interface Account {
+  /** @format uuid */
+  accountId: string;
+
+  /** @format uuid */
+  businessId: string;
+
+  /** @format uuid */
+  allocationId: string;
+
+  /** @format uuid */
+  ledgerAccountId: string;
+  type: 'ALLOCATION' | 'CARD';
+
+  /** @format uuid */
+  cardId?: string;
+  ledgerBalance: Amount;
+  availableBalance?: Amount;
+}
+
+export interface Allocation {
+  /** @format uuid */
+  allocationId: string;
+  name: string;
+
+  /** @format uuid */
+  ownerId: string;
+  account: Account;
+
+  /** @format uuid */
+  parentAllocationId?: string;
+  childrenAllocationIds?: string[];
+}
+
+export interface UpdateBusinessAccountingStepRequest {
+  accountingSetupStep?: 'ADD_CREDIT_CARD' | 'MAP_CATEGORIES' | 'COMPLETE';
+}
+
+export interface CreateOrUpdateBusinessProspectRequest {
+  /**
+   * Email address of the prospect
+   * @pattern ^[^@]+@[^@.]+\.[^@]+$
+   * @example johnw@hightable.com
+   */
+  email: string;
+
+  /**
+   * The first name of the person
+   * @example John
+   */
+  firstName: string;
+
+  /**
+   * The last name of the person
+   * @example Wick
+   */
+  lastName: string;
+
+  /**
+   * The Business type
+   * @example SINGLE_MEMBER_LLC
+   */
+  businessType?:
+    | 'INDIVIDUAL'
+    | 'SOLE_PROPRIETORSHIP'
+    | 'SINGLE_MEMBER_LLC'
+    | 'MULTI_MEMBER_LLC'
+    | 'PRIVATE_PARTNERSHIP'
+    | 'PUBLIC_PARTNERSHIP'
+    | 'PRIVATE_CORPORATION'
+    | 'PUBLIC_CORPORATION'
+    | 'INCORPORATED_NON_PROFIT';
+
+  /**
+   * Relationship to business Owner
+   * @example true
+   */
+  relationshipOwner?: boolean;
+
+  /**
+   * Relationship to business Executive
+   * @example true
+   */
+  relationshipExecutive?: boolean;
+
+  /**
+   * Terms of Service and Privacy Policy Acceptance
+   * @example true
+   */
+  tosAndPrivacyPolicyAcceptance: boolean;
+}
+
+export interface CreateBusinessProspectResponse {
+  /** @format uuid */
+  businessProspectId?: string;
+  businessProspectStatus?: 'NEW' | 'EMAIL_VERIFIED' | 'MOBILE_VERIFIED' | 'COMPLETED';
+}
+
+export interface ValidateBusinessProspectIdentifierRequest {
+  /**
+   * Type of Identifier to validate
+   * @example EMAIL
+   */
+  identifierType?: 'EMAIL' | 'PHONE';
+
+  /**
+   * OTP received via email/phone
+   * @example 67890
+   */
+  otp?: string;
+}
+
+export interface ValidateIdentifierResponse {
+  /** @example true */
+  'If email already exist on the system. User can login, reset password or use another email'?: boolean;
+}
+
+export interface SetBusinessProspectPhoneRequest {
+  /**
+   * Phone number in e.164 format
+   * @pattern ^\+[1-9][0-9]{9,14}$
+   * @example +1234567890
+   */
+  phone?: string;
+}
+
+export interface SetBusinessProspectPasswordRequest {
+  /** @example excommunicado */
+  password?: string;
+}
+
+export interface ConvertBusinessProspectRequest {
+  legalName: string;
+
+  /** @pattern ^[1-9][0-9]{8}$ */
+  employerIdentificationNumber: string;
+
+  /**
+   * Phone number in e.164 format
+   * @pattern ^\+[1-9][0-9]{9,14}$
+   * @example +1234567890
+   */
+  businessPhone: string;
+  address?: Address;
+  mcc: string;
+
+  /**
+   * Description
+   * @example Business small description
+   */
+  description: string;
+
+  /**
+   * Doing business as name if is different by company name
+   * @example business
+   */
+  businessName?: string;
+
+  /**
+   * Business url
+   * @example https://fecebook.com/business
+   */
+  url?: string;
+}
+
+export interface ConvertBusinessProspectResponse {
+  business?: Business;
+
+  /** @format uuid */
+  businessOwnerId?: string;
+  errorMessages?: string[];
+}
+
+export interface OwnersProvidedRequest {
+  /** No other owners to provide */
+  noOtherOwnersToProvide?: boolean;
+
+  /** No executive to provide */
+  noExecutiveToProvide?: boolean;
+}
+
+export interface OwnersProvidedResponse {
+  business: Business;
+
+  /** Error message for any records that failed. Will be null if successful */
+  errorMessages?: string[];
+}
+
+export interface CreateOrUpdateBusinessOwnerRequest {
+  /** @format uuid */
+  id?: string;
+
+  /**
+   * The first name of the person
+   * @example John
+   */
+  firstName: string;
+
+  /**
+   * The last name of the person
+   * @example Wick
+   */
+  lastName: string;
+
+  /**
+   * Relationship to business Owner
+   * @example true
+   */
+  relationshipOwner?: boolean;
+
+  /**
+   * Relationship to business Executive
+   * @example true
+   */
+  relationshipExecutive?: boolean;
+
+  /**
+   * Percentage Ownership from business
+   * @example 25
+   */
+  percentageOwnership?: number;
+
+  /**
+   * Title on business
+   * @example CEO
+   */
+  title?: string;
+
+  /**
+   * The date of birth of the person
+   * @format date
+   * @example 1990-01-01
+   */
+  dateOfBirth: string;
+
+  /**
+   * The tax identification number of the person
+   * @example 091827364
+   */
+  taxIdentificationNumber: string;
+
+  /**
+   * Email address of the person
+   * @pattern ^[^@]+@[^@.]+\.[^@]+$
+   * @example johnw@hightable.com
+   */
+  email: string;
+
+  /**
+   * Phone address of the person
+   * @pattern ^\+[1-9][0-9]{9,14}$
+   * @example +12345679
+   */
+  phone?: string;
+  address?: Address;
+
+  /**
+   * Indication if business owner is updated during the onboarding process
+   * @example false
+   */
+  isOnboarding?: boolean;
+}
+
+export interface CreateBusinessOwnerResponse {
+  /** @format uuid */
+  businessOwnerId: string;
+
+  /** Error message for any records that failed. Will be null if successful */
+  errorMessages?: string[];
+}
+
+export interface BusinessNotification {
+  /** @format uuid */
+  businessId?: string;
+
+  /** @format uuid */
+  userId?: string;
+  type?:
+    | 'CHART_OF_ACCOUNTS_CREATED'
+    | 'CHART_OF_ACCOUNTS_DELETED'
+    | 'CHART_OF_ACCOUNTS_RENAMED'
+    | 'USER_ACCEPTED_COA_CHANGES';
+  data?: BusinessNotificationData;
+
+  /** @format int64 */
+  version?: number;
+
+  /** @format date-time */
+  created?: string;
+
+  /** @format date-time */
+  updated?: string;
+
+  /** @format uuid */
+  id?: string;
+}
+
+export interface BusinessNotificationData {
+  oldValue?: string;
+  newValue?: string;
+}
+
+export interface TwoFactorStartLoggedInResponse {
+  twoFactorId?: string;
+  methodId?: string;
+}
+
+export interface DeviceInfo {
+  description?: string;
+  lastAccessedAddress?: string;
+
+  /** @format date-time */
+  lastAccessedInstant?: string;
+  name?: string;
+  type?:
+    | 'BROWSER'
+    | 'DESKTOP'
+    | 'LAPTOP'
+    | 'MOBILE'
+    | 'OTHER'
+    | 'SERVER'
+    | 'TABLET'
+    | 'TV'
+    | 'UNKNOWN';
+}
+
+export interface EventInfo {
+  data?: Record<string, object>;
+  deviceDescription?: string;
+  deviceName?: string;
+  deviceType?: string;
+  ipAddress?: string;
+  location?: Location;
+  os?: string;
+  userAgent?: string;
+}
+
+export interface Location {
+  city?: string;
+  country?: string;
+
+  /** @format double */
+  latitude?: number;
+
+  /** @format double */
+  longitude?: number;
+  region?: string;
+  zipcode?: string;
+  displayString?: string;
+}
+
+export interface MetaData {
+  device?: DeviceInfo;
+  scopes?: string[];
+}
+
+export interface TwoFactorLoginRequest {
+  eventInfo?: EventInfo;
+
+  /** @format uuid */
+  applicationId?: string;
+  ipAddress?: string;
+  metaData?: MetaData;
+  newDevice?: boolean;
+  noJWT?: boolean;
+  code?: string;
+  trustComputer?: boolean;
+  twoFactorId?: string;
+
+  /** @format uuid */
+  userId?: string;
+}
+
+export interface RelationshipToBusiness {
+  owner?: boolean;
+  executive?: boolean;
+  representative?: boolean;
+  director?: boolean;
+}
+
+export interface UserLoginResponse {
+  twoFactorId?: string;
+  changePasswordId?: string;
+  changePasswordReason?: 'Administrative' | 'Breached' | 'Expired' | 'Validation';
+
+  /** @format uuid */
+  userId?: string;
+
+  /** @format uuid */
+  businessId?: string;
+  type?: 'EMPLOYEE' | 'BUSINESS_OWNER';
+  firstName?: string;
+  lastName?: string;
+  address?: Address;
+  email?: string;
+  phone?: string;
+  archived?: boolean;
+  relationshipToBusiness?: RelationshipToBusiness;
+}
+
+export interface FirstTwoFactorValidateRequest {
+  code?: string;
+  method?: 'email' | 'sms' | 'authenticator';
+  destination?: string;
+}
+
+export interface TwoFactorResponse {
+  recoveryCodes?: string[];
+}
+
+export interface FirstTwoFactorSendRequest {
+  destination?: string;
+  method?: 'email' | 'sms' | 'authenticator';
+}
+
+export interface ResetPasswordRequest {
+  changePasswordId?: string;
+  newPassword?: string;
+}
+
+export interface LoginRequest {
+  username?: string;
+  password?: string;
+}
+
+export interface ForgotPasswordRequest {
+  email?: string;
+}
+
+export interface ChangePasswordRequest {
+  username?: string;
+  currentPassword?: string;
+  newPassword?: string;
+}
+
+export interface ChangePasswordResponse {
+  oneTimePassword?: string;
+  state?: Record<string, object>;
+}
+
+export interface CreateAllocationRequest {
+  /**
+   * name of the department/ allocation
+   * @example advertisement
+   */
+  name: string;
+
+  /**
+   * @format uuid
+   * @example 48104ecb-1343-4cc1-b6f2-e6cc88e9a80f
+   */
+  parentAllocationId: string;
+
+  /** @format uuid */
+  ownerId: string;
+  amount: Amount;
+  limits: CurrencyLimit[];
+  disabledMccGroups: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+  disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+}
+
+export interface CreateAllocationResponse {
+  /** @format uuid */
+  allocationId: string;
+}
+
+export interface AllocationFundCardRequest {
+  /**
+   * @format uuid
+   * @example 48104ecb-1343-4cc1-b6f2-e6cc88e9a80f
+   */
+  allocationAccountId: string;
+
+  /**
+   * @format uuid
+   * @example 48104ecb-1343-4cc1-b6f2-e6cc88e9a80f
+   */
+  cardId: string;
+
+  /** @example DEPOSIT */
+  reallocationType: 'ALLOCATION_TO_CARD' | 'CARD_TO_ALLOCATION';
+  amount: Amount;
+}
+
+export interface AllocationFundCardResponse {
+  /** @format uuid */
+  businessAdjustmentId?: string;
+  businessLedgerBalance?: Amount;
+
+  /** @format uuid */
+  allocationAdjustmentId?: string;
+  allocationLedgerBalance?: Amount;
+}
+
 export interface LedgerActivityRequest {
   /** @format uuid */
   allocationId?: string;
+
+  /** @format uuid */
+  userId?: string;
+
+  /** @format uuid */
+  cardId?: string;
   searchText?: string;
   types?: (
-    | 'BANK_DEPOSIT'
+    | 'BANK_DEPOSIT_STRIPE'
+    | 'BANK_DEPOSIT_ACH'
+    | 'BANK_DEPOSIT_WIRE'
     | 'BANK_DEPOSIT_RETURN'
-    | 'BANK_LINK'
-    | 'BANK_UNLINK'
     | 'BANK_WITHDRAWAL'
     | 'BANK_WITHDRAWAL_RETURN'
     | 'MANUAL'
     | 'NETWORK_AUTHORIZATION'
     | 'NETWORK_CAPTURE'
+    | 'NETWORK_REFUND'
     | 'REALLOCATE'
     | 'FEE'
+    | 'CARD_FUND_RETURN'
   )[];
 
   /** @format date-time */
@@ -1685,6 +2361,11 @@ export interface LedgerActivityRequest {
   to?: string;
   statuses?: ('PENDING' | 'DECLINED' | 'APPROVED' | 'CANCELED' | 'CREDIT' | 'PROCESSED')[];
   amount?: FilterAmount;
+  categories?: string[];
+  withReceipt?: boolean;
+  withoutReceipt?: boolean;
+  syncStatus?: ('SYNCED_LOCKED' | 'READY' | 'NOT_READY')[];
+  missingExpenseCategory?: boolean;
   pageRequest: PageRequest;
 }
 
@@ -1710,20 +2391,24 @@ export interface LedgerActivityResponse {
   /** @format date-time */
   activityTime?: string;
   type?:
-    | 'BANK_DEPOSIT'
+    | 'BANK_DEPOSIT_STRIPE'
+    | 'BANK_DEPOSIT_ACH'
+    | 'BANK_DEPOSIT_WIRE'
     | 'BANK_DEPOSIT_RETURN'
-    | 'BANK_LINK'
-    | 'BANK_UNLINK'
     | 'BANK_WITHDRAWAL'
     | 'BANK_WITHDRAWAL_RETURN'
     | 'MANUAL'
     | 'NETWORK_AUTHORIZATION'
     | 'NETWORK_CAPTURE'
+    | 'NETWORK_REFUND'
     | 'REALLOCATE'
-    | 'FEE';
+    | 'FEE'
+    | 'CARD_FUND_RETURN';
   status?: 'PENDING' | 'DECLINED' | 'APPROVED' | 'CANCELED' | 'CREDIT' | 'PROCESSED';
   user?: LedgerUser;
   amount?: Amount;
+  requestedAmount?: Amount;
+  syncStatus?: 'SYNCED_LOCKED' | 'READY' | 'NOT_READY';
   hold?: LedgerHoldInfo;
   sourceAccount?:
     | LedgerAllocationAccount
@@ -1735,6 +2420,18 @@ export interface LedgerActivityResponse {
     | LedgerBankAccount
     | LedgerCardAccount
     | LedgerMerchantAccount;
+  receipt?: ReceiptDetails;
+  notes?: string;
+  expenseDetails?: ExpenseDetails;
+
+  /** @format date-time */
+  lastSyncTime?: string;
+  declineDetails?:
+    | DeclineDetails
+    | AddressPostalCodeMismatch
+    | LimitExceeded
+    | OperationLimitExceeded
+    | SpendControlViolated;
 }
 
 export type LedgerAllocationAccount = LedgerAccount & { allocationInfo?: AllocationInfo };
@@ -2606,6 +3303,377 @@ export interface CardDetailsResponse {
   disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
 }
 
+export interface BusinessLimit {
+  limits?: LimitRecord[];
+  operationLimits?: LimitOperationRecord[];
+
+  /** @format int32 */
+  issuedPhysicalCardsLimit?: number;
+
+  /** @format int32 */
+  issuedPhysicalCardsTotal?: number;
+}
+
+export interface BusinessLimitOperationRecord {
+  businessLimitType?: 'ACH_DEPOSIT' | 'ACH_WITHDRAW' | 'PURCHASE';
+  limitOperationPeriods?: LimitPeriodOperationRecord[];
+}
+
+export interface BusinessLimitRecord {
+  businessLimitType?: 'ACH_DEPOSIT' | 'ACH_WITHDRAW' | 'PURCHASE';
+  limitPeriods?: LimitPeriodRecord[];
+}
+
+export interface LimitOperationRecord {
+  currency?:
+    | 'UNSPECIFIED'
+    | 'AED'
+    | 'AFN'
+    | 'ALL'
+    | 'AMD'
+    | 'ANG'
+    | 'AOA'
+    | 'ARS'
+    | 'AUD'
+    | 'AWG'
+    | 'AZN'
+    | 'BAM'
+    | 'BBD'
+    | 'BDT'
+    | 'BGN'
+    | 'BHD'
+    | 'BIF'
+    | 'BMD'
+    | 'BND'
+    | 'BOB'
+    | 'BRL'
+    | 'BSD'
+    | 'BTN'
+    | 'BWP'
+    | 'BYN'
+    | 'BYR'
+    | 'BZD'
+    | 'CAD'
+    | 'CDF'
+    | 'CHF'
+    | 'CLP'
+    | 'CNY'
+    | 'COP'
+    | 'CRC'
+    | 'CUC'
+    | 'CUP'
+    | 'CVE'
+    | 'CZK'
+    | 'DJF'
+    | 'DKK'
+    | 'DOP'
+    | 'DZD'
+    | 'EGP'
+    | 'ERN'
+    | 'ETB'
+    | 'EUR'
+    | 'FJD'
+    | 'FKP'
+    | 'GBP'
+    | 'GEL'
+    | 'GHS'
+    | 'GIP'
+    | 'GMD'
+    | 'GNF'
+    | 'GTQ'
+    | 'GYD'
+    | 'HKD'
+    | 'HNL'
+    | 'HRK'
+    | 'HTG'
+    | 'HUF'
+    | 'IDR'
+    | 'ILS'
+    | 'INR'
+    | 'IQD'
+    | 'IRR'
+    | 'ISK'
+    | 'JMD'
+    | 'JOD'
+    | 'JPY'
+    | 'KES'
+    | 'KGS'
+    | 'KHR'
+    | 'KMF'
+    | 'KPW'
+    | 'KRW'
+    | 'KWD'
+    | 'KYD'
+    | 'KZT'
+    | 'LAK'
+    | 'LBP'
+    | 'LKR'
+    | 'LRD'
+    | 'LSL'
+    | 'LTL'
+    | 'LYD'
+    | 'MAD'
+    | 'MDL'
+    | 'MGA'
+    | 'MKD'
+    | 'MMK'
+    | 'MNT'
+    | 'MOP'
+    | 'MRO'
+    | 'MRU'
+    | 'MUR'
+    | 'MVR'
+    | 'MWK'
+    | 'MXN'
+    | 'MYR'
+    | 'MZN'
+    | 'NAD'
+    | 'NGN'
+    | 'NIO'
+    | 'NOK'
+    | 'NPR'
+    | 'NZD'
+    | 'OMR'
+    | 'PAB'
+    | 'PEN'
+    | 'PGK'
+    | 'PHP'
+    | 'PKR'
+    | 'PLN'
+    | 'PYG'
+    | 'QAR'
+    | 'RON'
+    | 'RSD'
+    | 'RUB'
+    | 'RUR'
+    | 'RWF'
+    | 'SAR'
+    | 'SBD'
+    | 'SCR'
+    | 'SDG'
+    | 'SEK'
+    | 'SGD'
+    | 'SHP'
+    | 'SLL'
+    | 'SOS'
+    | 'SRD'
+    | 'SSP'
+    | 'STD'
+    | 'STN'
+    | 'SVC'
+    | 'SYP'
+    | 'SZL'
+    | 'THB'
+    | 'TJS'
+    | 'TMT'
+    | 'TND'
+    | 'TOP'
+    | 'TRY'
+    | 'TTD'
+    | 'TWD'
+    | 'TZS'
+    | 'UAH'
+    | 'UGX'
+    | 'USD'
+    | 'UYU'
+    | 'UZS'
+    | 'VEF'
+    | 'VES'
+    | 'VND'
+    | 'VUV'
+    | 'WST'
+    | 'XAF'
+    | 'XCD'
+    | 'XOF'
+    | 'XPF'
+    | 'YER'
+    | 'ZAR'
+    | 'ZMW'
+    | 'ZWL';
+  businessLimitOperations?: BusinessLimitOperationRecord[];
+}
+
+export interface LimitPeriodOperationRecord {
+  period?: 'INSTANT' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
+
+  /** @format int32 */
+  value?: number;
+}
+
+export interface LimitPeriodRecord {
+  period?: 'INSTANT' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
+  value?: number;
+}
+
+export interface LimitRecord {
+  currency?:
+    | 'UNSPECIFIED'
+    | 'AED'
+    | 'AFN'
+    | 'ALL'
+    | 'AMD'
+    | 'ANG'
+    | 'AOA'
+    | 'ARS'
+    | 'AUD'
+    | 'AWG'
+    | 'AZN'
+    | 'BAM'
+    | 'BBD'
+    | 'BDT'
+    | 'BGN'
+    | 'BHD'
+    | 'BIF'
+    | 'BMD'
+    | 'BND'
+    | 'BOB'
+    | 'BRL'
+    | 'BSD'
+    | 'BTN'
+    | 'BWP'
+    | 'BYN'
+    | 'BYR'
+    | 'BZD'
+    | 'CAD'
+    | 'CDF'
+    | 'CHF'
+    | 'CLP'
+    | 'CNY'
+    | 'COP'
+    | 'CRC'
+    | 'CUC'
+    | 'CUP'
+    | 'CVE'
+    | 'CZK'
+    | 'DJF'
+    | 'DKK'
+    | 'DOP'
+    | 'DZD'
+    | 'EGP'
+    | 'ERN'
+    | 'ETB'
+    | 'EUR'
+    | 'FJD'
+    | 'FKP'
+    | 'GBP'
+    | 'GEL'
+    | 'GHS'
+    | 'GIP'
+    | 'GMD'
+    | 'GNF'
+    | 'GTQ'
+    | 'GYD'
+    | 'HKD'
+    | 'HNL'
+    | 'HRK'
+    | 'HTG'
+    | 'HUF'
+    | 'IDR'
+    | 'ILS'
+    | 'INR'
+    | 'IQD'
+    | 'IRR'
+    | 'ISK'
+    | 'JMD'
+    | 'JOD'
+    | 'JPY'
+    | 'KES'
+    | 'KGS'
+    | 'KHR'
+    | 'KMF'
+    | 'KPW'
+    | 'KRW'
+    | 'KWD'
+    | 'KYD'
+    | 'KZT'
+    | 'LAK'
+    | 'LBP'
+    | 'LKR'
+    | 'LRD'
+    | 'LSL'
+    | 'LTL'
+    | 'LYD'
+    | 'MAD'
+    | 'MDL'
+    | 'MGA'
+    | 'MKD'
+    | 'MMK'
+    | 'MNT'
+    | 'MOP'
+    | 'MRO'
+    | 'MRU'
+    | 'MUR'
+    | 'MVR'
+    | 'MWK'
+    | 'MXN'
+    | 'MYR'
+    | 'MZN'
+    | 'NAD'
+    | 'NGN'
+    | 'NIO'
+    | 'NOK'
+    | 'NPR'
+    | 'NZD'
+    | 'OMR'
+    | 'PAB'
+    | 'PEN'
+    | 'PGK'
+    | 'PHP'
+    | 'PKR'
+    | 'PLN'
+    | 'PYG'
+    | 'QAR'
+    | 'RON'
+    | 'RSD'
+    | 'RUB'
+    | 'RUR'
+    | 'RWF'
+    | 'SAR'
+    | 'SBD'
+    | 'SCR'
+    | 'SDG'
+    | 'SEK'
+    | 'SGD'
+    | 'SHP'
+    | 'SLL'
+    | 'SOS'
+    | 'SRD'
+    | 'SSP'
+    | 'STD'
+    | 'STN'
+    | 'SVC'
+    | 'SYP'
+    | 'SZL'
+    | 'THB'
+    | 'TJS'
+    | 'TMT'
+    | 'TND'
+    | 'TOP'
+    | 'TRY'
+    | 'TTD'
+    | 'TWD'
+    | 'TZS'
+    | 'UAH'
+    | 'UGX'
+    | 'USD'
+    | 'UYU'
+    | 'UZS'
+    | 'VEF'
+    | 'VES'
+    | 'VND'
+    | 'VUV'
+    | 'WST'
+    | 'XAF'
+    | 'XCD'
+    | 'XOF'
+    | 'XPF'
+    | 'YER'
+    | 'ZAR'
+    | 'ZMW'
+    | 'ZWL';
+  businessLimits?: BusinessLimitRecord[];
+}
+
 export interface UpdateAllocationRequest {
   /**
    * name of the department/ allocation
@@ -2724,10 +3792,10 @@ export interface UserAllocationRolesResponse {
 
 export interface UserRolesAndPermissionsRecord {
   /** @format uuid */
-  userAllocationRoleId?: string;
+  allocationId: string;
 
   /** @format uuid */
-  allocationId: string;
+  parentAllocationId?: string;
   user?: UserData;
   allocationRole?: string;
   inherited?: boolean;
@@ -2749,7 +3817,7 @@ export interface UserRolesAndPermissionsRecord {
     | 'GLOBAL_READ'
     | 'CUSTOMER_SERVICE'
     | 'CUSTOMER_SERVICE_MANAGER'
-    | 'SYSTEM'
+    | 'APPLICATION'
   )[];
 }
 
@@ -2765,6 +3833,11 @@ export interface TermsAndConditionsResponse {
   documentTimestamp?: string;
 }
 
+export interface AllocationsAndPermissionsResponse {
+  allocations?: Allocation[];
+  userRoles?: UserRolesAndPermissionsRecord[];
+}
+
 export interface CreateTestDataResponse {
   businesses?: TestBusiness[];
 }
@@ -2776,7 +3849,6 @@ export interface CreateUpdateUserRecord {
 
 export interface TestBusiness {
   business?: Business;
-  users?: User[];
   allocations?: Allocation[];
   cards?: Card[];
   createUserRecords?: CreateUpdateUserRecord[];
@@ -2792,7 +3864,19 @@ export interface BusinessOwner {
   type?: 'UNSPECIFIED' | 'PRINCIPLE_OWNER' | 'ULTIMATE_BENEFICIAL_OWNER';
   firstName?: NullableEncryptedString;
   lastName?: NullableEncryptedString;
+  title?: string;
+  relationshipOwner?: boolean;
+  relationshipRepresentative?: boolean;
+  relationshipExecutive?: boolean;
+  relationshipDirector?: boolean;
+  percentageOwnership?: number;
+  address?: Address;
+  taxIdentificationNumber?: NullableEncryptedString;
   email?: string;
+  phone?: string;
+
+  /** @format date */
+  dateOfBirth?: string;
   countryOfCitizenship?:
     | 'UNSPECIFIED'
     | 'ABW'
@@ -3042,21 +4126,9 @@ export interface BusinessOwner {
     | 'ZAF'
     | 'ZMB'
     | 'ZWE';
+  subjectRef?: string;
   knowYourCustomerStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
   status?: 'ACTIVE' | 'RETIRED';
-  title?: string;
-  relationshipOwner?: boolean;
-  relationshipRepresentative?: boolean;
-  relationshipExecutive?: boolean;
-  relationshipDirector?: boolean;
-  percentageOwnership?: number;
-  address?: Address;
-  taxIdentificationNumber?: NullableEncryptedString;
-  phone?: string;
-
-  /** @format date */
-  dateOfBirth?: string;
-  subjectRef?: string;
   stripePersonReference?: string;
 
   /** @format int64 */
@@ -3083,22 +4155,9 @@ export interface NullableEncryptedString {
   encrypted?: string;
 }
 
-export interface ExpenseCategory {
+export interface SyncCountResponse {
   /** @format int32 */
-  iconRef?: number;
-  categoryName?: string;
-  expenseCategoryId?: string;
-  status?: string;
-}
-
-export interface CodatAccountNested {
-  id?: string;
-  name?: string;
-  status?: string;
-  fullyQualifiedCategory?: string;
-  fullyQualifiedName?: string;
-  type?: string;
-  children?: CodatAccountNested[];
+  count?: number;
 }
 
 export interface CodatAccountNestedResponse {
@@ -3112,14 +4171,6 @@ export interface CodatBankAccount {
 
 export interface CodatBankAccountsResponse {
   results?: CodatBankAccount[];
-}
-
-export interface BusinessLimit {
-  /** @format int32 */
-  issuedPhysicalCardsLimit?: number;
-
-  /** @format int32 */
-  issuedPhysicalCardsTotal?: number;
 }
 
 export interface BusinessProspectData {

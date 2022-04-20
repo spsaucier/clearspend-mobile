@@ -267,6 +267,7 @@ export default {
       unfreezeSuccessToast: 'Card has been unfrozen',
       freezeErrorToast: 'Card could not be frozen',
       unfreezeErrorToast: 'Card could not be unfrozen',
+      spendControls: 'Spend Controls',
     },
   },
   activateCard: {
@@ -324,6 +325,8 @@ export default {
       changePassword: 'Change Password',
       changeCompany: 'Change Company',
       logOut: 'Log out',
+      admin: 'Admin',
+      manager: 'Manager',
     },
     appVersion: 'App version: {{appVersion}}',
     loginOptions: {
@@ -393,5 +396,10 @@ export default {
     acceptAndContinue: 'Accept and continue',
     cancelAndLogout: 'Cancel and log out',
     error: 'Unable to accept terms and conditions',
+  },
+  adminOptions: {
+    viewEmployees: 'View employees',
+    issueACard: 'Issue a card',
+    increaseALimit: 'Increase a limit',
   },
 };

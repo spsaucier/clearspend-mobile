@@ -53,6 +53,7 @@ export enum MainScreens {
   Profile = 'Profile',
   ProfileScreen = 'Profile Screen',
   UpdatedTermsAndConditionsScreen = 'Updated Terms and Conditions',
+  AdminScreen = 'Admin Screen',
 
   // Wallet and Cards
   AddReceipt = 'Add Receipt',
@@ -101,6 +102,7 @@ export type MainStackParamTypes = {
   [MainScreens.NotificationSettings]: undefined;
   [MainScreens.Profile]: undefined;
   [MainScreens.ProfileScreen]: undefined;
+  [MainScreens.AdminScreen]: undefined;
 
   // Wallet and Cards
   [MainScreens.AddReceipt]: { accountActivityId: string; cardId: string };

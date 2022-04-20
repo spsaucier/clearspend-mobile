@@ -12,6 +12,7 @@ type Props = {
   titleStyle?: StyleProp<TextStyle>;
   labelStyle?: StyleProp<TextStyle>;
   showBottomBorder?: boolean;
+  borderColor?: string;
 };
 
 export const ProfileMenuRow = ({
@@ -22,6 +23,7 @@ export const ProfileMenuRow = ({
   titleStyle,
   labelStyle,
   showBottomBorder = false,
+  borderColor = 'border-gray-10',
 }: Props) => (
   <>
     <TouchableOpacity
@@ -43,6 +45,6 @@ export const ProfileMenuRow = ({
       </View>
       <ChevronIconThin />
     </TouchableOpacity>
-    {showBottomBorder ? <View style={tw`border-b-1 border-gray-10`} /> : null}
+    {showBottomBorder ? <View style={tw.style('border-b-1', borderColor)} /> : null}
   </>
 );

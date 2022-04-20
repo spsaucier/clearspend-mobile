@@ -43,7 +43,7 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
     <View style={tw`flex-1 justify-center relative`}>
       <Card
         cardId={cardId!}
-        balance={balanceAmount}
+        balance={balanceAmount || 0}
         lastDigits={lastFour!}
         isVirtual={isVirtual}
         isFrozen={isFrozen}

@@ -285,15 +285,17 @@ const TransactionDetailScreenContent = () => {
               onPress={onAssignCategoryModalPress}
             >
               <View style={tw`flex-1 justify-center items-center`}>
-                {expenseDetails && expenseDetails?.status === 'DISABLED' ? (
-                  <QuestionMarkCircleFilledIcon style={tw`h-10`} />
-                ) : null}
                 {isUpdatingTransaction ? (
                   <ActivityIndicator />
-                ) : expenseDetails?.expenseCategoryId && expenseDetails?.categoryName ? (
-                  <CSText style={tw`text-center pt-1`} allowFontScaling={false}>
-                    {expenseDetails.categoryName}
-                  </CSText>
+                ) : expenseDetails?.categoryName ? (
+                  <>
+                    {expenseDetails && !expenseDetails?.expenseCategoryId && (
+                      <QuestionMarkCircleFilledIcon style={tw`h-10`} />
+                    )}
+                    <CSText style={tw`text-center pt-1`} allowFontScaling={false}>
+                      {expenseDetails.categoryName}
+                    </CSText>
+                  </>
                 ) : (
                   <View style={tw`flex-1 justify-center items-center`}>
                     <View style={tw`flex-row mb-2`}>
@@ -313,7 +315,7 @@ const TransactionDetailScreenContent = () => {
             </TouchableOpacity>
           </View>
           <View style={tw`self-center justify-center items-center`}>
-            {expenseDetails && expenseDetails?.status === 'DISABLED' ? (
+            {expenseDetails && !expenseDetails?.expenseCategoryId ? (
               <View style={tw`flex-row mt-2 h-15 w-89 bg-lightError justify-between items-center`}>
                 <ExclamationIcon bgColor={tw.color('error')} style={tw`ml-4`} />
                 <CSText style={tw`text-xs pr-2 text-error ml-2 leading-4 flex-1 flex-shrink`}>

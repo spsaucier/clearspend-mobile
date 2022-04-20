@@ -15,14 +15,19 @@ import { AddressDisplay } from './Components/AddressDisplay';
 import { formatPhone } from '@/Helpers/StringHelpers';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { getCappedFontScale } from '@/Helpers/StyleHelpers';
+import { useAllPermissions } from '@/Queries/permissions';
+import { showAdmin } from '@/Helpers/PermissionsHelpers';
 
 const ProfileScreen = () => {
   const { navigate } = useNavigation();
   const { t } = useTranslation();
   const { isLoading, error, data: user } = useUser();
+  const { data: permissions } = useAllPermissions(user?.businessId!);
   const { logout } = useAuthentication();
   const version = getVersion();
   const buildNumber = getBuildNumber();
+
+  const showAdminRow = showAdmin(permissions);
 
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top', 'bottom']}>
@@ -102,7 +107,17 @@ const ProfileScreen = () => {
                 navigate(MainScreens.LegalDocuments);
               }}
               style={tw`h-14 px-4`}
+              showBottomBorder={showAdminRow}
             />
+            {showAdminRow && (
+              <ProfileMenuRow
+                title={t('profile.profileMenu.admin')}
+                onPress={() => {
+                  navigate(MainScreens.AdminScreen);
+                }}
+                style={tw`h-14 px-4`}
+              />
+            )}
           </View>
         </View>
       </ScrollView>
