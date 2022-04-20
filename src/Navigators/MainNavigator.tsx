@@ -106,7 +106,6 @@ const ProfileStack = () => (
 
 const WalletStack = () => (
   <Stack.Navigator initialRouteName={MainScreens.Wallet} screenOptions={{ headerShown: false }}>
-    <Stack.Screen name={MainScreens.SetBiometricsOrPasscode} component={SetBioPasscodeNavigator} />
     <Stack.Screen name={MainScreens.Wallet} component={WalletScreen} />
     <Stack.Screen name={MainScreens.Notifications} component={NotificationScreen} />
     <Stack.Screen
@@ -147,6 +146,7 @@ const WalletStack = () => (
 const MainNavigator = () => (
   <Stack.Navigator initialRouteName={MainScreens.Home} screenOptions={{ headerShown: false }}>
     <Stack.Screen name={MainScreens.Home} component={WalletStack} />
+    <Stack.Screen name={MainScreens.SetBiometricsOrPasscode} component={SetBioPasscodeNavigator} />
     <Stack.Screen name={MainScreens.ConfirmAuth} component={ConfirmAuthScreen} />
     <Stack.Screen name={MainScreens.EnterMobile} component={EnterMobileScreen} />
     <Stack.Screen name={MainScreens.EnterOTP} component={EnterOTPScreen} />

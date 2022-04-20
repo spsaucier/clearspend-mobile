@@ -10,9 +10,7 @@ const useRequireBioOrPasscodeSetup = () => {
   const [availableBio] = useMMKVString(AVAILABLE_BIO_KEY);
   useEffect(() => {
     if (!loading) {
-      if (!biometricsEnabled && !passcodeEnabled) {
-        setShouldAct(true);
-      }
+      setShouldAct(!biometricsEnabled && !passcodeEnabled);
     }
   }, [biometricsEnabled, loading, passcodeEnabled, availableBio]);
 

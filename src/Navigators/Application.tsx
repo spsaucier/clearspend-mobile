@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AppState } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import messaging from '@react-native-firebase/messaging';
@@ -17,17 +22,43 @@ import { StartupState } from '@/Store/Startup';
 import StartupScreen from '@/Containers/Startup/StartupScreen';
 import { Session } from '@/Store/Session';
 import { mixpanel } from '@/Services/utils/analytics';
-import { TopParams, TopScreens } from './NavigatorTypes';
+import { MainScreens, TopParams, TopScreens } from './NavigatorTypes';
 import AuthProvider from '@/Services/Auth/AuthProvider';
 import { GlobalToast } from '@/Components/GlobalToast';
 import tw from '@/Styles/tailwind';
 import { FocusAwareStatusBar } from '@/Components';
 
 import { Constants } from '@/consts';
+import { useAuthentication } from '@/Hooks/useAuthentication';
+import useRequire2FA from '@/Hooks/useRequire2FA';
+import useRequireBioOrPasscodeSetup from '@/Hooks/useRequireBioOrPasscodeSetup';
 
 const Stack = createStackNavigator<TopParams>();
 
 const queryClient = new QueryClient();
+
+const MainContainer = () => {
+  const { loading, authed, passcodeEnabled, biometricsEnabled } = useAuthentication();
+  const { loading: loading2FA, shouldAct: needs2FA } = useRequire2FA();
+  const { loading: loadingBioPasscode, shouldAct: needsBioPasscode } =
+    useRequireBioOrPasscodeSetup();
+
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+
+  useEffect(() => {
+    if (loading || loading2FA || loadingBioPasscode) return;
+
+    if ((passcodeEnabled || biometricsEnabled) && !authed) {
+      navigation.replace(MainScreens.ConfirmAuth);
+    } else if (needs2FA || needsBioPasscode) {
+      navigation.replace(MainScreens.SetBiometricsOrPasscode);
+    }
+    // passcodeEnabled and biometricsEnabled preferred to not trigger this hook
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, loading2FA, loadingBioPasscode, authed, needs2FA, needsBioPasscode]);
+
+  return <MainNavigator />;
+};
 
 const ApplicationNavigator = () => {
   const routeNameRef = useRef('');
@@ -126,7 +157,7 @@ const ApplicationNavigator = () => {
               />
               <Stack.Screen
                 name={TopScreens.Main}
-                component={MainNavigator}
+                component={MainContainer}
                 options={{
                   animationEnabled: false,
                 }}

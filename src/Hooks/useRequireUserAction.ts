@@ -11,6 +11,10 @@ import useRequire2FA from './useRequire2FA';
 
 // const TERMS_AND_CONDITIONS_LAST_CHECK = 'TERMS_AND_CONDITIONS_LAST_CHECK';
 
+/**
+ * @deprecated The hook is not necessary and must be removed
+ * implement a proper terms and conditions hook and add it to the MainContainer (Application.tsx)
+ */
 const useRequireUserAction = (): void => {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const route = useRoute();

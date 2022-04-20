@@ -1,15 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  AppState,
-  AppStateEvent,
-  AppStateStatus,
-  NativeEventSubscription,
-  Platform,
-} from 'react-native';
+import { AppState, AppStateStatus } from 'react-native';
 import { useEffect, useState } from 'react';
 import { MMKV } from 'react-native-mmkv';
 import { mixpanel } from '@/Services/utils/analytics';
-import { IS_AUTHED, LAST_ACTIVE_KEY } from '@/Store/keys';
+import { LAST_ACTIVE_KEY } from '@/Store/keys';
 
 export const REQUIRE_AUTH_TIMEOUT_SECONDS = 300;
 
@@ -34,11 +28,8 @@ export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void
 
   const onInactive = async () => {
     if (temporarilyDisabled) return;
-
     mixpanel.track('App state changed to inactive/background');
-    if (storage.getBoolean(IS_AUTHED) && !tooLongSinceLastActive()) {
-      storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
-    }
+    storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
   };
 
   const onActive = async () => {
@@ -56,17 +47,8 @@ export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void
   };
 
   useEffect(() => {
-    const listeners: NativeEventSubscription[] = [];
-    if (Platform.OS === 'ios') {
-      listeners.push(AppState.addEventListener('change', handleAppStateChange));
-    } else {
-      listeners.push(AppState.addEventListener('focus' as AppStateEvent, onActive));
-      listeners.push(AppState.addEventListener('blur' as AppStateEvent, onInactive));
-    }
-
-    return () => {
-      listeners.forEach((l) => l.remove());
-    };
+    const subscribe = AppState.addEventListener('change', handleAppStateChange);
+    return () => subscribe.remove();
   }, []);
 
   return {

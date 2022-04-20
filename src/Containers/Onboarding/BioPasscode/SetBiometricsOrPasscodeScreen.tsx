@@ -37,7 +37,7 @@ const SetBiometricsOrPasscodeScreen = () => {
         type: 'success',
         text1: t('profile.updateAuth.success', { method: availableBio }),
       });
-      replace(MainScreens.Wallet);
+      replace(MainScreens.Home);
     }
   };
 

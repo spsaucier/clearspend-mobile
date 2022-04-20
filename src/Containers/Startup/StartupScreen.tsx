@@ -5,13 +5,16 @@ import InitStartup from '@/Store/Startup/Init';
 import tw from '@/Styles/tailwind';
 import { LogoWithTagline } from '@/Components/Svg/LogoWithTagline';
 import { FocusAwareStatusBar } from '@/Components';
+import { useAuthentication } from '@/Hooks/useAuthentication';
 
 const StartupScreen = () => {
   const dispatch = useDispatch();
-
+  const { loading } = useAuthentication();
   useEffect(() => {
+    if (loading) return;
+
     dispatch(InitStartup.action());
-  }, [dispatch]);
+  }, [loading, dispatch]);
 
   return (
     <View style={tw`flex-1 flex-col justify-center items-center bg-secondary`}>

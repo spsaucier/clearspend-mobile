@@ -52,7 +52,6 @@ import {
 } from '@/NativeModules/AppleWallet/AppleWallet';
 import { Session } from '@/Store/Session';
 import { lightFeedback } from '@/Helpers/HapticFeedback';
-import useRequireUserAction from '@/Hooks/useRequireUserAction';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const { height: windowHeight } = Dimensions.get('window');
@@ -321,8 +320,6 @@ const ContentWallet = ({
 };
 
 const WalletScreen = () => {
-  useRequireUserAction();
-
   const { t } = useTranslation();
   const appState = useRef(AppState.currentState);
 
