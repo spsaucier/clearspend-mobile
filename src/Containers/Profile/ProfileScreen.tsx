@@ -22,7 +22,7 @@ const ProfileScreen = () => {
   const { navigate } = useNavigation();
   const { t } = useTranslation();
   const { isLoading, error, data: user } = useUser();
-  const { data: permissions } = useAllPermissions(user?.businessId!);
+  const { data: permissions } = useAllPermissions(user?.businessId);
   const { logout } = useAuthentication();
   const version = getVersion();
   const buildNumber = getBuildNumber();
@@ -111,6 +111,7 @@ const ProfileScreen = () => {
             />
             {showAdminRow && (
               <ProfileMenuRow
+                testID="profile-menu-admin-row"
                 title={t('profile.profileMenu.admin')}
                 onPress={() => {
                   navigate(MainScreens.AdminScreen);

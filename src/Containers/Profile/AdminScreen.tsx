@@ -19,7 +19,7 @@ import { AllocationRoles } from '@/Types/permissions';
 const AdminScreen = () => {
   const { t } = useTranslation();
   const { data: user } = useUser();
-  const { data: permissions } = useAllPermissions(user?.businessId!);
+  const { data: permissions } = useAllPermissions(user?.businessId);
 
   const showManageUsersRow = showManageUsers(permissions);
   const showManageCardsRow = showManageCards(permissions);
@@ -43,6 +43,7 @@ const AdminScreen = () => {
         <View style={tw`bg-white rounded-1`}>
           {showManageUsersRow && (
             <ProfileMenuRow
+              testID="profile-menu-manage-users-row"
               title={t('adminOptions.viewEmployees')}
               onPress={() => {}}
               style={tw`h-14 px-4`}
@@ -52,6 +53,7 @@ const AdminScreen = () => {
           )}
           {showManageCardsRow && (
             <ProfileMenuRow
+              testID="profile-menu-manage-cards-row"
               title={t('adminOptions.issueACard')}
               onPress={() => {}}
               style={tw`h-14 px-4`}
@@ -61,6 +63,7 @@ const AdminScreen = () => {
           )}
           {showManagePermissionsRow && (
             <ProfileMenuRow
+              testID="profile-menu-manage-permissions-row"
               title={t('adminOptions.increaseALimit')}
               onPress={() => {}}
               style={tw`h-14 px-4`}

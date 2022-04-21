@@ -5,6 +5,7 @@ import { ChevronIconThin } from '@/Components/Icons';
 import { CSText } from '@/Components';
 
 type Props = {
+  testID?: string;
   label?: string;
   title?: string;
   onPress: () => void;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export const ProfileMenuRow = ({
+  testID,
   label,
   title,
   onPress,
@@ -27,6 +29,7 @@ export const ProfileMenuRow = ({
 }: Props) => (
   <>
     <TouchableOpacity
+      testID={testID}
       style={[
         tw.style('flex-row justify-between py-2', label ? 'items-start' : 'items-center'),
         style,

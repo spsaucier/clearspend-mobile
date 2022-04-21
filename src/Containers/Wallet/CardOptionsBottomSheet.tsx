@@ -5,20 +5,18 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
-import React, { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/core';
-import Config from 'react-native-config';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import { EyeIcon, SnowflakeIcon, KeyIcon } from '@/Components/Icons';
-import { useFreezeCard, useUnFreezeCard, useCard, useUser } from '@/Queries';
+import { useFreezeCard, useUnFreezeCard, useCard } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
-import { canManagePermissions, getAllocationPermissions } from '@/Helpers/PermissionsHelpers';
-import { useAllPermissions } from '@/Queries/permissions';
+import { useSpendControls } from '@/Hooks/useSpendControls';
 
 type Props = {
   cardId: string | undefined;
@@ -32,21 +30,11 @@ export const CardOptionsBottomSheet = forwardRef(
     const { navigate } = useNavigation();
 
     const { data } = useCard(cardId);
-    const { data: user } = useUser();
-    const { data: permissions } = useAllPermissions(user?.businessId!);
 
-    const allocationPermissions = getAllocationPermissions(
-      permissions?.userRoles,
-      data?.card?.allocationId,
-    );
-    const showSpendControlsRow =
-      Config.SHOW_ADMIN === 'true' &&
-      allocationPermissions &&
-      canManagePermissions(allocationPermissions);
+    const showSpendControlsRow = useSpendControls(data?.card?.allocationId);
 
-    const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], [showSpendControlsRow]);
     const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
-      useBottomSheetDynamicSnapPoints(initialSnapPoints);
+      useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
 
     const [isFrozen, setIsFrozen] = useState<boolean>(isCardFrozen);
 
