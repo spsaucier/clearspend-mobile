@@ -338,6 +338,7 @@
 				62C272EA26A78D9B9BE73A4D /* [CP] Embed Pods Frameworks */,
 				FDB1267E3FF4BFB51F6904EB /* [CP] Copy Pods Resources */,
 				5C4739D50568BDACAEE6E1F5 /* [CP-User] [RNFB] Core Configuration */,
+				A0D0538828108B0000D95AF3 /* Run FullStory Asset Uploader */,
 			);
 			buildRules = (
 			);
@@ -547,6 +548,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		A0D0538828108B0000D95AF3 /* Run FullStory Asset Uploader */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run FullStory Asset Uploader";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILD_DIR%Build/*}/SourcePackages/artifacts/FullStory/\" ]\nthen\n  # XCode 13.2 and older\n  \"${BUILD_DIR%Build/*}/SourcePackages/artifacts/FullStory/tools/FullStoryCommandLine\" \"${CONFIGURATION_BUILD_DIR}/${WRAPPER_NAME}\"\nelif [ -d \"${BUILD_DIR%Build/*}/SourcePackages/artifacts/fullstory-swift-package-ios/\" ]\nthen\n  # XCode 13.3+\n  \"${BUILD_DIR%Build/*}/SourcePackages/artifacts/fullstory-swift-package-ios/tools/FullStoryCommandLine\" \"${CONFIGURATION_BUILD_DIR}/${WRAPPER_NAME}\"\nelse \n  echo \"Error: Unable to find FullStoryCommandLine. Please contact support@fullstory.com for assistance.\"\n  exit 127\nfi\n";
 		};
 		A8ABE8E99E5A75E9243EE496 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

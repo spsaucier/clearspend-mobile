@@ -43,7 +43,10 @@ const ProfileScreen = () => {
             </View>
           ) : (
             <>
-              <CSText style={tw`text-3xl font-montreal font-light text-white mb-10`}>
+              <CSText
+                style={tw`text-3xl font-montreal font-light text-white mb-10`}
+                testID="full-name"
+              >
                 {`${user.firstName} ${user.lastName}`}
               </CSText>
               <View style={tw`flex-row mb-3`}>

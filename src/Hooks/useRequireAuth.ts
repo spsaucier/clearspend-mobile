@@ -2,6 +2,7 @@
 import { AppState, AppStateStatus } from 'react-native';
 import { useEffect, useState } from 'react';
 import { MMKV } from 'react-native-mmkv';
+import FullStory from '@fullstory/react-native';
 import { mixpanel } from '@/Services/utils/analytics';
 import { LAST_ACTIVE_KEY } from '@/Store/keys';
 
@@ -29,11 +30,13 @@ export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void
   const onInactive = async () => {
     if (temporarilyDisabled) return;
     mixpanel.track('App state changed to inactive/background');
+    FullStory.event('App state changed to inactive/background', {});
     storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
   };
 
   const onActive = async () => {
     mixpanel.track('App state changed to active');
+    FullStory.event('App state changed to active', {});
     setTemporarilyDisabled(false);
     onRequireAuth(!tooLongSinceLastActive());
   };

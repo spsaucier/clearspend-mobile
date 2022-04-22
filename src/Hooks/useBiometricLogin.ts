@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { MMKV, useMMKVString } from 'react-native-mmkv';
+import FullStory from '@fullstory/react-native';
 import { mixpanel } from '@/Services/utils/analytics';
 import { useIsMounted } from './useIsMounted';
 import { useBiometrics } from './useBiometrics';
@@ -21,12 +22,14 @@ const useBiometricLogin = (
       const storage = new MMKV();
       setTimeout(async () => {
         const success = await verifyBio();
+        const type = {
+          type: availableBio,
+        };
         if (success) {
           storage.set(IS_AUTHED, true);
           storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
-          mixpanel.track('LoginWithBiometrics', {
-            type: availableBio,
-          });
+          mixpanel.track('LoginWithBiometrics', type);
+          FullStory.event('LoginWithBiometrics', type);
           if (!interceptCallback) {
             successfulBioLogin();
           } else {
@@ -34,9 +37,8 @@ const useBiometricLogin = (
           }
           onSuccessCallback?.();
         } else {
-          mixpanel.track('LoginWithBiometricsFailure', {
-            type: availableBio,
-          });
+          mixpanel.track('LoginWithBiometricsFailure', type);
+          FullStory.event('LoginWithBiometricsFailure', type);
           onCancelCallback?.();
         }
       });

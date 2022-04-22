@@ -62,6 +62,7 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
       >
         <WebView
           ref={webviewRef}
+          testID="stripe-webview"
           originWhitelist={['*']}
           bounces={false}
           style={[tw`bg-transparent`, { opacity: loading ? 0 : 1 }]}

@@ -274,6 +274,11 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
+"@babel/parser@^7.0.0":
+  version "7.17.9"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.17.9.tgz#9c94189a6062f0291418ca021077983058e171ef"
+  integrity sha512-vqUSBLP8dQHFPdPi9bc5GK9vRkYHJ49fsZdtoJ8EQ8ibpwk5rPKfvNIwChB0KVXcIjcepEBBd2VHC5r9Gy8ueg==
+
 "@babel/parser@^7.1.0", "@babel/parser@^7.1.6", "@babel/parser@^7.14.0", "@babel/parser@^7.14.7", "@babel/parser@^7.16.0", "@babel/parser@^7.16.5", "@babel/parser@^7.7.0":
   version "7.16.6"
   resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.16.6.tgz"
@@ -883,6 +888,27 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@expo/sdk-runtime-versions/-/sdk-runtime-versions-1.0.0.tgz#d7ebd21b19f1c6b0395e50d78da4416941c57f7c"
   integrity sha512-Doz2bfiPndXYFPMRwPyGa1k5QaKDVpY806UJj570epIiMzWaYyCtobasyfC++qfIXVb5Ocy7r3tP9d62hAQ7IQ==
+
+"@fullstory/babel-plugin-annotate-react@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@fullstory/babel-plugin-annotate-react/-/babel-plugin-annotate-react-2.2.0.tgz#2bd05d6a28b63a068b5ba5180e5a3860f3339b89"
+  integrity sha512-HNgrDquQtDKowk86z7oOyXlAk1YmhCpIFNiTfkaKyCZnV6ceYo+ynFpd9kBwIPZ99DbIl8XnNHDSaK+aw1zAJQ==
+
+"@fullstory/babel-plugin-react-native@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@fullstory/babel-plugin-react-native/-/babel-plugin-react-native-1.0.1.tgz#20dff889113cc9e531aacec80268c872cdade637"
+  integrity sha512-N1FK2mZRnFXlEIhVkarVfS1akwTklIpPRyvfevMSqgl0pmCbeBPQPrrpecEDeURKh9X0OOQUWrrV0Mor5ZAAjA==
+  dependencies:
+    "@babel/parser" "^7.0.0"
+    "@babel/types" "^7.0.0"
+
+"@fullstory/react-native@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@fullstory/react-native/-/react-native-1.0.4.tgz#96bd08d5d1697769aad89e3a738716cb5c842a8e"
+  integrity sha512-LLbsuHrzKBRNLnf5YpNzyhsACu3emaMTBDeieWV7hnlU3yLZyu7EFS6rX8QdLdUGIZgLk/iYBLbqmn49GYjiBA==
+  dependencies:
+    "@fullstory/babel-plugin-annotate-react" "^2.2.0"
+    "@fullstory/babel-plugin-react-native" "^1.0.1"
 
 "@gorhom/bottom-sheet@^4.1.3":
   version "4.1.5"

@@ -3,9 +3,9 @@ import { Platform } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { useMMKVString } from 'react-native-mmkv';
-
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import FullStory from '@fullstory/react-native';
 import { mixpanel } from '@/Services/utils/analytics';
 import { AuthenticationMethods } from './useAvailableBioMethod';
 import { AVAILABLE_BIO_KEY, BIO_STORAGE_KEY } from '@/Store/keys';
@@ -52,6 +52,7 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
   const requestBiometricPermissionIos = async () => {
     const result = (await request(PERMISSIONS.IOS.FACE_ID)) === RESULTS.GRANTED;
     mixpanel.track('Biometric settings changed', { biometrics_enabled: result });
+    FullStory.event('Biometric settings changed', { biometrics_enabled: result });
     return result;
   };
 
@@ -66,12 +67,14 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
         const permissionsEnabled = await requestBiometricPermission();
         if (!permissionsEnabled) {
           await setBiometricsPublicKey('');
-          mixpanel.track('BiometricDisabled');
+          mixpanel.track('BiometricIsDisabled');
+          FullStory.event('BiometricIsDisabled', {});
         }
         return permissionsEnabled;
       }
 
-      mixpanel.track('BiometricEnabled');
+      mixpanel.track('BiometricIsEnabled');
+      FullStory.event('BiometricIsEnabled', {});
       return true;
     }
     return false;
@@ -105,6 +108,7 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
       return success;
     } catch (e: unknown) {
       mixpanel.track('Error', e as Error);
+      FullStory.log(FullStory.LogLevel.Error, { e, cause: 'FailedBiometricPrompt' });
       console.warn(e);
       setLoading(false);
       return false;
@@ -113,6 +117,7 @@ export const useBiometrics = (setLoggedIn?: (loggedIn: boolean) => void): Return
 
   const disableBiometrics = async () => {
     mixpanel.track('BiometricDisabled');
+    FullStory.event('BiometricDisabled', {});
     await setBiometricsPublicKey('');
     return true;
   };

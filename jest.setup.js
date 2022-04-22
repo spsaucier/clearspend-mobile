@@ -27,6 +27,20 @@ jest.mock('@react-navigation/native', () => ({
   }),
 }));
 
+jest.mock('@fullstory/react-native', () => ({
+  LogLevel: {
+    Info: 'info',
+    Warn: 'warn',
+    Error: 'error'
+  },
+  event: jest.fn(),
+  setUserVars: jest.fn(),
+  restart: jest.fn(),
+  identify: jest.fn(),
+  log: jest.fn(),
+  onReady: jest.fn(),
+}));
+
 jest.mock('@react-navigation/core', () => {
   const actualNav = jest.requireActual('@react-navigation/core');
   return {

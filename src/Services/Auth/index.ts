@@ -1,11 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import Config from 'react-native-config';
 import jwtDecode from 'jwt-decode';
+import FullStory from '@fullstory/react-native';
 import { Session } from '@/Store/Session';
 import { mixpanel } from '../utils/analytics';
 
 const handleError = (ex: any, apiRequest: string) => {
   mixpanel.track('API Error', { apiRequest, error: ex?.response?.data });
+  FullStory.event('API Error', { apiRequest, error: ex?.response?.data });
   return Promise.reject(ex?.response?.data || ex.response || ex);
 };
 

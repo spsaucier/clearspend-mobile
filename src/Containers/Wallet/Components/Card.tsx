@@ -106,6 +106,7 @@ export const Card = ({
   }) => (
     <View style={tw.style(`mb-2`, className)}>
       <CSText
+        testID="card-title"
         style={tw.style('text-xl', darkContent ? 'text-black' : 'text-white')}
         {...titleProps}
       >
@@ -113,6 +114,7 @@ export const Card = ({
       </CSText>
       {allocation ? (
         <CSText
+          testID="card-allocation"
           style={tw.style('text-base mt-0.5', darkContent ? 'text-black' : 'text-white')}
           {...allocationProps}
         >

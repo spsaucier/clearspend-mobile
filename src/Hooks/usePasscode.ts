@@ -1,4 +1,5 @@
 import { useMMKVNumber } from 'react-native-mmkv';
+import FullStory from '@fullstory/react-native';
 
 import { mixpanel } from '@/Services/utils/analytics';
 import { useSensitiveInfo } from './useSensitiveInfo';
@@ -27,16 +28,19 @@ export const usePasscode = () => {
     if (code === storedPasscode) {
       clearFailedAttempts();
       mixpanel.track('LoginWithPasscode');
+      FullStory.event('LoginWithPasscode', {});
       return true;
     }
     incrementFailedAttempts();
     mixpanel.track('LoginWithPasscodeFailure');
+    FullStory.event('LoginWithPasscodeFailure', {});
     return false;
   };
 
   const disablePasscode = async () => {
     await deletePasscode();
     mixpanel.track('PasscodeDisabled');
+    FullStory.event('PasscodeDisabled', {});
     clearFailedAttempts();
     return true;
   };
@@ -44,6 +48,7 @@ export const usePasscode = () => {
   const setPasscode = async (passcode: string) => {
     await savePasscode(passcode);
     mixpanel.track('PasscodeEnabled');
+    FullStory.event('PasscodeEnabled', {});
   };
 
   return {

@@ -1,6 +1,7 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { MMKV, useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
 import CookieManager from '@react-native-cookies/cookies';
+import FullStory from '@fullstory/react-native';
 import { persistor, store } from '@/Store';
 import { killSession } from '@/Store/Session';
 import { ReturnUseBiometrics, useBiometrics } from '@/Hooks/useBiometrics';
@@ -64,6 +65,8 @@ const AuthProvider: FC = ({ children }) => {
   const logout = async () => {
     mixpanel.track('Logout');
     mixpanel.flush();
+    FullStory.event('Logout', {});
+    FullStory.restart();
     setAutoLockTempDisabled(true);
     setLoggedIn(false);
     setAuthed(false);

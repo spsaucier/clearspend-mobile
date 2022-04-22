@@ -6,6 +6,7 @@ import { useRoute } from '@react-navigation/core';
 import { useDispatch } from 'react-redux';
 import { inRange } from 'lodash';
 
+import FullStory from '@fullstory/react-native/src';
 import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
 import { PasswordRuleRow } from '@/Containers/Onboarding/Components/PasswordRuleRow';
@@ -60,6 +61,7 @@ const SetPasswordScreen = () => {
     loginUsingOneTimePass(email, oneTimePassword).then((response) => {
       if ('accessToken' in response) {
         mixpanel.track('Login');
+        FullStory.event('Login', {});
         const sessionPayload = response as Session;
         return sessionPayload;
       }

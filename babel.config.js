@@ -10,6 +10,7 @@ plugins.push([
       '@': './src',
     },
   },
+  '@fullstory/react-native',
 ], 'react-native-reanimated/plugin');
 
 module.exports = {

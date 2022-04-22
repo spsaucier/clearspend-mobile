@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import FullStory from '@fullstory/react-native';
 import { mixpanel } from '@/Services/utils/analytics';
 
 export interface Session {
@@ -32,6 +33,7 @@ const sessionSlice = createSlice({
     updateSession(state, action: PayloadAction<Session>) {
       const { accessToken, expiresAt, refreshToken, userId, twoFactor } = action.payload;
       mixpanel.identify(userId || '');
+      FullStory.identify(userId, {});
       return {
         ...state,
         accessToken,

@@ -15,6 +15,7 @@ import Toast from 'react-native-toast-message';
 import { useMMKVBoolean } from 'react-native-mmkv';
 import { checkNotifications } from 'react-native-permissions';
 
+import FullStory from '@fullstory/react-native';
 import AuthNavigator from '@/Navigators/AuthNavigator';
 import MainNavigator from '@/Navigators/MainNavigator';
 import { navigateAndReset, navigationRef } from '@/Navigators/Root';
@@ -76,6 +77,7 @@ const ApplicationNavigator = () => {
     const currentRouteName = navigationRef?.current?.getCurrentRoute()?.name || '';
     if (previousRouteName !== currentRouteName) {
       mixpanel.track('Navigation', { previousRouteName, currentRouteName });
+      FullStory.event('Navigation', { previousRouteName, currentRouteName });
     }
     // Save the current route name for later comparison
     routeNameRef.current = currentRouteName || '';

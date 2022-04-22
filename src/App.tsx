@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 import { useDeviceContext } from 'twrnc';
 import { setLogger } from 'react-query';
 import { AxiosError } from 'axios';
+import FullStory from '@fullstory/react-native';
 import { store, persistor } from '@/Store';
 import { ApplicationNavigator } from '@/Navigators';
 import { mixpanel } from '@/Services/utils/analytics';
@@ -17,15 +18,31 @@ const App = () => {
   useAvailableBioMethod();
   useEffect(() => {
     mixpanel.init();
+    FullStory.onReady().then((result) => {
+      const { replayStartUrl, replayNowUrl, sessionId } = result;
+      // eslint-disable-next-line no-console
+      console.log({ replayStartUrl, replayNowUrl, sessionId });
+    });
     setLogger({
-      log: (message) => mixpanel.track('API Log', { message }),
-      warn: (message) => mixpanel.track('API Warn', { message }),
-      error: (error: AxiosError) =>
+      log: (message) => {
+        mixpanel.track('API Log', { message });
+        FullStory.log(FullStory.LogLevel.Info, message);
+      },
+      warn: (message) => {
+        mixpanel.track('API Warn', { message });
+        FullStory.log(FullStory.LogLevel.Warn, message);
+      },
+      error: (error: AxiosError) => {
         mixpanel.track('API Error', {
           url: error?.config?.url,
           status: error?.response?.status,
           errorMessage: error?.message,
-        }),
+        });
+        FullStory.log(
+          FullStory.LogLevel.Error,
+          `${error?.message} | ${error?.response?.status} | ${error?.config?.url}`,
+        );
+      },
     });
   }, []);
 

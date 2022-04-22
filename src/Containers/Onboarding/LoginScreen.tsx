@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message';
 
 import { useMMKVBoolean } from 'react-native-mmkv';
 import CookieManager from '@react-native-cookies/cookies';
+import FullStory from '@fullstory/react-native';
 import tw from '@/Styles/tailwind';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { CSTextInput } from '@/Components/TextInput';
@@ -64,6 +65,7 @@ const LoginScreen = () => {
 
   const loginSuccess = (res: Session) => {
     mixpanel.track('Login');
+    FullStory.event('Login', {});
     const sessionPayload = res;
     setLoggedIn(true);
     dispatch(updateSession(sessionPayload));
