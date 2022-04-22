@@ -145,7 +145,7 @@ android {
         applicationId "com.clearspend.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 138
+        versionCode 139
         versionName "1.4.0"
         missingDimensionStrategy 'react-native-camera', 'general'
         resValue "string", "build_config_package", "com.clearspend.android"
