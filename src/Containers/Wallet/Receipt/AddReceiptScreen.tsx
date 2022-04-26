@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 
-import { ActivityIndicator, Button } from '@/Components';
+import { ActivityIndicator, Button, CSText } from '@/Components';
 import { CloseIcon, LightningIcon, LightningOffIcon } from '@/Components/Icons';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import tw from '@/Styles/tailwind';
@@ -82,7 +82,7 @@ const AddReceiptScreen = () => {
                 (flashOn ? <LightningIcon color={tw.color('success')} /> : <LightningOffIcon />)}
             </TouchableOpacity>
             <View style={tw`flex-grow  justify-center items-center`}>
-              <Text style={tw`text-white`}>{t('wallet.receipt.takeAPhoto')}</Text>
+              <CSText style={tw`text-white`}>{t('wallet.receipt.takeAPhoto')}</CSText>
             </View>
             <TouchableOpacity
               style={tw`p-4 w-10 justify-center items-end`}
@@ -118,9 +118,9 @@ const AddReceiptScreen = () => {
                   if (status === 'NOT_AUTHORIZED') {
                     return (
                       <View style={tw`flex-1 justify-center items-center px-6`}>
-                        <Text style={tw`text-white text-center`}>
+                        <CSText style={tw`text-white text-center`}>
                           {t('wallet.receipt.notAuthorizedCameraAccess')}
-                        </Text>
+                        </CSText>
                       </View>
                     );
                   }
@@ -145,7 +145,7 @@ const AddReceiptScreen = () => {
                   setPreviewURI(undefined);
                 }}
               >
-                <Text style={tw`text-white`}>{t('wallet.receipt.retakePhoto')}</Text>
+                <CSText style={tw`text-white`}>{t('wallet.receipt.retakePhoto')}</CSText>
               </TouchableOpacity>
             </View>
           ) : (

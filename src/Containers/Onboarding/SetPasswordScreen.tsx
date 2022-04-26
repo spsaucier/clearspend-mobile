@@ -11,7 +11,7 @@ import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
 import { PasswordRuleRow } from '@/Containers/Onboarding/Components/PasswordRuleRow';
 import { changePassword, loginUsingOneTimePass } from '@/Services/Auth';
-import { OnboardingTextInput } from '@/Components/OnboardingTextInput';
+import { CSTextInput } from '@/Components/TextInput';
 import { OnboardingScreenTitle } from './Components/OnboardingScreenTitle';
 import { Session, updateSession } from '@/Store/Session';
 import { mixpanel } from '@/Services/utils/analytics';
@@ -111,7 +111,7 @@ const SetPasswordScreen = () => {
             titlePart1={t('setPassword.titlePart1')}
             titlePart2={t('setPassword.titlePart2')}
           />
-          <OnboardingTextInput
+          <CSTextInput
             keyboardType="default"
             containerStyle={tw`mb-8`}
             secureTextEntry

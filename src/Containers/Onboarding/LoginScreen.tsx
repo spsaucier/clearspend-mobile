@@ -205,7 +205,6 @@ const LoginScreen = () => {
                   returnKeyType="next"
                   autoFocus
                 />
-
                 <CSTextInput
                   ref={passwordRef}
                   label={t('login.passwordLabel')}

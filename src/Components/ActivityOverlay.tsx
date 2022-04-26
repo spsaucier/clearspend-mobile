@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { ActivityIndicator } from './ActivityIndicator';
 import tw from '@/Styles/tailwind';
+import { CSText } from '@/Components';
 
 type Props = {
   visible: boolean;
@@ -23,7 +24,7 @@ export const ActivityOverlay = ({ visible, message, subMessage }: Props) => (
     }}
   >
     <ActivityIndicator />
-    <Text style={tw`font-telegraf text-white text-xl pt-10`}>{message}</Text>
-    {subMessage && <Text style={tw`font-telegraf text-white pt-3`}>{subMessage}</Text>}
+    <CSText style={tw`font-telegraf text-white text-xl pt-10`}>{message}</CSText>
+    {subMessage && <CSText style={tw`font-telegraf text-white pt-3`}>{subMessage}</CSText>}
   </View>
 );

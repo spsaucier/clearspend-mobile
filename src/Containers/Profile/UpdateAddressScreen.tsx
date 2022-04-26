@@ -3,7 +3,6 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
-  Text,
   TouchableOpacity,
   View,
   TextInput,
@@ -22,6 +21,7 @@ import { Address, UpdateUserRequest } from '@/generated/capital';
 import { AddressDisplay } from './Components/AddressDisplay';
 import { useAddressSuggestions } from '@/Hooks/useAddressSuggestions';
 import { CloseIcon } from '@/Components/Icons';
+import { getFontSizeMultiplier } from '@/Helpers/StyleHelpers';
 
 interface AutocompleteItem {
   id: string;
@@ -117,6 +117,7 @@ const UpdateAddressScreen = () => {
                   autoCapitalize: 'none',
                   style: inputStyle,
                   placeholderTextColor: tw.color('secondary-disabled'),
+                  maxFontSizeMultiplier: getFontSizeMultiplier(),
                 }}
                 ClearIconComponent={<CloseIcon color={tw.color('gray-50')} />}
                 rightButtonsContainerStyle={{
@@ -126,7 +127,7 @@ const UpdateAddressScreen = () => {
                   alignSelf: 'center',
                   backgroundColor: 'transparent',
                 }}
-                renderItem={(item) => <Text style={{ padding: 15 }}>{item.title}</Text>}
+                renderItem={(item) => <CSText style={{ padding: 15 }}>{item.title}</CSText>}
                 inputHeight={50}
                 showChevron={false}
               />
@@ -137,6 +138,7 @@ const UpdateAddressScreen = () => {
               placeholder={t('profile.updateAddress.line2Placeholder')}
               placeholderTextColor={tw.color('secondary-disabled')}
               onChangeText={(streetLine2) => setAddress({ ...address, streetLine2 })}
+              maxFontSizeMultiplier={getFontSizeMultiplier()}
             />
           </View>
         </View>

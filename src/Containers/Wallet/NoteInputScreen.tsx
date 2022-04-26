@@ -7,6 +7,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import tw from '@/Styles/tailwind';
 import { useUpdateTransaction } from '@/Queries/transaction';
+import { getFontSizeMultiplier } from '@/Helpers/StyleHelpers';
 
 const NoteInputScreen = () => {
   const { t } = useTranslation();
@@ -74,6 +75,7 @@ const NoteInputScreen = () => {
                 value={note}
                 onBlur={Keyboard.dismiss}
                 scrollEnabled
+                maxFontSizeMultiplier={getFontSizeMultiplier()}
               />
             </View>
           </TouchableWithoutFeedback>

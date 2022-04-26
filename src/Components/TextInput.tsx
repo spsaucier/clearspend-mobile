@@ -11,17 +11,29 @@ import React, { Ref, useState } from 'react';
 import tw from '@/Styles/tailwind';
 import { EyeIcon, EyeOpenIcon } from '@/Components/Icons';
 import { CSText } from './Text';
+import { getFontSizeMultiplier } from '@/Helpers/StyleHelpers';
 
 export type Props = {
   label?: string;
   errorMessage?: string;
   testID?: string;
   containerStyle?: StyleProp<ViewStyle>;
+  limitFontScale?: boolean;
 } & TextInputProps;
 
 export const CSTextInput = React.forwardRef(
   (
-    { label, errorMessage, testID, containerStyle, style, secureTextEntry, ...rest }: Props,
+    {
+      label,
+      errorMessage,
+      testID,
+      containerStyle,
+      limitFontScale,
+      style,
+      secureTextEntry,
+      allowFontScaling = true,
+      ...rest
+    }: Props,
     ref: Ref<TextInput>,
   ) => {
     const [showSecureInput, setShowSecureInput] = useState(secureTextEntry);
@@ -53,6 +65,7 @@ export const CSTextInput = React.forwardRef(
             selectionColor={tw.color('white')}
             ref={ref}
             secureTextEntry={showSecureInput}
+            maxFontSizeMultiplier={getFontSizeMultiplier(allowFontScaling, limitFontScale)}
             {...rest}
           />
           {secureTextEntry && renderEye()}

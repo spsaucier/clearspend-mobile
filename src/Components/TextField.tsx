@@ -54,12 +54,7 @@ export const CSTextField = ({
       {label && <CSText style={tw`text-black pl-1 mb-3`}>{label}</CSText>}
       <View style={tw.style('flex-row items-center mt-4 bg-white')}>
         <TextInput
-          // ref={(e) => {
-          //   this.inputField = e;
-          // }}
           style={[tw.style('flex-1 text-base text-black'), style]}
-          // onBlur={onBlur}
-          // onFocus={onFocus}
           autoFocus={autoFocus}
           autoCapitalize={autoCapitalize}
           autoCorrect={autoCorrect}

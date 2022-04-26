@@ -15,6 +15,7 @@ import { useSensitiveInfo } from '@/Hooks/useSensitiveInfo';
 import { RECOVERY_CODE_KEY } from '@/Store/keys';
 import { store } from '@/Store';
 import { UpdateUserRequest } from '@/generated/capital';
+import { getFontSizeMultiplier } from '@/Helpers/StyleHelpers';
 
 export const validRecoveryCode = (code: string | null, userId: string) =>
   !!code && code.split('|')[1] === userId;
@@ -118,6 +119,7 @@ const UpdateMobileScreen = () => {
             textInputProps={{
               selectionColor: tw.color('bg-primary'),
               placeholderTextColor: tw.color('black-20'),
+              maxFontSizeMultiplier: getFontSizeMultiplier(),
             }}
             autoFocus
           />

@@ -1,8 +1,22 @@
 import { PixelRatio, Dimensions } from 'react-native';
 import tw from '../Styles/tailwind';
-import { MAX_FONT_SCALE } from '@/Components/Text';
 
-export const getCappedFontScale = () => Math.min(PixelRatio.getFontScale(), MAX_FONT_SCALE);
+enum FontScale {
+  MAX = 1.5,
+  MID = 1.3,
+  MIN = 1,
+}
+
+export const getFontSizeMultiplier = (
+  allowFontScaling: boolean = true,
+  limitFontScale: boolean = false,
+) => {
+  if (!allowFontScaling) return FontScale.MIN;
+  if (limitFontScale) return FontScale.MID;
+  return FontScale.MAX;
+};
+
+export const getCappedFontScale = () => Math.min(PixelRatio.getFontScale(), FontScale.MAX);
 
 export const defaultCellInputStyles = () => {
   const WIDTH = Dimensions.get('window').width;

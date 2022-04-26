@@ -1,10 +1,7 @@
 import { Text, TextProps } from 'react-native';
 import React from 'react';
 import tw from '@/Styles/tailwind';
-
-export const MAX_FONT_SCALE = 1.5;
-export const MID_FONT_SCALE = 1.3;
-export const MIN_FONT_SCALE = 1;
+import { getFontSizeMultiplier } from '@/Helpers/StyleHelpers';
 
 export interface CSTextProps extends TextProps {
   shrinkForSmall?: boolean;
@@ -22,19 +19,11 @@ export const CSText = ({
     return null; // avoid crashes on falsy values
   }
 
-  let maxFontSizeMultiplier = 1;
-  if (allowFontScaling) {
-    if (limitFontScale) {
-      maxFontSizeMultiplier = MID_FONT_SCALE;
-    } else {
-      maxFontSizeMultiplier = MAX_FONT_SCALE;
-    }
-  }
   return (
     <Text
       style={[tw`font-montreal text-black text-base`, style]}
       allowFontScaling={!!allowFontScaling}
-      maxFontSizeMultiplier={maxFontSizeMultiplier}
+      maxFontSizeMultiplier={getFontSizeMultiplier(allowFontScaling, limitFontScale)}
       {...props}
     >
       {children}
