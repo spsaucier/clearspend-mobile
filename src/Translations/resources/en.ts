@@ -146,7 +146,6 @@ export default {
     receiptUploadedSuccessfully: 'Receipt uploaded successfully',
     cantAccessCardScreenIfFrozenToast:
       'This card needs to be unfrozen before you can view the card details',
-    notificationsBlockedByOS: 'Notifications have been blocked by OS settings',
     notificationsHaveBeenTurnedOff: 'All notifications have been turned off',
   },
   categories: {
@@ -382,6 +381,10 @@ export default {
     notificationSettings: {
       title: 'Notifications',
       allNotifications: 'All notifications',
+      enableNotificationsUsingSettings:
+        'Please re-enable notifications for the ClearSpend app in your phone’s settings.',
+      cancel: 'Cancel',
+      settings: 'Go to Settings',
     },
   },
   notifications: {

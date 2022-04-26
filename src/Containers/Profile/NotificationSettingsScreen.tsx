@@ -1,10 +1,10 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { AppState, Platform, View } from 'react-native';
+import { AppState, Linking, Platform, View, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { checkNotifications, requestNotifications } from 'react-native-permissions';
 import { useMMKVBoolean } from 'react-native-mmkv';
-import { useIsFocused } from '@react-navigation/core';
+import { useIsFocused, useNavigation } from '@react-navigation/core';
 import { TouchableOpacity, Switch } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSettingHeader';
@@ -13,9 +13,12 @@ import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
 import { Constants } from '@/consts';
 
+import { MainScreens } from '@/Navigators/NavigatorTypes';
+
 const NotificationSettingScreen = () => {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
+  const { navigate } = useNavigation();
   const [permissionAllNotifications, setPermissionAllNotifications] = useMMKVBoolean(
     Constants.PERMISSION_ALL_NOTIFICATIONS,
   );
@@ -79,10 +82,16 @@ const NotificationSettingScreen = () => {
         <TouchableOpacity
           disabled={!isBlockedByOS}
           onPress={() => {
-            Toast.show({
-              type: 'info',
-              text1: t('toasts.notificationsBlockedByOS'),
-            });
+            Alert.alert('', t('profile.notificationSettings.enableNotificationsUsingSettings'), [
+              {
+                text: t('profile.notificationSettings.cancel'),
+                onPress: () => navigate(MainScreens.NotificationSettings),
+              },
+              {
+                text: t('profile.notificationSettings.settings'),
+                onPress: () => Linking.openSettings(),
+              },
+            ]);
           }}
         >
           <Switch
