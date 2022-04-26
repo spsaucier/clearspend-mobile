@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { UseInfiniteQueryResult } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { chain, debounce } from 'lodash';
@@ -9,13 +10,14 @@ import BottomSheet, {
   useBottomSheetDynamicSnapPoints,
   useBottomSheetInternal,
 } from '@gorhom/bottom-sheet';
-import { FlatList } from 'react-native-gesture-handler';
-
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import { TWSearchInput } from '@/Components/SearchInput';
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator, AnimatedCSText, CSText } from '@/Components';
-import { useCardTransactions } from '@/Queries';
+import { ActivityIndicator, AnimatedCSText, CloseIconButton, CSText } from '@/Components';
+import { FilterIcon } from '@/Components/Icons';
+import { TransactionFilterOption } from '@/Containers/Wallet/Components/FilterTransactionsBottomSheet';
+import { PagedDataAccountActivityResponse } from '@/generated/capital';
 
 type TransactionType = {
   accountActivityId: string;
@@ -36,22 +38,41 @@ type TransactionType = {
   };
 };
 
-type TransactionsContentProps = {
+type SharedProps = {
   cardId: string;
-  expanded: boolean;
+  presentFiltersModal: () => void;
+  selectedFilters: TransactionFilterOption[];
+  toggleFilter: (filter: TransactionFilterOption) => void;
+  onChangeSearchText: (text: string) => void;
+  cardTransactionsQuery: UseInfiniteQueryResult<PagedDataAccountActivityResponse, Error>;
+  displayResultCount: boolean;
 };
 
-const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => {
+type TransactionsContentProps = {
+  expanded: boolean;
+} & SharedProps;
+
+const TransactionsContent = ({
+  cardId,
+  expanded,
+  presentFiltersModal,
+  selectedFilters,
+  toggleFilter,
+  onChangeSearchText,
+  cardTransactionsQuery,
+  displayResultCount,
+}: TransactionsContentProps) => {
   const { t } = useTranslation();
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const transactionsListRef = useRef<any>(null);
-  const [searchText, setSearchText] = useState('');
   const [searchYOffset, setSearchYOffset] = useState(0);
-  const { data, isFetching, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useCardTransactions({
-      cardId,
-      searchText,
-    });
+
+  const { data, isFetching, error, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    cardTransactionsQuery;
+
+  const onFilterTransactionModalPress = () => {
+    presentFiltersModal();
+  };
 
   useEffect(() => {
     if (!expanded) {
@@ -108,8 +129,7 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
   );
 
   const onChangeSearch = debounce((newSearch) => {
-    setSearchText(newSearch);
-    setTimeout(() => refetch());
+    onChangeSearchText(newSearch);
   }, 100);
 
   const loadMore = () => {
@@ -127,19 +147,60 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
           </AnimatedCSText>
 
           <View
-            style={[tw`flex-row justify-between py-5`]}
             onLayout={({
               nativeEvent: {
                 layout: { height },
               },
             }) => setSearchYOffset(height)}
           >
-            <View style={tw`flex-grow`}>
-              <TWSearchInput
-                onChangeText={onChangeSearch}
-                placeholder={t('wallet.transactions.searchTransactions')}
-              />
+            <View style={[tw`flex-row justify-between py-5`]}>
+              <View style={tw`flex-grow`}>
+                <TWSearchInput
+                  onChangeText={onChangeSearch}
+                  placeholder={t('wallet.transactions.searchTransactions')}
+                />
+              </View>
+              <View style={tw`border border-gray-10 ml-2 rounded-lg pl-1 pr-1`}>
+                <TouchableOpacity onPress={onFilterTransactionModalPress}>
+                  <FilterIcon style={tw`mt-2 ml-1 mr-1 w-5 h-5`} />
+                </TouchableOpacity>
+                {selectedFilters.length > 0 ? (
+                  <TouchableOpacity
+                    style={[tw`rounded-full absolute left-6 bottom-5 bg-secondary w-4 h-4`]}
+                  >
+                    <CSText style={tw`text-white text-xs text-center`}>
+                      {selectedFilters.length}
+                    </CSText>
+                  </TouchableOpacity>
+                ) : null}
+              </View>
             </View>
+            <View style={tw`flex-row`}>
+              {selectedFilters.length > 0
+                ? selectedFilters.map((filter) => (
+                    <TouchableOpacity
+                      style={[
+                        tw`flex-row rounded-full mr-4 pl-3 pr-2 pt-1 pb-1 bg-secondary items-center`,
+                      ]}
+                      onPress={() => toggleFilter(filter)}
+                      key={filter}
+                    >
+                      <CSText style={tw`text-xs text-white`}>
+                        {t(`wallet.filterTransactions.${filter}`)}
+                      </CSText>
+                      <CloseIconButton color={tw.color('bg-white')} style={tw`ml-1`} />
+                    </TouchableOpacity>
+                  ))
+                : null}
+            </View>
+            {displayResultCount ? (
+              <View style={[selectedFilters.length > 0 && tw`mt-5`]}>
+                {/* TODO improve pluralization */}
+                <CSText style={tw`pb-2 text-sm`}>{`${data?.pages[0].totalElements} result${
+                  data?.pages[0].totalElements === 1 ? '' : 's'
+                }`}</CSText>
+              </View>
+            ) : null}
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -217,11 +278,19 @@ const TransactionsContent = ({ cardId, expanded }: TransactionsContentProps) => 
 };
 
 type TransactionProps = {
-  cardId: string;
   initialSnapPoint: number;
-};
+} & SharedProps;
 
-const Transactions = ({ cardId, initialSnapPoint }: TransactionProps) => {
+const Transactions = ({
+  cardId,
+  initialSnapPoint,
+  presentFiltersModal,
+  selectedFilters,
+  toggleFilter,
+  onChangeSearchText,
+  cardTransactionsQuery,
+  displayResultCount,
+}: TransactionProps) => {
   const expandedSnapPoint = '100%';
 
   const snapPointMemo = useMemo(
@@ -240,7 +309,16 @@ const Transactions = ({ cardId, initialSnapPoint }: TransactionProps) => {
       onChange={(e) => setExpanded(e === 1)}
     >
       <BottomSheetView onLayout={handleContentLayout}>
-        <TransactionsContent cardId={cardId} expanded={expanded} />
+        <TransactionsContent
+          cardId={cardId}
+          expanded={expanded}
+          presentFiltersModal={presentFiltersModal}
+          selectedFilters={selectedFilters}
+          toggleFilter={toggleFilter}
+          onChangeSearchText={onChangeSearchText}
+          cardTransactionsQuery={cardTransactionsQuery}
+          displayResultCount={displayResultCount}
+        />
       </BottomSheetView>
     </BottomSheet>
   );

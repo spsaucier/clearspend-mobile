@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useQueryClient, InfiniteData } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { linkReceiptAsync, useUploadReceiptRemote } from '@/Queries/receipt';
-import { AccountActivityResponse, PagedDataAccountActivityResponse } from '@/generated/capital';
-import { updateTransactionReceipts, updatePagedTransactions } from '../Helpers/ResponseHelpers';
+import { AccountActivityResponse } from '@/generated/capital';
+import { updateTransactionReceipts } from '../Helpers/ResponseHelpers';
+import { invalidateTransactions } from '@/Queries/transaction';
 
 type UploadReceiptState = {
   receiptId?: string;
@@ -54,18 +55,21 @@ const useUploadReceipt = ({
         (previous) => updateTransactionReceipts(previous, receiptId),
       );
 
-      const data = queryClient.getQueryData<AccountActivityResponse | undefined>([
-        'transactions',
-        { id: accountActivityId },
-      ]);
+      // TODO: reenable paginated cache?
+      // const data = queryClient.getQueryData<AccountActivityResponse | undefined>([
+      //   'transactions',
+      //   { id: accountActivityId },
+      // ]);
 
       // update the transaction in the 'paginated' list to avoid a refetch
-      if (data) {
-        queryClient.setQueryData<InfiniteData<PagedDataAccountActivityResponse> | undefined>(
-          ['transactions', { card: data.card?.cardId }],
-          (previous) => updatePagedTransactions(previous, accountActivityId, data),
-        );
-      }
+      // if (data) {
+      //   queryClient.setQueryData<InfiniteData<PagedDataAccountActivityResponse> | undefined>(
+      //     ['transactions', { card: data.card?.cardId }],
+      //     (previous) => updatePagedTransactions(previous, accountActivityId, data),
+      //   );
+      // }
+
+      invalidateTransactions(queryClient);
     }
   }, [queryClient, accountActivityId, receiptId]);
 

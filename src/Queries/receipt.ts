@@ -1,13 +1,10 @@
-import { useQuery, useMutation, useQueryClient, InfiniteData } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 import apiClient from '@/Services';
-import {
-  ReceiptDetails,
-  AccountActivityResponse,
-  PagedDataAccountActivityResponse,
-} from '@/generated/capital';
-import { updateTransactionReceipts, updatePagedTransactions } from '../Helpers/ResponseHelpers';
+import { ReceiptDetails, AccountActivityResponse } from '@/generated/capital';
+import { updateTransactionReceipts } from '../Helpers/ResponseHelpers';
+import { invalidateTransactions } from '@/Queries/transaction';
 
 export const uploadReceipt = (data: any) => {
   const formData = new FormData();
@@ -75,18 +72,20 @@ export const useDeleteReceipt = (receiptId: string, accountActivityId: string) =
           (previous) => updateTransactionReceipts(previous, receiptId, true /* deleteMode */),
         );
 
-        const data = queryClient.getQueryData<AccountActivityResponse | undefined>([
-          'transactions',
-          { id: accountActivityId },
-        ]);
-
-        // update the transaction in the 'paginated' list to avoid a refetch
-        if (data) {
-          queryClient.setQueryData<InfiniteData<PagedDataAccountActivityResponse> | undefined>(
-            ['transactions', { card: data.card?.cardId }],
-            (previous) => updatePagedTransactions(previous, accountActivityId, data),
-          );
-        }
+        // TODO: reenable paginated cache?
+        // const data = queryClient.getQueryData<AccountActivityResponse | undefined>([
+        //   'transactions',
+        //   { id: accountActivityId },
+        // ]);
+        //
+        // // update the transaction in the 'paginated' list to avoid a refetch
+        // if (data) {
+        //   queryClient.setQueryData<InfiniteData<PagedDataAccountActivityResponse> | undefined>(
+        //     ['transactions', { card: data.card?.cardId }],
+        //     (previous) => updatePagedTransactions(previous, accountActivityId, data),
+        //   );
+        // }
+        invalidateTransactions(queryClient);
       },
       onError: () => {
         Toast.show({

@@ -33,7 +33,6 @@ import { NativeStackScreenProps } from 'react-native-screens/native-stack';
 import tw from '@/Styles/tailwind';
 import { Button, ActivityIndicator, CSText, InfoPanel, AnimatedCSText } from '@/Components';
 import { Card } from '@/Containers/Wallet/Components/Card';
-import Transactions from './Transactions';
 import { useUser, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
@@ -52,6 +51,7 @@ import {
 } from '@/NativeModules/AppleWallet/AppleWallet';
 import { Session } from '@/Store/Session';
 import { lightFeedback } from '@/Helpers/HapticFeedback';
+import { TransactionsContainer } from '@/Containers/Wallet/TransactionsContainer';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const { height: windowHeight } = Dimensions.get('window');
@@ -300,7 +300,10 @@ const ContentWallet = ({
       </View>
 
       {selectedCardId && carouselHeight ? (
-        <Transactions cardId={selectedCardId} initialSnapPoint={initialSnapPoint} />
+        <TransactionsContainer
+          selectedCardId={selectedCardId}
+          initialSnapPoint={initialSnapPoint}
+        />
       ) : null}
 
       <LinearGradientWithOpacity style={tw`h-20 w-full absolute bottom-0`} />

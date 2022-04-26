@@ -245,6 +245,13 @@ export default {
       unsupportedCategoryError:
         "Your company's expense categories have changed. Please re-categorize this transaction.",
     },
+    filterTransactions: {
+      filterTransactionsBy: 'Filter transactions by',
+      missingReceipt: 'Missing receipt',
+      missingCategory: 'Missing category',
+      applyFilterButtonCta: 'Apply filter',
+      resetAllFiltersCta: 'Reset all filters',
+    },
   },
   card: {
     virtual: 'Virtual ',
