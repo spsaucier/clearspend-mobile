@@ -12,19 +12,7 @@ jest.mock('react-native-config', () => ({
   SHOW_ADMIN: 'true',
 }));
 
-const businessId = 'business-01';
-
-export const handlers = [
-  rest.get('/users', (req, res, ctx) =>
-    res(
-      ctx.json({
-        businessId,
-      }),
-    ),
-  ),
-];
-
-const server = setupServer(...handlers);
+const server = setupServer();
 
 beforeAll(() => {
   server.listen();
@@ -49,7 +37,7 @@ describe('useSpendControls', () => {
     const { allocationId } = managerAllocationsAndPermissionsResponse.userRoles[1];
 
     server.use(
-      rest.get(`/roles-and-permissions/allPermissions/${businessId}`, (req, res, ctx) =>
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
         res(ctx.json(managerAllocationsAndPermissionsResponse)),
       ),
     );
@@ -67,7 +55,7 @@ describe('useSpendControls', () => {
     const { allocationId } = managerAllocationsAndPermissionsResponse.userRoles[0];
 
     server.use(
-      rest.get(`/roles-and-permissions/allPermissions/${businessId}`, (req, res, ctx) =>
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
         res(ctx.json(managerAllocationsAndPermissionsResponse)),
       ),
     );

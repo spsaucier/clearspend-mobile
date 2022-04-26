@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
 import { useAllPermissions } from '@/Queries/permissions';
-import { useUser } from '@/Queries/user';
 import {
   showManageUsers,
   showManageCards,
@@ -18,8 +17,7 @@ import { AllocationRoles } from '@/Types/permissions';
 
 const AdminScreen = () => {
   const { t } = useTranslation();
-  const { data: user } = useUser();
-  const { data: permissions } = useAllPermissions(user?.businessId);
+  const { data: permissions } = useAllPermissions();
 
   const showManageUsersRow = showManageUsers(permissions);
   const showManageCardsRow = showManageCards(permissions);

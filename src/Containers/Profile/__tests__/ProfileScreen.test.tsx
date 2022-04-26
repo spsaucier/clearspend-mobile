@@ -27,17 +27,7 @@ jest.mock('react-native-config', () => ({
   SHOW_ADMIN: 'true',
 }));
 
-const businessId = 'business-01';
-
-export const handlers = [
-  rest.get('/users', (req, res, ctx) =>
-    res(
-      ctx.json({
-        businessId,
-      }),
-    ),
-  ),
-];
+export const handlers = [rest.get('/users', (req, res, ctx) => res(ctx.json({})))];
 
 const server = setupServer(...handlers);
 
@@ -56,7 +46,7 @@ afterAll(() => {
 describe('ProfileScreen', () => {
   it('shows admin row when an `allocationRole` contains `Manager`', async () => {
     server.use(
-      rest.get(`/roles-and-permissions/allPermissions/${businessId}`, (req, res, ctx) =>
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
         res(ctx.json(managerAllocationsAndPermissionsResponse)),
       ),
     );
@@ -72,7 +62,7 @@ describe('ProfileScreen', () => {
   });
   it('shows admin row when an `allocationRole` contains `Admin`', async () => {
     server.use(
-      rest.get(`/roles-and-permissions/allPermissions/${businessId}`, (req, res, ctx) =>
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
         res(ctx.json(adminAllocationsAndPermissionsResponse)),
       ),
     );
@@ -88,7 +78,7 @@ describe('ProfileScreen', () => {
   });
   it('does not show admin row when an `allocationRole` does not contain `Manager` or `Admin`', async () => {
     server.use(
-      rest.get(`/roles-and-permissions/allPermissions/${businessId}`, (req, res, ctx) =>
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
         res(ctx.json(employeeAllocationsAndPermissionsResponse)),
       ),
     );

@@ -11,19 +11,7 @@ import {
 
 import AdminScreen from '../AdminScreen';
 
-const businessId = 'business-01';
-
-export const handlers = [
-  rest.get('/users', (req, res, ctx) =>
-    res(
-      ctx.json({
-        businessId,
-      }),
-    ),
-  ),
-];
-
-const server = setupServer(...handlers);
+const server = setupServer();
 
 beforeAll(() => {
   server.listen();
@@ -40,7 +28,7 @@ afterAll(() => {
 describe('AdminScreen', () => {
   it('shows selected admin options based on `Manger` permissions', async () => {
     server.use(
-      rest.get(`/roles-and-permissions/allPermissions/${businessId}`, (req, res, ctx) =>
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
         res(ctx.json(managerAllocationsAndPermissionsResponse)),
       ),
     );
@@ -55,7 +43,7 @@ describe('AdminScreen', () => {
   });
   it('shows selected admin options based on `Admin` permissions', async () => {
     server.use(
-      rest.get(`/roles-and-permissions/allPermissions/${businessId}`, (req, res, ctx) =>
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
         res(ctx.json(adminAllocationsAndPermissionsResponse)),
       ),
     );
