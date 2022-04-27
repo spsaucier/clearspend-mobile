@@ -6,7 +6,7 @@ import { JUST_SET_2FA_KEY, SHOW_2FA_PROMPT_KEY } from '@/Store/keys';
 
 const useRequire2FA = () => {
   const [shouldAct, setShouldAct] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { isLoading, data: user } = useUser();
   const { session } = store.getState();
   const storage = new MMKV();
