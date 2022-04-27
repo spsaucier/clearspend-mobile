@@ -37,7 +37,7 @@ import UpdateAccountScreen from '@/Containers/Profile/UpdateAccountScreen';
 import UpdateMobileScreen from '@/Containers/Profile/UpdateMobileScreen';
 import UpdateAddressScreen from '@/Containers/Profile/UpdateAddressScreen';
 import UpdatedTermsAndConditionsScreen from '@/Containers/Onboarding/UpdatedTermsAndConditionsScreen';
-import AdminScreen from '@/Containers/Profile/AdminScreen';
+import { AdminNavigator as AdminStack } from '@/Navigators/Admin/AdminNavigator';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -100,7 +100,7 @@ const ProfileStack = () => (
     <Stack.Screen name={MainScreens.LoginOptions} component={LoginOptionsScreen} />
     <Stack.Screen name={MainScreens.ActivateCard} component={ActivateCardStack} />
     <Stack.Screen name={MainScreens.LegalDocuments} component={LegalDocumentsScreen} />
-    <Stack.Screen name={MainScreens.AdminScreen} component={AdminScreen} />
+    <Stack.Screen name={MainScreens.Admin} component={AdminStack} />
   </Stack.Navigator>
 );
 

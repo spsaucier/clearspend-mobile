@@ -28,6 +28,14 @@ export type AuthStackParamTypes = {
   [AuthScreens.SetPassword]: { changePasswordId: string; email: string; password: string };
 };
 
+export enum AdminScreens {
+  Home = 'Home',
+}
+
+export type AdminStackParamTypes = {
+  [AdminScreens.Home]: undefined;
+};
+
 export enum MainScreens {
   Home = 'Home',
 
@@ -53,7 +61,6 @@ export enum MainScreens {
   Profile = 'Profile',
   ProfileScreen = 'Profile Screen',
   UpdatedTermsAndConditionsScreen = 'Updated Terms and Conditions',
-  AdminScreen = 'Admin Screen',
 
   // Wallet and Cards
   AddReceipt = 'Add Receipt',
@@ -73,10 +80,14 @@ export enum MainScreens {
   // Dev menu
   DevMenu = 'DevMenu',
   DevIconDemo = 'DevIconDemo',
+
+  // Admin
+  Admin = 'Admin',
 }
 
 export type MainStackParamTypes = {
   [MainScreens.Home]: undefined;
+  [MainScreens.Admin]: undefined;
 
   // Prompt before confirming logged in status
   [MainScreens.ConfirmAuth]: undefined;
@@ -102,7 +113,6 @@ export type MainStackParamTypes = {
   [MainScreens.NotificationSettings]: undefined;
   [MainScreens.Profile]: undefined;
   [MainScreens.ProfileScreen]: undefined;
-  [MainScreens.AdminScreen]: undefined;
 
   // Wallet and Cards
   [MainScreens.AddReceipt]: { accountActivityId: string; cardId: string };
@@ -128,6 +138,10 @@ export type MainStackParamTypes = {
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends TopParams, AuthStackParamTypes, MainStackParamTypes {}
+    interface RootParamList
+      extends TopParams,
+        AuthStackParamTypes,
+        MainStackParamTypes,
+        AdminStackParamTypes {}
   }
 }

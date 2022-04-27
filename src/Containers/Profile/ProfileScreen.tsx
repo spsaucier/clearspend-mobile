@@ -117,7 +117,7 @@ const ProfileScreen = () => {
                 testID="profile-menu-admin-row"
                 title={t('profile.profileMenu.admin')}
                 onPress={() => {
-                  navigate(MainScreens.AdminScreen);
+                  navigate(MainScreens.Admin);
                 }}
                 style={tw`h-14 px-4`}
               />
