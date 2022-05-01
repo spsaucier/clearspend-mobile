@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
+import type { StackNavigationProp } from '@react-navigation/stack';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { CSText, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { useUser } from '@/Queries';
 import { EmailIcon, PhoneIcon } from '@/Components/Icons';
@@ -17,9 +17,11 @@ import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { getCappedFontScale } from '@/Helpers/StyleHelpers';
 import { useAllPermissions } from '@/Queries/permissions';
 import { showAdmin } from '@/Helpers/PermissionsHelpers';
+import { MainStackParamTypes, MainScreens } from '@/Navigators/NavigatorTypes';
 
 const ProfileScreen = () => {
-  const { navigate } = useNavigation();
+  const { navigate } =
+    useNavigation<StackNavigationProp<MainStackParamTypes, MainScreens.ProfileScreen>>();
   const { t } = useTranslation();
   const { isLoading, error, data: user } = useUser();
   const { data: permissions } = useAllPermissions();

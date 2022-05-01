@@ -412,4 +412,25 @@ export default {
     issueACard: 'Issue a card',
     increaseALimit: 'Increase a limit',
   },
+  adminFlows: {
+    nextStepCta: 'Next',
+    issueCard: {
+      cardTypeTitle: 'Select card type',
+      cardTypeText:
+        'Virtual cards can be accessed through the ClearSpend mobile app or added to your Apple or Android wallet.',
+      employeeTitle: 'Select employee',
+      cardDetailsTitle: 'Card details',
+      addressTitle: 'Select delivery address',
+      newAddressTitle: 'New address',
+      allocationTitle: 'Allocation',
+      allocationText: 'Choose the allocation that will fund your new card.',
+      spendControlsTitle: 'Spend controls',
+      spendControlsText:
+        'Set limits for how much can be spent with this card for each transaction, or over the course of a day or month.',
+      cardConfirmationTitle: 'You’re all set!',
+      confirmCta: 'Issue new card',
+      confirmationPrimaryActionCta: 'Return to dashboard',
+      confirmationSecondaryActionCta: 'Issue another card',
+    },
+  },
 };

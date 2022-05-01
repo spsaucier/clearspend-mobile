@@ -2,6 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/core';
+import type { StackNavigationProp } from '@react-navigation/stack';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
 import { useAllPermissions } from '@/Queries/permissions';
@@ -14,8 +16,11 @@ import {
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { AllocationRoles } from '@/Types/permissions';
+import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 
 const AdminHomeScreen = () => {
+  const { navigate } =
+    useNavigation<StackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
   const { t } = useTranslation();
   const { data: permissions } = useAllPermissions();
 
@@ -53,7 +58,9 @@ const AdminHomeScreen = () => {
             <ProfileMenuRow
               testID="profile-menu-manage-cards-row"
               title={t('adminOptions.issueACard')}
-              onPress={() => {}}
+              onPress={() => {
+                navigate(AdminScreens.IssueCard);
+              }}
               style={tw`h-14 px-4`}
               borderColor="border-tan"
               showBottomBorder
