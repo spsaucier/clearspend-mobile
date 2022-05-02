@@ -7,10 +7,12 @@ import { CSText, FocusAwareStatusBar, Button } from '@/Components';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 
 interface Props {
+  testID?: string;
   title?: string;
   text?: string;
   onPrimaryAction?: () => void;
   onPrimaryActionLabel?: string;
+  primaryActionDisabled?: boolean;
   onSecondaryAction?: () => void;
   onSecondaryActionLabel?: string;
   hideBackButton?: boolean;
@@ -18,10 +20,12 @@ interface Props {
 
 const AdminScreenWrapper: FC<Props> = ({
   children,
+  testID,
   title,
   text,
   onPrimaryAction,
   onPrimaryActionLabel,
+  primaryActionDisabled,
   onSecondaryAction,
   onSecondaryActionLabel,
   hideBackButton,
@@ -29,7 +33,7 @@ const AdminScreenWrapper: FC<Props> = ({
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-white`} edges={['top', 'bottom']}>
+    <SafeAreaView testID={testID} style={tw`flex-1 bg-white`} edges={['top', 'bottom']}>
       <FocusAwareStatusBar backgroundColor={tw.color('white')} barStyle="dark-content" />
       {!hideBackButton && (
         <View style={tw`p-5`}>
@@ -44,14 +48,16 @@ const AdminScreenWrapper: FC<Props> = ({
             )}
             {text && <CSText style={tw`text-sm leading-normal text-gray-75 mt-2`}>{text}</CSText>}
           </View>
-          <View style={tw`px-5`}>{children}</View>
+          <View>{children}</View>
         </View>
       </ScrollView>
       <View style={tw`p-5`}>
         {onPrimaryAction && (
           <Button
+            testID="primary-action-button"
             label={onPrimaryActionLabel || t('adminFlows.nextStepCta')}
             onPress={onPrimaryAction}
+            disabled={primaryActionDisabled}
           />
         )}
         {onSecondaryAction && onSecondaryActionLabel && (

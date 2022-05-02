@@ -418,6 +418,10 @@ export default {
       cardTypeTitle: 'Select card type',
       cardTypeText:
         'Virtual cards can be accessed through the ClearSpend mobile app or added to your Apple or Android wallet.',
+      cardTypeOptionPhysicalLabel: 'Physical Card',
+      cardTypeOptionPhysicalText: 'Arrives in 1-2 weeks',
+      cardTypeOptionVirtualLabel: 'Virtual Card',
+      cardTypeOptionVirtualText: 'Available immediately',
       employeeTitle: 'Select employee',
       cardDetailsTitle: 'Card details',
       addressTitle: 'Select delivery address',

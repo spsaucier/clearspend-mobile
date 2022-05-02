@@ -6,6 +6,7 @@ import {
   AdminScreens,
   IssueCardScreens,
 } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { IssueCardProvider } from '@/Services/Admin/IssueCardProvider';
 
 import AdminHomeScreen from '@/Containers/Admin/AdminHomeScreen';
 
@@ -22,22 +23,27 @@ import CardConfirmationScreen from '@/Containers/Admin/IssueCard/CardConfirmatio
 const IssueCardStack = createStackNavigator<IssueCardStackParamTypes>();
 
 export const IssueCardNavigator = () => (
-  <IssueCardStack.Navigator
-    initialRouteName={IssueCardScreens.CardType}
-    screenOptions={{ headerShown: false }}
-  >
-    <IssueCardStack.Screen name={IssueCardScreens.CardType} component={CardTypeScreen} />
-    <IssueCardStack.Screen name={IssueCardScreens.Employee} component={EmployeeScreen} />
-    <IssueCardStack.Screen name={IssueCardScreens.CardDetails} component={CardDetailsScreen} />
-    <IssueCardStack.Screen name={IssueCardScreens.Address} component={AddressScreen} />
-    <IssueCardStack.Screen name={IssueCardScreens.NewAddress} component={NewAddressScreen} />
-    <IssueCardStack.Screen name={IssueCardScreens.Allocation} component={AllocationScreen} />
-    <IssueCardStack.Screen name={IssueCardScreens.SpendControls} component={SpendControlsScreen} />
-    <IssueCardStack.Screen
-      name={IssueCardScreens.CardConfirmation}
-      component={CardConfirmationScreen}
-    />
-  </IssueCardStack.Navigator>
+  <IssueCardProvider>
+    <IssueCardStack.Navigator
+      initialRouteName={IssueCardScreens.CardType}
+      screenOptions={{ headerShown: false }}
+    >
+      <IssueCardStack.Screen name={IssueCardScreens.CardType} component={CardTypeScreen} />
+      <IssueCardStack.Screen name={IssueCardScreens.Employee} component={EmployeeScreen} />
+      <IssueCardStack.Screen name={IssueCardScreens.CardDetails} component={CardDetailsScreen} />
+      <IssueCardStack.Screen name={IssueCardScreens.Address} component={AddressScreen} />
+      <IssueCardStack.Screen name={IssueCardScreens.NewAddress} component={NewAddressScreen} />
+      <IssueCardStack.Screen name={IssueCardScreens.Allocation} component={AllocationScreen} />
+      <IssueCardStack.Screen
+        name={IssueCardScreens.SpendControls}
+        component={SpendControlsScreen}
+      />
+      <IssueCardStack.Screen
+        name={IssueCardScreens.CardConfirmation}
+        component={CardConfirmationScreen}
+      />
+    </IssueCardStack.Navigator>
+  </IssueCardProvider>
 );
 
 const AdminStack = createStackNavigator<AdminStackParamTypes>();
