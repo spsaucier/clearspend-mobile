@@ -19,7 +19,7 @@ const AssignCategoryBottomSheet = forwardRef(
   (props: { onSelectCategory: (category: ExpenseCategory) => void }, ref: any) => {
     const { t } = useTranslation();
 
-    const { data: categories, isError } = useExpenseCategories();
+    const { data: expenseCategories, isError } = useExpenseCategories();
 
     const renderBackdrop = useCallback(
       ({ animatedIndex, animatedPosition }: BottomSheetDefaultBackdropProps) => (
@@ -44,7 +44,7 @@ const AssignCategoryBottomSheet = forwardRef(
       <BottomSheetModalProvider>
         <BottomSheetModal ref={ref} snapPoints={['100%']} backdropComponent={renderBackdrop}>
           <View style={tw`flex-1 pt-4 px-1`}>
-            {!categories ? (
+            {!expenseCategories ? (
               <View style={tw`flex h-5/6 items-center justify-center`}>
                 <ActivityIndicator />
               </View>
@@ -59,7 +59,7 @@ const AssignCategoryBottomSheet = forwardRef(
                   {t('wallet.transactionDetails.selectCategory.title')}
                 </CSText>
                 <BottomSheetFlatList
-                  data={categories}
+                  data={expenseCategories}
                   keyExtractor={(item, index) => item?.expenseCategoryId ?? index.toString()}
                   renderItem={({ item }) => (
                     <TouchableOpacity

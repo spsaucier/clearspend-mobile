@@ -9,6 +9,8 @@ import { AnimatedCSText } from '@/Components';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 import { ExpenseIcon, PlusWithBorderIcon, ReceiptIcon } from '@/Components/Icons';
+import { useExpenseCategories } from '@/Queries/expenseCategory';
+import { getExpenseCategoryStatus } from '@/Helpers/ExpenseCategoryHelpers';
 
 export type Status = 'PENDING' | 'DECLINED' | 'APPROVED';
 
@@ -42,6 +44,7 @@ export const TransactionRow = ({
   expenseDetails,
 }: Props) => {
   const { navigate } = useNavigation();
+  const { data: expenseCategories } = useExpenseCategories();
   const handleItemOnPress = () => {
     navigate(MainScreens.TransactionDetails, { cardId, transactionId });
   };
@@ -79,6 +82,9 @@ export const TransactionRow = ({
   }));
 
   const hasReceipts = receiptIds && receiptIds.length > 0;
+  const hasExpenseCategory = !!expenseDetails;
+  const hasValidExpenseCategory =
+    getExpenseCategoryStatus(expenseDetails?.expenseCategoryId, expenseCategories) !== 'DISABLED';
 
   return (
     <TouchableOpacity
@@ -120,7 +126,7 @@ export const TransactionRow = ({
       </View>
 
       <View style={tw`flex-row justify-end items-center w-10`}>
-        {(!expenseDetails || !hasReceipts) && (
+        {(!hasExpenseCategory || !hasValidExpenseCategory || !hasReceipts) && (
           <PlusWithBorderIcon
             style={{ marginRight: -4, zIndex: 2 }}
             color={tw.color('black')}
@@ -135,11 +141,11 @@ export const TransactionRow = ({
             }}
           />
         )}
-        {!expenseDetails ? <ExpenseIcon /> : null}
-        {!hasReceipts && expenseDetails && expenseDetails?.status === 'DISABLED' ? (
+        {!hasExpenseCategory ? (
+          <ExpenseIcon />
+        ) : !hasValidExpenseCategory ? (
           <ExpenseIcon
             style={{
-              marginRight: !hasReceipts ? 0 : -5,
               marginLeft: !hasReceipts ? -6 : 0,
             }}
             bgColor={tw.color('error')}

@@ -27,11 +27,13 @@ import AddReceiptPanel from './Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import AssignCategoryBottomSheet from '@/Containers/Wallet/Components/AssignCategoryBottomSheet';
-import { ExpenseDetails } from '@/generated/capital';
+import { AccountActivityResponse, ExpenseDetails } from '@/generated/capital';
 import { useUpdateTransaction } from '@/Queries/transaction';
 import { MERCHANT_CATEGORY_ICON_NAME_MAP } from '@/Components/Icons/MerchantCategories';
 import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 import ViewReceiptThumbnail from './Receipt/ViewReceiptThumbnail';
+import { getExpenseCategoryStatus } from '@/Helpers/ExpenseCategoryHelpers';
+import { useExpenseCategories } from '@/Queries/expenseCategory';
 
 type InfoRowProps = {
   label: string;
@@ -58,6 +60,7 @@ const TransactionDetailScreenContent = () => {
   const assignCategoryBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const { isLoading, error, data } = useTransaction(accountActivityId);
+  const { data: expenseCategories, isLoading: isLoadingExpenseCategories } = useExpenseCategories();
   const { mutate: updateTransaction, isLoading: isUpdatingTransaction } =
     useUpdateTransaction(accountActivityId);
 
@@ -73,7 +76,7 @@ const TransactionDetailScreenContent = () => {
     onUploadFinished: onUploadReceiptFromGalleryFinished,
   });
 
-  if (isLoading) {
+  if (isLoading || isLoadingExpenseCategories) {
     return (
       <View style={tw`h-full items-center justify-center bg-white rounded-t-3xl`}>
         <ActivityIndicator bgColor="black" />
@@ -99,8 +102,8 @@ const TransactionDetailScreenContent = () => {
     notes,
     expenseDetails,
     syncStatus,
-    // country
-  } = data;
+  }: AccountActivityResponse = data;
+
   // TODO: Delete once API supports it
   const country = 'USA';
 
@@ -315,7 +318,9 @@ const TransactionDetailScreenContent = () => {
             </TouchableOpacity>
           </View>
           <View style={tw`self-center justify-center items-center`}>
-            {expenseDetails && !expenseDetails?.expenseCategoryId ? (
+            {expenseDetails &&
+            getExpenseCategoryStatus(expenseDetails?.expenseCategoryId, expenseCategories) ===
+              'DISABLED' ? (
               <View style={tw`flex-row mt-2 h-15 w-89 bg-lightError justify-between items-center`}>
                 <ExclamationIcon bgColor={tw.color('error')} style={tw`ml-4`} />
                 <CSText style={tw`text-xs pr-2 text-error ml-2 leading-4 flex-1 flex-shrink`}>
