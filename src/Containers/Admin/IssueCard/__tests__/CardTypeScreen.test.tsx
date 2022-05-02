@@ -18,7 +18,6 @@ describe('CardTypeScreen', () => {
     expect(testId).toBeTruthy();
 
     const nextButton = await findByTestId('primary-action-button');
-
     expect(nextButton).toBeDisabled();
   });
 

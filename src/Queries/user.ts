@@ -29,3 +29,6 @@ export const useUpdateUser = () => {
     },
   );
 };
+
+export const useUsers = () =>
+  useQuery<User[], Error>(['users'], () => apiClient.get(`/users/list`).then((res) => res.data));
