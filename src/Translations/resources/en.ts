@@ -167,6 +167,12 @@ export default {
       other: 'Other',
     },
   },
+  paymentTypes: {
+    pointOfSales: 'Point of sale (POS)',
+    manualEntry: 'Manual Entry',
+    online: 'Online',
+    international: 'International',
+  },
   wallet: {
     refreshCardAndTransactions: 'Refreshing card and transactions',
     empty: {
@@ -318,6 +324,28 @@ export default {
     billingAddress: 'CARD BILLING ADDRESS',
     billingAddressInfo:
       "This is your company's main address. Use this address as your billing address for e-commerce payments.",
+  },
+  cardSpendControl: {
+    title: 'Spend controls',
+    resetControlsHeadline: 'Reset spend controls to default allocation settings',
+    resetControls: 'Reset controls',
+    save: 'SAVE',
+    success: 'Changes successfully saved.',
+  },
+  spendControl: {
+    amount: 'Amount',
+    purchasing: 'Purchasing',
+    categories: 'Categories',
+    allCategories: 'All categories',
+    dailyLimit: 'Daily limit',
+    monthyLimit: 'Monthy limit',
+    transactionLimit: 'Transaction limit',
+    paymentTypes: 'Payment types',
+    allPaymentTypes: 'All payment types',
+    pointOfSales: 'Point of sale (POS)',
+    manualEntry: 'Manual Entry',
+    online: 'Online',
+    international: 'International',
   },
   profile: {
     profileInfo: 'View profile info',

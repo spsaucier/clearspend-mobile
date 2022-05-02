@@ -38,6 +38,7 @@ import UpdateMobileScreen from '@/Containers/Profile/UpdateMobileScreen';
 import UpdateAddressScreen from '@/Containers/Profile/UpdateAddressScreen';
 import UpdatedTermsAndConditionsScreen from '@/Containers/Onboarding/UpdatedTermsAndConditionsScreen';
 import { AdminNavigator as AdminStack } from '@/Navigators/Admin/AdminNavigator';
+import CardSpendControl from '@/Containers/Wallet/CardSpendControl';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -140,6 +141,7 @@ const WalletStack = () => (
     />
     <Stack.Screen name={MainScreens.DevMenu} component={DevMenuScreen} />
     <Stack.Screen name={MainScreens.DevIconDemo} component={IconDemoScreen} />
+    <Stack.Screen name={MainScreens.CardSpendControl} component={CardSpendControl} />
   </Stack.Navigator>
 );
 

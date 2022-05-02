@@ -110,3 +110,15 @@ export const useActivateCard = () => {
 export async function revealCardKey(params: Readonly<RevealCardRequest>) {
   return (await apiClient.post<Readonly<RevealCardResponse>>('/cards/reveal', params)).data;
 }
+
+export const useSaveCardSpendControl = (cardId: string) =>
+  useMutation<
+    Card,
+    Error,
+    { disabledMccGroups: string[]; disabledPaymentTypes: string[]; limits: any[] }
+  >((context) => {
+    const { disabledMccGroups, disabledPaymentTypes, limits } = context;
+    return apiClient
+      .patch(`/cards/${cardId}`, { disabledMccGroups, disabledPaymentTypes, limits })
+      .then((res) => res.data);
+  });

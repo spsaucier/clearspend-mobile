@@ -50,6 +50,11 @@ export const CardOptionsBottomSheet = forwardRef(
       navigate(MainScreens.CardDetails, { cardId: cardId! });
     };
 
+    const navigateToCardSpendControlScreen = () => {
+      closePanel();
+      navigate(MainScreens.CardSpendControl, { cardId: cardId! });
+    };
+
     useEffect(() => {
       setIsFrozen(isCardFrozen);
     }, [cardId, isCardFrozen]);
@@ -147,9 +152,7 @@ export const CardOptionsBottomSheet = forwardRef(
             {showSpendControlsRow && (
               <TouchableOpacity
                 style={tw`flex-row items-center py-4`}
-                onPress={() => {
-                  // TODO: go to spend controls
-                }}
+                onPress={navigateToCardSpendControlScreen}
               >
                 <KeyIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
                 <CSText style={tw`text-base`}>{t('card.options.spendControls')}</CSText>

@@ -71,6 +71,7 @@ export enum MainScreens {
   Wallet = 'Wallet',
   ActivateCardDigitEntry = 'Activate Card Digit Entry',
   ActivateCardResult = 'Activate Card Result',
+  CardSpendControl = 'Card Spend Control',
 
   // Dev menu
   DevMenu = 'DevMenu',
@@ -125,6 +126,7 @@ export type MainStackParamTypes = {
   };
   [MainScreens.ActivateCardDigitEntry]: undefined;
   [MainScreens.ActivateCardResult]: { lastFour: string };
+  [MainScreens.CardSpendControl]: { cardId: string };
 
   // Dev menu
   [MainScreens.DevMenu]: undefined;

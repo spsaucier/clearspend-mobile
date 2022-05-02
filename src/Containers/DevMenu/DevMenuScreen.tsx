@@ -7,7 +7,7 @@ import Crashes from 'appcenter-crashes';
 import { useNavigation } from '@react-navigation/core';
 import Toast from 'react-native-toast-message';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
-import { Button, CSText } from '@/Components';
+import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import tw from '@/Styles/tailwind';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
@@ -35,6 +35,8 @@ const DevMenuScreen = () => {
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white p-4`}>
+      <FocusAwareStatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+
       <BackButtonNavigator />
       <CSText style={tw`text-2xl pt-3`}>Dev Menu</CSText>
       <ScrollView style={tw`flex-1 mt-5 pl-2 pr-2`}>
@@ -117,6 +119,12 @@ const DevMenuScreen = () => {
           label="Updated terms and conditions"
           containerStyle={tw`mb-4`}
           onPress={() => navigate(MainScreens.UpdatedTermsAndConditionsScreen)}
+        />
+
+        <Button
+          label="Spend Control (Temp)"
+          containerStyle={tw`mb-4`}
+          onPress={() => navigate(MainScreens.CardSpendControl, { cardId: '1111' })}
         />
       </ScrollView>
     </SafeAreaView>
