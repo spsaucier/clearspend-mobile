@@ -40,14 +40,16 @@ const AdminScreenWrapper: FC<Props> = ({
           <BackButtonNavigator theme="light" />
         </View>
       )}
-      <View style={tw`px-5`}>
-        <View style={tw`mt-3 mb-8`}>
-          {title && (
-            <CSText style={tw`font-telegraf text-2xl font-light text-black`}>{title}</CSText>
-          )}
-          {text && <CSText style={tw`text-sm leading-normal text-gray-75 mt-2`}>{text}</CSText>}
+      {title && (
+        <View style={tw`px-5`}>
+          <View style={tw`mt-3 mb-8`}>
+            {title && (
+              <CSText style={tw`font-telegraf text-2xl font-light text-black`}>{title}</CSText>
+            )}
+            {text && <CSText style={tw`text-sm leading-normal text-gray-75 mt-2`}>{text}</CSText>}
+          </View>
         </View>
-      </View>
+      )}
       <View style={tw`flex-1 px-5`}>{children}</View>
       <View style={tw`p-5`}>
         {onPrimaryAction && (

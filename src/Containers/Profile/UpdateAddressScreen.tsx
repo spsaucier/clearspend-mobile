@@ -23,7 +23,7 @@ import { useAddressSuggestions } from '@/Hooks/useAddressSuggestions';
 import { CloseIcon } from '@/Components/Icons';
 import { getFontSizeMultiplier } from '@/Helpers/StyleHelpers';
 
-interface AutocompleteItem {
+export interface AutocompleteItem {
   id: string;
   title: string;
 }

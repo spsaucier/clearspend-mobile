@@ -1,6 +1,7 @@
 export { ArrowSquareOutIcon } from './arrowSquareOutIcon';
 export { ArrowUpIcon } from './arrowUpIcon';
 export { BackArrowIcon } from './backArrowIcon';
+export { BusinessIcon } from './businessIcon';
 export { CameraIcon } from './cameraIcon';
 export { CardSettingsIcon } from './cardSettingsIcon';
 export { CheckBoxIcon } from './checkBoxIcon';
