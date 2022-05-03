@@ -12,10 +12,12 @@ const secondaryColor = tw.color('secondary');
 const lightGray = tw.color('gray-20');
 
 export const ToggleSwitch = ({
+  testID,
   toggleSwitch,
   value = false,
   disable = false,
 }: {
+  testID?: string;
   toggleSwitch: (value: boolean) => void;
   value: boolean;
   disable?: boolean;
@@ -53,6 +55,7 @@ export const ToggleSwitch = ({
   return (
     <Animated.View style={[tw`rounded-xl`, animatedStyle]}>
       <TouchableWithoutFeedback
+        testID={testID}
         disabled={disable}
         style={[tw`relative h-5 justify-center`, { minWidth: containerWidth }]}
         onPress={() => {

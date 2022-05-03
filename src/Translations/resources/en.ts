@@ -452,6 +452,7 @@ export default {
       cardTypeOptionVirtualText: 'Available immediately',
       employeeTitle: 'Select employee',
       cardDetailsTitle: 'Card details',
+      cardDetailsLabel: 'Show employee name',
       addressTitle: 'Select delivery address',
       newAddressTitle: 'New address',
       allocationTitle: 'Allocation',
