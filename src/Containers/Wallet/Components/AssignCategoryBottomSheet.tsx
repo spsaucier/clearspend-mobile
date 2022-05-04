@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback } from 'react';
+import React, { forwardRef, useCallback, useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,7 +19,12 @@ const AssignCategoryBottomSheet = forwardRef(
   (props: { onSelectCategory: (category: ExpenseCategory) => void }, ref: any) => {
     const { t } = useTranslation();
 
-    const { data: expenseCategories, isError } = useExpenseCategories();
+    const { data: expenseCategories, isLoading, isError } = useExpenseCategories();
+
+    const filteredCategories = useMemo(
+      () => expenseCategories?.filter((cat) => cat.status !== 'DISABLED') ?? [],
+      [expenseCategories],
+    );
 
     const renderBackdrop = useCallback(
       ({ animatedIndex, animatedPosition }: BottomSheetDefaultBackdropProps) => (
@@ -44,7 +49,7 @@ const AssignCategoryBottomSheet = forwardRef(
       <BottomSheetModalProvider>
         <BottomSheetModal ref={ref} snapPoints={['100%']} backdropComponent={renderBackdrop}>
           <View style={tw`flex-1 pt-4 px-1`}>
-            {!expenseCategories ? (
+            {isLoading ? (
               <View style={tw`flex h-5/6 items-center justify-center`}>
                 <ActivityIndicator />
               </View>
@@ -59,7 +64,7 @@ const AssignCategoryBottomSheet = forwardRef(
                   {t('wallet.transactionDetails.selectCategory.title')}
                 </CSText>
                 <BottomSheetFlatList
-                  data={expenseCategories}
+                  data={filteredCategories}
                   keyExtractor={(item, index) => item?.expenseCategoryId ?? index.toString()}
                   renderItem={({ item }) => (
                     <TouchableOpacity
