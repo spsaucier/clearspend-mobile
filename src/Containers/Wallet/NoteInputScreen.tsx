@@ -35,6 +35,7 @@ const NoteInputScreen = () => {
     Keyboard.dismiss();
     saveNote({
       notes: note,
+      expenseCategoryId: params.expenseCategoryId,
     });
   };
 

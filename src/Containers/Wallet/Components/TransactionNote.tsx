@@ -11,14 +11,15 @@ import { MainScreens } from '@/Navigators/NavigatorTypes';
 type Props = {
   notes: string | null | undefined;
   accountActivityId: string;
+  expenseCategoryId: string | undefined;
 };
 
-export const TransactionNote = ({ notes = '', accountActivityId }: Props) => {
+export const TransactionNote = ({ notes = '', accountActivityId, expenseCategoryId }: Props) => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
 
   const navToNoteInput = () => {
-    navigate(MainScreens.NoteInput, { accountActivityId, notes });
+    navigate(MainScreens.NoteInput, { accountActivityId, notes, expenseCategoryId });
   };
 
   const Triangle = () => (

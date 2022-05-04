@@ -253,7 +253,11 @@ const TransactionDetailScreenContent = () => {
           </View>
 
           <View style={tw`pt-6`}>
-            <TransactionNote notes={notes} accountActivityId={accountActivityId!} />
+            <TransactionNote
+              notes={notes}
+              accountActivityId={accountActivityId!}
+              expenseCategoryId={expenseDetails?.expenseCategoryId}
+            />
           </View>
 
           <View style={tw`flex-row px-2 pt-6`}>
