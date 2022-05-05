@@ -329,7 +329,7 @@ export default {
     title: 'Spend controls',
     resetControlsHeadline: 'Reset spend controls to default allocation settings',
     resetControls: 'Reset controls',
-    save: 'SAVE',
+    applyChanges: 'Apply changes',
     success: 'Changes successfully saved.',
   },
   spendControl: {

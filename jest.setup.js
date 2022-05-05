@@ -31,7 +31,7 @@ jest.mock('@fullstory/react-native', () => ({
   LogLevel: {
     Info: 'info',
     Warn: 'warn',
-    Error: 'error'
+    Error: 'error',
   },
   event: jest.fn(),
   setUserVars: jest.fn(),
@@ -79,6 +79,10 @@ jest.mock('react-i18next', () => ({
   },
   Trans: ({ children, components }) => {
     return children || components.key1;
+  },
+  initReactI18next: {
+    type: '3rdParty',
+    init: jest.fn(),
   },
 }));
 

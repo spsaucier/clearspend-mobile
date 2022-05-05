@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import i18next from 'i18next';
+import CurrencyInput from 'react-native-currency-input';
 import { CSText, ToggleSwitch } from '@/Components';
 import { KeyboardIcon, PointOfSaleIcon, TrolleyIcon } from '@/Components/Icons';
 import {
@@ -11,9 +12,15 @@ import {
 import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 import tw from '@/Styles/tailwind';
 
-const LimitAmount = ({ maxValue, value }: { maxValue: number; value: number }) => {
+type LimitAmountProps = {
+  maxValue: number;
+  value: number;
+  onChangeValue: (value: number) => void;
+  testID?: string;
+};
+
+const LimitAmount = ({ maxValue, value = 0, onChangeValue, testID }: LimitAmountProps) => {
   const { t } = useTranslation();
-  const [currentValue] = useState<number>(value);
 
   return (
     <View style={tw`flex-row rounded bg-white w-full p-2 items-center`}>
@@ -24,11 +31,19 @@ const LimitAmount = ({ maxValue, value }: { maxValue: number; value: number }) =
         )}`}</CSText>
       </View>
       <View style={tw`flex-1`}>
-        <TextInput
-          style={tw`rounded border-gray-10 border-1 pr-1`}
-          textAlign="right"
-          value={currentValue.toFixed(2)}
-        />
+        <View style={tw`max-w-md`}>
+          <CurrencyInput
+            testID={testID}
+            prefix="$"
+            delimiter=","
+            separator="."
+            style={tw`rounded border-gray-10 border-1 pr-1 text-base`}
+            textAlign="right"
+            maxValue={maxValue}
+            onChangeValue={onChangeValue}
+            value={value}
+          />
+        </View>
       </View>
     </View>
   );
@@ -125,7 +140,7 @@ const SpendControl = ({
       <View style={tw`mt-3`}>
         <CSText style={tw`text-lg`}>{t('spendControl.purchasing')}</CSText>
         <View style={tw`mt-2 rounded bg-tan p-3`}>
-          <View style={tw``}>
+          <View>
             <View style={tw`flex-row justify-between items-center p-2`}>
               <CSText>{t('spendControl.dailyLimit')}</CSText>
               <ToggleSwitch
@@ -137,7 +152,14 @@ const SpendControl = ({
             </View>
             {daily.enabled ? (
               <View style={tw`p-2`}>
-                <LimitAmount maxValue={maxAmount} value={daily.amount} />
+                <LimitAmount
+                  maxValue={maxAmount}
+                  value={daily.amount}
+                  onChangeValue={(newValue) => {
+                    onLimitUpdated({ daily: { amount: newValue, enabled: true } });
+                  }}
+                  testID="dailyLimitAmount"
+                />
               </View>
             ) : null}
           </View>
@@ -154,7 +176,14 @@ const SpendControl = ({
             </View>
             {monthly.enabled ? (
               <View style={tw`p-2`}>
-                <LimitAmount maxValue={maxAmount} value={monthly.amount} />
+                <LimitAmount
+                  maxValue={maxAmount}
+                  value={monthly.amount}
+                  onChangeValue={(newValue) => {
+                    onLimitUpdated({ monthly: { amount: newValue, enabled: true } });
+                  }}
+                  testID="monthlyLimitAmount"
+                />
               </View>
             ) : null}
           </View>
@@ -170,7 +199,14 @@ const SpendControl = ({
             </View>
             {instant.enabled ? (
               <View style={tw`p-2`}>
-                <LimitAmount maxValue={maxAmount} value={instant.amount} />
+                <LimitAmount
+                  maxValue={maxAmount}
+                  value={instant.amount}
+                  onChangeValue={(newValue) => {
+                    onLimitUpdated({ instant: { amount: newValue, enabled: true } });
+                  }}
+                  testID="instantLimitAmount"
+                />
               </View>
             ) : null}
           </View>

@@ -120,12 +120,6 @@ const DevMenuScreen = () => {
           containerStyle={tw`mb-4`}
           onPress={() => navigate(MainScreens.UpdatedTermsAndConditionsScreen)}
         />
-
-        <Button
-          label="Spend Control (Temp)"
-          containerStyle={tw`mb-4`}
-          onPress={() => navigate(MainScreens.CardSpendControl, { cardId: '1111' })}
-        />
       </ScrollView>
     </SafeAreaView>
   );

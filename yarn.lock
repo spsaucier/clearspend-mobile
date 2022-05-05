@@ -8417,6 +8417,11 @@ react-native-country-picker-modal@^2.0.0:
     prop-types "15.7.2"
     react-async-hook "3.6.1"
 
+react-native-currency-input@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-currency-input/-/react-native-currency-input-1.0.1.tgz#3118a0d5347dd29568c5031320dbeb34be43415c"
+  integrity sha512-1AbXXMAyNBEV2M0snh6e/B1w+rxRBgu9IARVaeF0tkUuaGX4kl/tQVXzyNa0fV2GX89U8Hyb0HaMvjaIZGniAA==
+
 react-native-device-info@^8.5.0:
   version "8.5.0"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.5.0.tgz#b6c60c0bd467685fe4d1550322d630e2287c57aa"

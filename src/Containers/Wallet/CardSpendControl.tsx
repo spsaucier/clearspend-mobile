@@ -27,8 +27,8 @@ import SpendControl, {
 } from '../Admin/SpendControl';
 import { useCard } from '@/Queries';
 import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
-import { CheckMarkIcon } from '@/Components/Icons';
 import { useSaveCardSpendControl } from '@/Queries/card';
+import { fetchAllocationData } from '@/Queries/allocation';
 
 type CardSpendControlNavigationProps = NativeStackScreenProps<
   MainStackParamTypes,
@@ -37,24 +37,26 @@ type CardSpendControlNavigationProps = NativeStackScreenProps<
 type CardSpendControlRouteProp = CardSpendControlNavigationProps['route'];
 
 type SpendControlState = {
+  allocationId: string;
   maxAmount: number;
-  categoryTypes: MerchantCategoryType[];
-  paymentTypes: PaymentType[];
   limits: {
     daily: Limit;
     monthly: Limit;
     instant: Limit;
   };
+  categoryTypes: MerchantCategoryType[];
+  paymentTypes: PaymentType[];
 };
 
 const SpendControlDefaultValues: SpendControlState = {
-  categoryTypes: [],
+  allocationId: '',
+  maxAmount: 0,
   limits: {
     daily: { enabled: false, amount: 0 },
     monthly: { enabled: false, amount: 0 },
     instant: { enabled: false, amount: 0 },
   },
-  maxAmount: 0,
+  categoryTypes: [],
   paymentTypes: [],
 };
 
@@ -68,11 +70,13 @@ const CardSpendControl = () => {
   } = useRoute<CardSpendControlRouteProp>();
 
   const { data, isFetching } = useCard(cardId);
+
   const [loading, setLoading] = useState(true);
   const [currentSpendControl, setCurrentSpendControl] =
     useState<SpendControlState>(SpendControlDefaultValues);
   const [originalSpendControl, setOriginalSpendControl] = useState<SpendControlState>();
   const { mutateAsync: mutateSpendControl } = useSaveCardSpendControl(cardId);
+  const [saving, setSaving] = useState(false);
 
   const animatedStyle = useAnimatedStyle(
     () => ({
@@ -81,75 +85,112 @@ const CardSpendControl = () => {
     [scrollPositionYValue.value],
   );
 
+  const buildSpendControlState = ({
+    allocationId,
+    maxAmount,
+    disabledMccGroups,
+    disabledPaymentTypes,
+    limits,
+  }: {
+    allocationId: string;
+    maxAmount: number;
+    disabledMccGroups: string[];
+    disabledPaymentTypes: string[];
+    limits: any[];
+  }) => {
+    const [firstLimit] = limits!;
+    const {
+      typeMap: { PURCHASE },
+    } = firstLimit;
+
+    const daily = {
+      enabled: PURCHASE?.DAILY !== undefined,
+      amount: PURCHASE?.DAILY?.amount || 0,
+    };
+
+    const monthly = {
+      enabled: PURCHASE?.MONTHLY !== undefined,
+      amount: PURCHASE?.MONTHLY?.amount || 0,
+    };
+
+    const instant = {
+      enabled: PURCHASE?.INSTANT !== undefined,
+      amount: PURCHASE?.INSTANT?.amount || 0,
+    };
+
+    const categoryTypes = Object.keys(MerchantCategoryTypes).map((mt) => {
+      const disabled = disabledMccGroups!.find((x) => x === mt);
+
+      return {
+        key: mt,
+        enabled: !disabled,
+      };
+    });
+
+    const paymentTypes = PaymentTypes.map((pt) => {
+      const disabled = disabledPaymentTypes!.find((x) => x === pt.key);
+      return {
+        ...pt,
+        enabled: !disabled,
+      };
+    });
+
+    const controlState = {
+      allocationId,
+      maxAmount,
+      categoryTypes,
+      paymentTypes,
+      limits: {
+        daily,
+        monthly,
+        instant,
+      },
+    };
+
+    return controlState;
+  };
+
   useEffect(() => {
     if (!isFetching && data) {
-      const { availableBalance, disabledMccGroups, disabledPaymentTypes, limits } = data;
-      const [firstLimit] = limits!;
       const {
-        typeMap: { PURCHASE },
-      } = firstLimit;
+        availableBalance,
+        disabledMccGroups,
+        disabledPaymentTypes,
+        limits,
+        card: { allocationId },
+      } = data;
 
-      const daily = {
-        enabled: PURCHASE?.DAILY !== undefined,
-        amount: PURCHASE?.DAILY?.amount || 0,
-      };
-
-      const monthly = {
-        enabled: PURCHASE?.MONTHLY !== undefined,
-        amount: PURCHASE?.MONTHLY?.amount || 0,
-      };
-
-      const instant = {
-        enabled: PURCHASE?.INSTANT !== undefined,
-        amount: PURCHASE?.INSTANT?.amount || 0,
-      };
-
-      const categoryTypes = Object.keys(MerchantCategoryTypes).map((mt) => {
-        const disabled = disabledMccGroups!.find((x) => x === mt);
-
-        return {
-          key: mt,
-          enabled: !disabled,
-        };
-      });
-
-      const paymentTypes = PaymentTypes.map((pt) => {
-        const disabled = disabledPaymentTypes!.find((x) => x === pt.key);
-
-        return {
-          ...pt,
-          enabled: !disabled,
-        };
-      });
-
-      const controlState = {
+      const newState = buildSpendControlState({
+        allocationId: allocationId!,
         maxAmount: availableBalance.amount!,
-        categoryTypes,
-        paymentTypes,
-        limits: {
-          daily,
-          monthly,
-          instant,
-        },
-      };
+        disabledMccGroups: disabledMccGroups!,
+        disabledPaymentTypes: disabledPaymentTypes!,
+        limits: limits!,
+      });
 
-      setCurrentSpendControl(controlState);
-      setOriginalSpendControl(cloneDeep(controlState));
+      setCurrentSpendControl(newState);
+      setOriginalSpendControl(cloneDeep(newState));
+
       setLoading(false);
     }
   }, [data, isFetching]);
 
-  const { maxAmount, categoryTypes, limits, paymentTypes } = currentSpendControl;
+  const {
+    maxAmount: currentAmout,
+    categoryTypes: currentCategoryTypes,
+    limits: currentLimits,
+    paymentTypes: currentPaymentTypes,
+  } = currentSpendControl;
   const formDirty =
     currentSpendControl &&
     originalSpendControl &&
     isEqual(currentSpendControl, originalSpendControl!) === false;
 
   const onLimitUpdated = (limitUpdated: any) => {
-    const { limits: currentLimits } = currentSpendControl!;
+    const { limits } = currentSpendControl!;
 
     const newLimits = {
-      ...currentLimits,
+      ...limits,
       ...limitUpdated,
     };
 
@@ -160,35 +201,35 @@ const CardSpendControl = () => {
   };
 
   const onCategoryUpdated = (categoryUpdated: any) => {
-    const { categoryTypes: currentCategoryTypes } = currentSpendControl;
-    const idx = currentCategoryTypes.findIndex((x) => x.key === categoryUpdated.key);
-    currentCategoryTypes[idx] = {
-      ...currentCategoryTypes[idx],
+    const { categoryTypes } = currentSpendControl;
+    const idx = categoryTypes.findIndex((x) => x.key === categoryUpdated.key);
+    categoryTypes[idx] = {
+      ...categoryTypes[idx],
       enabled: categoryUpdated.enabled,
     };
 
     setCurrentSpendControl({
       ...currentSpendControl,
-      categoryTypes: currentCategoryTypes,
+      categoryTypes,
     });
   };
   const onPaymentUpdated = (paymentTypeUpdated: any) => {
-    const { paymentTypes: currentPaymentTypes } = currentSpendControl;
-    const idx = currentPaymentTypes.findIndex((x) => x.key === paymentTypeUpdated.key);
-    currentPaymentTypes[idx] = {
-      ...currentPaymentTypes[idx],
+    const { paymentTypes } = currentSpendControl;
+    const idx = paymentTypes.findIndex((x) => x.key === paymentTypeUpdated.key);
+    paymentTypes[idx] = {
+      ...paymentTypes[idx],
       enabled: paymentTypeUpdated.enabled,
     };
 
     setCurrentSpendControl({
       ...currentSpendControl,
-      paymentTypes: currentPaymentTypes,
+      paymentTypes,
     });
   };
 
   const onAllCategoriesToggle = (enabled: boolean) => {
-    const { categoryTypes: currentCategoryTypes } = currentSpendControl;
-    const categoryTypesUpdated = currentCategoryTypes.map((x) => ({
+    const { categoryTypes } = currentSpendControl;
+    const categoryTypesUpdated = categoryTypes.map((x) => ({
       ...x,
       enabled,
     }));
@@ -200,8 +241,8 @@ const CardSpendControl = () => {
   };
 
   const onAllPaymentTypesToggle = (enabled: boolean) => {
-    const { paymentTypes: currentPaymentTypes } = currentSpendControl;
-    const paymentTypesUpdated = currentPaymentTypes.map((x) => ({
+    const { paymentTypes } = currentSpendControl;
+    const paymentTypesUpdated = paymentTypes.map((x) => ({
       ...x,
       enabled,
     }));
@@ -213,33 +254,42 @@ const CardSpendControl = () => {
   };
 
   const onResetControlsPress = () => {
-    setCurrentSpendControl(cloneDeep(originalSpendControl!));
+    const { allocationId: pAllocationId, maxAmount } = currentSpendControl;
+    fetchAllocationData(pAllocationId).then((allocationData) => {
+      const { disabledMccGroups, disabledPaymentTypes, limits } = allocationData;
+      const newState = buildSpendControlState({
+        allocationId: pAllocationId,
+        maxAmount,
+        disabledMccGroups: disabledMccGroups!,
+        disabledPaymentTypes: disabledPaymentTypes!,
+        limits: limits!,
+      });
+
+      setCurrentSpendControl(newState);
+    });
   };
 
   const onSavePress = () => {
-    const {
-      limits: currentLimits,
-      categoryTypes: currentCategoryTypes,
-      paymentTypes: currentPaymentTypes,
-    } = currentSpendControl;
+    setSaving(true);
+    const { limits, categoryTypes, paymentTypes } = currentSpendControl;
 
     const typeMap = {
       PURCHASE: {} as any,
     };
 
-    if (currentLimits.daily.enabled) {
-      typeMap.PURCHASE.DAILY = { amount: currentLimits.daily.amount };
+    if (limits.daily.enabled) {
+      typeMap.PURCHASE.DAILY = { amount: limits.daily.amount };
     }
-    if (currentLimits.monthly.enabled) {
-      typeMap.PURCHASE.MONTHLY = { amount: currentLimits.monthly.amount };
+    if (limits.monthly.enabled) {
+      typeMap.PURCHASE.MONTHLY = { amount: limits.monthly.amount };
     }
-    if (currentLimits.instant.enabled) {
-      typeMap.PURCHASE.INSTANT = { amount: currentLimits.instant.amount };
+    if (limits.instant.enabled) {
+      typeMap.PURCHASE.INSTANT = { amount: limits.instant.amount };
     }
 
     mutateSpendControl({
-      disabledMccGroups: currentCategoryTypes.filter((x) => !x.enabled).map((x) => x.key),
-      disabledPaymentTypes: currentPaymentTypes.filter((x) => !x.enabled).map((x) => x.key),
+      disabledMccGroups: categoryTypes.filter((x) => !x.enabled).map((x) => x.key),
+      disabledPaymentTypes: paymentTypes.filter((x) => !x.enabled).map((x) => x.key),
       limits: [
         {
           currency: 'USD',
@@ -253,6 +303,9 @@ const CardSpendControl = () => {
       })
       .catch(() => {
         Toast.show({ type: 'error', text1: t('error.generic') });
+      })
+      .finally(() => {
+        setSaving(false);
       });
   };
 
@@ -264,20 +317,6 @@ const CardSpendControl = () => {
           <View style={tw`flex-row items-center mb-2`}>
             <BackButtonNavigator />
             <CSText style={tw`pl-3`}>{t('cardSpendControl.title')}</CSText>
-
-            {formDirty ? (
-              <View style={tw`flex-1`}>
-                <TouchableOpacity
-                  onPress={onSavePress}
-                  style={tw`flex-row items-center justify-center self-end px-2 py-1 bg-primary`}
-                >
-                  <CSText style={tw`ml-2 my-1 text-2xs text-black pr-1`}>
-                    {t('cardSpendControl.save').toUpperCase()}
-                  </CSText>
-                  <CheckMarkIcon color="black" size={12} />
-                </TouchableOpacity>
-              </View>
-            ) : null}
           </View>
         </View>
         <View style={tw`z-1`} pointerEvents="none">
@@ -310,10 +349,10 @@ const CardSpendControl = () => {
               style={{ marginTop: -80 }}
             >
               <SpendControl
-                maxAmount={maxAmount}
-                paymentTypes={paymentTypes}
-                categoryTypes={categoryTypes}
-                limits={limits}
+                maxAmount={currentAmout}
+                paymentTypes={currentPaymentTypes}
+                categoryTypes={currentCategoryTypes}
+                limits={currentLimits}
                 onLimitUpdated={onLimitUpdated}
                 onCategoryUpdated={onCategoryUpdated}
                 onPaymentTypeUpdated={onPaymentUpdated}
@@ -322,9 +361,11 @@ const CardSpendControl = () => {
               />
               <View style={tw`mt-3`}>
                 <CSText style={tw`my-2`}>{t('cardSpendControl.resetControlsHeadline')}</CSText>
-                <Button onPress={onResetControlsPress}>
-                  {t('cardSpendControl.resetControls')}
-                </Button>
+                <TouchableOpacity style={tw`flex-1`} onPress={onResetControlsPress}>
+                  <CSText style={tw`self-center text-error`}>
+                    {t('cardSpendControl.resetControls')}
+                  </CSText>
+                </TouchableOpacity>
               </View>
             </ScrollView>
           </View>
@@ -333,6 +374,24 @@ const CardSpendControl = () => {
       <View style={tw`absolute bottom-0 w-full`}>
         <VerticalGradient inverted />
       </View>
+
+      {formDirty ? (
+        <View
+          style={tw.style(`w-full bg-white py-4 px-6`, {
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
+            elevation: 2,
+          })}
+        >
+          <SafeAreaView edges={['bottom']}>
+            <Button onPress={onSavePress} small loading={saving}>
+              {t('cardSpendControl.applyChanges')}
+            </Button>
+          </SafeAreaView>
+        </View>
+      ) : null}
     </View>
   );
 };

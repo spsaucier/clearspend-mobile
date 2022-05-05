@@ -67,6 +67,7 @@
     "react-native-camera": "^4.2.1",
     "react-native-config": "^1.4.5",
     "react-native-confirmation-code-field": "^7.3.0",
+    "react-native-currency-input": "^1.0.1",
     "react-native-device-info": "^8.5.0",
     "react-native-document-picker": "^8.0.0",
     "react-native-flipper": "^0.120.0",
