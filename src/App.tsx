@@ -1,6 +1,8 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
+import Config from 'react-native-config';
+import { StripeProvider } from '@stripe/stripe-react-native';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { useDeviceContext } from 'twrnc';
 import { setLogger } from 'react-query';
@@ -59,7 +61,9 @@ const App = () => {
        * @see https://github.com/rt2zz/redux-persist/blob/master/docs/PersistGate.md
        */}
       <PersistGate loading={null} persistor={persistor}>
-        <ApplicationNavigator />
+        <StripeProvider publishableKey={Config.STRIPE_PUBLISHABLE_KEY}>
+          <ApplicationNavigator />
+        </StripeProvider>
       </PersistGate>
     </Provider>
   );

@@ -45,6 +45,7 @@
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.7",
     "@reduxjs/toolkit": "^1.6.1",
+    "@stripe/stripe-react-native": "^0.8.0",
     "@thecodingmachine/redux-toolkit-wrapper": "2.0.1",
     "appcenter": "4.4.3",
     "appcenter-analytics": "4.4.3",

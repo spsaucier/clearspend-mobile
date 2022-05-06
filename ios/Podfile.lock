@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (5.5.0)
   - appcenter-analytics (4.4.3):
     - AppCenter/Analytics (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
@@ -543,27 +542,32 @@ PODS:
   - RNVectorIcons (9.0.0):
     - React-Core
   - SocketRocket (0.6.0)
-  - Stripe (21.12.0):
-    - Stripe/Stripe3DS2 (= 21.12.0)
-    - StripeApplePay (= 21.12.0)
-    - StripeCore (= 21.12.0)
-    - StripeUICore (= 21.12.0)
-  - Stripe/Stripe3DS2 (21.12.0):
-    - StripeApplePay (= 21.12.0)
-    - StripeCore (= 21.12.0)
-    - StripeUICore (= 21.12.0)
-  - StripeApplePay (21.12.0):
-    - StripeCore (= 21.12.0)
-  - StripeCore (21.12.0)
-  - StripeUICore (21.12.0):
-    - StripeCore (= 21.12.0)
-  - SwiftLint (0.46.3)
+  - Stripe (22.0.0):
+    - Stripe/Stripe3DS2 (= 22.0.0)
+    - StripeApplePay (= 22.0.0)
+    - StripeCore (= 22.0.0)
+    - StripeUICore (= 22.0.0)
+  - stripe-react-native (0.8.0):
+    - React-Core
+    - Stripe (~> 22.0.0)
+    - StripeConnections (~> 22.0.0)
+  - Stripe/Stripe3DS2 (22.0.0):
+    - StripeApplePay (= 22.0.0)
+    - StripeCore (= 22.0.0)
+    - StripeUICore (= 22.0.0)
+  - StripeApplePay (22.0.0):
+    - StripeCore (= 22.0.0)
+  - StripeConnections (22.0.0):
+    - StripeCore (= 22.0.0)
+    - StripeUICore (= 22.0.0)
+  - StripeCore (22.0.0)
+  - StripeUICore (22.0.0):
+    - StripeCore (= 22.0.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
-  - Alamofire
   - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
   - appcenter-core (from `../node_modules/appcenter/ios`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
@@ -655,13 +659,11 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
-  - Stripe
-  - SwiftLint
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
-    - Alamofire
     - AppCenter
     - AppCenterReactNativeShared
     - boost-for-react-native
@@ -694,9 +696,9 @@ SPEC REPOS:
     - SocketRocket
     - Stripe
     - StripeApplePay
+    - StripeConnections
     - StripeCore
     - StripeUICore
-    - SwiftLint
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -832,6 +834,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  stripe-react-native:
+    :path: "../node_modules/@stripe/stripe-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -840,7 +844,6 @@ CHECKOUT OPTIONS:
     :http: https://ios-releases.fullstory.com/fullstory-1.25.0-xcframework.tar.gz
 
 SPEC CHECKSUMS:
-  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
   appcenter-analytics: 1b32062da2e250c5e1396c678df8c6011ccbcf5a
   appcenter-core: 6ea4754df4a3d8917a5803e2681a58179d7f7a21
@@ -937,14 +940,15 @@ SPEC CHECKSUMS:
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
-  Stripe: c3692f360abcdfeef9751e3c240e7efbc68b921f
-  StripeApplePay: 14db90fdf89abb2809ce41fc68bc6b1a86221408
-  StripeCore: 5e38cdea3dc176a32d8797ef312fe1ab41571272
-  StripeUICore: c28e371b385f968388ae38bedb93a2723c078442
-  SwiftLint: ae76d82f056734f853c8cd0371503252c606c482
+  Stripe: ee32e594fa4dee4bdf2a8a3039f7fb07a21075dc
+  stripe-react-native: 8fe9d3c3b022646b4fca9fe9fa7417e191ba11aa
+  StripeApplePay: e09964f3e2c6b318e53a05c12f3cb7efc592484d
+  StripeConnections: d3068bf688679a51932abb94d956d8a73c213bd7
+  StripeCore: 689b9605ccb78e507f59ddc5e677615e0af16583
+  StripeUICore: f5fe5ad283e132b40077b5eb85b625ebf7de034a
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: c9dd91cba278d0cad837c6683744605255462b98
+PODFILE CHECKSUM: e0dc1d50e3a54dc6a363921ae170bac5e5c80e38
 
 COCOAPODS: 1.11.3

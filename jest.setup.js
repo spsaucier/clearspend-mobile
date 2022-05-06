@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native-reanimated';
 import { setLogger } from 'react-query';
-import { FlatList } from 'react-native';
 
 global.__reanimatedWorkletInit = jest.fn();
 

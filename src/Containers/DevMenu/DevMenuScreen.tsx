@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Platform, ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Crashes from 'appcenter-crashes';
@@ -11,7 +11,6 @@ import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import tw from '@/Styles/tailwind';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
-import { AppleWallet } from '@/NativeModules/AppleWallet/AppleWallet';
 import { requestUserNotificationPermission } from '@/Helpers/NotificationHelpers';
 
 const DevMenuScreen = () => {
@@ -99,19 +98,6 @@ const DevMenuScreen = () => {
             Alert.alert('Notification permission granted', notificationsEnabled.toString());
           }}
         />
-        <CSText style={tw`text-xl pb-4`}>Digital Wallets</CSText>
-        {Platform.OS === 'ios' ? (
-          <>
-            <Button
-              label="Apple Wallet: Can Add Payment Pass (lastFour 2127)"
-              containerStyle={tw`mb-4`}
-              onPress={async () => {
-                const canAdd = await AppleWallet.canAddPaymentPass('2127');
-                Alert.alert(`Can add payment pass: ${canAdd}`);
-              }}
-            />
-          </>
-        ) : null}
 
         <CSText style={tw`text-xl pb-4`}>Interstitial Screens</CSText>
 

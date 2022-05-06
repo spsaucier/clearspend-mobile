@@ -17,10 +17,6 @@
 		13FB8C36AD0B49AA97DBE4C4 /* PPNeueMontreal-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 71018FA8739B4597AEB11603 /* PPNeueMontreal-BoldItalic.ttf */; };
 		1E450C06480644EABA6A9479 /* PPNeueMontreal-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5DB793C6E384284BB055B1A /* PPNeueMontreal-MediumItalic.ttf */; };
 		1F5A481227D69F8E00951D47 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F5A481127D69F8E00951D47 /* PassKit.framework */; };
-		1F835ECF27EA855A00CBA125 /* AppleAddToWalletButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F835ECE27EA855A00CBA125 /* AppleAddToWalletButton.m */; };
-		1F835ED127EA857F00CBA125 /* AppleAddToWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F835ED027EA857F00CBA125 /* AppleAddToWalletButton.swift */; };
-		1F8E53B327C49846007400C8 /* AppleWalletModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8E53B127C49846007400C8 /* AppleWalletModule.m */; };
-		1F8E53B427C49846007400C8 /* AppleWalletModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8E53B227C49846007400C8 /* AppleWalletModule.swift */; };
 		40709B87E0584C138808F101 /* PPNeueMontreal-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D08645A16A54D56AB47974D /* PPNeueMontreal-Bold.ttf */; };
 		431103B0273D085C0009F367 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 431103AF273D085C0009F367 /* AppCenter-Config.plist */; };
 		46C98FE072B24FA28BBEF469 /* PPNeueMontreal-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB59EF2C7CBD44E4A958FB77 /* PPNeueMontreal-Thin.ttf */; };
@@ -79,11 +75,6 @@
 		1F6A0E5327FA981100607E43 /* GoogleService-Info-UAT.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info-UAT.plist"; path = "ClearSpendMobile/Firebase/GoogleService-Info-UAT.plist"; sourceTree = SOURCE_ROOT; };
 		1F6A0E5427FA981100607E43 /* GoogleService-Info-DEV.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info-DEV.plist"; path = "ClearSpendMobile/Firebase/GoogleService-Info-DEV.plist"; sourceTree = SOURCE_ROOT; };
 		1F6A0E5527FA981100607E43 /* GoogleService-Info-PROD.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info-PROD.plist"; path = "ClearSpendMobile/Firebase/GoogleService-Info-PROD.plist"; sourceTree = SOURCE_ROOT; };
-		1F835ECE27EA855A00CBA125 /* AppleAddToWalletButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppleAddToWalletButton.m; path = ClearSpendMobile/AppleWallet/AppleAddToWalletButton.m; sourceTree = SOURCE_ROOT; };
-		1F835ED027EA857F00CBA125 /* AppleAddToWalletButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleAddToWalletButton.swift; path = ClearSpendMobile/AppleWallet/AppleAddToWalletButton.swift; sourceTree = SOURCE_ROOT; };
-		1F8E53B127C49846007400C8 /* AppleWalletModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppleWalletModule.m; path = ClearSpendMobile/AppleWallet/AppleWalletModule.m; sourceTree = SOURCE_ROOT; };
-		1F8E53B227C49846007400C8 /* AppleWalletModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleWalletModule.swift; path = ClearSpendMobile/AppleWallet/AppleWalletModule.swift; sourceTree = SOURCE_ROOT; };
-		1FFB387727C321A60090B6D8 /* ClearSpendMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ClearSpendMobile-Bridging-Header.h"; path = "ClearSpendMobile/ClearSpendMobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		236F0195D4E04677BE171B1D /* PPNeueMontreal-BookItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-BookItalic.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-BookItalic.ttf"; sourceTree = "<group>"; };
 		2ED8FC2EF5514850AAFC1996 /* PPNeueMontreal-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPNeueMontreal-SemiBold.ttf"; path = "../src/Assets/Fonts/PPNeueMontreal-SemiBold.ttf"; sourceTree = "<group>"; };
 		3677E433CB2F46878BE575BB /* PPTelegraf-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PPTelegraf-Light.ttf"; path = "../src/Assets/Fonts/PPTelegraf-Light.ttf"; sourceTree = "<group>"; };
@@ -194,8 +185,6 @@
 			children = (
 				1F6A0E5227FA97F900607E43 /* Firebase */,
 				1F505EAA27DEB69C00AE162D /* Entitlements */,
-				1F8E53B027C4954A007400C8 /* AppleWallet */,
-				1FFB387727C321A60090B6D8 /* ClearSpendMobile-Bridging-Header.h */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -225,17 +214,6 @@
 			path = Firebase;
 			sourceTree = "<group>";
 		};
-		1F8E53B027C4954A007400C8 /* AppleWallet */ = {
-			isa = PBXGroup;
-			children = (
-				1F8E53B127C49846007400C8 /* AppleWalletModule.m */,
-				1F835ED027EA857F00CBA125 /* AppleAddToWalletButton.swift */,
-				1F8E53B227C49846007400C8 /* AppleWalletModule.swift */,
-				1F835ECE27EA855A00CBA125 /* AppleAddToWalletButton.m */,
-			);
-			path = AppleWallet;
-			sourceTree = "<group>";
-		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,19 +225,11 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Libraries;
-			sourceTree = "<group>";
-		};
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
 				431103AF273D085C0009F367 /* AppCenter-Config.plist */,
 				13B07FAE1A68108700A75B9A /* ClearSpendMobile */,
-				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ClearSpendMobileTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -328,7 +298,6 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ClearSpendMobile" */;
 			buildPhases = (
 				66D10C4FBF31866B9ADBA6E3 /* [CP] Check Pods Manifest.lock */,
-				1F70209527CDB502006C8715 /* SwiftLint */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -461,24 +430,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "PATH_TO_GOOGLE_PLISTS=\"${PROJECT_DIR}/ClearSpendMobile/Firebase\"\n\ncase \"${CONFIGURATION}\" in\n\n   \"dev.Debug\" | \"dev.Release\" )\n        cp -r \"$PATH_TO_GOOGLE_PLISTS/GoogleService-Info-DEV.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n        \n   \"uat.Debug\" | \"uat.Release\" )\n        cp -r \"$PATH_TO_GOOGLE_PLISTS/GoogleService-Info-UAT.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n\n   \"Debug\" | \"Release\" )\n        cp -r \"$PATH_TO_GOOGLE_PLISTS/GoogleService-Info-PROD.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n\n    *)\n        ;;\nesac\n";
-		};
-		1F70209527CDB502006C8715 /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" --fix --format ./ClearSpendMobile\n\"${PODS_ROOT}/SwiftLint/swiftlint\" ./ClearSpendMobile\n";
 		};
 		46A821537071276DD947A654 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -657,12 +608,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F835ECF27EA855A00CBA125 /* AppleAddToWalletButton.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				1F835ED127EA857F00CBA125 /* AppleAddToWalletButton.swift in Sources */,
-				1F8E53B327C49846007400C8 /* AppleWalletModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				1F8E53B427C49846007400C8 /* AppleWalletModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -681,14 +628,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0BB39BBBAF893E4937E8BDB2 /* Pods-ClearSpendMobile-ClearSpendMobileTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -713,11 +659,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C1101426D51910CF1247F0EE /* Pods-ClearSpendMobile-ClearSpendMobileTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -858,7 +803,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -915,14 +860,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9B84307E5339D7D3648F2B55 /* Pods-ClearSpendMobile-ClearSpendMobileTests.dev.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -992,7 +936,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -1049,14 +993,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6B71F9C91448DE35E47D583 /* Pods-ClearSpendMobile-ClearSpendMobileTests.uat.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1119,7 +1062,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -1173,11 +1116,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BFCCD915DC6D5742EC0B67EC /* Pods-ClearSpendMobile-ClearSpendMobileTests.dev.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1240,7 +1182,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -1294,11 +1236,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CEA0D971E85CB46B3E8C22CA /* Pods-ClearSpendMobile-ClearSpendMobileTests.uat.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ClearSpendMobileTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1368,7 +1309,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -1426,7 +1367,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",

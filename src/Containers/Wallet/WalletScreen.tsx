@@ -1,13 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  Dimensions,
-  StatusBar,
-  NativeModules,
-  Platform,
-  LayoutChangeEvent,
-  AppState,
-} from 'react-native';
+import { View, Dimensions, StatusBar, NativeModules, LayoutChangeEvent } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -28,7 +20,6 @@ import { useQueryClient } from 'react-query';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/core';
 import { NativeStackScreenProps } from 'react-native-screens/native-stack';
 import tw from '@/Styles/tailwind';
@@ -39,19 +30,12 @@ import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
-import { AddToWalletButton } from '@/Containers/Wallet/Components/AddToWalletButton';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 import { invalidateTransactions } from '@/Queries/transaction';
 import { ArrowUpIcon } from '@/Components/Icons';
-import {
-  AppleWallet,
-  CardDigitalWalletStates,
-  checkCardDigitalWalletStates,
-  WalletEventEmitter,
-} from '@/NativeModules/AppleWallet/AppleWallet';
-import { Session } from '@/Store/Session';
 import { lightFeedback } from '@/Helpers/HapticFeedback';
 import { TransactionsContainer } from '@/Containers/Wallet/TransactionsContainer';
+import { AddToDigitalWalletButton } from '@/Containers/Wallet/Components/AddToDigitalWalletButton';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const { height: windowHeight } = Dimensions.get('window');
@@ -122,21 +106,19 @@ const EmptyWallet = () => {
 
 const ContentWallet = ({
   activeCards,
-  cardDigitalWalletStates,
   headerIconsHeight,
 }: {
   activeCards: CardDetailsResponse[];
-  cardDigitalWalletStates: CardDigitalWalletStates;
   headerIconsHeight: number;
 }) => {
   const { navigate, setParams } = useNavigation();
   const route = useRoute<WalletScreenRouteProp>();
   const { params } = route;
   const { t } = useTranslation();
-  const accessToken = useSelector((state: { session: Session }) => state.session.accessToken);
 
   const { data: user } = useUser();
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
+  const [isScrolling, setIsScrolling] = useState(false);
   const [carouselHeight, setCarouselHeight] = useState<number>();
 
   const carouselRef = useRef<ICarouselInstance>(null);
@@ -207,6 +189,8 @@ const ContentWallet = ({
           data={activeCards}
           ref={carouselRef}
           width={screenWidth}
+          onScrollBegin={() => setIsScrolling(true)}
+          onScrollEnd={() => setIsScrolling(false)}
           mode="parallax"
           loop={false}
           height={screenWidth / 1.6}
@@ -254,9 +238,9 @@ const ContentWallet = ({
           }}
         />
         {/* Slider dots */}
-        <View style={tw`flex-row justify-center pb-5`}>
-          {activeCards.length > 1 &&
-            activeCards.map(({ card }: any) => {
+        {activeCards.length > 1 ? (
+          <View style={tw`flex-row justify-center pb-5`}>
+            {activeCards.map(({ card }: any) => {
               const cardId = card?.cardId;
               const selected = cardId === selectedCardId;
 
@@ -271,31 +255,13 @@ const ContentWallet = ({
                 />
               );
             })}
-        </View>
+          </View>
+        ) : null}
 
-        <AddToWalletButton
-          isVisible={
-            Platform.OS === 'ios' &&
-            cardDigitalWalletStates.some(
-              (cardState) =>
-                cardState.lastFour === selectedCard?.card?.lastFour && cardState.canAddPass,
-            )
-          }
-          style={tw.style('mb-5 h-12', { width: screenWidth * CARD_SCALE_CONSTANT })}
-          onPress={() => {
-            if (Platform.OS === 'ios' && user && selectedCardId && selectedCard?.card?.lastFour) {
-              AppleWallet.beginPushProvisioning(
-                {
-                  withName: `${user?.firstName} ${user?.lastName}`,
-                  description: t('card.appleWalletDescription'),
-                  last4: selectedCard?.card?.lastFour,
-                },
-                accessToken ?? '',
-                selectedCardId,
-              );
-            }
-            // GooglePay.test('name', 'description');
-          }}
+        <AddToDigitalWalletButton
+          card={selectedCard?.card}
+          cardHolderName={`${user?.firstName} ${user?.lastName}`}
+          disabled={isScrolling}
         />
       </View>
 
@@ -328,12 +294,8 @@ const ContentWallet = ({
 
 const WalletScreen = () => {
   const { t } = useTranslation();
-  const appState = useRef(AppState.currentState);
 
   const [headerIconsHeight, setHeaderIconsHeight] = useState<number>();
-  const [cardDigitalWalletStates, setCardDigitalWalletStates] = useState<CardDigitalWalletStates>(
-    [],
-  );
 
   const translationYSV = useSharedValue(0);
   const pullToRefreshThreshold = screenHeight * (0.45 / scale);
@@ -358,53 +320,6 @@ const WalletScreen = () => {
       ) ?? [],
     [allCardsData],
   );
-
-  useEffect(() => {
-    // Check digital wallet state of all cards
-    if (activeCards.length > 0) {
-      (async () => {
-        const state = await checkCardDigitalWalletStates(activeCards);
-        setCardDigitalWalletStates(state);
-      })();
-    }
-  }, [activeCards]);
-
-  useEffect(() => {
-    // Recheck the digital wallet state of all cards when the app is returning from the background
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-        (async () => {
-          const state = await checkCardDigitalWalletStates(activeCards);
-          setCardDigitalWalletStates(state);
-        })();
-      }
-
-      appState.current = nextAppState;
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, [activeCards]);
-
-  useEffect(() => {
-    // Recheck the digital wallet state of all cards when a card is successfully added to the wallet
-    const successSubscription = WalletEventEmitter.addListener('onProvisionSuccess', () => {
-      (async () => {
-        const state = await checkCardDigitalWalletStates(activeCards);
-        setCardDigitalWalletStates(state);
-        Toast.show({ text1: 'The card was added to the wallet successfully' });
-      })();
-    });
-    const failureSubscription = WalletEventEmitter.addListener('onProvisionFailure', () => {
-      Toast.show({ text1: 'There was an error adding the card to the wallet', type: 'error' });
-    });
-
-    return () => {
-      successSubscription.remove();
-      failureSubscription.remove();
-    };
-  }, [activeCards]);
 
   useEffect(() => {
     if (!isRefetching) {
@@ -508,7 +423,6 @@ const WalletScreen = () => {
                     {showContent && (
                       <ContentWallet
                         activeCards={activeCards}
-                        cardDigitalWalletStates={cardDigitalWalletStates}
                         headerIconsHeight={headerIconsHeight || 0}
                       />
                     )}

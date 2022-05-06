@@ -2,6 +2,7 @@ package com.clearspend.android;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 

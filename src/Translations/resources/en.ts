@@ -267,7 +267,6 @@ export default {
     frozen: 'Frozen',
     validThru: 'Valid Thru',
     cvv: 'CVV',
-    appleWalletDescription: 'ClearSpend',
     options: {
       cardOptions: 'Card Options',
       showCardInfo: 'Show Card Info',
@@ -281,6 +280,12 @@ export default {
       unfreezeErrorToast: 'Card could not be unfrozen',
       spendControls: 'Spend Controls',
     },
+  },
+  addToDigitalWallet: {
+    digitalWalletDescription: 'ClearSpend',
+    success: 'Done! Card added to your wallet.',
+    failure: 'Sorry, unable to add card to wallet.',
+    cancelled: 'Add to wallet canceled.',
   },
   activateCard: {
     activateCSCard: 'Activate your ClearSpend card',
@@ -311,7 +316,6 @@ export default {
     remaining: 'Remaining: {{amount}}',
     singleTransaction: 'Single Transaction',
     cardIsFrozenForSecurity: 'Card is frozen for security reasons.',
-    addToAppleWallet: 'Add to Apple Wallet',
     availableToSpendMeans: 'Available balance',
     availableToSpendMeansDescription:
       'Amount shown is the balance available to this card, minus any pending transaction holds. Actual spending power may be limited by daily, monthly, or single-transaction limits set by your company.',
