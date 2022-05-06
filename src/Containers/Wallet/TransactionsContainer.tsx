@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDebounce } from 'use-debounce';
 import { isEqual } from 'lodash';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import FilterTransactionsBottomSheet, {
@@ -6,6 +8,7 @@ import FilterTransactionsBottomSheet, {
 } from '@/Containers/Wallet/Components/FilterTransactionsBottomSheet';
 import Transactions from '@/Containers/Wallet/Transactions';
 import { useCardTransactions } from '@/Queries';
+import { TWSearchInput } from '@/Components/SearchInput';
 
 export const TransactionsContainer = ({
   selectedCardId,
@@ -14,18 +17,26 @@ export const TransactionsContainer = ({
   selectedCardId: string;
   initialSnapPoint: number;
 }) => {
+  const { t } = useTranslation();
   const filterTransactionBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const [searchText, setSearchText] = useState('');
+  const [debouncedSearchText] = useDebounce(searchText, 200);
+
   const [selectedFilters, setSelectedFilters] = React.useState<TransactionFilterOption[]>([]);
   const prevSelectedFiltersRef = useRef<TransactionFilterOption[]>();
 
   const cardTransactionsQuery = useCardTransactions({
     cardId: selectedCardId,
-    searchText,
+    searchText: debouncedSearchText,
     withoutReceipt: selectedFilters.includes('missingReceipt'),
     missingExpenseCategory: selectedFilters.includes('missingCategory'),
   });
+
+  useEffect(() => {
+    setSelectedFilters([]);
+    setSearchText('');
+  }, [selectedCardId]);
 
   useEffect(() => {
     if (!isEqual(prevSelectedFiltersRef.current, selectedFilters)) {
@@ -34,14 +45,8 @@ export const TransactionsContainer = ({
     prevSelectedFiltersRef.current = selectedFilters;
   }, [cardTransactionsQuery, selectedFilters]);
 
-  useEffect(() => {
-    setSelectedFilters([]);
-    setSearchText('');
-  }, [selectedCardId]);
-
   const onChangeSearchText = (text: string) => {
     setSearchText(text);
-    setTimeout(() => cardTransactionsQuery.refetch());
   };
 
   const toggleFilter = (filter: TransactionFilterOption) => {
@@ -66,7 +71,13 @@ export const TransactionsContainer = ({
         presentFiltersModal={presentFiltersModal}
         selectedFilters={selectedFilters}
         toggleFilter={toggleFilter}
-        onChangeSearchText={onChangeSearchText}
+        searchInputComponent={
+          <TWSearchInput
+            value={searchText}
+            onChangeText={onChangeSearchText}
+            placeholder={t('wallet.transactions.searchTransactions')}
+          />
+        }
         cardTransactionsQuery={cardTransactionsQuery}
         displayResultCount={searchText.length > 0 || selectedFilters.length > 0}
       />

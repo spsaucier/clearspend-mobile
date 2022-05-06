@@ -22,7 +22,7 @@ export const useCardTransactions = ({
   missingExpenseCategory,
 }: Omit<AccountActivityRequest, 'pageRequest'>) =>
   useInfiniteQuery<PagedDataAccountActivityResponse, Error>(
-    ['transactions', { card: cardId, withoutReceipt, missingExpenseCategory }],
+    ['transactions', { card: cardId, searchText, withoutReceipt, missingExpenseCategory }],
     (request) =>
       apiClient
         .post('/account-activity', {

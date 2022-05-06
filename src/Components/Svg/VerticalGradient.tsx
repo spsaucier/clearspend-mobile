@@ -10,6 +10,9 @@ type Props = {
   height?: number;
 };
 
+/**
+ * @deprecated Prefer react-native-linear-gradient
+ */
 export const VerticalGradient = ({
   style,
   testID,

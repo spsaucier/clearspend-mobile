@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { UseInfiniteQueryResult } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { chain, debounce } from 'lodash';
+import { chain } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
 import BottomSheet, {
   BottomSheetView,
@@ -12,7 +12,6 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
-import { TWSearchInput } from '@/Components/SearchInput';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, AnimatedCSText, CloseIconButton, CSText } from '@/Components';
 import { FilterIcon } from '@/Components/Icons';
@@ -43,7 +42,7 @@ type SharedProps = {
   presentFiltersModal: () => void;
   selectedFilters: TransactionFilterOption[];
   toggleFilter: (filter: TransactionFilterOption) => void;
-  onChangeSearchText: (text: string) => void;
+  searchInputComponent: ReactElement;
   cardTransactionsQuery: UseInfiniteQueryResult<PagedDataAccountActivityResponse, Error>;
   displayResultCount: boolean;
 };
@@ -58,7 +57,7 @@ const TransactionsContent = ({
   presentFiltersModal,
   selectedFilters,
   toggleFilter,
-  onChangeSearchText,
+  searchInputComponent,
   cardTransactionsQuery,
   displayResultCount,
 }: TransactionsContentProps) => {
@@ -128,10 +127,6 @@ const TransactionsContent = ({
     [animatedPosition, searchYOffset],
   );
 
-  const onChangeSearch = debounce((newSearch) => {
-    onChangeSearchText(newSearch);
-  }, 100);
-
   const loadMore = () => {
     if (hasNextPage) {
       fetchNextPage();
@@ -154,26 +149,25 @@ const TransactionsContent = ({
             }) => setSearchYOffset(height)}
           >
             <View style={[tw`flex-row justify-between py-5`]}>
-              <View style={tw`flex-grow`}>
-                <TWSearchInput
-                  onChangeText={onChangeSearch}
-                  placeholder={t('wallet.transactions.searchTransactions')}
-                />
-              </View>
-              <View style={tw`border border-gray-10 ml-2 rounded-lg pl-1 pr-1`}>
-                <TouchableOpacity onPress={onFilterTransactionModalPress}>
-                  <FilterIcon style={tw`mt-2 ml-1 mr-1 w-5 h-5`} />
-                </TouchableOpacity>
+              <View style={tw`flex-grow`}>{searchInputComponent}</View>
+              <TouchableOpacity
+                style={tw`flex-grow items-center justify-center w-10 border border-gray-10 ml-2 rounded-lg`}
+                onPress={onFilterTransactionModalPress}
+                hitSlop={{ right: 5, top: 5, bottom: 5 }}
+              >
+                <FilterIcon style={tw`mx-2`} />
                 {selectedFilters.length > 0 ? (
-                  <TouchableOpacity
-                    style={[tw`rounded-full absolute left-6 bottom-5 bg-secondary w-4 h-4`]}
+                  <View
+                    style={[
+                      tw`rounded-full absolute top--2 right--2 w-5 h-5 items-center justify-center bg-secondary`,
+                    ]}
                   >
                     <CSText style={tw`text-white text-xs text-center`}>
                       {selectedFilters.length}
                     </CSText>
-                  </TouchableOpacity>
+                  </View>
                 ) : null}
-              </View>
+              </TouchableOpacity>
             </View>
             <View style={tw`flex-row`}>
               {selectedFilters.length > 0
@@ -287,7 +281,7 @@ const Transactions = ({
   presentFiltersModal,
   selectedFilters,
   toggleFilter,
-  onChangeSearchText,
+  searchInputComponent,
   cardTransactionsQuery,
   displayResultCount,
 }: TransactionProps) => {
@@ -315,7 +309,7 @@ const Transactions = ({
           presentFiltersModal={presentFiltersModal}
           selectedFilters={selectedFilters}
           toggleFilter={toggleFilter}
-          onChangeSearchText={onChangeSearchText}
+          searchInputComponent={searchInputComponent}
           cardTransactionsQuery={cardTransactionsQuery}
           displayResultCount={displayResultCount}
         />

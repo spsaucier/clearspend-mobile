@@ -8,6 +8,9 @@ type Props = {
   inverted?: boolean;
 };
 
+/**
+ * @deprecated Prefer react-native-linear-gradient
+ */
 export const DarkToLightGradient = ({ style, testID, inverted }: Props) => {
   const darker = <Stop />;
   const lighter = <Stop offset="1" stopOpacity="0" />;

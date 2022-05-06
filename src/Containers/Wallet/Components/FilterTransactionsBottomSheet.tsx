@@ -1,5 +1,6 @@
 import React, { forwardRef, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity, View } from 'react-native';
 import { isEqual } from 'lodash';
 import {
@@ -46,8 +47,9 @@ const FilterTransactionsBottomSheet = forwardRef(
       (ref?.current as BottomSheetModal)?.dismiss();
     };
 
-    const clearFilters = () => {
-      setLocalFilterItems([]);
+    const clearFiltersAndClose = () => {
+      onSelectFilters([]);
+      (ref?.current as BottomSheetModal)?.dismiss();
     };
 
     const applyFiltersAndClose = () => {
@@ -76,54 +78,56 @@ const FilterTransactionsBottomSheet = forwardRef(
           snapPoints={['100%']}
           backdropComponent={renderBackdrop}
           backgroundStyle={tw`bg-white`}
-          handleStyle={[tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`]}
+          handleStyle={tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`}
           handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
           onDismiss={resetFilters}
         >
-          <View style={tw`flex-1 px-1`}>
-            <View style={tw`ml-5 flex-row items-center`}>
-              <BackButtonNavigator onBackPress={resetFiltersAndClose} />
-              <CSText style={tw`ml-6 text-base`}>
-                {t('wallet.filterTransactions.filterTransactionsBy')}
-              </CSText>
-            </View>
+          <SafeAreaView style={tw`flex-1 px-1 justify-between`} edges={['bottom']}>
+            <View>
+              <View style={tw`ml-5 flex-row items-center`}>
+                <BackButtonNavigator onBackPress={resetFiltersAndClose} />
+                <CSText style={tw`ml-5 text-base`}>
+                  {t('wallet.filterTransactions.filterTransactionsBy')}
+                </CSText>
+              </View>
 
-            <View style={tw`flex-row mt-10`}>
-              {filterOptions.map((filter) => (
-                <TouchableOpacity
-                  style={[
-                    tw`rounded-full ml-5 pl-3 pr-3 pt-3 pb-3 bg-gray-5`,
-                    localFilterItems.includes(filter) ? tw`bg-secondary` : tw`bg-gray-5`,
-                  ]}
-                  onPress={() => toggleLocalFilter(filter)}
-                  key={filter}
-                >
-                  <CSText
-                    style={[
-                      tw`text-sm`,
-                      localFilterItems.includes(filter) ? tw`text-white` : tw`text-black`,
-                    ]}
+              <View style={tw`flex-row mt-10`}>
+                {filterOptions.map((filter) => (
+                  <TouchableOpacity
+                    style={tw.style(
+                      'rounded-full ml-5 py-3 px-3 bg-gray-5',
+                      localFilterItems.includes(filter) ? 'bg-secondary' : 'bg-gray-5',
+                    )}
+                    onPress={() => toggleLocalFilter(filter)}
+                    key={filter}
                   >
-                    {t(`wallet.filterTransactions.${filter}`)}
-                  </CSText>
-                </TouchableOpacity>
-              ))}
+                    <CSText
+                      style={tw.style(
+                        'text-sm',
+                        localFilterItems.includes(filter) ? 'text-white' : 'text-black',
+                      )}
+                    >
+                      {t(`wallet.filterTransactions.${filter}`)}
+                    </CSText>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-            <Button
-              containerStyle={[
-                tw`ml-4 w-90 bg-gray-5 absolute bottom-32`,
-                localFilterItems?.length > 0 ? tw`bg-primary` : tw`bg-gray-5`,
-              ]}
-              label={t('wallet.filterTransactions.applyFilterButtonCta')}
-              onPress={applyFiltersAndClose}
-            />
 
-            <Button
-              containerStyle={tw`ml-4 w-90 bg-white absolute bottom-12`}
-              label={t('wallet.filterTransactions.resetAllFiltersCta')}
-              onPress={clearFilters}
-            />
-          </View>
+            <View style={tw`mx-3 mb-4`}>
+              <Button
+                label={t('wallet.filterTransactions.applyFilterButtonCta')}
+                onPress={applyFiltersAndClose}
+                disabled={localFilterItems.length === 0}
+              />
+
+              <Button
+                label={t('wallet.filterTransactions.resetAllFiltersCta')}
+                onPress={clearFiltersAndClose}
+                containerStyle={tw`bg-white mt-2`}
+              />
+            </View>
+          </SafeAreaView>
         </BottomSheetModal>
       </BottomSheetModalProvider>
     );

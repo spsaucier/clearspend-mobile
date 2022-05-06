@@ -26,6 +26,7 @@ import Animated, {
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useQueryClient } from 'react-query';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/core';
@@ -38,7 +39,6 @@ import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse } from '@/generated/capital';
 import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
-import LinearGradientWithOpacity from '@/Components/Svg/LinearGradientWithOpacity';
 import { AddToWalletButton } from '@/Containers/Wallet/Components/AddToWalletButton';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 import { invalidateTransactions } from '@/Queries/transaction';
@@ -306,7 +306,11 @@ const ContentWallet = ({
         />
       ) : null}
 
-      <LinearGradientWithOpacity style={tw`h-20 w-full absolute bottom-0`} />
+      <LinearGradient
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        style={tw`h-20 w-full absolute bottom-0`}
+        pointerEvents="box-none"
+      />
       <InfoPanel
         ref={balanceInfoPanelRef}
         title={t('cardProfile.availableToSpendMeans')}
