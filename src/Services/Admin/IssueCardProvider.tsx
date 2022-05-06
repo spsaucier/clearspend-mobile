@@ -15,6 +15,8 @@ interface Props {
   setIsPersonal: React.Dispatch<React.SetStateAction<boolean | undefined>>;
   selectedAddress: Address | null | undefined; // null for 'new address' option
   setSelectedAddress: React.Dispatch<React.SetStateAction<Address | null | undefined>>;
+  selectedAllocationId: string | undefined;
+  setSelectedAllocationId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 // not implemented anywhere but useful for tests
@@ -23,6 +25,7 @@ interface DefaultProps {
   defaultUser?: User;
   defaultIsPersonal?: boolean | undefined;
   defaultSelectedAddress?: Address | null | undefined;
+  defaultSelectedAllocationId?: string | undefined;
 }
 
 export const IssueCardContext = createContext<Props | undefined>(undefined);
@@ -32,6 +35,7 @@ export const IssueCardProvider: FC<DefaultProps> = ({
   defaultUser,
   defaultIsPersonal,
   defaultSelectedAddress,
+  defaultSelectedAllocationId,
   children,
 }) => {
   const [selectedCardTypes, setSelectedCardTypes] = useState<CardType[]>(defaultCardTypes);
@@ -39,6 +43,9 @@ export const IssueCardProvider: FC<DefaultProps> = ({
   const [isPersonal, setIsPersonal] = useState<boolean | undefined>(defaultIsPersonal);
   const [selectedAddress, setSelectedAddress] = useState<Address | null | undefined>(
     defaultSelectedAddress,
+  );
+  const [selectedAllocationId, setSelectedAllocationId] = useState<string | undefined>(
+    defaultSelectedAllocationId,
   );
 
   const context = {
@@ -50,6 +57,8 @@ export const IssueCardProvider: FC<DefaultProps> = ({
     setIsPersonal,
     selectedAddress,
     setSelectedAddress,
+    selectedAllocationId,
+    setSelectedAllocationId,
   };
 
   return <IssueCardContext.Provider value={context}>{children}</IssueCardContext.Provider>;

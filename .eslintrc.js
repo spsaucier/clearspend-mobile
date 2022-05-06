@@ -46,6 +46,7 @@ module.exports = {
       'error',
       { devDependencies: ['**/*.test.ts', '**/*.test.tsx', '**/testing/*'] },
     ],
+    'no-param-reassign': ['error', { props: false }],
   },
   settings: {
     'import/resolver': {

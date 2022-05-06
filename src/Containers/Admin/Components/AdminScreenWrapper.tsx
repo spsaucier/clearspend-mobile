@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, Edge } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar, Button } from '@/Components';
@@ -16,6 +16,7 @@ interface Props {
   onSecondaryAction?: () => void;
   onSecondaryActionLabel?: string;
   hideBackButton?: boolean;
+  edges?: Edge[];
 }
 
 const AdminScreenWrapper: FC<Props> = ({
@@ -29,11 +30,12 @@ const AdminScreenWrapper: FC<Props> = ({
   onSecondaryAction,
   onSecondaryActionLabel,
   hideBackButton,
+  edges = ['top', 'bottom'],
 }) => {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView testID={testID} style={tw`flex-1 bg-white`} edges={['top', 'bottom']}>
+    <SafeAreaView testID={testID} style={tw`flex-1 bg-white`} edges={edges}>
       <FocusAwareStatusBar backgroundColor={tw.color('white')} barStyle="dark-content" />
       {!hideBackButton && (
         <View style={tw`p-5`}>
@@ -50,22 +52,24 @@ const AdminScreenWrapper: FC<Props> = ({
           </View>
         </View>
       )}
-      <View style={tw`flex-1 px-5`}>{children}</View>
-      <View style={tw`p-5`}>
+      <View style={tw`flex-1 px-5`}>
+        {children}
         {onPrimaryAction && (
-          <Button
-            testID="primary-action-button"
-            label={onPrimaryActionLabel || t('adminFlows.nextStepCta')}
-            onPress={onPrimaryAction}
-            disabled={primaryActionDisabled}
-          />
-        )}
-        {onSecondaryAction && onSecondaryActionLabel && (
-          <Button
-            containerStyle={tw`bg-white mt-2`}
-            label={onSecondaryActionLabel}
-            onPress={onSecondaryAction}
-          />
+          <View style={tw`mt-auto py-5`}>
+            <Button
+              testID="primary-action-button"
+              label={onPrimaryActionLabel || t('adminFlows.nextStepCta')}
+              onPress={onPrimaryAction}
+              disabled={primaryActionDisabled}
+            />
+            {onSecondaryAction && onSecondaryActionLabel && (
+              <Button
+                containerStyle={tw`bg-white mt-2`}
+                label={onSecondaryActionLabel}
+                onPress={onSecondaryAction}
+              />
+            )}
+          </View>
         )}
       </View>
     </SafeAreaView>
