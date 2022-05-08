@@ -213,7 +213,7 @@ const SpendControl = ({
         </View>
       </View>
 
-      <View style={tw`mt-3`}>
+      <View style={tw`mt-6`}>
         <CSText style={tw`text-lg`}>{t('spendControl.categories')}</CSText>
         <View style={tw`mt-3 rounded bg-tan p-3`}>
           <View style={tw`flex-row w-full`}>
@@ -249,7 +249,7 @@ const SpendControl = ({
           ))}
         </View>
       </View>
-      <View style={tw`mt-3`}>
+      <View style={tw`mt-6`}>
         <CSText style={tw`text-lg`}>{t('spendControl.paymentTypes')}</CSText>
         <View style={tw`mt-3 rounded bg-tan p-3`}>
           <View style={tw`flex-row w-full py-2`}>
