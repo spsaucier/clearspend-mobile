@@ -13,7 +13,6 @@ import { ProfileMenuRow } from './Components/ProfileMenuRow';
 import { KeyIconLg } from '@/Components/Icons';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { AVAILABLE_BIO_KEY } from '@/Store/keys';
-import { navigationRef } from '@/Navigators/Root';
 
 const LoginOptionsScreen = () => {
   const { t } = useTranslation();
@@ -55,7 +54,7 @@ const LoginOptionsScreen = () => {
                       text1: t('profile.updateAuth.disabled', { method: 'PIN' }),
                     });
                   }
-                  navigationRef.current?.navigate(MainScreens.SetBiometricsOrPasscode);
+                  navigate(MainScreens.SetBiometricsOrPasscode);
                 }}
               />
             </View>

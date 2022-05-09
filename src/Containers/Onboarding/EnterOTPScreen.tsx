@@ -14,8 +14,6 @@ import { OTPView } from './OTPView';
 import { sendEnrollment2FA, submitEnrollment2FACode } from '../../Services/Auth/index';
 import { useUser, useUpdateUser } from '@/Queries';
 import { JUST_SET_2FA_KEY, RECOVERY_CODE_KEY, SHOW_2FA_PROMPT_KEY } from '@/Store/keys';
-import { navigationRef } from '@/Navigators/Root';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { UpdateUserRequest } from '@/generated/capital';
 import { useSensitiveInfo } from '@/Hooks/useSensitiveInfo';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
@@ -67,7 +65,6 @@ const EnterOTPScreen = () => {
         type: 'success',
         text1: `${formatPhone(params.phone)} saved as authentication method`,
       });
-      navigationRef.current?.navigate(params.nextScreen || MainScreens.Profile);
       popToTop();
     } catch (e) {
       setHasError(true);

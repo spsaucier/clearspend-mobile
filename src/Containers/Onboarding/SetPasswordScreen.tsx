@@ -18,8 +18,6 @@ import { mixpanel } from '@/Services/utils/analytics';
 import { CheckBoxInput } from '@/Components/CheckBoxInput';
 import { Constants } from '@/consts';
 import { acceptTermsAndConditions } from '@/Queries/termsAndConditions';
-import { navigateAndReset } from '@/Navigators/Root';
-import { TopScreens } from '@/Navigators/NavigatorTypes';
 
 const SetPasswordScreen = () => {
   const dispatch = useDispatch();
@@ -81,9 +79,6 @@ const SetPasswordScreen = () => {
       .then((oneTimePassword) => loginCall(oneTimePassword))
       .then((sessionPayload) => acceptTermsAndConditionsCall(sessionPayload!))
       .then((sessionPayload) => dispatch(updateSession(sessionPayload)))
-      .then(() => {
-        navigateAndReset(TopScreens.Main);
-      })
       .catch((ex) => {
         setSubmissionError(ex);
       })

@@ -1,10 +1,10 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { StatusBar, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { StackHeaderOptions } from '@react-navigation/stack/lib/typescript/src/types';
 import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
-import { CSText } from '@/Components';
+import { ActivityIndicator, CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
 import { ChevronIconLeft } from '@/Components/Icons';
 
@@ -39,6 +39,10 @@ import UpdateAddressScreen from '@/Containers/Profile/UpdateAddressScreen';
 import UpdatedTermsAndConditionsScreen from '@/Containers/Onboarding/UpdatedTermsAndConditionsScreen';
 import { AdminNavigator as AdminStack } from '@/Navigators/Admin/AdminNavigator';
 import CardSpendControl from '@/Containers/Wallet/CardSpendControl';
+import { useAuthentication } from '@/Hooks/useAuthentication';
+import useRequireBioOrPasscodeSetup from '@/Hooks/useRequireBioOrPasscodeSetup';
+import useRequire2FA from '@/Hooks/useRequire2FA';
+import { useUser } from '@/Queries';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
 
@@ -145,18 +149,48 @@ const WalletStack = () => (
   </Stack.Navigator>
 );
 
-const MainNavigator = () => (
-  <Stack.Navigator initialRouteName={MainScreens.Home} screenOptions={{ headerShown: false }}>
-    <Stack.Screen name={MainScreens.Home} component={WalletStack} />
-    <Stack.Screen name={MainScreens.SetBiometricsOrPasscode} component={SetBioPasscodeNavigator} />
-    <Stack.Screen name={MainScreens.ConfirmAuth} component={ConfirmAuthScreen} />
-    <Stack.Screen name={MainScreens.EnterMobile} component={EnterMobileScreen} />
-    <Stack.Screen name={MainScreens.EnterOTP} component={EnterOTPScreen} />
-    <Stack.Screen
-      name={MainScreens.UpdatedTermsAndConditionsScreen}
-      component={UpdatedTermsAndConditionsScreen}
-    />
-  </Stack.Navigator>
-);
+const MainNavigator = () => {
+  const { loading, authed, passcodeEnabled, biometricsEnabled, isLoggingOut } = useAuthentication();
+  const { loading: loading2FA, shouldAct: needs2FA } = useRequire2FA();
+  const { loading: loadingBioPasscode, shouldAct: needsBioPasscode } =
+    useRequireBioOrPasscodeSetup();
+  const { data: user } = useUser();
+
+  if (loading || !user || loading2FA || loadingBioPasscode || isLoggingOut) {
+    return (
+      <View style={tw`flex-1 justify-center items-center bg-secondary`}>
+        <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  const requiresAuthConfirmation = (passcodeEnabled || biometricsEnabled) && !authed;
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {requiresAuthConfirmation ? (
+        <Stack.Screen name={MainScreens.ConfirmAuth} component={ConfirmAuthScreen} />
+      ) : needs2FA ? (
+        <Stack.Screen name={MainScreens.EnterMobile} component={EnterMobileScreen} />
+      ) : needsBioPasscode ? (
+        <Stack.Screen
+          name={MainScreens.SetBiometricsOrPasscode}
+          component={SetBioPasscodeNavigator}
+          options={{ animationTypeForReplace: 'push' }}
+        />
+      ) : (
+        <Stack.Screen name={MainScreens.Home} component={WalletStack} />
+      )}
+
+      <Stack.Screen name={MainScreens.EnterOTP} component={EnterOTPScreen} />
+
+      <Stack.Screen
+        name={MainScreens.UpdatedTermsAndConditionsScreen}
+        component={UpdatedTermsAndConditionsScreen}
+      />
+    </Stack.Navigator>
+  );
+};
 
 export default MainNavigator;

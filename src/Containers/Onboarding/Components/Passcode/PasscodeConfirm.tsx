@@ -8,11 +8,9 @@ import { longFeedback } from '@/Helpers/HapticFeedback';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { CSText } from '@/Components';
 import tw from '@/Styles/tailwind';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 export const PasscodeConfirm = ({
   route,
-  navigation,
 }: BioPasscodeNavigationProps<BioPasscodeScreens.Confirm>) => {
   const { initialPasscode } = route.params;
   const { setPasscode, loggedIn, setLoggedIn } = useAuthentication();
@@ -30,7 +28,6 @@ export const PasscodeConfirm = ({
         type: 'success',
         text1: t('profile.updateAuth.success', { method: 'PIN' }),
       });
-      navigation.replace(MainScreens.Home);
     } else {
       setCurrentError(t('loginOptions.passcode.tryAgain'));
       longFeedback();

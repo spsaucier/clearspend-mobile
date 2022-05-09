@@ -1,4 +1,5 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
+import { useQueryClient } from 'react-query';
 import { MMKV, useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
 import CookieManager from '@react-native-cookies/cookies';
 import FullStory from '@fullstory/react-native';
@@ -7,10 +8,8 @@ import { killSession } from '@/Store/Session';
 import { ReturnUseBiometrics, useBiometrics } from '@/Hooks/useBiometrics';
 import { usePasscode } from '@/Hooks/usePasscode';
 import { mixpanel } from '../utils/analytics';
-import { TopScreens } from '@/Navigators/NavigatorTypes';
 import { IS_AUTHED, JUST_SET_2FA_KEY, LAST_ACTIVE_KEY } from '@/Store/keys';
 import { useRequireAuth } from '@/Hooks/useRequireAuth';
-import { navigationRef } from '@/Navigators/Root';
 
 /*
 The AuthProvider provides a means to work with stateful values/effects/custom
@@ -34,11 +33,15 @@ interface AuthContextInterface
   setHasCancelledAndSignedOut: (toggle: boolean) => void;
   isWelcomeBack: boolean;
   setWelcomeBack: (isWelcomeBack: boolean) => void;
+  isLoggingOut: boolean;
 }
 
 export const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
 
 const AuthProvider: FC = ({ children }) => {
+  const storage = new MMKV();
+  const queryClient = useQueryClient();
+
   const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true);
   const [isNewUser, setNewUserFlag] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -48,8 +51,9 @@ const AuthProvider: FC = ({ children }) => {
   const passcodeProps = usePasscode();
   const [, setLastSignedIn] = useMMKVNumber(LAST_ACTIVE_KEY);
   const [authed, setAuthed] = useState<boolean>(false);
-  const storage = new MMKV();
   const [, setJustSet2FA] = useMMKVBoolean(JUST_SET_2FA_KEY);
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const onRequireAuth = (authedStatus = false) => {
     if (!authedStatus) {
@@ -63,6 +67,7 @@ const AuthProvider: FC = ({ children }) => {
   const { setAutoLockTempDisabled } = useRequireAuth(onRequireAuth);
 
   const logout = async () => {
+    setIsLoggingOut(true);
     mixpanel.track('Logout');
     mixpanel.flush();
     FullStory.event('Logout', {});
@@ -70,14 +75,16 @@ const AuthProvider: FC = ({ children }) => {
     setAutoLockTempDisabled(true);
     setLoggedIn(false);
     setAuthed(false);
+    storage.set(IS_AUTHED, false);
     setLastSignedIn(new Date().valueOf());
-    navigationRef.current?.navigate(TopScreens.Auth);
     setJustSet2FA(false);
     await bioProps.disableBiometrics();
     await passcodeProps.disablePasscode();
     await CookieManager.clearAll();
+    queryClient.removeQueries();
     persistor.purge();
     store.dispatch(killSession());
+    setIsLoggingOut(false);
   };
 
   useEffect(() => {
@@ -117,6 +124,7 @@ const AuthProvider: FC = ({ children }) => {
     setHasCancelledAndSignedOut,
     isWelcomeBack,
     setWelcomeBack,
+    isLoggingOut,
   };
 
   return <AuthContext.Provider value={context}>{children}</AuthContext.Provider>;

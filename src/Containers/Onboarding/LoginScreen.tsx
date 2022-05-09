@@ -26,7 +26,6 @@ import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { SHOW_2FA_PROMPT_KEY } from '@/Store/keys';
 import { Constants } from '@/consts';
 import { LoginTitle } from './Components/OnboardingScreenTitle';
-import { navigateAndReset } from '@/Navigators/Root';
 
 const LoginScreen = () => {
   const { t } = useTranslation();
@@ -69,8 +68,6 @@ const LoginScreen = () => {
     const sessionPayload = res;
     setLoggedIn(true);
     dispatch(updateSession(sessionPayload));
-
-    navigateAndReset('Main');
   };
 
   const handleLogin = async (isResend?: boolean) => {
