@@ -275,7 +275,7 @@ const ContentWallet = ({
       <LinearGradient
         colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
         style={tw`h-20 w-full absolute bottom-0`}
-        pointerEvents="box-none"
+        pointerEvents="none"
       />
       <InfoPanel
         ref={balanceInfoPanelRef}

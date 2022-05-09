@@ -148,26 +148,28 @@ const TransactionsContent = ({
               },
             }) => setSearchYOffset(height)}
           >
-            <View style={[tw`flex-row justify-between py-5`]}>
-              <View style={tw`flex-grow`}>{searchInputComponent}</View>
-              <TouchableOpacity
-                style={tw`flex-grow items-center justify-center w-10 border border-gray-10 ml-2 rounded-lg`}
-                onPress={onFilterTransactionModalPress}
-                hitSlop={{ right: 5, top: 5, bottom: 5 }}
+            <View style={tw`flex-row justify-between py-5`}>
+              <View style={tw`flex-1`}>{searchInputComponent}</View>
+              <View
+                style={tw`items-center justify-center w-10 border border-gray-10 ml-2 rounded-lg`}
               >
-                <FilterIcon style={tw`mx-2`} />
+                <TouchableOpacity
+                  onPress={onFilterTransactionModalPress}
+                  style={tw`items-center justify-center`}
+                >
+                  <FilterIcon style={tw`mx-2`} />
+                </TouchableOpacity>
                 {selectedFilters.length > 0 ? (
                   <View
-                    style={[
-                      tw`rounded-full absolute top--2 right--2 w-5 h-5 items-center justify-center bg-secondary`,
-                    ]}
+                    style={tw`rounded-full absolute top--2 right--2 w-5 h-5 items-center justify-center bg-secondary`}
+                    pointerEvents="box-none"
                   >
                     <CSText style={tw`text-white text-xs text-center`}>
                       {selectedFilters.length}
                     </CSText>
                   </View>
                 ) : null}
-              </TouchableOpacity>
+              </View>
             </View>
             <View style={tw`flex-row`}>
               {selectedFilters.length > 0
