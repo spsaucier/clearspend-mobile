@@ -13,37 +13,30 @@ import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 import tw from '@/Styles/tailwind';
 
 type LimitAmountProps = {
-  maxValue: number;
   value: number;
   onChangeValue: (value: number) => void;
   testID?: string;
 };
 
-const LimitAmount = ({ maxValue, value = 0, onChangeValue, testID }: LimitAmountProps) => {
+const LimitAmount = ({ value = 0, onChangeValue, testID }: LimitAmountProps) => {
   const { t } = useTranslation();
 
   return (
     <View style={tw`flex-row rounded bg-white w-full p-2 items-center`}>
-      <View style={tw`flex-2`}>
+      <View style={tw`flex-1`}>
         <CSText>{t('spendControl.amount')}</CSText>
-        <CSText style={tw`text-gray-50 text-sm pt-1`}>{`Max value: $${maxValue.toFixed(
-          2,
-        )}`}</CSText>
       </View>
       <View style={tw`flex-1`}>
-        <View style={tw`max-w-md`}>
-          <CurrencyInput
-            testID={testID}
-            prefix="$"
-            delimiter=","
-            separator="."
-            style={tw`rounded border-gray-10 border-1 pr-1 text-base`}
-            textAlign="right"
-            maxValue={maxValue}
-            onChangeValue={onChangeValue}
-            value={value}
-          />
-        </View>
+        <CurrencyInput
+          testID={testID}
+          prefix="$"
+          delimiter=","
+          separator="."
+          style={tw`rounded border-gray-10 border-1 pr-1 text-base`}
+          textAlign="right"
+          onChangeValue={onChangeValue}
+          value={value}
+        />
       </View>
     </View>
   );
@@ -108,7 +101,6 @@ type SpendControlProps = {
   onPaymentTypeUpdated: (paymentTypes: { key: string; enabled: boolean }) => void;
   onAllCategoriesToggle: (enabled: boolean) => void;
   onAllPaymentTypesToggle: (enabled: boolean) => void;
-  maxAmount: number;
   categoryTypes: MerchantCategoryType[];
   paymentTypes: PaymentType[];
   limits: {
@@ -119,7 +111,6 @@ type SpendControlProps = {
 };
 
 const SpendControl = ({
-  maxAmount,
   categoryTypes,
   paymentTypes,
   limits,
@@ -153,7 +144,6 @@ const SpendControl = ({
             {daily.enabled ? (
               <View style={tw`p-2`}>
                 <LimitAmount
-                  maxValue={maxAmount}
                   value={daily.amount}
                   onChangeValue={(newValue) => {
                     onLimitUpdated({ daily: { amount: newValue, enabled: true } });
@@ -177,7 +167,6 @@ const SpendControl = ({
             {monthly.enabled ? (
               <View style={tw`p-2`}>
                 <LimitAmount
-                  maxValue={maxAmount}
                   value={monthly.amount}
                   onChangeValue={(newValue) => {
                     onLimitUpdated({ monthly: { amount: newValue, enabled: true } });
@@ -200,7 +189,6 @@ const SpendControl = ({
             {instant.enabled ? (
               <View style={tw`p-2`}>
                 <LimitAmount
-                  maxValue={maxAmount}
                   value={instant.amount}
                   onChangeValue={(newValue) => {
                     onLimitUpdated({ instant: { amount: newValue, enabled: true } });

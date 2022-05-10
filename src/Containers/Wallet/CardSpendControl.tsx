@@ -38,8 +38,8 @@ type CardSpendControlRouteProp = CardSpendControlNavigationProps['route'];
 
 type SpendControlState = {
   allocationId: string;
-  maxAmount: number;
   limits: {
+    currency: string;
     daily: Limit;
     monthly: Limit;
     instant: Limit;
@@ -50,8 +50,8 @@ type SpendControlState = {
 
 const SpendControlDefaultValues: SpendControlState = {
   allocationId: '',
-  maxAmount: 0,
   limits: {
+    currency: 'USD',
     daily: { enabled: false, amount: 0 },
     monthly: { enabled: false, amount: 0 },
     instant: { enabled: false, amount: 0 },
@@ -87,19 +87,18 @@ const CardSpendControl = () => {
 
   const buildSpendControlState = ({
     allocationId,
-    maxAmount,
     disabledMccGroups,
     disabledPaymentTypes,
     limits,
   }: {
     allocationId: string;
-    maxAmount: number;
     disabledMccGroups: string[];
     disabledPaymentTypes: string[];
     limits: any[];
   }) => {
     const [firstLimit] = limits!;
     const {
+      currency,
       typeMap: { PURCHASE },
     } = firstLimit;
 
@@ -137,10 +136,10 @@ const CardSpendControl = () => {
 
     const controlState = {
       allocationId,
-      maxAmount,
       categoryTypes,
       paymentTypes,
       limits: {
+        currency,
         daily,
         monthly,
         instant,
@@ -153,7 +152,6 @@ const CardSpendControl = () => {
   useEffect(() => {
     if (!isFetching && data) {
       const {
-        availableBalance,
         disabledMccGroups,
         disabledPaymentTypes,
         limits,
@@ -162,7 +160,6 @@ const CardSpendControl = () => {
 
       const newState = buildSpendControlState({
         allocationId: allocationId!,
-        maxAmount: availableBalance.amount!,
         disabledMccGroups: disabledMccGroups!,
         disabledPaymentTypes: disabledPaymentTypes!,
         limits: limits!,
@@ -176,7 +173,6 @@ const CardSpendControl = () => {
   }, [data, isFetching]);
 
   const {
-    maxAmount: currentAmout,
     categoryTypes: currentCategoryTypes,
     limits: currentLimits,
     paymentTypes: currentPaymentTypes,
@@ -254,12 +250,11 @@ const CardSpendControl = () => {
   };
 
   const onResetControlsPress = () => {
-    const { allocationId: pAllocationId, maxAmount } = currentSpendControl;
+    const { allocationId: pAllocationId } = currentSpendControl;
     fetchAllocationData(pAllocationId).then((allocationData) => {
       const { disabledMccGroups, disabledPaymentTypes, limits } = allocationData;
       const newState = buildSpendControlState({
         allocationId: pAllocationId,
-        maxAmount,
         disabledMccGroups: disabledMccGroups!,
         disabledPaymentTypes: disabledPaymentTypes!,
         limits: limits!,
@@ -292,7 +287,7 @@ const CardSpendControl = () => {
       disabledPaymentTypes: paymentTypes.filter((x) => !x.enabled).map((x) => x.key),
       limits: [
         {
-          currency: 'USD',
+          currency: currentLimits.currency,
           typeMap,
         },
       ],
@@ -349,7 +344,6 @@ const CardSpendControl = () => {
               style={{ marginTop: -80 }}
             >
               <SpendControl
-                maxAmount={currentAmout}
                 paymentTypes={currentPaymentTypes}
                 categoryTypes={currentCategoryTypes}
                 limits={currentLimits}

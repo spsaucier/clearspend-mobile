@@ -15,7 +15,6 @@ import tw from '@/Styles/tailwind';
 import { useIssueCardContext } from '@/Hooks/useIssueCardContext';
 
 type SpendControlStateType = {
-  maxAmount: number;
   paymentTypes: any[];
   categoryTypes: any[];
   limits: {
@@ -86,15 +85,7 @@ const SpendControlContent = ({
   allocationData: AllocationDetailsResponse;
   onSpendControlChanged: (state: SpendControlStateType) => void;
 }) => {
-  const {
-    disabledMccGroups,
-    disabledPaymentTypes,
-    limits: allocationLimits,
-    allocation,
-  } = allocationData;
-  const {
-    account: { ledgerBalance },
-  } = allocation!;
+  const { disabledMccGroups, disabledPaymentTypes, limits: allocationLimits } = allocationData;
 
   const [allocationLimit] = allocationLimits!;
   const {
@@ -107,7 +98,6 @@ const SpendControlContent = ({
   const instantAmount = PURCHASE?.INSTANT ? PURCHASE!.INSTANT!.amount! : 0;
 
   const initialState = {
-    maxAmount: ledgerBalance!.amount!,
     paymentTypes: PaymentTypes.map((x) => ({
       ...x,
       enabled: disabledPaymentTypes?.find((dp) => dp === x.key) === undefined,
@@ -138,7 +128,6 @@ const SpendControlContent = ({
     <SpendControl
       categoryTypes={state.categoryTypes}
       limits={state.limits}
-      maxAmount={state.maxAmount}
       paymentTypes={state.paymentTypes}
       onLimitUpdated={(limit) => {
         dispatch({ type: 'limitUpdate', payload: limit });

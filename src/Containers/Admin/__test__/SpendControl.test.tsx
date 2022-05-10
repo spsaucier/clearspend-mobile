@@ -14,7 +14,6 @@ describe('SpendControl', () => {
         monthly: { amount: 300.0, enabled: true },
         instant: { amount: 100.0, enabled: true },
       },
-      maxAmount: 1000,
     };
 
     const { findByTestId } = render(
@@ -22,7 +21,6 @@ describe('SpendControl', () => {
         categoryTypes={initialState.categoryTypes}
         paymentTypes={initialState.paymentTypes}
         limits={initialState.limits}
-        maxAmount={initialState.maxAmount}
         onAllCategoriesToggle={() => {}}
         onAllPaymentTypesToggle={() => {}}
         onCategoryUpdated={() => {}}
