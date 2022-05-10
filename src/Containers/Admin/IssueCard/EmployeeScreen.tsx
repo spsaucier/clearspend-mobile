@@ -17,14 +17,14 @@ const EmployeeScreen = () => {
   const { navigate } =
     useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Employee>>();
   const { isLoading, data: users } = useUsers();
-  const { selectedUser, setSelectedUser, selectedCardTypes } = useIssueCardContext();
+  const { selectedUser, setSelectedUser, selectedCardType } = useIssueCardContext();
 
   return (
     <AdminScreenWrapper
       testID="issue-card-employee"
       title={t('adminFlows.issueCard.employeeTitle')}
       onPrimaryAction={() => {
-        if (selectedCardTypes.includes(CardType.Physical)) {
+        if (selectedCardType === CardType.Physical) {
           navigate(IssueCardScreens.CardDetails);
         } else {
           navigate(IssueCardScreens.Allocation);

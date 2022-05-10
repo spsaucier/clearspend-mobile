@@ -64,6 +64,7 @@ const AdminScreenWrapper: FC<Props> = ({
             />
             {onSecondaryAction && onSecondaryActionLabel && (
               <Button
+                testID="secondary-action-button"
                 containerStyle={tw`bg-white mt-2`}
                 label={onSecondaryActionLabel}
                 onPress={onSecondaryAction}

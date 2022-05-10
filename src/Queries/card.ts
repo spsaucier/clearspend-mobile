@@ -8,6 +8,8 @@ import {
   RevealCardRequest,
   RevealCardResponse,
   UpdateCardStatusRequest,
+  IssueCardRequest,
+  IssueCardResponse,
 } from '@/generated/capital';
 import apiClient from '@/Services';
 
@@ -122,3 +124,17 @@ export const useSaveCardSpendControl = (cardId: string) =>
       .patch(`/cards/${cardId}`, { disabledMccGroups, disabledPaymentTypes, limits })
       .then((res) => res.data);
   });
+
+export const useIssueCardRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<IssueCardResponse, Error, IssueCardRequest>(
+    (context) => apiClient.post(`/cards`, context).then((res) => res.data),
+    {
+      // Refetch cards if a card was issued successfully
+      onSuccess: () => {
+        queryClient.invalidateQueries('cards');
+      },
+    },
+  );
+};

@@ -71,7 +71,7 @@ describe('EmployeeScreen', () => {
   it('navigates to "Allocation" screen when "physical" card type is not selected', async () => {
     const { findByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <IssueCardProvider defaultCardTypes={[CardType.Virtual]}>
+      <IssueCardProvider selectedCardType={CardType.Virtual}>
         <EmployeeScreen />
       </IssueCardProvider>,
     );
@@ -90,7 +90,7 @@ describe('EmployeeScreen', () => {
   it('navigates to "Card Details" screen when "physical" card type is selected', async () => {
     const { findByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <IssueCardProvider defaultCardTypes={[CardType.Physical]}>
+      <IssueCardProvider selectedCardType={CardType.Physical}>
         <EmployeeScreen />
       </IssueCardProvider>,
     );

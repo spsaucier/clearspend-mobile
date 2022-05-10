@@ -160,7 +160,7 @@ const SpendControlContent = ({
 };
 
 const SpendControlsScreen = () => {
-  const { selectedAllocationId, setSpendControl } = useIssueCardContext();
+  const { selectedAllocationId, setSelectedSpendControls } = useIssueCardContext();
 
   const { t } = useTranslation();
   const { navigate } =
@@ -191,13 +191,15 @@ const SpendControlsScreen = () => {
       typeMap.PURCHASE.INSTANT = { amount: sLimits.instant.amount };
     }
 
-    setSpendControl({
+    setSelectedSpendControls({
       disabledMccGroups,
       disabledPaymentTypes,
-      limits: {
-        currency: sLimits.currency,
-        typeMap,
-      },
+      limits: [
+        {
+          currency: 'USD',
+          typeMap,
+        },
+      ],
     });
   };
 
@@ -205,10 +207,8 @@ const SpendControlsScreen = () => {
     <AdminScreenWrapper
       title={t('adminFlows.issueCard.spendControlsTitle')}
       text={t('adminFlows.issueCard.spendControlsText')}
-      onPrimaryAction={() => {
-        navigate(IssueCardScreens.CardConfirmation);
-      }}
-      onPrimaryActionLabel="Issue new card"
+      onPrimaryAction={() => navigate(IssueCardScreens.CardRequest)}
+      onPrimaryActionLabel={t('adminFlows.issueCard.confirmCta')}
       primaryActionDisabled={isFetching}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -217,7 +217,7 @@ const SpendControlsScreen = () => {
             <CSText>{t('error.generic')}</CSText>
           </View>
         ) : isFetching && !allocationData ? (
-          <View style={tw`flex-1 justify-center items-center`}>
+          <View style={tw`flex-1 justify-center items-center mt-16`}>
             <ActivityIndicator />
           </View>
         ) : (

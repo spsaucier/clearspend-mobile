@@ -18,6 +18,7 @@ import AddressScreen from '@/Containers/Admin/IssueCard/AddressScreen';
 import NewAddressScreen from '@/Containers/Admin/IssueCard/NewAddressScreen';
 import AllocationScreen from '@/Containers/Admin/IssueCard/AllocationScreen';
 import SpendControlsScreen from '@/Containers/Admin/IssueCard/SpendControlsScreen';
+import CardRequestScreen from '@/Containers/Admin/IssueCard/CardRequestScreen';
 import CardConfirmationScreen from '@/Containers/Admin/IssueCard/CardConfirmationScreen';
 
 const IssueCardStack = createStackNavigator<IssueCardStackParamTypes>();
@@ -38,6 +39,7 @@ export const IssueCardNavigator = () => (
         name={IssueCardScreens.SpendControls}
         component={SpendControlsScreen}
       />
+      <IssueCardStack.Screen name={IssueCardScreens.CardRequest} component={CardRequestScreen} />
       <IssueCardStack.Screen
         name={IssueCardScreens.CardConfirmation}
         component={CardConfirmationScreen}

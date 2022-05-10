@@ -8,6 +8,7 @@ export enum IssueCardScreens {
   NewAddress = 'Issue Card New Address',
   Allocation = 'Issue Card Allocation',
   SpendControls = 'Issue Card Spend Controls',
+  CardRequest = 'Issue Card Request',
   CardConfirmation = 'Issue Card Card Confirmation',
 }
 
@@ -19,6 +20,7 @@ export type IssueCardStackParamTypes = {
   [IssueCardScreens.NewAddress]: undefined;
   [IssueCardScreens.Allocation]: undefined;
   [IssueCardScreens.SpendControls]: undefined;
+  [IssueCardScreens.CardRequest]: undefined;
   [IssueCardScreens.CardConfirmation]: undefined;
 };
 

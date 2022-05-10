@@ -57,17 +57,7 @@ const CardTypeScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
     useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardType>>();
-  const { selectedCardTypes, setSelectedCardTypes } = useIssueCardContext();
-
-  const onSelectCardType = (cardType: CardType) => {
-    const i = selectedCardTypes.indexOf(cardType);
-    const cardTypes =
-      i > -1
-        ? [...selectedCardTypes.splice(0, i), ...selectedCardTypes.splice(i + 1)] // already exists -> toggle 'remove'
-        : [...selectedCardTypes, cardType]; // does not exist -> toggle 'add'
-
-    setSelectedCardTypes(cardTypes);
-  };
+  const { selectedCardType, setSelectedCardType } = useIssueCardContext();
 
   return (
     <AdminScreenWrapper
@@ -77,7 +67,7 @@ const CardTypeScreen = () => {
       onPrimaryAction={() => {
         navigate(IssueCardScreens.Employee);
       }}
-      primaryActionDisabled={selectedCardTypes.length === 0}
+      primaryActionDisabled={!selectedCardType}
     >
       <View>
         <CardOption
@@ -86,8 +76,8 @@ const CardTypeScreen = () => {
           text={t('adminFlows.issueCard.cardTypeOptionPhysicalText')}
           image={cardOptionPhysicalImage}
           cardType={CardType.Physical}
-          onSelect={onSelectCardType}
-          isSelected={selectedCardTypes.includes(CardType.Physical)}
+          onSelect={() => setSelectedCardType(CardType.Physical)}
+          isSelected={selectedCardType === CardType.Physical}
         />
         <CardOption
           testID="virtual-card-option"
@@ -95,8 +85,8 @@ const CardTypeScreen = () => {
           text={t('adminFlows.issueCard.cardTypeOptionVirtualText')}
           image={cardOptionVirtualImage}
           cardType={CardType.Virtual}
-          onSelect={onSelectCardType}
-          isSelected={selectedCardTypes.includes(CardType.Virtual)}
+          onSelect={() => setSelectedCardType(CardType.Virtual)}
+          isSelected={selectedCardType === CardType.Virtual}
         />
       </View>
     </AdminScreenWrapper>

@@ -13,7 +13,7 @@ const CardDetailsScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
     useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardDetails>>();
-  const { isPersonal, setIsPersonal } = useIssueCardContext();
+  const { selectedIsPersonal, setSelectedIsPersonal } = useIssueCardContext();
 
   return (
     <AdminScreenWrapper
@@ -26,9 +26,9 @@ const CardDetailsScreen = () => {
       <View style={tw`flex-row justify-between items-center rounded p-4 bg-tan`}>
         <Text>{t('adminFlows.issueCard.cardDetailsLabel')}</Text>
         <ToggleSwitch
-          testID={isPersonal ? 'card-details-switch-on' : 'card-details-switch-off'}
-          toggleSwitch={setIsPersonal}
-          value={!!isPersonal}
+          testID={selectedIsPersonal ? 'card-details-switch-on' : 'card-details-switch-off'}
+          toggleSwitch={setSelectedIsPersonal}
+          value={!!selectedIsPersonal}
         />
       </View>
     </AdminScreenWrapper>

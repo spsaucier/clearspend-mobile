@@ -1,4 +1,5 @@
 import React from 'react';
+import isEmpty from 'lodash';
 import { View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import type { StackNavigationProp } from '@react-navigation/stack';
@@ -92,12 +93,12 @@ const AddressScreen = () => {
           onSelect={setSelectedAddress}
         />
       )}
-      {!isDuplicate && selectedUser?.address && (
+      {!isDuplicate && !isEmpty(selectedUser?.address) && (
         <AddressOption
           testID="employee-address-option"
           icon={ProfileIcon}
           label={t('adminFlows.issueCard.addressEmployeeOption')}
-          address={selectedUser.address}
+          address={selectedUser?.address}
           isSelected={selectedAddress === selectedUser?.address}
           onSelect={setSelectedAddress}
         />

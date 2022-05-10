@@ -31,24 +31,19 @@ describe('CardTypeScreen', () => {
     const physicalOption = await findByTestId('physical-card-option');
     const virtualOption = await findByTestId('virtual-card-option');
 
-    // on
     fireEvent.press(physicalOption);
     expect(within(physicalOption).queryByTestId('check-mark-icon')).toBeTruthy();
-    fireEvent.press(virtualOption);
-    expect(within(virtualOption).queryByTestId('check-mark-icon')).toBeTruthy();
 
     // enables "next" button
     let nextButton = await findByTestId('primary-action-button');
     expect(nextButton).toBeEnabled();
 
-    // off
-    fireEvent.press(physicalOption);
-    expect(within(physicalOption).queryByTestId('check-mark-icon')).toBeFalsy();
+    // toggles
     fireEvent.press(virtualOption);
-    expect(within(virtualOption).queryByTestId('check-mark-icon')).toBeFalsy();
+    expect(within(virtualOption).queryByTestId('check-mark-icon')).toBeTruthy();
+    expect(within(physicalOption).queryByTestId('check-mark-icon')).toBeFalsy();
 
-    // disables "next" button
     nextButton = await findByTestId('primary-action-button');
-    expect(nextButton).toBeDisabled();
+    expect(nextButton).toBeEnabled();
   });
 });

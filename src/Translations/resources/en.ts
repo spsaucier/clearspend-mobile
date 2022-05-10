@@ -467,10 +467,17 @@ export default {
       spendControlsTitle: 'Spend controls',
       spendControlsText:
         'Set limits for how much can be spent with this card for each transaction, or over the course of a day or month.',
+      cardRequestLoadingText: 'Issuing card...',
+      cardRequestErrorTitle: 'There was a problem issuing this card.',
+      cardRequestErrorText: 'Please try again later.',
       cardConfirmationTitle: 'You’re all set!',
       confirmCta: 'Issue new card',
       confirmationPrimaryActionCta: 'Return to dashboard',
       confirmationSecondaryActionCta: 'Issue another card',
+      confirmationVirtualCard:
+        'A new card has been issued to <key1>{{name}}</key1> and will be available to activate immediately.',
+      confirmationPhysicalCard:
+        'A new card has been issued to <key1>{{name}}</key1> and will be delivered to <key2>{{address}}</key2> in 2-3 weeks. ',
     },
   },
 };

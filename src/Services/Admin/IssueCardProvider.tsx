@@ -1,71 +1,85 @@
 import React, { createContext, FC, useState } from 'react';
-import { User, Address } from 'generated/capital';
+import { User, Address, UpdateCardRequest } from 'generated/capital';
 
 export enum CardType {
   Virtual = 'VIRTUAL',
   Physical = 'PHYSICAL',
 }
 
-interface Props {
-  selectedCardTypes: CardType[];
-  setSelectedCardTypes: React.Dispatch<React.SetStateAction<CardType[]>>;
-  selectedUser: User | undefined;
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-  isPersonal: boolean | undefined;
-  setIsPersonal: React.Dispatch<React.SetStateAction<boolean | undefined>>;
-  selectedAddress: Address | null | undefined; // null for 'new address' option
-  setSelectedAddress: React.Dispatch<React.SetStateAction<Address | null | undefined>>;
-  selectedAllocationId: string | undefined;
-  setSelectedAllocationId: React.Dispatch<React.SetStateAction<string | undefined>>;
-  spendControl: {} | undefined;
-  setSpendControl: React.Dispatch<React.SetStateAction<{} | undefined>>;
+export interface Props {
+  selectedCardType?: CardType;
+  setSelectedCardType: React.Dispatch<React.SetStateAction<Props['selectedCardType']>>;
+  selectedUser?: User;
+  setSelectedUser: React.Dispatch<React.SetStateAction<Props['selectedUser']>>;
+  selectedIsPersonal?: boolean;
+  setSelectedIsPersonal: React.Dispatch<React.SetStateAction<Props['selectedIsPersonal']>>;
+  selectedAddress?: Address | null; // null for 'new address' option
+  setSelectedAddress: React.Dispatch<React.SetStateAction<Props['selectedAddress']>>;
+  selectedAllocationId?: string;
+  setSelectedAllocationId: React.Dispatch<React.SetStateAction<Props['selectedAllocationId']>>;
+  selectedSpendControls?: UpdateCardRequest;
+  setSelectedSpendControls: React.Dispatch<React.SetStateAction<Props['selectedSpendControls']>>;
+  resetSelections: () => void;
 }
 
-// not implemented anywhere but useful for tests
-interface DefaultProps {
-  defaultCardTypes?: CardType[];
-  defaultUser?: User;
-  defaultIsPersonal?: boolean | undefined;
-  defaultSelectedAddress?: Address | null | undefined;
-  defaultSelectedAllocationId?: string | undefined;
-  defaultSpendControl?: undefined;
-}
+export type DefaultProps = Pick<
+  Props,
+  | 'selectedCardType'
+  | 'selectedUser'
+  | 'selectedIsPersonal'
+  | 'selectedAddress'
+  | 'selectedAllocationId'
+  | 'selectedSpendControls'
+>;
 
 export const IssueCardContext = createContext<Props | undefined>(undefined);
 
 export const IssueCardProvider: FC<DefaultProps> = ({
-  defaultCardTypes = [],
-  defaultUser,
-  defaultIsPersonal,
-  defaultSelectedAddress,
-  defaultSelectedAllocationId,
-  defaultSpendControl,
+  selectedCardType: defaultCardType,
+  selectedUser: defaultUser,
+  selectedIsPersonal: defaultselectedIsPersonal,
+  selectedAddress: defaultSelectedAddress,
+  selectedAllocationId: defaultSelectedAllocationId,
+  selectedSpendControls: defaultSelectedSpendControls,
   children,
 }) => {
-  const [selectedCardTypes, setSelectedCardTypes] = useState<CardType[]>(defaultCardTypes);
-  const [selectedUser, setSelectedUser] = useState<User | undefined>(defaultUser);
-  const [isPersonal, setIsPersonal] = useState<boolean | undefined>(defaultIsPersonal);
-  const [selectedAddress, setSelectedAddress] = useState<Address | null | undefined>(
-    defaultSelectedAddress,
-  );
-  const [selectedAllocationId, setSelectedAllocationId] = useState<string | undefined>(
+  const [selectedCardType, setSelectedCardType] =
+    useState<Props['selectedCardType']>(defaultCardType);
+  const [selectedUser, setSelectedUser] = useState<Props['selectedUser']>(defaultUser);
+  const [selectedIsPersonal, setSelectedIsPersonal] =
+    useState<Props['selectedIsPersonal']>(defaultselectedIsPersonal);
+  const [selectedAddress, setSelectedAddress] =
+    useState<Props['selectedAddress']>(defaultSelectedAddress);
+  const [selectedAllocationId, setSelectedAllocationId] = useState<Props['selectedAllocationId']>(
     defaultSelectedAllocationId,
   );
-  const [spendControl, setSpendControl] = useState<{} | undefined>(defaultSpendControl);
+  const [selectedSpendControls, setSelectedSpendControls] = useState<
+    Props['selectedSpendControls']
+  >(defaultSelectedSpendControls);
+
+  const resetSelections = () => {
+    setSelectedCardType(undefined);
+    setSelectedUser(undefined);
+    setSelectedIsPersonal(undefined);
+    setSelectedAddress(undefined);
+    setSelectedAllocationId(undefined);
+    setSelectedSpendControls(undefined);
+  };
 
   const context = {
-    selectedCardTypes,
-    setSelectedCardTypes,
+    selectedCardType,
+    setSelectedCardType,
     selectedUser,
     setSelectedUser,
-    isPersonal,
-    setIsPersonal,
+    selectedIsPersonal,
+    setSelectedIsPersonal,
     selectedAddress,
     setSelectedAddress,
     selectedAllocationId,
     setSelectedAllocationId,
-    spendControl,
-    setSpendControl,
+    selectedSpendControls,
+    setSelectedSpendControls,
+    resetSelections,
   };
 
   return <IssueCardContext.Provider value={context}>{children}</IssueCardContext.Provider>;
