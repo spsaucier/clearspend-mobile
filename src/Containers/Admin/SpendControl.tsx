@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import i18next from 'i18next';
 import CurrencyInput from 'react-native-currency-input';
 import { CSText, ToggleSwitch } from '@/Components';
-import { KeyboardIcon, PointOfSaleIcon, TrolleyIcon } from '@/Components/Icons';
+import { GlobeStandIcon, KeyboardIcon, PointOfSaleIcon, TrolleyIcon } from '@/Components/Icons';
 import {
   MERCHANT_CATEGORY_ICON_NAME_MAP,
   UtilitiesIcon,
@@ -22,7 +22,7 @@ const LimitAmount = ({ value = 0, onChangeValue, testID }: LimitAmountProps) => 
   const { t } = useTranslation();
 
   return (
-    <View style={tw`flex-row rounded bg-white w-full p-2 items-center`}>
+    <View style={tw`flex-row rounded-sm bg-white w-full p-2 py-3 items-center`}>
       <View style={tw`flex-1`}>
         <CSText>{t('spendControl.amount')}</CSText>
       </View>
@@ -32,7 +32,7 @@ const LimitAmount = ({ value = 0, onChangeValue, testID }: LimitAmountProps) => 
           prefix="$"
           delimiter=","
           separator="."
-          style={tw`rounded border-gray-10 border-1 pr-1 text-base`}
+          style={tw`rounded-sm border-gray-10 border-1 pr-1 text-base`}
           textAlign="right"
           onChangeValue={onChangeValue}
           value={value}
@@ -101,6 +101,7 @@ type SpendControlProps = {
   onPaymentTypeUpdated: (paymentTypes: { key: string; enabled: boolean }) => void;
   onAllCategoriesToggle: (enabled: boolean) => void;
   onAllPaymentTypesToggle: (enabled: boolean) => void;
+  onInternationalToggle: (disabled: boolean) => void;
   categoryTypes: MerchantCategoryType[];
   paymentTypes: PaymentType[];
   limits: {
@@ -108,17 +109,20 @@ type SpendControlProps = {
     monthly: Limit;
     instant: Limit;
   };
+  disableForeign: boolean;
 };
 
 const SpendControl = ({
   categoryTypes,
   paymentTypes,
   limits,
+  disableForeign,
   onLimitUpdated,
   onCategoryUpdated,
   onPaymentTypeUpdated,
   onAllCategoriesToggle,
   onAllPaymentTypesToggle,
+  onInternationalToggle,
 }: SpendControlProps) => {
   const { t } = useTranslation();
   const { daily, monthly, instant } = limits;
@@ -203,10 +207,10 @@ const SpendControl = ({
 
       <View style={tw`mt-6`}>
         <CSText style={tw`text-lg`}>{t('spendControl.categories')}</CSText>
-        <View style={tw`mt-3 rounded bg-tan p-3`}>
+        <View style={tw`mt-3 rounded-t bg-tan p-3`}>
           <View style={tw`flex-row w-full`}>
             <View style={tw`bg-white rounded items-center justify-center w-8 h-8`}>
-              <UtilitiesIcon size={24} />
+              <UtilitiesIcon size={22} />
             </View>
             <View style={tw`flex-row flex-1 justify-between items-center p-2`}>
               <CSText>{t('spendControl.allCategories')}</CSText>
@@ -214,12 +218,11 @@ const SpendControl = ({
             </View>
           </View>
         </View>
-
-        <View style={tw`mt-1 rounded bg-tan p-3`}>
+        <View style={tw`rounded-b bg-tan px-3 py-2 border-t-1 border-gray-10`}>
           {categoryTypes.map((category) => (
             <View key={category.key} style={tw`rounded flex-row my-2 items-center`}>
-              <View style={tw`bg-white rounded`}>
-                <MerchantCategoryIcon merchantCategoryGroup={category.key} />
+              <View style={tw`bg-white rounded w-8 h-8 items-center justify-center`}>
+                <MerchantCategoryIcon merchantCategoryGroup={category.key} size={23} />
               </View>
               <View style={tw`flex-1 mx-2 flex-row justify-between`}>
                 <CSText>{MERCHANT_CATEGORY_ICON_NAME_MAP[category.key].name}</CSText>
@@ -239,10 +242,10 @@ const SpendControl = ({
       </View>
       <View style={tw`mt-6`}>
         <CSText style={tw`text-lg`}>{t('spendControl.paymentTypes')}</CSText>
-        <View style={tw`mt-3 rounded bg-tan p-3`}>
-          <View style={tw`flex-row w-full py-2`}>
+        <View style={tw`mt-3 rounded-t bg-tan p-3`}>
+          <View style={tw`flex-row w-full`}>
             <View style={tw`bg-white rounded items-center justify-center w-8 h-8`}>
-              <UtilitiesIcon size={24} />
+              <UtilitiesIcon size={22} />
             </View>
             <View style={tw`flex-row flex-1 justify-between items-center p-2`}>
               <CSText>{t('spendControl.allPaymentTypes')}</CSText>
@@ -250,14 +253,14 @@ const SpendControl = ({
             </View>
           </View>
         </View>
-        <View style={tw`mt-1 rounded bg-tan p-3`}>
+        <View style={tw`rounded-b bg-tan px-3 py-2 border-t-1 border-gray-10`}>
           {paymentTypes.map((pt) => {
             const { key, icon: PaymentTypeIcon, enabled, name } = pt;
 
             return (
               <View style={tw`flex-row w-full py-2`} key={key}>
                 <View style={tw`bg-white rounded items-center justify-center w-8 h-8`}>
-                  <PaymentTypeIcon />
+                  <PaymentTypeIcon size={22} />
                 </View>
                 <View style={tw`flex-row flex-1 justify-between items-center p-2`}>
                   <CSText>{name}</CSText>
@@ -271,6 +274,22 @@ const SpendControl = ({
               </View>
             );
           })}
+        </View>
+        <View style={tw`mt-1 rounded bg-tan p-3`}>
+          <View style={tw`flex-row w-full`}>
+            <View style={tw`bg-white rounded items-center justify-center w-8 h-8`}>
+              <GlobeStandIcon size={22} />
+            </View>
+            <View style={tw`flex-row flex-1 justify-between items-center p-2`}>
+              <CSText>{t('spendControl.international')}</CSText>
+              <ToggleSwitch
+                value={!disableForeign}
+                toggleSwitch={(toggleValue) => {
+                  onInternationalToggle(!toggleValue);
+                }}
+              />
+            </View>
+          </View>
         </View>
       </View>
     </View>

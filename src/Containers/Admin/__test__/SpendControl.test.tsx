@@ -14,6 +14,7 @@ describe('SpendControl', () => {
         monthly: { amount: 300.0, enabled: true },
         instant: { amount: 100.0, enabled: true },
       },
+      disableForeign: false,
     };
 
     const { findByTestId } = render(
@@ -21,11 +22,13 @@ describe('SpendControl', () => {
         categoryTypes={initialState.categoryTypes}
         paymentTypes={initialState.paymentTypes}
         limits={initialState.limits}
+        disableForeign
         onAllCategoriesToggle={() => {}}
         onAllPaymentTypesToggle={() => {}}
         onCategoryUpdated={() => {}}
         onLimitUpdated={() => {}}
         onPaymentTypeUpdated={() => {}}
+        onInternationalToggle={() => {}}
       />,
     );
 

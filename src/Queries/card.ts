@@ -117,11 +117,21 @@ export const useSaveCardSpendControl = (cardId: string) =>
   useMutation<
     Card,
     Error,
-    { disabledMccGroups: string[]; disabledPaymentTypes: string[]; limits: any[] }
+    {
+      disabledMccGroups: string[];
+      disabledPaymentTypes: string[];
+      limits: any[];
+      disableForeign: boolean;
+    }
   >((context) => {
-    const { disabledMccGroups, disabledPaymentTypes, limits } = context;
+    const { disabledMccGroups, disabledPaymentTypes, limits, disableForeign } = context;
     return apiClient
-      .patch(`/cards/${cardId}`, { disabledMccGroups, disabledPaymentTypes, limits })
+      .patch(`/cards/${cardId}`, {
+        disabledMccGroups,
+        disabledPaymentTypes,
+        limits,
+        disableForeign,
+      })
       .then((res) => res.data);
   });
 

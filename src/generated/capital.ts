@@ -328,6 +328,7 @@ export interface Business {
   accountingSetupStep?: 'AWAITING_SYNC' | 'ADD_CREDIT_CARD' | 'MAP_CATEGORIES' | 'COMPLETE';
   autoCreateExpenseCategories?: boolean;
   mcc?: string;
+  foreignTransactionFee?: number;
   businessName?: string;
   accountNumber?: string;
   routingNumber?: string;
@@ -526,6 +527,7 @@ export interface AccountActivityResponse {
     | LimitExceeded
     | OperationLimitExceeded
     | SpendControlViolated;
+  paymentDetails?: PaymentDetails;
 }
 
 export type AddressPostalCodeMismatch = DeclineDetails & { postalCode?: string };
@@ -1058,6 +1060,257 @@ export interface Merchant {
   merchantLogoUrl?: string;
   merchantLatitude?: number;
   merchantLongitude?: number;
+  merchantCountry?:
+    | 'UNSPECIFIED'
+    | 'ABW'
+    | 'AFG'
+    | 'AGO'
+    | 'AIA'
+    | 'ALA'
+    | 'ALB'
+    | 'AND'
+    | 'ANT'
+    | 'ARE'
+    | 'ARG'
+    | 'ARM'
+    | 'ASM'
+    | 'ATA'
+    | 'ATF'
+    | 'ATG'
+    | 'AUS'
+    | 'AUT'
+    | 'AZE'
+    | 'BDI'
+    | 'BEL'
+    | 'BEN'
+    | 'BFA'
+    | 'BGD'
+    | 'BGR'
+    | 'BHR'
+    | 'BHS'
+    | 'BIH'
+    | 'BLM'
+    | 'BLR'
+    | 'BLZ'
+    | 'BMU'
+    | 'BOL'
+    | 'BRA'
+    | 'BRB'
+    | 'BRN'
+    | 'BTN'
+    | 'BVT'
+    | 'BWA'
+    | 'CAF'
+    | 'CAN'
+    | 'CCK'
+    | 'CHE'
+    | 'CHL'
+    | 'CHN'
+    | 'CIV'
+    | 'CMR'
+    | 'COD'
+    | 'COG'
+    | 'COK'
+    | 'COL'
+    | 'COM'
+    | 'CPV'
+    | 'CRI'
+    | 'CUB'
+    | 'CXR'
+    | 'CYM'
+    | 'CYP'
+    | 'CZE'
+    | 'DEU'
+    | 'DJI'
+    | 'DMA'
+    | 'DNK'
+    | 'DOM'
+    | 'DZA'
+    | 'ECU'
+    | 'EGY'
+    | 'ERI'
+    | 'ESH'
+    | 'ESP'
+    | 'EST'
+    | 'ETH'
+    | 'FIN'
+    | 'FJI'
+    | 'FLK'
+    | 'FRA'
+    | 'FRO'
+    | 'FSM'
+    | 'GAB'
+    | 'GBR'
+    | 'GEO'
+    | 'GGY'
+    | 'GHA'
+    | 'GIB'
+    | 'GIN'
+    | 'GLP'
+    | 'GMB'
+    | 'GNB'
+    | 'GNQ'
+    | 'GRC'
+    | 'GRD'
+    | 'GRL'
+    | 'GTM'
+    | 'GUF'
+    | 'GUM'
+    | 'GUY'
+    | 'HKG'
+    | 'HMD'
+    | 'HND'
+    | 'HRV'
+    | 'HTI'
+    | 'HUN'
+    | 'IDN'
+    | 'IMN'
+    | 'IND'
+    | 'IOT'
+    | 'IRL'
+    | 'IRN'
+    | 'IRQ'
+    | 'ISL'
+    | 'ISR'
+    | 'ITA'
+    | 'JAM'
+    | 'JEY'
+    | 'JOR'
+    | 'JPN'
+    | 'KAZ'
+    | 'KEN'
+    | 'KGZ'
+    | 'KHM'
+    | 'KIR'
+    | 'KNA'
+    | 'KOR'
+    | 'KWT'
+    | 'LAO'
+    | 'LBN'
+    | 'LBR'
+    | 'LBY'
+    | 'LCA'
+    | 'LIE'
+    | 'LKA'
+    | 'LSO'
+    | 'LTU'
+    | 'LUX'
+    | 'LVA'
+    | 'MAC'
+    | 'MAF'
+    | 'MAR'
+    | 'MCO'
+    | 'MDA'
+    | 'MDG'
+    | 'MDV'
+    | 'MEX'
+    | 'MHL'
+    | 'MKD'
+    | 'MLI'
+    | 'MLT'
+    | 'MMR'
+    | 'MNE'
+    | 'MNG'
+    | 'MNP'
+    | 'MOZ'
+    | 'MRT'
+    | 'MSR'
+    | 'MTQ'
+    | 'MUS'
+    | 'MWI'
+    | 'MYS'
+    | 'MYT'
+    | 'NAM'
+    | 'NCL'
+    | 'NER'
+    | 'NFK'
+    | 'NGA'
+    | 'NIC'
+    | 'NIU'
+    | 'NLD'
+    | 'NOR'
+    | 'NPL'
+    | 'NRU'
+    | 'NZL'
+    | 'OMN'
+    | 'PAK'
+    | 'PAN'
+    | 'PCN'
+    | 'PER'
+    | 'PHL'
+    | 'PLW'
+    | 'PNG'
+    | 'POL'
+    | 'PRI'
+    | 'PRK'
+    | 'PRT'
+    | 'PRY'
+    | 'PSE'
+    | 'PYF'
+    | 'QAT'
+    | 'REU'
+    | 'ROU'
+    | 'RUS'
+    | 'RWA'
+    | 'SAU'
+    | 'SDN'
+    | 'SEN'
+    | 'SGP'
+    | 'SGS'
+    | 'SHN'
+    | 'SJM'
+    | 'SLB'
+    | 'SLE'
+    | 'SLV'
+    | 'SMR'
+    | 'SOM'
+    | 'SPM'
+    | 'SRB'
+    | 'SSD'
+    | 'STP'
+    | 'SUR'
+    | 'SVK'
+    | 'SVN'
+    | 'SWE'
+    | 'SWZ'
+    | 'SYC'
+    | 'SYR'
+    | 'TCA'
+    | 'TCD'
+    | 'TGO'
+    | 'THA'
+    | 'TJK'
+    | 'TKL'
+    | 'TKM'
+    | 'TLS'
+    | 'TON'
+    | 'TTO'
+    | 'TUN'
+    | 'TUR'
+    | 'TUV'
+    | 'TWN'
+    | 'TZA'
+    | 'UGA'
+    | 'UKR'
+    | 'UMI'
+    | 'URY'
+    | 'USA'
+    | 'UZB'
+    | 'VAT'
+    | 'VCT'
+    | 'VEN'
+    | 'VGB'
+    | 'VIR'
+    | 'VNM'
+    | 'VUT'
+    | 'WLF'
+    | 'WSM'
+    | 'YEM'
+    | 'ZAF'
+    | 'ZMB'
+    | 'ZWE';
+  codatSupplierName?: string;
+  codatSupplierId?: string;
 }
 
 export type OperationLimitExceeded = DeclineDetails & {
@@ -1077,6 +1330,12 @@ export interface PagedDataAccountActivityResponse {
   /** @format int64 */
   totalElements?: number;
   content?: AccountActivityResponse[];
+}
+
+export interface PaymentDetails {
+  paymentType?: 'POS' | 'ONLINE' | 'MANUAL_ENTRY';
+  foreignTransactionFee?: number;
+  foreign?: boolean;
 }
 
 export interface ReceiptDetails {
@@ -1103,6 +1362,7 @@ export type SpendControlViolated = DeclineDetails & {
     | 'UTILITIES'
     | 'OTHER';
   paymentType?: 'POS' | 'ONLINE' | 'MANUAL_ENTRY';
+  foreignDisabled?: boolean;
 };
 
 export interface NetworkMessageRequest {
@@ -1208,6 +1468,17 @@ export interface SyncLogResponse {
   lastName?: string;
   status?: string;
   transactionId?: string;
+}
+
+export interface CreateAssignSupplierRequest {
+  /** @format uuid */
+  accountActivityId?: string;
+  supplierName?: string;
+}
+
+export interface CreateAssignSupplierResponse {
+  /** @format uuid */
+  accountActivityId?: string;
 }
 
 export interface CreateCreditCardRequest {
@@ -1670,6 +1941,7 @@ export interface IssueCardRequest {
     | 'OTHER'
   )[];
   disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+  disableForeign: boolean;
 
   /** @example DEBIT */
   binType?: 'DEBIT';
@@ -1878,7 +2150,7 @@ export interface Account {
   businessId: string;
 
   /** @format uuid */
-  allocationId: string;
+  allocationId?: string;
 
   /** @format uuid */
   ledgerAccountId: string;
@@ -1894,9 +2166,6 @@ export interface Allocation {
   /** @format uuid */
   allocationId: string;
   name: string;
-
-  /** @format uuid */
-  ownerId: string;
   account: Account;
 
   /** @format uuid */
@@ -2044,10 +2313,16 @@ export interface ConvertBusinessProspectResponse {
 }
 
 export interface OwnersProvidedRequest {
-  /** No other owners to provide */
+  /**
+   * No other owners to provide
+   * If this will be set to true, will send to stripe info that we have no owner to provide.
+   */
   noOtherOwnersToProvide?: boolean;
 
-  /** No executive to provide */
+  /**
+   * No executive to provide
+   * If this will be set to true, will send to stripe info that we have no executive to provide.
+   */
   noExecutiveToProvide?: boolean;
 }
 
@@ -2175,6 +2450,7 @@ export interface BusinessNotificationData {
 export interface TwoFactorStartLoggedInResponse {
   twoFactorId?: string;
   methodId?: string;
+  trustChallenge?: string;
 }
 
 export interface DeviceInfo {
@@ -2300,9 +2576,11 @@ export interface ForgotPasswordRequest {
 }
 
 export interface ChangePasswordRequest {
-  username?: string;
   currentPassword?: string;
   newPassword?: string;
+  trustChallenge?: string;
+  twoFactorId?: string;
+  twoFactorCode?: string;
 }
 
 export interface ChangePasswordResponse {
@@ -2322,9 +2600,6 @@ export interface CreateAllocationRequest {
    * @example 48104ecb-1343-4cc1-b6f2-e6cc88e9a80f
    */
   parentAllocationId: string;
-
-  /** @format uuid */
-  ownerId: string;
   amount: Amount;
   limits: CurrencyLimit[];
   disabledMccGroups: (
@@ -2345,6 +2620,7 @@ export interface CreateAllocationRequest {
     | 'OTHER'
   )[];
   disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+  disableForeign: boolean;
 }
 
 export interface CreateAllocationResponse {
@@ -2484,6 +2760,7 @@ export interface LedgerActivityResponse {
     | LimitExceeded
     | OperationLimitExceeded
     | SpendControlViolated;
+  paymentDetails?: PaymentDetails;
 }
 
 export type LedgerAllocationAccount = LedgerAccount & { allocationInfo?: AllocationInfo };
@@ -3228,6 +3505,9 @@ export interface UpdateUserRequest {
 
   /** Flag to indicate whether a password should be created for the user */
   generatePassword?: boolean;
+
+  /** @format uuid */
+  ownerId?: string;
 }
 
 export interface UpdateUserResponse {
@@ -3236,11 +3516,6 @@ export interface UpdateUserResponse {
 
   /** Error message for any records that failed. Will be null if successful */
   errorMessage?: string;
-}
-
-export interface UpdateCardStatusRequest {
-  /** @example CARDHOLDER_REQUESTED */
-  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED';
 }
 
 export interface Card {
@@ -3278,6 +3553,16 @@ export interface Card {
   externalRef?: string;
 }
 
+export interface CardAndAccount {
+  card?: Card;
+  account?: Account;
+}
+
+export interface UpdateCardStatusRequest {
+  /** @example CARDHOLDER_REQUESTED */
+  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED';
+}
+
 export interface ActivateCardRequest {
   /** @pattern ^\d{4}$ */
   lastFour?: string;
@@ -3305,6 +3590,20 @@ export interface UpdateAccountActivityRequest {
 
   /** @format uuid */
   expenseCategoryId?: string;
+  supplierId?: string;
+  supplierName?: string;
+}
+
+export interface TermsAndConditionsResponse {
+  /** @format uuid */
+  userId?: string;
+
+  /** @format date-time */
+  acceptedTimestampByUser?: string;
+  isAcceptedTermsAndConditions?: boolean;
+
+  /** @format date-time */
+  documentTimestamp?: string;
 }
 
 export interface UpdateCardRequest {
@@ -3327,13 +3626,14 @@ export interface UpdateCardRequest {
     | 'OTHER'
   )[];
   disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+  disableForeign?: boolean;
 }
 
 export interface CardDetailsResponse {
   card: Card;
-  ledgerBalance: Amount;
-  availableBalance: Amount;
-  allocationName: string;
+  ledgerBalance?: Amount;
+  availableBalance?: Amount;
+  allocationName?: string;
   limits?: CurrencyLimit[];
   disabledMccGroups?: (
     | 'CHILD_CARE'
@@ -3353,6 +3653,7 @@ export interface CardDetailsResponse {
     | 'OTHER'
   )[];
   disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+  disableForeign?: boolean;
 }
 
 export interface BusinessLimit {
@@ -3738,9 +4039,6 @@ export interface UpdateAllocationRequest {
    * @example 48104ecb-1343-4cc1-b6f2-e6cc88e9a80f
    */
   parentAllocationId?: string;
-
-  /** @format uuid */
-  ownerId?: string;
   limits?: CurrencyLimit[];
   disabledMccGroups?: (
     | 'CHILD_CARE'
@@ -3760,11 +4058,11 @@ export interface UpdateAllocationRequest {
     | 'OTHER'
   )[];
   disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+  disableForeign?: boolean;
 }
 
 export interface AllocationDetailsResponse {
   allocation?: Allocation;
-  owner?: UserData;
   limits?: CurrencyLimit[];
   disabledMccGroups?: (
     | 'CHILD_CARE'
@@ -3784,6 +4082,7 @@ export interface AllocationDetailsResponse {
     | 'OTHER'
   )[];
   disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+  disableForeign?: boolean;
 }
 
 export interface User {
@@ -3855,6 +4154,7 @@ export interface UserRolesAndPermissionsRecord {
     | 'READ'
     | 'CATEGORIZE'
     | 'LINK_RECEIPTS'
+    | 'EMPLOYEE'
     | 'MANAGE_FUNDS'
     | 'MANAGE_CARDS'
     | 'MANAGE_USERS'
@@ -3862,6 +4162,7 @@ export interface UserRolesAndPermissionsRecord {
     | 'MANAGE_CONNECTIONS'
     | 'VIEW_OWN'
     | 'LINK_BANK_ACCOUNTS'
+    | 'MANAGE_CATEGORIES'
   )[];
   globalUserPermissions?: (
     | 'BATCH_ONBOARD'
@@ -3871,18 +4172,6 @@ export interface UserRolesAndPermissionsRecord {
     | 'CUSTOMER_SERVICE_MANAGER'
     | 'APPLICATION'
   )[];
-}
-
-export interface TermsAndConditionsResponse {
-  /** @format uuid */
-  userId?: string;
-
-  /** @format date-time */
-  acceptedTimestampByUser?: string;
-  isAcceptedTermsAndConditions?: boolean;
-
-  /** @format date-time */
-  documentTimestamp?: string;
 }
 
 export interface AllocationsAndPermissionsResponse {
@@ -3916,19 +4205,11 @@ export interface BusinessOwner {
   type?: 'UNSPECIFIED' | 'PRINCIPLE_OWNER' | 'ULTIMATE_BENEFICIAL_OWNER';
   firstName?: NullableEncryptedString;
   lastName?: NullableEncryptedString;
-  title?: string;
   relationshipOwner?: boolean;
   relationshipRepresentative?: boolean;
   relationshipExecutive?: boolean;
   relationshipDirector?: boolean;
-  percentageOwnership?: number;
-  address?: Address;
-  taxIdentificationNumber?: NullableEncryptedString;
   email?: string;
-  phone?: string;
-
-  /** @format date */
-  dateOfBirth?: string;
   countryOfCitizenship?:
     | 'UNSPECIFIED'
     | 'ABW'
@@ -4178,9 +4459,17 @@ export interface BusinessOwner {
     | 'ZAF'
     | 'ZMB'
     | 'ZWE';
-  subjectRef?: string;
   knowYourCustomerStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
   status?: 'ACTIVE' | 'RETIRED';
+  title?: string;
+  percentageOwnership?: number;
+  address?: Address;
+  taxIdentificationNumber?: NullableEncryptedString;
+  phone?: string;
+
+  /** @format date */
+  dateOfBirth?: string;
+  subjectRef?: string;
   stripePersonReference?: string;
 
   /** @format int64 */
@@ -4223,6 +4512,20 @@ export interface CodatBankAccount {
 
 export interface CodatBankAccountsResponse {
   results?: CodatBankAccount[];
+}
+
+export interface CodatSupplier {
+  id?: string;
+  supplierName?: string;
+  status?: string;
+  defaultCurrency?: string;
+}
+
+export interface GetSuppliersResponse {
+  results?: CodatSupplier[];
+
+  /** @format int32 */
+  totalElements?: number;
 }
 
 export interface AccountBalance {
@@ -4707,6 +5010,7 @@ export interface BankAccount {
   name?: string;
   routingNumber?: string;
   accountNumber?: string;
+  accountLinkStatus?: 'LINKED' | 'MICROTRANSACTION_PENDING' | 'RE_LINK_REQUIRED';
 }
 
 export interface LinkTokenResponse {
@@ -4792,6 +5096,7 @@ export interface AllocationRolePermissionRecord {
     | 'READ'
     | 'CATEGORIZE'
     | 'LINK_RECEIPTS'
+    | 'EMPLOYEE'
     | 'MANAGE_FUNDS'
     | 'MANAGE_CARDS'
     | 'MANAGE_USERS'
@@ -4799,6 +5104,7 @@ export interface AllocationRolePermissionRecord {
     | 'MANAGE_CONNECTIONS'
     | 'VIEW_OWN'
     | 'LINK_BANK_ACCOUNTS'
+    | 'MANAGE_CATEGORIES'
   )[];
 }
 

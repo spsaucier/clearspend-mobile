@@ -9,7 +9,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import tw from '@/Styles/tailwind';
 
 const secondaryColor = tw.color('secondary');
-const lightGray = tw.color('gray-20');
+const lightGray = tw.color('gray-10');
 
 export const ToggleSwitch = ({
   testID,

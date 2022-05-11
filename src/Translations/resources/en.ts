@@ -171,7 +171,6 @@ export default {
     pointOfSales: 'Point of sale (POS)',
     manualEntry: 'Manual Entry',
     online: 'Online',
-    international: 'International',
   },
   wallet: {
     refreshCardAndTransactions: 'Refreshing card and transactions',
@@ -346,10 +345,7 @@ export default {
     transactionLimit: 'Transaction limit',
     paymentTypes: 'Payment types',
     allPaymentTypes: 'All payment types',
-    pointOfSales: 'Point of sale (POS)',
-    manualEntry: 'Manual Entry',
-    online: 'Online',
-    international: 'International',
+    international: 'International (3% fee)',
   },
   profile: {
     profileInfo: 'View profile info',

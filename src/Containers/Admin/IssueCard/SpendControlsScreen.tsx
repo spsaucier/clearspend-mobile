@@ -23,6 +23,7 @@ type SpendControlStateType = {
     monthly: Limit;
     instant: Limit;
   };
+  disableForeign: boolean;
 };
 
 const reducer = (state: SpendControlStateType, action: any) => {
@@ -73,6 +74,12 @@ const reducer = (state: SpendControlStateType, action: any) => {
         },
       };
     }
+    case `internationalToggle`: {
+      return {
+        ...state,
+        disableForeign: payload,
+      };
+    }
     default:
       return state;
   }
@@ -85,7 +92,12 @@ const SpendControlContent = ({
   allocationData: AllocationDetailsResponse;
   onSpendControlChanged: (state: SpendControlStateType) => void;
 }) => {
-  const { disabledMccGroups, disabledPaymentTypes, limits: allocationLimits } = allocationData;
+  const {
+    disabledMccGroups,
+    disabledPaymentTypes,
+    limits: allocationLimits,
+    disableForeign,
+  } = allocationData;
 
   const [allocationLimit] = allocationLimits!;
   const {
@@ -112,6 +124,7 @@ const SpendControlContent = ({
       monthly: { amount: monthlyAmount, enabled: monthlyAmount > 0 },
       instant: { amount: instantAmount, enabled: instantAmount > 0 },
     },
+    disableForeign,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -129,6 +142,7 @@ const SpendControlContent = ({
       categoryTypes={state.categoryTypes}
       limits={state.limits}
       paymentTypes={state.paymentTypes}
+      disableForeign={state.disableForeign}
       onLimitUpdated={(limit) => {
         dispatch({ type: 'limitUpdate', payload: limit });
       }}
@@ -143,6 +157,9 @@ const SpendControlContent = ({
       }}
       onPaymentTypeUpdated={(payment) => {
         dispatch({ type: 'paymentToggle', payload: payment });
+      }}
+      onInternationalToggle={(disabled) => {
+        dispatch({ type: 'internationalToggle', payload: disabled });
       }}
     />
   );
@@ -162,7 +179,7 @@ const SpendControlsScreen = () => {
   } = useAllocation(selectedAllocationId!);
 
   const onSpendControlChanged = (state: SpendControlStateType) => {
-    const { categoryTypes, limits: sLimits, paymentTypes } = state;
+    const { categoryTypes, limits: sLimits, paymentTypes, disableForeign } = state;
     const disabledMccGroups = categoryTypes.filter((x) => !x.enabled).map((x) => x.key);
     const disabledPaymentTypes = paymentTypes.filter((x) => !x.enabled).map((x) => x.key);
 
@@ -189,6 +206,7 @@ const SpendControlsScreen = () => {
           typeMap,
         },
       ],
+      disableForeign,
     });
   };
 

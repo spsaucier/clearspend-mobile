@@ -20,7 +20,6 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
   const [readyCount, setReadyCount] = useState(0);
 
   const { cardId, lastFour, type, status, externalRef, cardLine3 } = card;
-  const { amount: balanceAmount } = availableBalance;
 
   const isFrozen = status === 'INACTIVE';
   const isVirtual = type === 'VIRTUAL';
@@ -43,7 +42,7 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
     <View style={tw`flex-1 justify-center relative`}>
       <Card
         cardId={cardId!}
-        balance={balanceAmount || 0}
+        balance={availableBalance!.amount!}
         lastDigits={lastFour!}
         isVirtual={isVirtual}
         isFrozen={isFrozen}

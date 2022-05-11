@@ -33,7 +33,6 @@ export const validateIssueCardRequest = ({
     ],
     disabledMccGroups: spendControls?.disabledMccGroups || [],
     disabledPaymentTypes: spendControls?.disabledPaymentTypes || [],
-    // @ts-ignore
-    disableForeign: false,
+    disableForeign: spendControls?.disableForeign || false,
   };
 };

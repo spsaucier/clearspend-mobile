@@ -30,6 +30,7 @@ const NewPasswordScreen = () => {
 
   const onUpdatePassword = () => {
     mutate({
+      // @ts-ignore TODO: To be fixed. Got a ts error after updating capital.ts
       username: user?.email,
       currentPassword,
       newPassword,

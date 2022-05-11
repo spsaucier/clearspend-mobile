@@ -46,6 +46,7 @@ type SpendControlState = {
   };
   categoryTypes: MerchantCategoryType[];
   paymentTypes: PaymentType[];
+  disableForeign: boolean;
 };
 
 const SpendControlDefaultValues: SpendControlState = {
@@ -58,6 +59,7 @@ const SpendControlDefaultValues: SpendControlState = {
   },
   categoryTypes: [],
   paymentTypes: [],
+  disableForeign: false,
 };
 
 const CardSpendControl = () => {
@@ -90,11 +92,13 @@ const CardSpendControl = () => {
     disabledMccGroups,
     disabledPaymentTypes,
     limits,
+    disableForeign,
   }: {
     allocationId: string;
     disabledMccGroups: string[];
     disabledPaymentTypes: string[];
     limits: any[];
+    disableForeign: boolean;
   }) => {
     const [firstLimit] = limits!;
     const {
@@ -144,6 +148,7 @@ const CardSpendControl = () => {
         monthly,
         instant,
       },
+      disableForeign,
     };
 
     return controlState;
@@ -155,6 +160,7 @@ const CardSpendControl = () => {
         disabledMccGroups,
         disabledPaymentTypes,
         limits,
+        disableForeign,
         card: { allocationId },
       } = data;
 
@@ -163,6 +169,7 @@ const CardSpendControl = () => {
         disabledMccGroups: disabledMccGroups!,
         disabledPaymentTypes: disabledPaymentTypes!,
         limits: limits!,
+        disableForeign: disableForeign!,
       });
 
       setCurrentSpendControl(newState);
@@ -176,6 +183,7 @@ const CardSpendControl = () => {
     categoryTypes: currentCategoryTypes,
     limits: currentLimits,
     paymentTypes: currentPaymentTypes,
+    disableForeign: currentDisableForeign,
   } = currentSpendControl;
   const formDirty =
     currentSpendControl &&
@@ -249,15 +257,23 @@ const CardSpendControl = () => {
     });
   };
 
+  const onInternationalToggle = (disabled: boolean) => {
+    setCurrentSpendControl({
+      ...currentSpendControl,
+      disableForeign: disabled,
+    });
+  };
+
   const onResetControlsPress = () => {
     const { allocationId: pAllocationId } = currentSpendControl;
     fetchAllocationData(pAllocationId).then((allocationData) => {
-      const { disabledMccGroups, disabledPaymentTypes, limits } = allocationData;
+      const { disabledMccGroups, disabledPaymentTypes, limits, disableForeign } = allocationData;
       const newState = buildSpendControlState({
         allocationId: pAllocationId,
         disabledMccGroups: disabledMccGroups!,
         disabledPaymentTypes: disabledPaymentTypes!,
         limits: limits!,
+        disableForeign: disableForeign!,
       });
 
       setCurrentSpendControl(newState);
@@ -266,7 +282,7 @@ const CardSpendControl = () => {
 
   const onSavePress = () => {
     setSaving(true);
-    const { limits, categoryTypes, paymentTypes } = currentSpendControl;
+    const { limits, categoryTypes, paymentTypes, disableForeign } = currentSpendControl;
 
     const typeMap = {
       PURCHASE: {} as any,
@@ -291,6 +307,7 @@ const CardSpendControl = () => {
           typeMap,
         },
       ],
+      disableForeign,
     })
       .then(() => {
         Toast.show({ type: 'success', text1: t('cardSpendControl.success') });
@@ -347,11 +364,13 @@ const CardSpendControl = () => {
                 paymentTypes={currentPaymentTypes}
                 categoryTypes={currentCategoryTypes}
                 limits={currentLimits}
+                disableForeign={currentDisableForeign}
                 onLimitUpdated={onLimitUpdated}
                 onCategoryUpdated={onCategoryUpdated}
                 onPaymentTypeUpdated={onPaymentUpdated}
                 onAllCategoriesToggle={onAllCategoriesToggle}
                 onAllPaymentTypesToggle={onAllPaymentTypesToggle}
+                onInternationalToggle={onInternationalToggle}
               />
               <View style={tw`mt-3`}>
                 <CSText style={tw`my-2`}>{t('cardSpendControl.resetControlsHeadline')}</CSText>
