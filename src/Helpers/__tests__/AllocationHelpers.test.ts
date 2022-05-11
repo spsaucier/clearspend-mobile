@@ -1,9 +1,9 @@
-import { allocationTree } from '../AllocationHelpers';
+import { generateAllocationTree } from '../AllocationHelpers';
 import { adminResponse, managerResponse } from '@/Helpers/testing/fixtures/allocations';
 
-describe('allocationTree', () => {
+describe('generateAllocationTree', () => {
   it('groups parent and children allocations (admin response)', () => {
-    const tree = allocationTree(adminResponse);
+    const tree = generateAllocationTree(adminResponse);
 
     expect(tree[0].name).toBe('Dovetail');
 
@@ -20,7 +20,7 @@ describe('allocationTree', () => {
   });
 
   it('groups parent and children allocations (manager response)', () => {
-    const tree = allocationTree(managerResponse);
+    const tree = generateAllocationTree(managerResponse);
 
     expect(tree[0].name).toBe('Smaller Business Inc');
     expect(tree[1].name).toBe('Another Smaller Business Inc');

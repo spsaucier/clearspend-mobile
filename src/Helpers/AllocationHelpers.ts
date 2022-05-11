@@ -3,6 +3,7 @@ import { cloneDeep, isEmpty } from 'lodash';
 
 export type AllocationWithChildren = Allocation & {
   children?: AllocationWithChildren[];
+  isCollapsed?: boolean;
 };
 
 export const groupAllocation = (
@@ -19,6 +20,7 @@ export const groupAllocation = (
 
   if (children.length) {
     parentAllocation.children = children;
+    parentAllocation.isCollapsed = false;
     children.forEach((child) => groupAllocation(allocations, child));
   }
 
@@ -33,7 +35,7 @@ export const getFirstDescendants = (allocations: Allocation[]): Allocation[] =>
     (a) => !allocations.find(({ allocationId }) => a.parentAllocationId === allocationId),
   );
 
-export const allocationTree = (allocations: Allocation[]): AllocationWithChildren[] => {
+export const generateAllocationTree = (allocations: Allocation[]): AllocationWithChildren[] => {
   const clone = cloneDeep(allocations);
   let parents = getParentAllocations(clone);
 

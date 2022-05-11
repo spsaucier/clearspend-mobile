@@ -312,3 +312,105 @@ export const managerResponse = [
     childrenAllocationIds: [],
   },
 ];
+
+export const fiveLevelsDeepResponse = [
+  {
+    allocationId: '1',
+    name: 'One',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 10000,
+      },
+    },
+    parentAllocationId: null,
+  },
+  {
+    allocationId: '1-1',
+    name: 'One-One',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 8000,
+      },
+    },
+    parentAllocationId: '1',
+  },
+  {
+    allocationId: '1-2',
+    name: 'One-Two',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 8000,
+      },
+    },
+    parentAllocationId: '1',
+  },
+  {
+    allocationId: '1-1-1',
+    name: 'One-One-One',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 6000,
+      },
+    },
+    parentAllocationId: '1-1',
+  },
+  {
+    allocationId: '1-1-2',
+    name: 'One-One-Two',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 6000,
+      },
+    },
+    parentAllocationId: '1-1',
+  },
+  {
+    allocationId: '1-1-1-1',
+    name: 'One-One-One-One',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 4000,
+      },
+    },
+    parentAllocationId: '1-1-1',
+  },
+  {
+    allocationId: '1-1-1-2',
+    name: 'One-One-One-Two',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 4000,
+      },
+    },
+    parentAllocationId: '1-1-1',
+  },
+  {
+    allocationId: '1-1-1-1-1',
+    name: 'One-One-One-One-One',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 2000,
+      },
+    },
+    parentAllocationId: '1-1-1-1',
+  },
+  {
+    allocationId: '1-1-1-1-2',
+    name: 'One-One-One-One-Two',
+    account: {
+      availableBalance: {
+        currency: 'USD' as 'USD',
+        amount: 2000,
+      },
+    },
+    parentAllocationId: '1-1-1-1',
+  },
+];
