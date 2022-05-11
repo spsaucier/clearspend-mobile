@@ -55,7 +55,12 @@ const AdminScreenWrapper: FC<Props> = ({
       <View style={tw`flex-1 px-5`}>
         {children}
         {onPrimaryAction && (
-          <View style={tw`mt-auto py-5`}>
+          <View
+            style={tw.style(
+              `mt-auto pt-5`,
+              onSecondaryAction && onSecondaryActionLabel ? 'pb-2' : 'pb-5',
+            )}
+          >
             <Button
               testID="primary-action-button"
               label={onPrimaryActionLabel || t('adminFlows.nextStepCta')}

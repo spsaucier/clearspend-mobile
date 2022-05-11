@@ -43,18 +43,18 @@ const CardConfirmationScreen = () => {
       hideBackButton
     >
       <View>
-        <View style={tw`mt-16 rounded-xl overflow-hidden`}>
+        <View style={[tw`mt-12 rounded-xl overflow-hidden`]}>
           <Image
             testID={cardType === CardType.Physical ? 'card-physical-image' : 'card-virtual-image'}
             source={cardType === CardType.Physical ? cardPhysicalImage : cardVirtualImage}
-            style={tw`w-full`}
+            style={[tw`w-full h-auto`, { aspectRatio: 335 / 211 }]}
           />
         </View>
         <View>
-          <Text style={tw`font-telegraf text-2xl font-light text-black mt-12`}>
+          <Text style={tw`font-telegraf text-2xl font-light text-black mt-10`}>
             {t('adminFlows.issueCard.cardConfirmationTitle')}
           </Text>
-          <Text style={tw`text-sm mt-7 leading-6`}>
+          <Text style={tw`text-sm mt-5 leading-6`}>
             {cardType === CardType.Physical ? (
               <Text testID="card-physical-text">
                 <Trans

@@ -458,6 +458,7 @@ export default {
       addressEmployeeOption: 'Employee',
       addressNewOption: 'New address',
       newAddressTitle: 'New address',
+      newAddressCta: 'Add delivery address',
       allocationTitle: 'Allocation',
       allocationText: 'Choose the allocation that will fund your new card.',
       spendControlsTitle: 'Spend controls',
