@@ -3,8 +3,6 @@ import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useNavigation } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
 import { Logo } from '@/Components/Svg/Logo';
@@ -13,11 +11,9 @@ import { useAuthentication } from '@/Hooks/useAuthentication';
 import { PasscodeView } from './Components/Passcode/PasscodeView';
 import { PromptBio } from './Components/PromptBio';
 import { longFeedback } from '@/Helpers/HapticFeedback';
-import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 
 const ConfirmAuthScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<MainStackParamTypes, MainScreens>>();
   const {
     setAuthed,
     logout,
@@ -32,16 +28,6 @@ const ConfirmAuthScreen = () => {
 
   const onSuccess = () => {
     setAuthed(true);
-    if (navigation.getState().routeNames.find((r: MainScreens) => r === MainScreens.Home)) {
-      navigation.replace(MainScreens.Home);
-    } else if (
-      navigation.getState().routeNames.find((r: MainScreens) => r === MainScreens.Profile)
-    ) {
-      navigation.replace(MainScreens.Profile);
-    } else {
-      // eslint-disable-next-line no-console
-      console.warn('Unknown navigation state:', navigation.getState());
-    }
   };
 
   const onPasscodeComplete = async (newPasscode: string) => {
