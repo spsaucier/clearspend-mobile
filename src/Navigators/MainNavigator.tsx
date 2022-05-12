@@ -41,7 +41,7 @@ import { AdminNavigator as AdminStack } from '@/Navigators/Admin/AdminNavigator'
 import CardSpendControl from '@/Containers/Wallet/CardSpendControl';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import useRequireBioOrPasscodeSetup from '@/Hooks/useRequireBioOrPasscodeSetup';
-import useRequire2FA from '@/Hooks/useRequire2FA';
+// import useRequire2FA from '@/Hooks/useRequire2FA';
 import { useUser } from '@/Queries';
 
 const Stack = createStackNavigator<MainStackParamTypes>();
@@ -151,7 +151,11 @@ const WalletStack = () => (
 
 const MainNavigator = () => {
   const { loading, authed, passcodeEnabled, biometricsEnabled, isLoggingOut } = useAuthentication();
-  const { loading: loading2FA, shouldAct: needs2FA } = useRequire2FA();
+
+  // TODO: Reenable 2FA setup prompt when backend is fixed
+  // const { loading: loading2FA, shouldAct: needs2FA } = useRequire2FA();
+  const loading2FA = false;
+  const needs2FA = false;
   const { loading: loadingBioPasscode, shouldAct: needsBioPasscode } =
     useRequireBioOrPasscodeSetup();
   const { data: user } = useUser();
