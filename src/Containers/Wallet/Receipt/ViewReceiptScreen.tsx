@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Gesture, GestureDetector, TouchableOpacity } from 'react-native-gesture-handler';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
+import LinearGradient from 'react-native-linear-gradient';
 
 import tw from '@/Styles/tailwind';
 import { CloseIcon, MinusCircleFilledIcon, PlusCircleFilledIcon } from '@/Components/Icons';
@@ -86,6 +87,14 @@ const ViewReceiptScreen = () => {
 
   const simultaneousTaps = Gesture.Race(doubleTap, tap);
 
+  const gradientOpacity = controlsEnabled ? '0.7' : '0';
+  const gradientColor = [
+    `rgba(0, 0, 0, ${gradientOpacity})`,
+    'rgba(0, 0, 0, 0)',
+    'rgba(0, 0, 0, 0)',
+    `rgba(0, 0, 0, ${gradientOpacity})`,
+  ];
+
   return (
     <View style={tw`h-full bg-black/75`}>
       <GestureDetector gesture={simultaneousTaps}>
@@ -96,7 +105,14 @@ const ViewReceiptScreen = () => {
           horizontalScrollEnabled={controlsEnabled}
         />
       </GestureDetector>
-      {controlsEnabled && (
+
+      <LinearGradient
+        pointerEvents="none"
+        colors={gradientColor}
+        style={{ position: 'absolute', height: '100%', width: '100%' }}
+      />
+
+      {controlsEnabled ? (
         <SafeAreaView>
           <TouchableOpacity
             style={tw`self-end`}
@@ -107,9 +123,9 @@ const ViewReceiptScreen = () => {
             <CloseIcon style={tw`mr-4 mt-6`} size={32} color={tw.color('white')} />
           </TouchableOpacity>
         </SafeAreaView>
-      )}
+      ) : null}
 
-      {controlsEnabled && (
+      {controlsEnabled ? (
         <SafeAreaView style={tw`absolute right-0 bottom-20`} edges={['bottom']}>
           <TouchableOpacity
             style={tw`flex-row bg-white rounded-full items-center px-2 py-1 self-end m-4`}
@@ -126,13 +142,27 @@ const ViewReceiptScreen = () => {
             <CSText style={tw`ml-1 text-sm`}>{t('wallet.receipt.deleteReceipt')}</CSText>
           </TouchableOpacity>
         </SafeAreaView>
-      )}
+      ) : null}
 
+      {controlsEnabled ? (
+        <View style={tw`mb-10 self-center flex-row absolute bottom-0`}>
+          {receiptIds.length > 1 &&
+            receiptIds?.map((rId: string) => (
+              <View
+                style={tw.style('rounded-full h-2, w-2 m-1', {
+                  backgroundColor: currentReceiptId === rId ? 'white' : 'grey',
+                })}
+                key={rId}
+              />
+            ))}
+        </View>
+      ) : null}
       <AddReceiptPanel
         ref={addReceiptPanelRef}
         onTakePhotoPress={onTakePhotoPress}
         onFileOrPhotoSelected={onFileOrPhotoSelected}
       />
+
       <ActivityOverlay
         visible={isUploading}
         message={t('wallet.receipt.uploadingReceipt')}

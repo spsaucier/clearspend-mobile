@@ -5,7 +5,6 @@ import Pdf from 'react-native-pdf';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
-import { DarkToLightGradient } from '@/Components/Svg/DarkToLightGradient';
 import { ActivityIndicator, CSText } from '@/Components';
 import { useReceiptUri } from '@/Queries';
 import { detectMimeType, MediaType } from '@/Helpers/StringHelpers';
@@ -132,7 +131,7 @@ const ViewReceiptCarousel = ({
   }, [isError]);
 
   return (
-    <SafeAreaView style={tw`absolute w-full h-full`}>
+    <SafeAreaView style={tw`absolute w-full`}>
       <FlatList
         data={cachedReceipts}
         extraData={cachedReceipts}
@@ -154,22 +153,6 @@ const ViewReceiptCarousel = ({
         simultaneousHandlers={pdfScrollHandler}
         ref={horizontalScrollHandler}
       />
-
-      <DarkToLightGradient style={tw`absolute`} />
-      <DarkToLightGradient style={tw`absolute bottom-0`} inverted />
-      {horizontalScrollEnabled ? (
-        <View style={tw`mb-10 self-center flex-row absolute bottom-0`}>
-          {receiptIds.length > 1 &&
-            receiptIds?.map((rId: string) => (
-              <View
-                style={tw.style('rounded-full h-2, w-2 m-1', {
-                  backgroundColor: localCurrentReceiptId === rId ? 'white' : 'grey',
-                })}
-                key={rId}
-              />
-            ))}
-        </View>
-      ) : null}
     </SafeAreaView>
   );
 };
