@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import type { StackNavigationProp } from '@react-navigation/stack';
@@ -18,6 +18,7 @@ const AllocationScreen = () => {
     useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Allocation>>();
   const { selectedAllocationId, setSelectedAllocationId } = useIssueCardContext();
   const { data, isLoading } = useAllPermissions();
+  const allocations = useMemo(() => generateAllocationTree(data?.allocations), [data]);
 
   return (
     <AdminScreenWrapper
@@ -32,12 +33,12 @@ const AllocationScreen = () => {
           <ActivityIndicator />
         </View>
       ) : (
-        data?.allocations && (
+        !!allocations?.length && (
           <ScrollView>
             <View style={tw`pb-16`}>
               <AllocationTree
-                allocations={generateAllocationTree(data.allocations)}
-                onSelect={setSelectedAllocationId}
+                allocations={allocations}
+                onSelectAllocation={setSelectedAllocationId}
                 selectedAllocationId={selectedAllocationId}
               />
             </View>

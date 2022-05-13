@@ -20,9 +20,10 @@ export const groupAllocation = (
 
   if (children.length) {
     parentAllocation.children = children;
-    parentAllocation.isCollapsed = false;
     children.forEach((child) => groupAllocation(allocations, child));
   }
+
+  parentAllocation.isCollapsed = false;
 
   return tree;
 };
@@ -35,7 +36,11 @@ export const getFirstDescendants = (allocations: Allocation[]): Allocation[] =>
     (a) => !allocations.find(({ allocationId }) => a.parentAllocationId === allocationId),
   );
 
-export const generateAllocationTree = (allocations: Allocation[]): AllocationWithChildren[] => {
+export const generateAllocationTree = (
+  allocations: Allocation[] | undefined,
+): AllocationWithChildren[] => {
+  if (!allocations) return [];
+
   const clone = cloneDeep(allocations);
   let parents = getParentAllocations(clone);
 

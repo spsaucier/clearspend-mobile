@@ -11,7 +11,7 @@ describe('AllocationTree', () => {
       <View>
         <AllocationTree
           allocations={generateAllocationTree(fiveLevelsDeepResponse as AllocationWithChildren[])}
-          onSelect={jest.fn()}
+          onSelectAllocation={jest.fn()}
         />
       </View>,
     );
@@ -31,7 +31,7 @@ describe('AllocationTree', () => {
       <View>
         <AllocationTree
           allocations={generateAllocationTree(fiveLevelsDeepResponse as AllocationWithChildren[])}
-          onSelect={jest.fn()}
+          onSelectAllocation={jest.fn()}
         />
       </View>,
     );
@@ -57,7 +57,7 @@ describe('AllocationTree', () => {
       <View>
         <AllocationTree
           allocations={generateAllocationTree(fiveLevelsDeepResponse as AllocationWithChildren[])}
-          onSelect={jest.fn()}
+          onSelectAllocation={jest.fn()}
         />
       </View>,
     );
@@ -67,16 +67,16 @@ describe('AllocationTree', () => {
     expect(within(leaf).queryByTestId(`${leafId}-toggle`)).toBeNull();
   });
 
-  it('calls `onSelect` with `allocationId`', () => {
+  it('calls `onSelectAllocation` with `allocationId`', () => {
     const allocation = fiveLevelsDeepResponse.find((a) => a.allocationId === '1-1-1-1-1');
 
-    const onSelectMock = jest.fn();
+    const onSelectAllocationMock = jest.fn();
 
     const { getByTestId } = render(
       <View>
         <AllocationTree
           allocations={generateAllocationTree(fiveLevelsDeepResponse as AllocationWithChildren[])}
-          onSelect={onSelectMock}
+          onSelectAllocation={onSelectAllocationMock}
         />
       </View>,
     );
@@ -85,6 +85,6 @@ describe('AllocationTree', () => {
 
     fireEvent.press(barkfeast);
 
-    expect(onSelectMock).toBeCalledWith(allocation!.allocationId);
+    expect(onSelectAllocationMock).toBeCalledWith(allocation!.allocationId);
   });
 });

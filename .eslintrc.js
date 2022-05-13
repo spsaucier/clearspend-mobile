@@ -47,6 +47,7 @@ module.exports = {
       { devDependencies: ['**/*.test.ts', '**/*.test.tsx', '**/testing/*'] },
     ],
     'no-param-reassign': ['error', { props: false }],
+    '@typescript-eslint/no-use-before-define': 'off',
   },
   settings: {
     'import/resolver': {
