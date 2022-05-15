@@ -1,5 +1,6 @@
 export { ActivityIndicator } from './ActivityIndicator';
 export { AnimatedCSText } from './AnimatedText';
+export { AnimatedView } from './AnimatedView';
 export { BackArrowButton } from './BackArrowButton';
 export { BackButtonNavigator } from './BackButtonNavigator';
 export { Button } from './Button';

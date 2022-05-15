@@ -4,6 +4,7 @@ export { BackArrowIcon } from './backArrowIcon';
 export { BusinessIcon } from './businessIcon';
 export { CameraIcon } from './cameraIcon';
 export { CardSettingsIcon } from './cardSettingsIcon';
+export { CategoryIcon } from './categoryIcon';
 export { CheckBoxIcon } from './checkBoxIcon';
 export { CheckBoxCheckedIcon } from './checkBoxCheckedIcon';
 export { CheckCircleIcon } from './checkCircleIcon';

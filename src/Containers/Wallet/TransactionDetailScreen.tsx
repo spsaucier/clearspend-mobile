@@ -14,8 +14,7 @@ import { ActivityIndicator, CSBottomSheet, CSText } from '@/Components';
 import {
   CheckCircleIconFilled,
   ExclamationIcon,
-  ExpenseIcon,
-  PlusWithBorderIcon,
+  CategoryIcon,
   QuestionMarkCircleFilledIcon,
   ReceiptIcon,
 } from '@/Components/Icons';
@@ -262,30 +261,6 @@ const TransactionDetailScreenContent = () => {
 
           <View style={tw`flex-row px-2 pt-6`}>
             <TouchableOpacity
-              style={tw.style('flex-1 rounded overflow-hidden bg-tan justify-center m-2', {
-                aspectRatio: 2,
-              })}
-              onPress={onReceiptModalPress}
-            >
-              {thereAreReceipts ? (
-                <ViewReceiptThumbnail receiptIds={receipt!.receiptId!} />
-              ) : (
-                <View style={tw`flex-1 justify-center items-center`}>
-                  <View style={tw`flex-row mb-2`}>
-                    <ReceiptIcon />
-                    <PlusWithBorderIcon
-                      style={tw`absolute -ml-2.5 mt-0.5`}
-                      color={tw.color('black')}
-                      size={14}
-                    />
-                  </View>
-                  <CSText allowFontScaling={false}>
-                    {t('wallet.transactionDetails.addReceipt')}
-                  </CSText>
-                </View>
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
               style={tw.style('flex-1 rounded bg-tan justify-center m-2', {
                 aspectRatio: 2,
               })}
@@ -305,13 +280,8 @@ const TransactionDetailScreenContent = () => {
                   </>
                 ) : (
                   <View style={tw`flex-1 justify-center items-center`}>
-                    <View style={tw`flex-row mb-2`}>
-                      <ExpenseIcon />
-                      <PlusWithBorderIcon
-                        style={tw`absolute -ml-2.5 mt-0.5`}
-                        color={tw.color('black')}
-                        size={14}
-                      />
+                    <View style={tw`flex-row mb-4`}>
+                      <CategoryIcon />
                     </View>
                     <CSText allowFontScaling={false}>
                       {t('wallet.transactionDetails.expenseCategory')}
@@ -319,6 +289,25 @@ const TransactionDetailScreenContent = () => {
                   </View>
                 )}
               </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={tw.style('flex-1 rounded overflow-hidden bg-tan justify-center m-2', {
+                aspectRatio: 2,
+              })}
+              onPress={onReceiptModalPress}
+            >
+              {thereAreReceipts ? (
+                <ViewReceiptThumbnail receiptIds={receipt!.receiptId!} />
+              ) : (
+                <View style={tw`flex-1 justify-center items-center`}>
+                  <View style={tw`flex-row mb-4`}>
+                    <ReceiptIcon />
+                  </View>
+                  <CSText allowFontScaling={false}>
+                    {t('wallet.transactionDetails.addReceipt')}
+                  </CSText>
+                </View>
+              )}
             </TouchableOpacity>
           </View>
           <View style={tw`self-center justify-center items-center`}>
