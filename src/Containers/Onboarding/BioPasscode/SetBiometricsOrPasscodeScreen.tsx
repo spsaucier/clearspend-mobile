@@ -45,13 +45,19 @@ const SetBiometricsOrPasscodeScreen = () => {
     navigate(BioPasscodeScreens.Set);
   };
 
+  const subTitleFaceOrBio = t(`loginOptions.${availableBio}.${Platform.OS}.title`);
+  const subTitle = t('loginOptions.subTitle', {
+    faceOrBio:
+      availableBio !== ''
+        ? t(`loginOptions.subTitleFaceOrBio`, {
+            type: Platform.OS === 'ios' ? subTitleFaceOrBio : subTitleFaceOrBio.toLowerCase(),
+          })
+        : null,
+  });
+
   return (
     <KeyboardAvoidingView style={tw`flex-1 pt-20`} behavior="padding">
-      <OnboardingHeader
-        hideBackArrow
-        title={t('loginOptions.title')}
-        subTitle={t('loginOptions.subTitle')}
-      />
+      <OnboardingHeader hideBackArrow title={t('loginOptions.title')} subTitle={subTitle} />
 
       {availableBio && !biometricsEnabled ? (
         <TouchableOpacity style={tw`flex-row mb-7`} onPress={onEnableBiometrics}>

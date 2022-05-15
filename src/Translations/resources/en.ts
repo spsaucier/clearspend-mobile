@@ -66,7 +66,8 @@ export default {
   loginOptions: {
     title: 'Login options',
     subTitle:
-      'You’ll need to enable Face ID or set up a PIN as a faster, more secure way of logging in next time.',
+      'You’ll need to{{faceOrBio}} set up a PIN as a faster, more secure way of logging in next time.',
+    subTitleFaceOrBio: ' enable {{type}} or',
     [AuthenticationMethods.FACE]: {
       android: {
         title: 'Trusted Face',
@@ -85,8 +86,8 @@ export default {
     },
     [AuthenticationMethods.FINGERPRINT_ANDROID]: {
       android: {
-        title: 'Fingerprint',
-        description: 'Enable Fingerprint to log in to ClearSpend',
+        title: 'Biometric login',
+        description: 'Enable biometric login to log in to ClearSpend',
       },
     },
     pin: 'PIN',
