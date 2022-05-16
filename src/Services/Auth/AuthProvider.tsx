@@ -1,6 +1,6 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
-import { MMKV, useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
+import { useMMKVBoolean, useMMKVNumber } from 'react-native-mmkv';
 import CookieManager from '@react-native-cookies/cookies';
 import FullStory from '@fullstory/react-native';
 import { persistor, store } from '@/Store';
@@ -10,6 +10,7 @@ import { usePasscode } from '@/Hooks/usePasscode';
 import { mixpanel } from '../utils/analytics';
 import { IS_AUTHED, JUST_SET_2FA_KEY, LAST_ACTIVE_KEY } from '@/Store/keys';
 import { useRequireAuth } from '@/Hooks/useRequireAuth';
+import { storage } from '@/Services/Storage/mmkv';
 
 /*
 The AuthProvider provides a means to work with stateful values/effects/custom
@@ -39,7 +40,6 @@ interface AuthContextInterface
 export const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
 
 const AuthProvider: FC = ({ children }) => {
-  const storage = new MMKV();
   const queryClient = useQueryClient();
 
   const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true);

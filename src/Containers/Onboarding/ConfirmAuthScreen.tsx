@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -8,9 +8,11 @@ import { CSText, FocusAwareStatusBar } from '@/Components';
 import { Logo } from '@/Components/Svg/Logo';
 
 import { useAuthentication } from '@/Hooks/useAuthentication';
+import { storage } from '@/Services/Storage/mmkv';
 import { PasscodeView } from './Components/Passcode/PasscodeView';
 import { PromptBio } from './Components/PromptBio';
 import { longFeedback } from '@/Helpers/HapticFeedback';
+import { Constants } from '@/consts';
 
 const ConfirmAuthScreen = () => {
   const { t } = useTranslation();
@@ -26,8 +28,15 @@ const ConfirmAuthScreen = () => {
   } = useAuthentication();
   const [error, setCurrentError] = useState<string>();
 
-  const onSuccess = () => {
+  const onSuccess = async () => {
     setAuthed(true);
+    const initialDeeplink = storage.getString(Constants.INITIAL_DEEPLINK_URL);
+
+    // If a deeplink was saved before auth, attempt to open it - see `deepLinkNavigationConfig.ts`
+    if (initialDeeplink) {
+      Linking.canOpenURL(initialDeeplink).then(() => Linking.openURL(initialDeeplink));
+      storage.delete(Constants.INITIAL_DEEPLINK_URL);
+    }
   };
 
   const onPasscodeComplete = async (newPasscode: string) => {

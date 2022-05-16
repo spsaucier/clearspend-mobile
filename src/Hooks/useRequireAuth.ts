@@ -1,12 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AppState, AppStateStatus } from 'react-native';
 import { useEffect, useState } from 'react';
-import { MMKV } from 'react-native-mmkv';
 import FullStory from '@fullstory/react-native';
+import { storage } from '@/Services/Storage/mmkv';
 import { mixpanel } from '@/Services/utils/analytics';
 import { LAST_ACTIVE_KEY } from '@/Store/keys';
 
 export const REQUIRE_AUTH_TIMEOUT_SECONDS = 300;
+
+export const tooLongSinceLastActive = () => {
+  const currentDate = new Date().valueOf();
+  const lastActive = storage.getNumber(LAST_ACTIVE_KEY);
+  const diff = currentDate - lastActive;
+  const secondsSinceLastActive = Math.floor(diff / 1000);
+  const hasBeenTooLong = secondsSinceLastActive >= REQUIRE_AUTH_TIMEOUT_SECONDS;
+  return hasBeenTooLong;
+};
 
 /**
  * When our application is put into the background for a certain amount of time (5 minutes at the
@@ -16,16 +25,6 @@ export const REQUIRE_AUTH_TIMEOUT_SECONDS = 300;
  */
 export const useRequireAuth = (onRequireAuth: (loggedInStatus?: boolean) => void) => {
   const [temporarilyDisabled, setTemporarilyDisabled] = useState(false);
-  const storage = new MMKV();
-
-  const tooLongSinceLastActive = () => {
-    const currentDate = new Date().valueOf();
-    const lastActive = storage.getNumber(LAST_ACTIVE_KEY);
-    const diff = currentDate - lastActive;
-    const secondsSinceLastActive = Math.floor(diff / 1000);
-    const hasBeenTooLong = secondsSinceLastActive >= REQUIRE_AUTH_TIMEOUT_SECONDS;
-    return hasBeenTooLong;
-  };
 
   const onInactive = async () => {
     if (temporarilyDisabled) return;

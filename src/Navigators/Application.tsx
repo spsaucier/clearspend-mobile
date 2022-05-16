@@ -14,12 +14,12 @@ import { Session } from '@/Store/Session';
 import { mixpanel } from '@/Services/utils/analytics';
 import { TopParams, TopScreens } from './NavigatorTypes';
 import AuthProvider from '@/Services/Auth/AuthProvider';
+import { linkingConfig } from '@/Services/Linking/deepLinkNavigationConfig';
 import { GlobalToast } from '@/Components/GlobalToast';
 import tw from '@/Styles/tailwind';
 import { FocusAwareStatusBar } from '@/Components';
 
 import AuthNavigator from '@/Navigators/AuthNavigator';
-import { useNotificationSubscription } from '@/Hooks/useNotificationSubscription';
 import MainNavigator from '@/Navigators/MainNavigator';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import InitStartup from '@/Store/Startup/Init';
@@ -64,7 +64,6 @@ const TopNavigator = () => {
 const ApplicationNavigator = () => {
   const routeNameRef = useRef('');
   const navigationRef = useNavigationContainerRef();
-  useNotificationSubscription();
 
   const onStateChange = async () => {
     const previousRouteName = routeNameRef.current || '';
@@ -86,6 +85,7 @@ const ApplicationNavigator = () => {
             routeNameRef.current = navigationRef?.current?.getCurrentRoute()?.name || '';
           }}
           onStateChange={onStateChange}
+          linking={linkingConfig}
           theme={{
             ...DefaultTheme,
             colors: { ...DefaultTheme.colors, background: tw.color('bg-secondary')! },

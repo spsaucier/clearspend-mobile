@@ -52,7 +52,7 @@ NSNumber* blur = 0;
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
-  
+
   // Configure firebase
   [FIRApp configure];
 
@@ -89,7 +89,7 @@ NSNumber* blur = 0;
           NSNumber* isBlur = (NSNumber*)userInfo[@"isBlur"];
           blur = isBlur;
           NSLog (@"%@", isBlur);
-      }   
+      }
   }
 
 - (void)applicationWillResignActive:(UIApplication *)application{
@@ -108,13 +108,6 @@ NSNumber* blur = 0;
     [[self.window viewWithTag:181099] removeFromSuperview];
 }
 
-- (BOOL)application:(UIApplication *)application
-   openURL:(NSURL *)url
-   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-  return [RCTLinkingManager application:application openURL:url options:options];
-}
-
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
@@ -122,6 +115,21 @@ NSNumber* blur = 0;
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
+ restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+ return [RCTLinkingManager application:application
+                  continueUserActivity:userActivity
+                    restorationHandler:restorationHandler];
 }
 
 @end

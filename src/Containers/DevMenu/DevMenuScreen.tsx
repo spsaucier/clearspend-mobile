@@ -74,6 +74,18 @@ const DevMenuScreen = () => {
             })
           }
         />
+        <Button
+          label="Pressable Toast Demo"
+          containerStyle={tw`mb-4`}
+          onPress={() =>
+            Toast.show({
+              text1: 'The action was successful',
+              props: {
+                onPress: () => Alert.alert('Toast Pressed'),
+              },
+            })
+          }
+        />
         <CSText style={tw`text-xl pb-4`}>Errors</CSText>
         <Button
           label="Trigger plain js test crash"

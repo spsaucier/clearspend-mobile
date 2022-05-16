@@ -6,4 +6,5 @@ export const Constants = {
   PRIVACY_POLICY_URL: `https://www.clearspend.com/privacy`,
 
   PERMISSION_ALL_NOTIFICATIONS: 'PERMISSION_ALL_NOTIFICATIONS',
+  INITIAL_DEEPLINK_URL: 'INITIAL_DEEPLINK_URL',
 };

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { MMKV, useMMKVString } from 'react-native-mmkv';
+import { useMMKVString } from 'react-native-mmkv';
 import FullStory from '@fullstory/react-native';
 import { mixpanel } from '@/Services/utils/analytics';
 import { useIsMounted } from './useIsMounted';
 import { useBiometrics } from './useBiometrics';
 import { AVAILABLE_BIO_KEY, IS_AUTHED, LAST_ACTIVE_KEY } from '@/Store/keys';
+import { storage } from '@/Services/Storage/mmkv';
 
 const useBiometricLogin = (
   onSuccessCallback?: () => void,
@@ -19,7 +20,6 @@ const useBiometricLogin = (
   const onBiometricLogin = useCallback(() => {
     if (!hasPrompted) {
       setHasPrompted(true);
-      const storage = new MMKV();
       setTimeout(async () => {
         const success = await verifyBio();
         const type = {
