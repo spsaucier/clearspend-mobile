@@ -33,6 +33,7 @@ import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 import ViewReceiptThumbnail from './Receipt/ViewReceiptThumbnail';
 import { getExpenseCategoryStatus } from '@/Helpers/ExpenseCategoryHelpers';
 import { useExpenseCategories } from '@/Queries/expenseCategory';
+import { getReasonText } from '@/Helpers/DeclineReasonHelpers';
 
 type InfoRowProps = {
   label: string;
@@ -101,6 +102,7 @@ const TransactionDetailScreenContent = () => {
     notes,
     expenseDetails,
     syncStatus,
+    declineDetails,
   }: AccountActivityResponse = data;
 
   // TODO: Delete once API supports it
@@ -322,6 +324,20 @@ const TransactionDetailScreenContent = () => {
               </View>
             ) : null}
           </View>
+
+          <View style={tw`self-center justify-center items-center`}>
+            {declineDetails ? (
+              <View
+                style={tw`bg-lightError flex-row mt-2 h-15 w-89 justify-between items-center rounded-sm`}
+              >
+                <ExclamationIcon bgColor={tw.color('error')} style={tw`ml-4`} />
+                <CSText style={tw`text-error text-xs pr-2 ml-2 leading-4 flex-1 flex-shrink`}>
+                  {getReasonText(declineDetails)}
+                </CSText>
+              </View>
+            ) : null}
+          </View>
+
           <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
             {t('wallet.transactionDetails.merchant.title').toUpperCase()}
           </CSText>
