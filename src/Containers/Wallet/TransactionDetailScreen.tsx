@@ -1,5 +1,5 @@
 import React, { ReactNode, useRef } from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, Linking } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation, useRoute } from '@react-navigation/core';
@@ -10,8 +10,9 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
 
 import tw from '@/Styles/tailwind';
-import { ActivityIndicator, CSBottomSheet, CSText } from '@/Components';
+import { ActivityIndicator, Button, CSBottomSheet, CSText } from '@/Components';
 import {
+  ArrowSquareOutIcon,
   CheckCircleIconFilled,
   ExclamationIcon,
   CategoryIcon,
@@ -20,7 +21,7 @@ import {
 } from '@/Components/Icons';
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
-import { useTransaction } from '@/Queries';
+import { useBusiness, useTransaction, useUser } from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from './Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
@@ -63,6 +64,8 @@ const TransactionDetailScreenContent = () => {
   const { data: expenseCategories, isLoading: isLoadingExpenseCategories } = useExpenseCategories();
   const { mutate: updateTransaction, isLoading: isUpdatingTransaction } =
     useUpdateTransaction(accountActivityId);
+  const { data: business } = useBusiness();
+  const { data: user } = useUser();
 
   const onUploadReceiptFromGalleryFinished = () => {
     Toast.show({
@@ -369,6 +372,28 @@ const TransactionDetailScreenContent = () => {
               value={formatCurrency(transactionAmount)}
             />
             <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
+          </View>
+          <View style={tw`mx-6`}>
+            {status === 'APPROVED' ? (
+              <Button
+                containerStyle={tw`bg-tan justify-between px-5 h-10 mt-7`}
+                onPress={() => {
+                  Linking.openURL(
+                    `https://share.hsforms.com/169oyZhC0RsOCNdyJSgq2Iwc7tw6?TICKET.transaction_id=${encodeURIComponent(
+                      accountActivityId!,
+                    )}&company=${encodeURIComponent(
+                      business?.legalName!,
+                    )}&email=${encodeURIComponent(user?.email!)}`,
+                  ).catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.error('Failed to open report issue form:', err);
+                  });
+                }}
+              >
+                <CSText style={tw`text-sm`}>{t('wallet.transactionDetails.reportIssue')}</CSText>
+                <ArrowSquareOutIcon color={tw.color('black')} />
+              </Button>
+            ) : null}
           </View>
           <View style={tw`h-10`} />
         </KeyboardAwareScrollView>

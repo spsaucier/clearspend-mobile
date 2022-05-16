@@ -213,6 +213,7 @@ export default {
       status: 'Transaction {{status}}',
       addReceipt: 'Add a receipt',
       expenseCategory: 'Expense category',
+      reportIssue: 'Report an issue',
       merchant: {
         title: 'Merchant',
         merchantName: 'Merchant Name',
