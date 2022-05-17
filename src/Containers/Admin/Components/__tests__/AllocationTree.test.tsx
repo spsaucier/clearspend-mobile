@@ -10,27 +10,31 @@ describe('AllocationTree', () => {
     const { getByTestId } = render(
       <View>
         <AllocationTree
-          allocations={generateAllocationTree(fiveLevelsDeepResponse as AllocationWithChildren[])}
+          allocations={generateAllocationTree(
+            fiveLevelsDeepResponse.allocations as AllocationWithChildren[],
+          )}
           onSelectAllocation={jest.fn()}
         />
       </View>,
     );
 
-    fiveLevelsDeepResponse.forEach((a) => {
+    fiveLevelsDeepResponse.allocations.forEach((a) => {
       expect(getByTestId(a.allocationId)).toBeTruthy();
     });
   });
 
   it('allocations with children are collapsible', () => {
     const { allocationId: parentId } =
-      fiveLevelsDeepResponse.find((a) => a.allocationId === '1-1-1-1') || {};
+      fiveLevelsDeepResponse.allocations.find((a) => a.allocationId === '1-1-1-1') || {};
     const { allocationId: childId } =
-      fiveLevelsDeepResponse.find((a) => a.allocationId === '1-1-1-1-1') || {};
+      fiveLevelsDeepResponse.allocations.find((a) => a.allocationId === '1-1-1-1-1') || {};
 
     const { getByTestId, queryByTestId } = render(
       <View>
         <AllocationTree
-          allocations={generateAllocationTree(fiveLevelsDeepResponse as AllocationWithChildren[])}
+          allocations={generateAllocationTree(
+            fiveLevelsDeepResponse.allocations as AllocationWithChildren[],
+          )}
           onSelectAllocation={jest.fn()}
         />
       </View>,
@@ -51,12 +55,14 @@ describe('AllocationTree', () => {
 
   it('allocations with no children (leafs) are not collapsible', () => {
     const { allocationId: leafId } =
-      fiveLevelsDeepResponse.find((a) => a.allocationId === '1-1-1-1-1') || {};
+      fiveLevelsDeepResponse.allocations.find((a) => a.allocationId === '1-1-1-1-1') || {};
 
     const { getByTestId } = render(
       <View>
         <AllocationTree
-          allocations={generateAllocationTree(fiveLevelsDeepResponse as AllocationWithChildren[])}
+          allocations={generateAllocationTree(
+            fiveLevelsDeepResponse.allocations as AllocationWithChildren[],
+          )}
           onSelectAllocation={jest.fn()}
         />
       </View>,
@@ -68,14 +74,18 @@ describe('AllocationTree', () => {
   });
 
   it('calls `onSelectAllocation` with `allocationId`', () => {
-    const allocation = fiveLevelsDeepResponse.find((a) => a.allocationId === '1-1-1-1-1');
+    const allocation = fiveLevelsDeepResponse.allocations.find(
+      (a) => a.allocationId === '1-1-1-1-1',
+    );
 
     const onSelectAllocationMock = jest.fn();
 
     const { getByTestId } = render(
       <View>
         <AllocationTree
-          allocations={generateAllocationTree(fiveLevelsDeepResponse as AllocationWithChildren[])}
+          allocations={generateAllocationTree(
+            fiveLevelsDeepResponse.allocations as AllocationWithChildren[],
+          )}
           onSelectAllocation={onSelectAllocationMock}
         />
       </View>,

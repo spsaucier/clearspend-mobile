@@ -1,5 +1,6 @@
-import { Allocation } from 'generated/capital';
+import { Allocation, AllocationsAndPermissionsResponse } from 'generated/capital';
 import { cloneDeep, isEmpty } from 'lodash';
+import { canManageCards } from '@/Helpers/PermissionsHelpers';
 
 export type AllocationWithChildren = Allocation & {
   children?: AllocationWithChildren[];
@@ -26,6 +27,19 @@ export const groupAllocation = (
   parentAllocation.isCollapsed = false;
 
   return tree;
+};
+
+export const getManageableAllocations = (
+  allocationsAndPermissions?: AllocationsAndPermissionsResponse,
+) => {
+  if (!allocationsAndPermissions) return [];
+
+  const { allocations = [], userRoles = [] } = allocationsAndPermissions;
+
+  return allocations.filter((a) => {
+    const role = userRoles.find((r) => r.allocationId === a.allocationId);
+    return (role && canManageCards(role)) || false;
+  });
 };
 
 export const getParentAllocations = (allocations: Allocation[]): Allocation[] =>
