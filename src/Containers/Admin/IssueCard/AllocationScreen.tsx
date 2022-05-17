@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
@@ -15,7 +15,9 @@ import AllocationTree from '@/Containers/Admin/Components/AllocationTree';
 const AllocationScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
-    useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Allocation>>();
+    useNavigation<
+      NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Allocation>
+    >();
   const { selectedAllocationId, setSelectedAllocationId } = useIssueCardContext();
   const { data, isLoading } = useAllPermissions();
   const allocations = useMemo(() => generateAllocationTree(data?.allocations), [data]);

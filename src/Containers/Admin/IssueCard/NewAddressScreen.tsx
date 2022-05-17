@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import tw from '@/Styles/tailwind';
@@ -18,7 +18,9 @@ import { AddressDisplay } from '@/Containers/Profile/Components/AddressDisplay';
 const NewAddressScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
-    useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.NewAddress>>();
+    useNavigation<
+      NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.NewAddress>
+    >();
   const { selectedAddress, setSelectedAddress } = useIssueCardContext();
   const { suggestions, isLoading: loading, setSearch } = useAddressSuggestions();
   const ref = useRef(null);

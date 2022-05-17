@@ -2,7 +2,7 @@ import React from 'react';
 import isEmpty from 'lodash';
 import { View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { Address } from 'generated/capital';
 import tw from '@/Styles/tailwind';
@@ -64,7 +64,7 @@ const AddressOption = ({
 const AddressScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
-    useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Address>>();
+    useNavigation<NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Address>>();
   const { selectedUser, selectedAddress, setSelectedAddress } = useIssueCardContext();
   const { data: business } = useBusiness();
 

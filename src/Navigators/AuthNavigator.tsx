@@ -1,11 +1,11 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '@/Containers/Onboarding/LoginScreen';
 import SetPasswordScreen from '@/Containers/Onboarding/SetPasswordScreen';
 import ForgotPasswordScreen from '@/Containers/Onboarding/ForgotPasswordScreen';
 import { AuthScreens, AuthStackParamTypes } from './NavigatorTypes';
 
-const Stack = createStackNavigator<AuthStackParamTypes>();
+const Stack = createNativeStackNavigator<AuthStackParamTypes>();
 
 const LoginStack = () => (
   <Stack.Navigator initialRouteName={AuthScreens.Login} screenOptions={{ headerShown: false }}>

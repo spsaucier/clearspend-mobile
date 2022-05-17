@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import PhoneInput from 'react-native-phone-number-input';
 import Toast from 'react-native-toast-message';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
 import { Button, CSText } from '@/Components';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
@@ -21,7 +21,7 @@ const EnterMobileScreen = () => {
   const [mobileNumError, setMobileNumError] = useState(false);
   const { mutate } = useUpdateUser();
   const { t } = useTranslation();
-  const { navigate, replace } = useNavigation<StackNavigationProp<ParamListBase>>();
+  const { navigate, replace } = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { isLoading, error, data: user } = useUser();
   const phoneInput = useRef<PhoneInput>(null);
 

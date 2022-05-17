@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
@@ -15,7 +15,7 @@ import { CardType } from '@/Services/Admin/IssueCardProvider';
 const EmployeeScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
-    useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Employee>>();
+    useNavigation<NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Employee>>();
   const { isLoading, data: users } = useUsers();
   const { selectedUser, setSelectedUser, selectedCardType } = useIssueCardContext();
 

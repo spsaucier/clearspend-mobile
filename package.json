@@ -43,7 +43,7 @@
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/core": "^6.1.0",
     "@react-navigation/native": "^6.0.6",
-    "@react-navigation/stack": "^6.0.7",
+    "@react-navigation/native-stack": "^6.6.2",
     "@reduxjs/toolkit": "^1.6.1",
     "@stripe/stripe-react-native": "^0.8.0",
     "@thecodingmachine/redux-toolkit-wrapper": "2.0.1",

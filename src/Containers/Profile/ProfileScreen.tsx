@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { CSText, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
@@ -22,7 +22,7 @@ import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
 
 const ProfileScreen = () => {
   const { navigate } =
-    useNavigation<StackNavigationProp<MainStackParamTypes, MainScreens.ProfileScreen>>();
+    useNavigation<NativeStackNavigationProp<MainStackParamTypes, MainScreens.ProfileScreen>>();
   const { t } = useTranslation();
   const { isLoading, error, data: user } = useUser();
   const { data: permissions } = useAllPermissions();

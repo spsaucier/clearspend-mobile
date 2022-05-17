@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { ParamListBase, useNavigation } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMMKVBoolean } from 'react-native-mmkv';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
@@ -25,7 +25,7 @@ const EnterOTPScreen = () => {
   const { t } = useTranslation();
   const { data: user } = useUser();
   const { params } = useRoute<any>();
-  const { popToTop } = useNavigation<StackNavigationProp<ParamListBase>>();
+  const { popToTop } = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const [hasError, setHasError] = useState(false);
   const { setItem: setRecoveryCode } = useSensitiveInfo(RECOVERY_CODE_KEY);
   const [, setJustSet2FA] = useMMKVBoolean(JUST_SET_2FA_KEY);

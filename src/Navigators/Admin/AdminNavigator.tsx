@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   AdminStackParamTypes,
   IssueCardStackParamTypes,
@@ -21,7 +21,7 @@ import SpendControlsScreen from '@/Containers/Admin/IssueCard/SpendControlsScree
 import CardRequestScreen from '@/Containers/Admin/IssueCard/CardRequestScreen';
 import CardConfirmationScreen from '@/Containers/Admin/IssueCard/CardConfirmationScreen';
 
-const IssueCardStack = createStackNavigator<IssueCardStackParamTypes>();
+const IssueCardStack = createNativeStackNavigator<IssueCardStackParamTypes>();
 
 export const IssueCardNavigator = () => (
   <IssueCardProvider>
@@ -48,7 +48,7 @@ export const IssueCardNavigator = () => (
   </IssueCardProvider>
 );
 
-const AdminStack = createStackNavigator<AdminStackParamTypes>();
+const AdminStack = createNativeStackNavigator<AdminStackParamTypes>();
 
 export const AdminNavigator = () => (
   <AdminStack.Navigator initialRouteName={AdminScreens.Home} screenOptions={{ headerShown: false }}>

@@ -1,7 +1,11 @@
 import React from 'react';
 import { StatusBar, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/core';
 import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
 import { ActivityIndicator } from '@/Components';
 import tw from '@/Styles/tailwind';
@@ -43,20 +47,24 @@ import useRequireBioOrPasscodeSetup from '@/Hooks/useRequireBioOrPasscodeSetup';
 import { useUser } from '@/Queries';
 import { sharedStackHeaderConfig } from '@/Helpers/NavigationHelpers';
 
-const Stack = createStackNavigator<MainStackParamTypes>();
+const Stack = createNativeStackNavigator<MainStackParamTypes>();
 
-const transparentModal: StackNavigationOptions = {
+const transparentModal: NativeStackNavigationOptions = {
   presentation: 'transparentModal',
   gestureEnabled: false,
 };
 
 const ActivateCardStack = () => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
+
   return (
     <Stack.Navigator
       initialRouteName={MainScreens.ActivateCardDigitEntry}
       screenOptions={{
-        ...sharedStackHeaderConfig('', t('general.back')),
+        ...sharedStackHeaderConfig('', t('general.back'), () => {
+          navigation.goBack();
+        }),
       }}
     >
       <Stack.Screen

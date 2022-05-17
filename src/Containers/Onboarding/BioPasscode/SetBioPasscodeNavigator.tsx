@@ -1,18 +1,18 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PasscodeSet } from '../Components/Passcode/PasscodeSet';
 import { PasscodeConfirm } from '../Components/Passcode/PasscodeConfirm';
 import { BioPasscodeParams, BioPasscodeScreens } from './BioPasscodeTypes';
 import tw from '@/Styles/tailwind';
 import SetBiometricsOrPasscodeScreen from './SetBiometricsOrPasscodeScreen';
 
-const BioPasscodeStack = createStackNavigator<BioPasscodeParams>();
+const BioPasscodeStack = createNativeStackNavigator<BioPasscodeParams>();
 
 export const SetBioPasscodeNavigator = () => (
   <BioPasscodeStack.Navigator
     screenOptions={{
       headerShown: false,
-      cardStyle: { backgroundColor: tw.color('secondary'), paddingHorizontal: 24 },
+      contentStyle: { backgroundColor: tw.color('secondary'), paddingHorizontal: 24 },
     }}
   >
     <BioPasscodeStack.Screen

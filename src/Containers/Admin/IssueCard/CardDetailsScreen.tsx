@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
@@ -12,7 +12,9 @@ import { CSText as Text, ToggleSwitch } from '@/Components';
 const CardDetailsScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
-    useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardDetails>>();
+    useNavigation<
+      NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardDetails>
+    >();
   const { selectedIsPersonal, setSelectedIsPersonal } = useIssueCardContext();
 
   return (

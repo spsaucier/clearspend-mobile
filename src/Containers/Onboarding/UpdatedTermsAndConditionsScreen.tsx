@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Trans, useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import tw from '@/Styles/tailwind';
 import { Logo } from '@/Components/Svg/Logo';
@@ -19,7 +19,7 @@ import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 const UpdatedTermsAndConditionsScreen = () => {
   const { t } = useTranslation();
   const { logout } = useAuthentication();
-  const { replace } = useNavigation<StackNavigationProp<MainStackParamTypes, MainScreens>>();
+  const { replace } = useNavigation<NativeStackNavigationProp<MainStackParamTypes, MainScreens>>();
   const { mutateAsync: acceptTermsAndConditionsMutation, isLoading } =
     useAcceptTermsAndConditions();
 

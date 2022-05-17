@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Image, ImageProps } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
@@ -56,7 +56,7 @@ const CardOption = ({
 const CardTypeScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
-    useNavigation<StackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardType>>();
+    useNavigation<NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardType>>();
   const { selectedCardType, setSelectedCardType } = useIssueCardContext();
 
   return (

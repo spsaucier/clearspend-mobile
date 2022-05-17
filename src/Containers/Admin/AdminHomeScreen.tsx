@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
 import { useAllPermissions } from '@/Queries/permissions';
@@ -20,7 +20,7 @@ import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavi
 
 const AdminHomeScreen = () => {
   const { navigate } =
-    useNavigation<StackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
+    useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
   const { t } = useTranslation();
   const { data: permissions } = useAllPermissions();
 

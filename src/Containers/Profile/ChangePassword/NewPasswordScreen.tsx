@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAvoidingView, View } from 'react-native';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
 import tw from '@/Styles/tailwind';
 import {
@@ -19,7 +19,7 @@ import { useUser } from '@/Queries';
 
 const NewPasswordScreen = () => {
   const { t } = useTranslation();
-  const { popToTop } = useNavigation<StackNavigationProp<ParamListBase>>();
+  const { popToTop } = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const [newPassword, setNewPassword] = useState('');
   const {
     params: { currentPassword },

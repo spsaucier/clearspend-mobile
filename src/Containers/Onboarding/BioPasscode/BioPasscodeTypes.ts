@@ -1,4 +1,4 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import {
   MainStackParamTypes,
@@ -20,10 +20,10 @@ export type BioPasscodeParams = {
 };
 
 export type BioPasscodeNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<BioPasscodeParams, BioPasscodeScreens>,
+  NativeStackNavigationProp<BioPasscodeParams, BioPasscodeScreens>,
   CompositeNavigationProp<
-    StackNavigationProp<MainStackParamTypes, MainScreens>,
-    StackNavigationProp<TopParams, TopScreens>
+    NativeStackNavigationProp<MainStackParamTypes, MainScreens>,
+    NativeStackNavigationProp<TopParams, TopScreens>
   >
 >;
 

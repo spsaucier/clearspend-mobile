@@ -56,7 +56,7 @@ const SetBiometricsOrPasscodeScreen = () => {
   });
 
   return (
-    <KeyboardAvoidingView style={tw`flex-1 pt-20`} behavior="padding">
+    <KeyboardAvoidingView style={tw`flex-1 pt-20  `} behavior="padding">
       <OnboardingHeader hideBackArrow title={t('loginOptions.title')} subTitle={subTitle} />
 
       {availableBio && !biometricsEnabled ? (

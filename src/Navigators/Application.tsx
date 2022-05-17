@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DefaultTheme,
@@ -25,7 +25,7 @@ import { useAuthentication } from '@/Hooks/useAuthentication';
 import InitStartup from '@/Store/Startup/Init';
 import { FeatureFlagsProvider } from '@/Services/FeatureFlags/FeatureFlagsProvider';
 
-const Stack = createStackNavigator<TopParams>();
+const Stack = createNativeStackNavigator<TopParams>();
 
 const queryClient = new QueryClient();
 
@@ -50,13 +50,7 @@ const TopNavigator = () => {
           options={{ animationTypeForReplace: 'push' }}
         />
       ) : (
-        <Stack.Screen
-          name={TopScreens.Auth}
-          component={AuthNavigator}
-          options={{
-            animationEnabled: false,
-          }}
-        />
+        <Stack.Screen name={TopScreens.Auth} component={AuthNavigator} />
       )}
     </Stack.Navigator>
   );
