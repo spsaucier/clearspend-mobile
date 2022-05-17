@@ -50,7 +50,6 @@ describe('validateIssueCardRequest', () => {
         locality: 'ATLANTA',
         region: 'GA',
         postalCode: '30318',
-        country: 'USA',
       },
       selectedAllocationId: 'allocation-123',
       selectedSpendControls: undefined,

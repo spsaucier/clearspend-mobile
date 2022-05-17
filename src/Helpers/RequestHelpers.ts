@@ -22,7 +22,7 @@ export const validateIssueCardRequest = ({
     currency: 'USD',
     cardType: [cardType],
     isPersonal: !!isPersonal,
-    ...(shippingAddress ? { shippingAddress } : {}),
+    ...(shippingAddress ? { shippingAddress: { ...shippingAddress, country: 'USA' } } : {}),
     limits: spendControls?.limits || [
       {
         currency: 'USD',
