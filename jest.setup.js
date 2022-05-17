@@ -67,6 +67,14 @@ jest.mock('mixpanel-react-native', () => ({
   })),
 }));
 
+jest.mock('launchdarkly-react-native-client-sdk', () => ({
+  __esModule: true,
+  default: () => jest.fn(),
+  Mixpanel: jest.fn(() => ({
+    init: jest.fn(),
+  })),
+}));
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
     return {

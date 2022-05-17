@@ -35,6 +35,10 @@ Each of the different variants has yarn command for each platform:
 **Important:** The yarn commands set up the correct environment file for each build. Running a build in XCode/Android studio or with `react-native-cli` directly will use variables from the `.env` file. 
 This is how the variables are provided during App Center builds.
 
+## Feature Flags
+
+See [Feature Flags Document](./docs/feature_flags.md)
+
 ## Build Process
 
 See [Build Process Document](./docs/build_process.md)

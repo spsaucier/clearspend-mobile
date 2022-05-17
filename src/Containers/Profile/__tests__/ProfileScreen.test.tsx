@@ -4,6 +4,7 @@ import { setupServer } from 'msw/node';
 import { waitFor } from '@testing-library/react-native';
 import { createQueryClient } from '@/Helpers/testing/reactQuery';
 import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
+import { MockFeatureFlagsProvider } from '@/Helpers/testing/MockFeatureFlagsProvider';
 import {
   employeeAllocationsAndPermissionsResponse,
   managerAllocationsAndPermissionsResponse,
@@ -21,10 +22,6 @@ jest.mock('@/Hooks/useAuthentication', () => ({
   useAuthentication: jest.fn(() => ({
     logout: jest.fn(),
   })),
-}));
-
-jest.mock('react-native-config', () => ({
-  SHOW_ADMIN: 'true',
 }));
 
 export const handlers = [rest.get('/users', (req, res, ctx) => res(ctx.json({})))];
@@ -53,7 +50,9 @@ describe('ProfileScreen', () => {
 
     const { queryByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <ProfileScreen />,
+      <MockFeatureFlagsProvider overrides={{ 'view-admin': { enabled: true } }}>
+        <ProfileScreen />
+      </MockFeatureFlagsProvider>,
     );
 
     await waitFor(() => {
@@ -69,7 +68,9 @@ describe('ProfileScreen', () => {
 
     const { queryByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <ProfileScreen />,
+      <MockFeatureFlagsProvider overrides={{ 'view-admin': { enabled: true } }}>
+        <ProfileScreen />
+      </MockFeatureFlagsProvider>,
     );
 
     await waitFor(() => {
@@ -85,7 +86,9 @@ describe('ProfileScreen', () => {
 
     const { queryByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <ProfileScreen />,
+      <MockFeatureFlagsProvider overrides={{ 'view-admin': { enabled: true } }}>
+        <ProfileScreen />
+      </MockFeatureFlagsProvider>,
     );
 
     await waitFor(() => {

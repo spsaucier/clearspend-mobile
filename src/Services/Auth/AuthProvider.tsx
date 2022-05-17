@@ -10,6 +10,7 @@ import { usePasscode } from '@/Hooks/usePasscode';
 import { mixpanel } from '../utils/analytics';
 import { IS_AUTHED, JUST_SET_2FA_KEY, LAST_ACTIVE_KEY } from '@/Store/keys';
 import { useRequireAuth } from '@/Hooks/useRequireAuth';
+import { useFeatureFlagsContext } from '@/Hooks/useFeatureFlagsContext';
 import { storage } from '@/Services/Storage/mmkv';
 
 /*
@@ -41,6 +42,7 @@ export const AuthContext = createContext<AuthContextInterface | undefined>(undef
 
 const AuthProvider: FC = ({ children }) => {
   const queryClient = useQueryClient();
+  const { updateFeatureFlagState } = useFeatureFlagsContext();
 
   const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true);
   const [isNewUser, setNewUserFlag] = useState(false);
@@ -58,6 +60,7 @@ const AuthProvider: FC = ({ children }) => {
   const onRequireAuth = (authedStatus = false) => {
     if (!authedStatus) {
       setAuthed(false);
+      updateFeatureFlagState();
     } else {
       storage.set(LAST_ACTIVE_KEY, new Date().valueOf());
       storage.set(IS_AUTHED, true);
@@ -81,7 +84,8 @@ const AuthProvider: FC = ({ children }) => {
     await bioProps.disableBiometrics();
     await passcodeProps.disablePasscode();
     await CookieManager.clearAll();
-    queryClient.removeQueries();
+    await queryClient.resetQueries();
+    queryClient.setQueryData('user', undefined);
     persistor.purge();
     store.dispatch(killSession());
     setIsLoggingOut(false);

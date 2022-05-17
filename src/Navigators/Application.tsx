@@ -23,6 +23,7 @@ import AuthNavigator from '@/Navigators/AuthNavigator';
 import MainNavigator from '@/Navigators/MainNavigator';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import InitStartup from '@/Store/Startup/Init';
+import { FeatureFlagsProvider } from '@/Services/FeatureFlags/FeatureFlagsProvider';
 
 const Stack = createStackNavigator<TopParams>();
 
@@ -78,30 +79,32 @@ const ApplicationNavigator = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <NavigationContainer
-          ref={navigationRef}
-          onReady={() => {
-            routeNameRef.current = navigationRef?.current?.getCurrentRoute()?.name || '';
-          }}
-          onStateChange={onStateChange}
-          linking={linkingConfig}
-          theme={{
-            ...DefaultTheme,
-            colors: { ...DefaultTheme.colors, background: tw.color('bg-secondary')! },
-          }}
-        >
-          <AuthProvider>
-            <FocusAwareStatusBar
-              barStyle="light-content"
-              backgroundColor="transparent"
-              translucent
-            />
-            <TopNavigator />
-          </AuthProvider>
-        </NavigationContainer>
-        <GlobalToast />
-      </SafeAreaProvider>
+      <FeatureFlagsProvider>
+        <SafeAreaProvider>
+          <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+              routeNameRef.current = navigationRef?.current?.getCurrentRoute()?.name || '';
+            }}
+            onStateChange={onStateChange}
+            linking={linkingConfig}
+            theme={{
+              ...DefaultTheme,
+              colors: { ...DefaultTheme.colors, background: tw.color('bg-secondary')! },
+            }}
+          >
+            <AuthProvider>
+              <FocusAwareStatusBar
+                barStyle="light-content"
+                backgroundColor="transparent"
+                translucent
+              />
+              <TopNavigator />
+            </AuthProvider>
+          </NavigationContainer>
+          <GlobalToast />
+        </SafeAreaProvider>
+      </FeatureFlagsProvider>
     </QueryClientProvider>
   );
 };

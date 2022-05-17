@@ -3,6 +3,7 @@ import { Alert, ScrollView } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Crashes from 'appcenter-crashes';
+import Config from 'react-native-config';
 
 import { useNavigation } from '@react-navigation/core';
 import Toast from 'react-native-toast-message';
@@ -12,9 +13,11 @@ import tw from '@/Styles/tailwind';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { requestUserNotificationPermission } from '@/Helpers/NotificationHelpers';
+import { useFeatureFlagsContext } from '@/Hooks/useFeatureFlagsContext';
 
 const DevMenuScreen = () => {
   const { navigate } = useNavigation();
+  const { allFlags } = useFeatureFlagsContext();
   const version = getVersion();
   const buildNumber = getBuildNumber();
 
@@ -42,8 +45,16 @@ const DevMenuScreen = () => {
         <CSText style={tw`text-xl pb-4`}>App Info</CSText>
         <CSText style={tw`text-base pb-2`}>Version: {version}</CSText>
         <CSText style={tw`text-base pb-2`}>Build number: {buildNumber}</CSText>
-        <CSText style={tw`text-base pb-2`}>FCM Token (long press to copy):</CSText>
-        <CSText style={tw`text-base pb-4`} selectable>
+        <CSText style={tw`text-base pb-2`}>Environment variables: </CSText>
+        <CSText style={tw`text-base pb-2 bg-gray-20`} selectable>
+          {JSON.stringify(Config, Object.keys(Config).sort(), 2)}
+        </CSText>
+        <CSText style={tw`text-base py-2`}>Feature Flags: </CSText>
+        <CSText style={tw`text-base pb-4 bg-gray-20`} selectable>
+          {JSON.stringify(allFlags, null, 2)}
+        </CSText>
+        <CSText style={tw`text-base py-2`}>FCM Token (long press to copy):</CSText>
+        <CSText style={tw`text-base pb-4 bg-gray-20`} selectable>
           {fcmToken}
         </CSText>
 

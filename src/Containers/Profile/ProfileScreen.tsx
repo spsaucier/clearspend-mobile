@@ -18,6 +18,7 @@ import { getCappedFontScale } from '@/Helpers/StyleHelpers';
 import { useAllPermissions } from '@/Queries/permissions';
 import { showAdmin } from '@/Helpers/PermissionsHelpers';
 import { MainStackParamTypes, MainScreens } from '@/Navigators/NavigatorTypes';
+import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
 
 const ProfileScreen = () => {
   const { navigate } =
@@ -29,7 +30,13 @@ const ProfileScreen = () => {
   const version = getVersion();
   const buildNumber = getBuildNumber();
 
-  const showAdminRow = showAdmin(permissions);
+  const { enabled: devMenuEnabled } = useFeatureFlag('view-dev-menu');
+  const { enabled: notificationsEnabled } = useFeatureFlag('notifications');
+  const { enabled: adminEnabled } = useFeatureFlag('view-admin');
+  const hasAdminPermissions = showAdmin(permissions);
+
+  const showAdminRow = hasAdminPermissions && adminEnabled;
+  const showDevMenuRow = devMenuEnabled || __DEV__;
 
   return (
     <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top', 'bottom']}>
@@ -96,7 +103,7 @@ const ProfileScreen = () => {
               style={tw`h-14 px-4`}
               showBottomBorder
             />
-            {__DEV__ ? (
+            {notificationsEnabled ? (
               <ProfileMenuRow
                 title={t('profile.profileMenu.notifications')}
                 onPress={() => {
@@ -112,9 +119,9 @@ const ProfileScreen = () => {
                 navigate(MainScreens.LegalDocuments);
               }}
               style={tw`h-14 px-4`}
-              showBottomBorder={showAdminRow}
+              showBottomBorder={showAdminRow || showDevMenuRow}
             />
-            {showAdminRow && (
+            {showAdminRow ? (
               <ProfileMenuRow
                 testID="profile-menu-admin-row"
                 title={t('profile.profileMenu.admin')}
@@ -122,8 +129,19 @@ const ProfileScreen = () => {
                   navigate(MainScreens.Admin);
                 }}
                 style={tw`h-14 px-4`}
+                showBottomBorder={showDevMenuRow}
               />
-            )}
+            ) : null}
+            {showDevMenuRow ? (
+              <ProfileMenuRow
+                testID="profile-menu-dev-row"
+                title="Dev Menu"
+                onPress={() => {
+                  navigate(MainScreens.DevMenu);
+                }}
+                style={tw`h-14 px-4`}
+              />
+            ) : null}
           </View>
         </View>
       </ScrollView>

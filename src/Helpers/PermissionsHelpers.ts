@@ -1,4 +1,3 @@
-import Config from 'react-native-config';
 import {
   UserRolesAndPermissionsRecord,
   AllocationsAndPermissionsResponse,
@@ -47,8 +46,6 @@ export function canRead(permissions: Permissions): boolean {
 export function showAdmin(
   allocationPermissions: AllocationsAndPermissionsResponse | undefined,
 ): boolean {
-  if (Config.SHOW_ADMIN !== 'true') return false;
-
   return Boolean(
     allocationPermissions?.userRoles?.some(
       (role) =>

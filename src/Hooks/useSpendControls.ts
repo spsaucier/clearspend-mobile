@@ -1,14 +1,11 @@
-import Config from 'react-native-config';
 import { canManagePermissions, getAllocationPermissions } from '@/Helpers/PermissionsHelpers';
 import { useAllPermissions } from '@/Queries/permissions';
+import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
 
 export const useSpendControls = (cardAllocationId: string | undefined) => {
+  const { enabled: adminEnabled } = useFeatureFlag('view-admin');
   const { data: permissions } = useAllPermissions();
   const allocationPermissions = getAllocationPermissions(permissions?.userRoles, cardAllocationId);
 
-  return (
-    Config.SHOW_ADMIN === 'true' &&
-    allocationPermissions &&
-    canManagePermissions(allocationPermissions)
-  );
+  return adminEnabled && allocationPermissions && canManagePermissions(allocationPermissions);
 };

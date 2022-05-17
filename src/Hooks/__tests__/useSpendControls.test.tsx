@@ -7,10 +7,7 @@ import { createQueryClient } from '@/Helpers/testing/reactQuery';
 import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
 import { useSpendControls } from '@/Hooks/useSpendControls';
 import { managerAllocationsAndPermissionsResponse } from '@/Helpers/testing/fixtures/permissions';
-
-jest.mock('react-native-config', () => ({
-  SHOW_ADMIN: 'true',
-}));
+import { MockFeatureFlagsProvider } from '@/Helpers/testing/MockFeatureFlagsProvider';
 
 const server = setupServer();
 
@@ -44,13 +41,16 @@ describe('useSpendControls', () => {
 
     const { queryByText } = renderComponentWithQueryClient(
       createQueryClient(),
-      <TestComponent allocationId={allocationId} />,
+      <MockFeatureFlagsProvider overrides={{ 'view-admin': { enabled: true } }}>
+        <TestComponent allocationId={allocationId} />
+      </MockFeatureFlagsProvider>,
     );
 
     await waitFor(() => {
       expect(queryByText('Spend Controls')).toBeTruthy();
     });
   });
+
   it('does not show "Spend Controls" option when user has no permission', async () => {
     const { allocationId } = managerAllocationsAndPermissionsResponse.userRoles[0];
 
@@ -62,7 +62,9 @@ describe('useSpendControls', () => {
 
     const { queryByText } = renderComponentWithQueryClient(
       createQueryClient(),
-      <TestComponent allocationId={allocationId} />,
+      <MockFeatureFlagsProvider overrides={{ 'view-admin': { enabled: true } }}>
+        <TestComponent allocationId={allocationId} />
+      </MockFeatureFlagsProvider>,
     );
 
     await waitFor(() => {
