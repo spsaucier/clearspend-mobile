@@ -29,9 +29,4 @@ export class SharedLDClient {
     const client = await this.getClientInstance();
     await client.identify(ldUser);
   };
-
-  static close = async () => {
-    const client = await this.getClientInstance();
-    await client.close();
-  };
 }

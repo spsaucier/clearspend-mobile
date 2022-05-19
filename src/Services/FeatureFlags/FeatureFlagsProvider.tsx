@@ -1,5 +1,4 @@
 import React, { createContext, FC, useCallback, useEffect, useState } from 'react';
-import { AppState } from 'react-native';
 import { LDFlagSet } from 'launchdarkly-react-native-client-sdk';
 import { SharedLDClient } from '@/Services/FeatureFlags/SharedLDClient';
 import { FeatureFlagTypes } from '@/Services/FeatureFlags/flags';
@@ -18,15 +17,6 @@ export const FeatureFlagsProvider: FC = ({ children }) => {
   const [flagsLoading, setFlagsLoading] = useState(false);
   const [allFlags, setFlags] = useState<LDFlagSet | undefined>();
   const { data: user, isLoading } = useUser();
-
-  useEffect(() => {
-    const subscribe = AppState.addEventListener('change', (nextAppState) => {
-      if (nextAppState === 'inactive') {
-        SharedLDClient.close();
-      }
-    });
-    return () => subscribe.remove();
-  }, []);
 
   const updateFeatureFlagState = useCallback(async () => {
     setFlagsLoading(true);
