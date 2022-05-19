@@ -43,14 +43,14 @@ type InfoRowProps = {
 };
 
 const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
-  <View style={tw`flex-row justify-between items-center mt-2`}>
-    <CSText style={tw`text-sm text-gray-50 leading-relaxed`}>{label}</CSText>
-    {value ? <CSText style={tw`text-sm leading-relaxed`}>{value}</CSText> : null}
+  <View style={tw`flex-row justify-between items-center py-1.5`}>
+    <CSText style={tw`text-sm leading-tight`}>{label}</CSText>
+    {value ? <CSText style={tw`text-sm leading-tight`}>{value}</CSText> : null}
     {!!children && children}
   </View>
 );
 
-const TransactionDetailScreenContent = () => {
+export const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const route = useRoute<any>();
@@ -165,7 +165,7 @@ const TransactionDetailScreenContent = () => {
   };
 
   return (
-    <View style={tw`h-full`}>
+    <View testID="transaction-detail-screen" style={tw`h-full`}>
       {/* Status Banner */}
       {!!status && (
         <View
@@ -177,11 +177,23 @@ const TransactionDetailScreenContent = () => {
           )}
         >
           {statusApproved ? (
-            <CheckCircleIconFilled color={tw.color('primary')} bgColor={tw.color('black')} />
+            <CheckCircleIconFilled
+              testID="transaction-status-approved"
+              color={tw.color('primary')}
+              bgColor={tw.color('black')}
+            />
           ) : statusDeclined ? (
-            <ExclamationIcon color={tw.color('error')} bgColor={tw.color('white')} />
+            <ExclamationIcon
+              testID="transaction-status-declined"
+              color={tw.color('error')}
+              bgColor={tw.color('white')}
+            />
           ) : statusPending ? (
-            <ExclamationIcon color={tw.color('pending')} bgColor={tw.color('black')} />
+            <ExclamationIcon
+              testID="transaction-status-pending"
+              color={tw.color('pending')}
+              bgColor={tw.color('black')}
+            />
           ) : null}
           <CSText style={tw.style('ml-2 text-base text-black', statusDeclined && 'text-white')}>
             {t('wallet.transactionDetails.status', { status: statusFormatted })}
@@ -220,7 +232,7 @@ const TransactionDetailScreenContent = () => {
           )}
 
           {/* Merchant logo */}
-          <View style={[tw`flex-row justify-center -top-7`]}>
+          <View style={[tw`flex-row justify-center -top-3`]}>
             <View style={[tw`bg-white justify-center items-center h-18 w-18 rounded-full`]}>
               <View
                 style={[
@@ -248,15 +260,20 @@ const TransactionDetailScreenContent = () => {
           </View>
 
           <View style={tw`items-center`}>
-            <CSText style={tw`text-black text-3xl`}>{formatCurrency(transactionAmount)}</CSText>
-            <CSText style={tw`text-black text-lg my-2`}>
+            <CSText
+              testID="transaction-amount"
+              style={tw`text-black text-4xl font-light leading-loose`}
+            >
+              {formatCurrency(transactionAmount)}
+            </CSText>
+            <CSText style={tw`text-black text-lg text-sm`}>
               {merchant?.name}
               {merchant?.type && ` • ${merchantCategoryName}`}
             </CSText>
-            <CSText style={tw`text-black text-xs`}>{transactionDateTime}</CSText>
+            <CSText style={tw`text-gray-75 text-xs leading-loose`}>{transactionDateTime}</CSText>
           </View>
 
-          <View style={tw`pt-6`}>
+          <View style={tw`mt-2`}>
             <TransactionNote
               notes={notes}
               accountActivityId={accountActivityId!}
@@ -266,6 +283,7 @@ const TransactionDetailScreenContent = () => {
 
           <View style={tw`flex-row px-2 pt-6`}>
             <TouchableOpacity
+              testID="transaction-add-category"
               style={tw.style('flex-1 rounded bg-tan justify-center m-2', {
                 aspectRatio: 2,
               })}
@@ -279,16 +297,19 @@ const TransactionDetailScreenContent = () => {
                     {expenseDetails && !expenseDetails?.expenseCategoryId && (
                       <QuestionMarkCircleFilledIcon style={tw`h-10`} />
                     )}
-                    <CSText style={tw`text-center pt-1`} allowFontScaling={false}>
+                    <CSText style={tw`text-center pt-1 text-sm`} allowFontScaling={false}>
                       {expenseDetails.categoryName}
                     </CSText>
                   </>
                 ) : (
-                  <View style={tw`flex-1 justify-center items-center`}>
+                  <View
+                    testID="transaction-no-category"
+                    style={tw`flex-1 justify-center items-center`}
+                  >
                     <View style={tw`flex-row mb-4`}>
                       <CategoryIcon />
                     </View>
-                    <CSText allowFontScaling={false}>
+                    <CSText style={tw`text-sm`} allowFontScaling={false}>
                       {t('wallet.transactionDetails.expenseCategory')}
                     </CSText>
                   </View>
@@ -302,13 +323,18 @@ const TransactionDetailScreenContent = () => {
               onPress={onReceiptModalPress}
             >
               {thereAreReceipts ? (
-                <ViewReceiptThumbnail receiptIds={receipt!.receiptId!} />
+                <View testID="transaction-receipt">
+                  <ViewReceiptThumbnail receiptIds={receipt!.receiptId!} />
+                </View>
               ) : (
-                <View style={tw`flex-1 justify-center items-center`}>
+                <View
+                  testID="transaction-no-receipt"
+                  style={tw`flex-1 justify-center items-center`}
+                >
                   <View style={tw`flex-row mb-4`}>
                     <ReceiptIcon />
                   </View>
-                  <CSText allowFontScaling={false}>
+                  <CSText style={tw`text-sm`} allowFontScaling={false}>
                     {t('wallet.transactionDetails.addReceipt')}
                   </CSText>
                 </View>
@@ -327,7 +353,6 @@ const TransactionDetailScreenContent = () => {
               </View>
             ) : null}
           </View>
-
           <View style={tw`self-center justify-center items-center`}>
             {declineDetails ? (
               <View
@@ -340,11 +365,10 @@ const TransactionDetailScreenContent = () => {
               </View>
             ) : null}
           </View>
-
-          <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
+          <CSText style={tw`text-xs text-gray-75 bg-tan px-5 py-2 uppercase tracking-widest my-3`}>
             {t('wallet.transactionDetails.merchant.title').toUpperCase()}
           </CSText>
-          <View style={tw`px-6`}>
+          <View style={tw`px-5`}>
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantName')}
               value={merchant?.name}
@@ -359,10 +383,10 @@ const TransactionDetailScreenContent = () => {
             />
           </View>
 
-          <CSText style={tw`text-xs text-black mt-6 bg-tan py-2 pl-6`}>
+          <CSText style={tw`text-xs text-gray-75 bg-tan px-5 py-2 uppercase tracking-widest my-3`}>
             {t('wallet.transactionDetails.details.title').toUpperCase()}
           </CSText>
-          <View style={tw`px-6`}>
+          <View style={tw`px-5`}>
             <InfoRow
               label={t('wallet.transactionDetails.details.dateTime')}
               value={transactionDateTime}

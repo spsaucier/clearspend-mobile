@@ -25,3 +25,32 @@ export const businessResponse = {
   url: 'https://www.clearspend.com/',
   codatCreditCardId: null,
 };
+
+export const transactionTestBusiness = {
+  businessId: '58022877-a122-47b8-8f78-7bdfbbba0e4d',
+  legalName: 'Dovetail',
+  businessType: 'SOLE_PROPRIETORSHIP',
+  employerIdentificationNumber: '681151863',
+  businessPhone: '+15138151585',
+  address: {
+    streetLine1: '1640 Gilstrap Ln NW',
+    streetLine2: null,
+    locality: 'ATLANTA',
+    region: 'GA',
+    postalCode: '30349',
+    country: 'USA',
+  },
+  onboardingStep: 'COMPLETE',
+  knowYourBusinessStatus: 'PENDING',
+  status: 'ACTIVE',
+  accountingSetupStep: 'ADD_CREDIT_CARD',
+  autoCreateExpenseCategories: false,
+  mcc: '5045',
+  foreignTransactionFee: 3.0,
+  businessName: 'Dovetail',
+  accountNumber: '1210020605796066',
+  routingNumber: '000000001',
+  description: 'Consulting from New Zealand & Australia',
+  url: 'https://www.clearspend.com/',
+  codatCreditCardId: null,
+};

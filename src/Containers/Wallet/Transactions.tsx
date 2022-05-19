@@ -228,8 +228,8 @@ const TransactionsContent = ({
                 const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
                 return (
                   <View style={tw.style(`pb-2`, index === 0 ? 'mt-2' : '')}>
-                    <View style={tw`flex-row justify-between bg-tan px-6 py-2 mb-2`}>
-                      <CSText style={tw`text-sm text-gray-75 uppercase tracking-widest`}>
+                    <View style={tw`flex-row justify-between bg-tan px-5 py-2 mb-2`}>
+                      <CSText style={tw`text-xs text-gray-75 uppercase tracking-widest`}>
                         {format(dateParsed, 'MMM dd, yyyy')}
                       </CSText>
                     </View>

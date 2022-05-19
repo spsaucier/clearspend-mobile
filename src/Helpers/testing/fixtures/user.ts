@@ -114,3 +114,23 @@ export const usersResponse = [
     relationshipToBusiness: null,
   },
 ];
+
+export const transactionTestUser = {
+  userId: '15e47302-818d-4222-bb41-40ede1723b89',
+  businessId: '58022877-a122-47b8-8f78-7bdfbbba0e4d',
+  type: 'EMPLOYEE',
+  firstName: 'Rodrigo',
+  lastName: 'Mathias',
+  address: {
+    streetLine1: 'Rua 1',
+    streetLine2: '',
+    locality: 'New Wellington',
+    region: 'NY',
+    postalCode: '',
+    country: 'USA',
+  },
+  email: 'rodrigo.mathias+1@dovetailstudios.com',
+  phone: '+11111111111',
+  archived: false,
+  relationshipToBusiness: null,
+};

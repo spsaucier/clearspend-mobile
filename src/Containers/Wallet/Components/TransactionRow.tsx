@@ -63,7 +63,7 @@ export const TransactionRow = ({
   const hasExpenseCategory = !!expenseDetails;
 
   return (
-    <TouchableOpacity style={tw`px-6 py-2`} key={transactionId} onPress={handleItemOnPress}>
+    <TouchableOpacity style={tw`px-5 py-2`} key={transactionId} onPress={handleItemOnPress}>
       <View style={tw`flex-row items-center`}>
         <View
           style={[

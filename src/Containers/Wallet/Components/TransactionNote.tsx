@@ -38,7 +38,7 @@ export const TransactionNote = ({ notes = '', accountActivityId, expenseCategory
           style={tw`flex-row justify-center items-center py-2 px-3 rounded-full bg-tan`}
         >
           <PlusCircleFilledIcon />
-          <CSText style={tw`ml-2 text-secondary`}>
+          <CSText style={tw`ml-2 text-secondary text-sm`}>
             {t('wallet.transactionDetails.notes.addANote')}
           </CSText>
         </TouchableOpacity>
