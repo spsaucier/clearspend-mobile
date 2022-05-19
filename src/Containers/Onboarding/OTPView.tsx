@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import {
   CodeField,
   useBlurOnFulfill,
@@ -13,24 +13,46 @@ import { defaultCellInputStyles } from '@/Helpers/StyleHelpers';
 interface Props {
   preface?: JSX.Element;
   title?: JSX.Element;
+  testID?: string;
+  theme?: 'dark' | 'light';
   messaging?: string;
   onPasscodeChanged?: (newCode: string) => void;
   onSuccessFinished: (passcode: string) => void;
   error?: boolean;
   errorTitle?: string;
+  errorTextStyle?: StyleProp<TextStyle>;
 }
 
 export const PASSCODE_LENGTH = 6;
 
-const styles = StyleSheet.create(defaultCellInputStyles());
+const defaultStyles = defaultCellInputStyles();
+
+const darkStyles = StyleSheet.create(defaultStyles);
+const lightStyles = StyleSheet.create({
+  ...defaultStyles,
+  title: { textAlign: 'center', fontSize: 30 },
+  cellRoot: {
+    ...defaultStyles.cellRoot,
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    overflow: 'hidden',
+  },
+  cellText: {
+    ...defaultStyles.cellText,
+    color: tw.color('black'),
+  },
+});
 
 export const OTPView: React.FC<Props> = ({
   title,
+  testID,
+  theme = 'dark',
   errorTitle,
   error = false,
+  errorTextStyle,
   onPasscodeChanged,
   onSuccessFinished,
 }: Props) => {
+  const styles = theme === 'dark' ? darkStyles : lightStyles;
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: PASSCODE_LENGTH });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -80,6 +102,7 @@ export const OTPView: React.FC<Props> = ({
         <CodeField
           {...props}
           ref={ref}
+          testID={testID}
           autoFocus
           value={value}
           onChangeText={handlePasscodeChange}
@@ -91,7 +114,7 @@ export const OTPView: React.FC<Props> = ({
         />
       </View>
       <View style={tw.style('items-center')}>
-        {error ? <CSText style={tw`text-white mt-3`}>{errorTitle}</CSText> : null}
+        {error ? <CSText style={[tw`text-white mt-3`, errorTextStyle]}>{errorTitle}</CSText> : null}
       </View>
     </View>
   );

@@ -55,7 +55,7 @@ export default {
     error: 'Invalid phone number',
   },
   otp: {
-    title: 'Enter the 6 digit code we sent to your mobile device',
+    title: 'Enter the 6 digit code we sent to your device',
     titlePart1: 'Enter the',
     titlePart2: ' 6 digit code',
     titlePart3: ' we sent to your mobile device',

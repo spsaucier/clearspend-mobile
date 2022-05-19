@@ -8,7 +8,6 @@ export { CloseIconButton } from './CloseButton';
 export { CSBottomSheet } from './CSBottomSheet';
 export { ToggleSwitch } from './ToggleSwitch';
 export { CSText } from './Text';
-export { CSTextField } from './TextField';
 export { CSTextInput } from './TextInput';
 export { FocusAwareStatusBar } from './FocusAwareStatusbar';
 export { InfoPanel } from './InfoPanel';
