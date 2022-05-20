@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { waitFor } from '@testing-library/react-native';
+import { waitFor, cleanup } from '@testing-library/react-native';
 import { createQueryClient } from '@/Helpers/testing/reactQuery';
 import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
 import {
@@ -18,6 +18,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  cleanup();
   server.resetHandlers();
 });
 

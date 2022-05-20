@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, within } from '@testing-library/react-native';
+import { fireEvent, within, cleanup } from '@testing-library/react-native';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import EmployeeScreen from '../EmployeeScreen';
@@ -26,6 +26,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  cleanup();
   server.resetHandlers();
 });
 

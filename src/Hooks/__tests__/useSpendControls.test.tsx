@@ -2,7 +2,7 @@ import * as React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { Text } from 'react-native';
-import { waitFor } from '@testing-library/react-native';
+import { waitFor, cleanup } from '@testing-library/react-native';
 import { createQueryClient } from '@/Helpers/testing/reactQuery';
 import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
 import { useSpendControls } from '@/Hooks/useSpendControls';
@@ -16,6 +16,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  cleanup();
   server.resetHandlers();
 });
 

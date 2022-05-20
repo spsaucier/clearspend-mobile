@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, within, waitFor } from '@testing-library/react-native';
+import { fireEvent, within, waitFor, cleanup } from '@testing-library/react-native';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import AllocationScreen from '../AllocationScreen';
@@ -32,6 +32,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  cleanup();
   server.resetHandlers();
 });
 
