@@ -6,7 +6,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
 import { IssueCardStackParamTypes, IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 import { useIssueCardContext } from '@/Hooks/useIssueCardContext';
 import { CSText as Text } from '@/Components';
 import { CardType } from '@/Services/Admin/IssueCardProvider';
@@ -18,7 +18,10 @@ const CardConfirmationScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
     useNavigation<
-      NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardConfirmation>
+      NativeStackNavigationProp<
+        IssueCardStackParamTypes & MainStackParamTypes,
+        IssueCardScreens.CardConfirmation
+      >
     >();
   const {
     selectedUser: user,

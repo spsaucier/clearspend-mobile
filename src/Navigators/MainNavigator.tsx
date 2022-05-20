@@ -108,7 +108,11 @@ const WalletStack = () => (
       component={TransactionDetailScreen}
       options={transparentModal}
     />
-    <Stack.Screen name={MainScreens.NoteInput} component={NoteInputScreen} />
+    <Stack.Screen
+      name={MainScreens.NoteInput}
+      component={NoteInputScreen}
+      options={transparentModal}
+    />
     <Stack.Screen name={MainScreens.Profile} component={ProfileStack} />
 
     <Stack.Screen

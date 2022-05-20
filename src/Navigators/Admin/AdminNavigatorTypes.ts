@@ -31,5 +31,5 @@ export enum AdminScreens {
 
 export type AdminStackParamTypes = {
   [AdminScreens.Home]: undefined;
-  [AdminScreens.IssueCard]: NavigatorScreenParams<IssueCardStackParamTypes>;
+  [AdminScreens.IssueCard]?: NavigatorScreenParams<IssueCardStackParamTypes>;
 };
