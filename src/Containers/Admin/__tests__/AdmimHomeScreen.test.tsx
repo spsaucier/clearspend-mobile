@@ -8,10 +8,10 @@ import {
   managerAllocationsAndPermissionsResponse,
   adminAllocationsAndPermissionsResponse,
 } from '@/Helpers/testing/fixtures/permissions';
+import AdminHomeScreen from '../AdminHomeScreen';
+import { usersResponse } from '@/Helpers/testing/fixtures/user';
 
-import AdminScreen from '../AdminScreen';
-
-const server = setupServer();
+const server = setupServer(rest.get(`/users`, (req, res, ctx) => res(ctx.json(usersResponse[0]))));
 
 beforeAll(() => {
   server.listen();
@@ -26,7 +26,7 @@ afterAll(() => {
   server.close();
 });
 
-describe('AdminScreen', () => {
+describe('AdminHomeScreen', () => {
   it('shows selected admin options based on `Manger` permissions', async () => {
     server.use(
       rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
@@ -34,14 +34,17 @@ describe('AdminScreen', () => {
       ),
     );
 
-    const { queryByTestId } = renderComponentWithQueryClient(createQueryClient(), <AdminScreen />);
+    const { queryByTestId } = renderComponentWithQueryClient(
+      createQueryClient(),
+      <AdminHomeScreen />,
+    );
 
     await waitFor(() => {
-      expect(queryByTestId('profile-menu-manage-users-row')).toBeFalsy();
-      expect(queryByTestId('profile-menu-manage-cards-row')).toBeTruthy();
-      expect(queryByTestId('profile-menu-manage-permissions-row')).toBeTruthy();
+      expect(queryByTestId('admin-actions-employees')).toBeFalsy();
+      expect(queryByTestId('admin-actions-allocations')).toBeTruthy();
     });
   });
+
   it('shows selected admin options based on `Admin` permissions', async () => {
     server.use(
       rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
@@ -49,12 +52,14 @@ describe('AdminScreen', () => {
       ),
     );
 
-    const { queryByTestId } = renderComponentWithQueryClient(createQueryClient(), <AdminScreen />);
+    const { queryByTestId } = renderComponentWithQueryClient(
+      createQueryClient(),
+      <AdminHomeScreen />,
+    );
 
     await waitFor(() => {
-      expect(queryByTestId('profile-menu-manage-users-row')).toBeTruthy();
-      expect(queryByTestId('profile-menu-manage-cards-row')).toBeTruthy();
-      expect(queryByTestId('profile-menu-manage-permissions-row')).toBeTruthy();
+      expect(queryByTestId('admin-actions-employees')).toBeTruthy();
+      expect(queryByTestId('admin-actions-allocations')).toBeTruthy();
     });
   });
 });

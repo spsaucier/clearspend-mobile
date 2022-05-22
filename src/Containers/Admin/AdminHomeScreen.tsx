@@ -1,81 +1,62 @@
 import React from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/core';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation, Trans } from 'react-i18next';
+// import { useNavigation } from '@react-navigation/core';
+// import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
-import { CSText, FocusAwareStatusBar } from '@/Components';
-import { useAllPermissions } from '@/Queries/permissions';
-import {
-  showManageUsers,
-  showManageCards,
-  showManagePermissions,
-  getRole,
-} from '@/Helpers/PermissionsHelpers';
-import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
+import { CSText as Text, FocusAwareStatusBar } from '@/Components';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
-import { AllocationRoles } from '@/Types/permissions';
-import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+// import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { useUser } from '@/Queries/user';
+import ActionsAndRequestsTabs, {
+  AdminTab,
+} from '@/Containers/Admin/Components/ActionsAndRequestsTabs';
+import AdminActions from '@/Containers/Admin/Dashboard/AdminActions';
 
 const AdminHomeScreen = () => {
-  const { navigate } =
-    useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
+  // uncomment when we add navigate calls below
+  // const { navigate } =
+  //   useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
   const { t } = useTranslation();
-  const { data: permissions } = useAllPermissions();
+  const { data: user } = useUser();
 
-  const showManageUsersRow = showManageUsers(permissions);
-  const showManageCardsRow = showManageCards(permissions);
-  const showManagePermissionsRow = showManagePermissions(permissions);
-
-  const role = getRole(permissions);
+  const requestsText = '4 new admin requests since last time'; // TODO: Update
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-tan`}>
+    <SafeAreaView style={tw`flex-1 bg-white`}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <View style={tw`p-5`}>
         <BackButtonNavigator theme="light" />
       </View>
-      <View style={[tw`px-5`]}>
-        <CSText style={tw`font-telegraf text-base text-2xl font-light text-black leading-6 mb-5`}>
-          Role:{' '}
-          {role === AllocationRoles.Manager
-            ? t('profile.profileMenu.manager')
-            : t('profile.profileMenu.admin')}
-        </CSText>
-        <View style={tw`bg-white rounded-1`}>
-          {showManageUsersRow && (
-            <ProfileMenuRow
-              testID="profile-menu-manage-users-row"
-              title={t('adminOptions.viewEmployees')}
-              onPress={() => {}}
-              style={tw`h-14 px-4`}
-              borderColor="border-tan"
-              showBottomBorder
-            />
+      <View>
+        <View style={tw`px-5`}>
+          {user?.firstName && (
+            <Text style={tw`text-xl mb-1.5`}>
+              <Trans
+                i18nKey={t('admin.welcome', {
+                  name: user.firstName,
+                  interpolation: { escapeValue: false },
+                })}
+                components={{
+                  key1: <Text style={tw`text-xl font-semibold`} />,
+                }}
+              />
+            </Text>
           )}
-          {showManageCardsRow && (
-            <ProfileMenuRow
-              testID="profile-menu-manage-cards-row"
-              title={t('adminOptions.issueACard')}
-              onPress={() => {
-                navigate(AdminScreens.IssueCard);
-              }}
-              style={tw`h-14 px-4`}
-              borderColor="border-tan"
-              showBottomBorder
-            />
-          )}
-          {showManagePermissionsRow && (
-            <ProfileMenuRow
-              testID="profile-menu-manage-permissions-row"
-              title={t('adminOptions.increaseALimit')}
-              onPress={() => {}}
-              style={tw`h-14 px-4`}
-              showBottomBorder={false}
-            />
-          )}
+          {requestsText && <Text>{requestsText}</Text>}
         </View>
+        <ActionsAndRequestsTabs style={tw`mt-6 px-5`}>
+          {
+            ({ selectedTab }) =>
+              selectedTab === AdminTab.Actions ? (
+                <AdminActions
+                  onEmployeesPress={() => {} /* TODO: add navigate call */}
+                  onAllocationsPress={() => {} /* TODO: add navigate call */}
+                />
+              ) : null /* TODO: <AdminRequests /> */
+          }
+        </ActionsAndRequestsTabs>
       </View>
     </SafeAreaView>
   );

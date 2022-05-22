@@ -464,8 +464,12 @@ export default {
     cancelAndLogout: 'Cancel and log out',
     error: 'Unable to accept terms and conditions',
   },
-  adminOptions: {
-    viewEmployees: 'View employees',
+  admin: {
+    welcome: 'Welcome back <key1>{{name}}</key1>',
+    allocations: 'Allocations',
+    employees: 'Employees',
+    actionsTab: 'Actions',
+    requestsTab: 'Requests',
     issueACard: 'Issue a card',
     increaseALimit: 'Increase a limit',
   },
