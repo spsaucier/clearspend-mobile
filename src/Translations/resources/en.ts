@@ -472,6 +472,9 @@ export default {
     requestsTab: 'Requests',
     issueACard: 'Issue a card',
     increaseALimit: 'Increase a limit',
+    requests: {
+      newRequestFrom: 'New request from ',
+    },
   },
   adminFlows: {
     nextStepCta: 'Next',

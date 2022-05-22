@@ -48,8 +48,8 @@ const ActionsAndRequestsTabs = ({ style, children }: Props) => {
             )}
           />
         </View>
+        {children && children({ selectedTab })}
       </View>
-      {children && children({ selectedTab })}
     </>
   );
 };

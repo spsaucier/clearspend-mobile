@@ -11,5 +11,6 @@ export { CSText } from './Text';
 export { CSTextInput } from './TextInput';
 export { FocusAwareStatusBar } from './FocusAwareStatusbar';
 export { InfoPanel } from './InfoPanel';
+export { LetterAvatar } from './LetterAvatar';
 export { LinearProgressBar } from './LinearProgressBar';
 export { NotificationBell } from './NotificationBell';
