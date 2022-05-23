@@ -8607,6 +8607,18 @@ react-native-screens@^3.13.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-section-alphabet-list@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-section-alphabet-list/-/react-native-section-alphabet-list-2.1.0.tgz#d511be2ce16c7fe4d0f2b4420a86dd15f4b002b3"
+  integrity sha512-nn1nM7UAg/FYUZ5N3GlxaBg+fZF52bBMySWdrVCLXcPLef6w78cRgm+TtNXDeswoQc3iU46FOS18cVl/pq33Gg==
+  dependencies:
+    react-native-section-list-get-item-layout "^2.2.3"
+
+react-native-section-list-get-item-layout@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-section-list-get-item-layout/-/react-native-section-list-get-item-layout-2.2.3.tgz#152a8efdcb3847dbcbeb04cd2d0de4312d3d2fcb"
+  integrity sha512-fzCW5SiYP6qCZyDHebaElHonIFr8NFrZK9JDkxFLnpxMJih4d+HQ4rHyOs0Z4Gb/FjyCVbRH7RtEnjeQ0XffMg==
+
 react-native-sensitive-info@^5.5.8:
   version "5.5.8"
   resolved "https://registry.npmjs.org/react-native-sensitive-info/-/react-native-sensitive-info-5.5.8.tgz"

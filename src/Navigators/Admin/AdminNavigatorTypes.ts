@@ -26,10 +26,12 @@ export type IssueCardStackParamTypes = {
 
 export enum AdminScreens {
   Home = 'Admin Home',
+  Employees = 'Admin Employees',
   IssueCard = 'Issue Card',
 }
 
 export type AdminStackParamTypes = {
   [AdminScreens.Home]: undefined;
+  [AdminScreens.Employees]: undefined;
   [AdminScreens.IssueCard]?: NavigatorScreenParams<IssueCardStackParamTypes>;
 };

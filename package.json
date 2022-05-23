@@ -87,6 +87,7 @@
     "react-native-reanimated-carousel": "^2.3.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.13.1",
+    "react-native-section-alphabet-list": "^2.1.0",
     "react-native-sensitive-info": "^5.5.8",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.1.1",

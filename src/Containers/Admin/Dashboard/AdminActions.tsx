@@ -18,7 +18,7 @@ const AdminActions = ({ onEmployeesPress, onAllocationsPress }: Props) => {
   const { data: permissions, isLoading } = useAllPermissions();
 
   return (
-    <View style={tw`flex-row bg-white px-5 py-6`}>
+    <View style={tw`flex-row bg-white py-6`}>
       {isLoading ? (
         <View style={tw`flex-1 items-center justify-center my-6`}>
           <ActivityIndicator />
@@ -29,7 +29,7 @@ const AdminActions = ({ onEmployeesPress, onAllocationsPress }: Props) => {
             <TileButton
               testID="admin-actions-employees"
               style={tw`w-1/2 pr-3`}
-              text={t('admin.employees')}
+              text={t('admin.employees.employeesTitle')}
               icon={<UsersThreeIcon />}
               onPress={onEmployeesPress}
             />

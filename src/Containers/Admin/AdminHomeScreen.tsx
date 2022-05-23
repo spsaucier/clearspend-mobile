@@ -2,12 +2,12 @@ import React from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation, Trans } from 'react-i18next';
-// import { useNavigation } from '@react-navigation/core';
-// import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/core';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
 import { CSText as Text, FocusAwareStatusBar } from '@/Components';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
-// import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 import { useUser } from '@/Queries/user';
 import ActionsAndRequestsTabs, {
   AdminTab,
@@ -16,9 +16,8 @@ import AdminActions from '@/Containers/Admin/Dashboard/AdminActions';
 import RequestsScreen from './RequestsScreen';
 
 const AdminHomeScreen = () => {
-  // uncomment when we add navigate calls below
-  // const { navigate } =
-  //   useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
+  const { navigate } =
+    useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
   const { t } = useTranslation();
   const { data: user } = useUser();
 
@@ -51,7 +50,7 @@ const AdminHomeScreen = () => {
           {({ selectedTab }) =>
             selectedTab === AdminTab.Actions ? (
               <AdminActions
-                onEmployeesPress={() => {} /* TODO: add navigate call */}
+                onEmployeesPress={() => navigate(AdminScreens.Employees)}
                 onAllocationsPress={() => {} /* TODO: add navigate call */}
               />
             ) : (

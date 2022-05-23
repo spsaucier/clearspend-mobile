@@ -467,13 +467,16 @@ export default {
   admin: {
     welcome: 'Welcome back <key1>{{name}}</key1>',
     allocations: 'Allocations',
-    employees: 'Employees',
     actionsTab: 'Actions',
     requestsTab: 'Requests',
     issueACard: 'Issue a card',
     increaseALimit: 'Increase a limit',
     requests: {
       newRequestFrom: 'New request from ',
+    },
+    employees: {
+      employeesTitle: 'Employees',
+      addEmployee: 'Add employee',
     },
   },
   adminFlows: {
