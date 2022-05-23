@@ -466,7 +466,6 @@ export default {
   },
   admin: {
     welcome: 'Welcome back <key1>{{name}}</key1>',
-    allocations: 'Allocations',
     actionsTab: 'Actions',
     requestsTab: 'Requests',
     issueACard: 'Issue a card',
@@ -477,6 +476,10 @@ export default {
     employees: {
       employeesTitle: 'Employees',
       addEmployee: 'Add employee',
+    },
+    allocations: {
+      allocationsTitle: 'Allocations',
+      newAllocation: 'New allocation',
     },
   },
   adminFlows: {

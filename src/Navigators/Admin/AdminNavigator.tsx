@@ -10,6 +10,7 @@ import { IssueCardProvider } from '@/Services/Admin/IssueCardProvider';
 
 import AdminHomeScreen from '@/Containers/Admin/AdminHomeScreen';
 import AdminEmployeesScreen from '@/Containers/Admin/AdminEmployeesScreen';
+import AdminAllocationsScreen from '@/Containers/Admin/AdminAllocationsScreen';
 
 // Issue Card Screens
 import CardTypeScreen from '@/Containers/Admin/IssueCard/CardTypeScreen';
@@ -55,6 +56,7 @@ export const AdminNavigator = () => (
   <AdminStack.Navigator initialRouteName={AdminScreens.Home} screenOptions={{ headerShown: false }}>
     <AdminStack.Screen name={AdminScreens.Home} component={AdminHomeScreen} />
     <AdminStack.Screen name={AdminScreens.Employees} component={AdminEmployeesScreen} />
+    <AdminStack.Screen name={AdminScreens.Allocations} component={AdminAllocationsScreen} />
     <AdminStack.Screen name={AdminScreens.IssueCard} component={IssueCardNavigator} />
   </AdminStack.Navigator>
 );

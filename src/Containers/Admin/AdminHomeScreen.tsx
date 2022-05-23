@@ -51,7 +51,7 @@ const AdminHomeScreen = () => {
             selectedTab === AdminTab.Actions ? (
               <AdminActions
                 onEmployeesPress={() => navigate(AdminScreens.Employees)}
-                onAllocationsPress={() => {} /* TODO: add navigate call */}
+                onAllocationsPress={() => navigate(AdminScreens.Allocations)}
               />
             ) : (
               <RequestsScreen />

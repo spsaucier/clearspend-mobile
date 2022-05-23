@@ -38,7 +38,7 @@ const AdminActions = ({ onEmployeesPress, onAllocationsPress }: Props) => {
             <TileButton
               testID="admin-actions-allocations"
               style={tw`w-1/2 pl-3`}
-              text={t('admin.allocations')}
+              text={t('admin.allocations.allocationsTitle')}
               icon={<CoinNoBgIcon />}
               onPress={onAllocationsPress}
             />
