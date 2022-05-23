@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import Toast, { ToastConfig } from 'react-native-toast-message';
+import Toast, { ToastConfig, ToastConfigParams } from 'react-native-toast-message';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import tw from '@/Styles/tailwind';
@@ -8,54 +8,56 @@ import { CSText } from '@/Components/Text';
 import { CheckCircleIconFilled, ExclamationIcon } from './Icons';
 
 type ToastProps = {
-  text1?: string;
-  props: { dark: boolean; onPress?: () => void };
+  dark: boolean;
+  onPress?: () => void;
 };
 
 type ToastType = 'success' | 'info' | 'error';
 
 const CustomToast = ({
   text1,
-  props: { dark, onPress },
   type,
-}: ToastProps & { type: ToastType }) => (
-  <TouchableOpacity
-    style={tw`absolute top-0 flex rounded-1 w-full justify-center mt-2 border-black w-90 shadow-lg bg-${
-      dark ? 'secondary' : 'white'
-    }`}
-    onPress={onPress}
-    disabled={!onPress}
-  >
-    <View style={tw`flex-row items-center p-3.5`}>
-      <View style={tw`mr-2`}>
-        {type === 'success' ? (
-          <CheckCircleIconFilled
-            color={dark ? tw.color('secondary') : tw.color('primary')}
-            bgColor={dark ? tw.color('primary') : tw.color('black')}
-          />
-        ) : type === 'info' ? (
-          <ExclamationIcon
-            size={24}
-            color={dark ? tw.color('secondary') : 'white'}
-            bgColor={dark ? 'white' : tw.color('secondary')}
-          />
-        ) : type === 'error' ? (
-          <ExclamationIcon
-            size={24}
-            color="white"
-            bgColor={dark ? tw.color('darkError') : tw.color('error')}
-          />
-        ) : null}
+  isVisible,
+  props: { dark, onPress },
+}: ToastConfigParams<ToastProps> & { type: ToastType }) =>
+  isVisible ? (
+    <TouchableOpacity
+      style={tw`ios:absolute top-0 flex rounded-1 w-full justify-center mt-2 border-black w-90 shadow-lg bg-${
+        dark ? 'secondary' : 'white'
+      }`}
+      onPress={onPress}
+      disabled={!onPress}
+    >
+      <View style={tw`flex-row items-center p-3.5`}>
+        <View style={tw`mr-2`}>
+          {type === 'success' ? (
+            <CheckCircleIconFilled
+              color={dark ? tw.color('secondary') : tw.color('primary')}
+              bgColor={dark ? tw.color('primary') : tw.color('black')}
+            />
+          ) : type === 'info' ? (
+            <ExclamationIcon
+              size={24}
+              color={dark ? tw.color('secondary') : 'white'}
+              bgColor={dark ? 'white' : tw.color('secondary')}
+            />
+          ) : type === 'error' ? (
+            <ExclamationIcon
+              size={24}
+              color="white"
+              bgColor={dark ? tw.color('darkError') : tw.color('error')}
+            />
+          ) : null}
+        </View>
+        <CSText style={tw`flex-1 text-xs text-${dark ? 'white' : 'secondary'}`}>{text1}</CSText>
       </View>
-      <CSText style={tw`flex-1 text-xs text-${dark ? 'white' : 'secondary'}`}>{text1}</CSText>
-    </View>
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  ) : null;
 
 const toastConfig: ToastConfig = {
-  success: (props: ToastProps) => <CustomToast {...props} type="success" />,
-  error: (props: ToastProps) => <CustomToast {...props} type="error" />,
-  info: (props: ToastProps) => <CustomToast {...props} type="info" />,
+  success: (props: ToastConfigParams<ToastProps>) => <CustomToast {...props} type="success" />,
+  error: (props: ToastConfigParams<ToastProps>) => <CustomToast {...props} type="error" />,
+  info: (props: ToastConfigParams<ToastProps>) => <CustomToast {...props} type="info" />,
 };
 
 /**
