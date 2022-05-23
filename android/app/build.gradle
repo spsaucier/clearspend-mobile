@@ -150,7 +150,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 174
-        versionName "1.6.0"
+        versionName "1.7.0"
         missingDimensionStrategy 'react-native-camera', 'general'
         resValue "string", "build_config_package", "com.clearspend.android"
     }
