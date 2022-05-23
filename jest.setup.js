@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler/jestSetup';
 import 'react-native-reanimated';
 import { setLogger } from 'react-query';
+import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock';
 
 global.__reanimatedWorkletInit = jest.fn();
 
@@ -25,6 +26,8 @@ jest.mock('@react-navigation/native', () => ({
     reset: jest.fn(),
   }),
 }));
+
+jest.mock('react-native-safe-area-context', () => mockSafeAreaContext);
 
 jest.mock('@fullstory/react-native', () => ({
   LogLevel: {

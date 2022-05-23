@@ -102,44 +102,31 @@ const ProfileStack = () => (
 const WalletStack = () => (
   <Stack.Navigator initialRouteName={MainScreens.Wallet} screenOptions={{ headerShown: false }}>
     <Stack.Screen name={MainScreens.Wallet} component={WalletScreen} />
-    <Stack.Screen name={MainScreens.Notifications} component={NotificationScreen} />
-    <Stack.Screen
-      name={MainScreens.TransactionDetails}
-      component={TransactionDetailScreen}
-      options={transparentModal}
-    />
-    <Stack.Screen
-      name={MainScreens.NoteInput}
-      component={NoteInputScreen}
-      options={transparentModal}
-    />
     <Stack.Screen name={MainScreens.Profile} component={ProfileStack} />
-
-    <Stack.Screen
-      name={MainScreens.CardDetails}
-      component={CardDetailScreen}
-      options={transparentModal}
-    />
+    <Stack.Screen name={MainScreens.Notifications} component={NotificationScreen} />
     <Stack.Screen name={MainScreens.CardSettings} component={CardSettingsScreen} />
     <Stack.Screen name={MainScreens.CardLostStolen} component={CardLostStolen} />
-    <Stack.Screen
-      name={MainScreens.AddReceipt}
-      component={AddReceiptScreen}
-      options={transparentModal}
-    />
-    <Stack.Screen
-      name={MainScreens.ViewReceipt}
-      component={ViewReceiptScreen}
-      options={transparentModal}
-    />
-    <Stack.Screen
-      name={MainScreens.DeleteReceipt}
-      component={DeleteReceiptScreen}
-      options={transparentModal}
-    />
+    <Stack.Screen name={MainScreens.CardSpendControl} component={CardSpendControl} />
+
+    {/* Modal Group */}
+    <Stack.Group screenOptions={transparentModal}>
+      <Stack.Screen
+        name={MainScreens.CardDetails}
+        component={CardDetailScreen}
+        options={{
+          animation: 'fade',
+        }}
+      />
+      <Stack.Screen name={MainScreens.TransactionDetails} component={TransactionDetailScreen} />
+      <Stack.Screen name={MainScreens.NoteInput} component={NoteInputScreen} />
+      <Stack.Screen name={MainScreens.AddReceipt} component={AddReceiptScreen} />
+      <Stack.Screen name={MainScreens.ViewReceipt} component={ViewReceiptScreen} />
+      <Stack.Screen name={MainScreens.DeleteReceipt} component={DeleteReceiptScreen} />
+    </Stack.Group>
+
+    {/* DEV menu */}
     <Stack.Screen name={MainScreens.DevMenu} component={DevMenuScreen} />
     <Stack.Screen name={MainScreens.DevIconDemo} component={IconDemoScreen} />
-    <Stack.Screen name={MainScreens.CardSpendControl} component={CardSpendControl} />
   </Stack.Navigator>
 );
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import MultitaskBlur from 'react-native-multitask-blur';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,7 @@ import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { ProfileIcon } from '@/Components/Icons';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 import { formatCurrency } from '@/Helpers/StringHelpers';
+import { ToastDisplay } from '@/Components/ToastDisplay';
 
 type Props = {
   route: any;
@@ -159,6 +160,7 @@ const CardDetailScreen = ({ route }: Props) => {
             isCardFrozen={isCardFrozen}
           />
         </SafeAreaView>
+        {Platform.OS === 'ios' ? <ToastDisplay /> : null}
       </BottomSheetModalProvider>
     );
   }

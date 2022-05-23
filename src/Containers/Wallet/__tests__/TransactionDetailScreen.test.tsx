@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { waitFor, cleanup } from '@testing-library/react-native';
@@ -78,7 +79,9 @@ describe('TransactionDetailScreen', () => {
 
     const { getByTestId, getAllByText, getByText } = renderComponentWithQueryClient(
       createQueryClient(),
-      <TransactionDetailScreen />,
+      <SafeAreaProvider>
+        <TransactionDetailScreen />
+      </SafeAreaProvider>,
     );
 
     await waitFor(() => {
@@ -118,7 +121,9 @@ describe('TransactionDetailScreen', () => {
 
     const { queryByTestId, getByText } = renderComponentWithQueryClient(
       createQueryClient(),
-      <TransactionDetailScreen />,
+      <SafeAreaProvider>
+        <TransactionDetailScreen />
+      </SafeAreaProvider>,
     );
 
     await waitFor(() => {
@@ -137,7 +142,9 @@ describe('TransactionDetailScreen', () => {
 
     const { queryByTestId, getByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <TransactionDetailScreen />,
+      <SafeAreaProvider>
+        <TransactionDetailScreen />
+      </SafeAreaProvider>,
     );
 
     await waitFor(() => {
@@ -160,7 +167,9 @@ describe('TransactionDetailScreen', () => {
 
     const { getByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <TransactionDetailScreen />,
+      <SafeAreaProvider>
+        <TransactionDetailScreen />
+      </SafeAreaProvider>,
     );
 
     await waitFor(() => {
@@ -182,7 +191,9 @@ describe('TransactionDetailScreen', () => {
 
     const { getByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <TransactionDetailScreen />,
+      <SafeAreaProvider>
+        <TransactionDetailScreen />
+      </SafeAreaProvider>,
     );
 
     await waitFor(() => {

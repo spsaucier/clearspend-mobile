@@ -15,7 +15,7 @@ import { mixpanel } from '@/Services/utils/analytics';
 import { TopParams, TopScreens } from './NavigatorTypes';
 import AuthProvider from '@/Services/Auth/AuthProvider';
 import { linkingConfig } from '@/Services/Linking/deepLinkNavigationConfig';
-import { GlobalToast } from '@/Components/GlobalToast';
+import { ToastDisplay } from '@/Components/ToastDisplay';
 import tw from '@/Styles/tailwind';
 import { FocusAwareStatusBar } from '@/Components';
 
@@ -96,7 +96,7 @@ const ApplicationNavigator = () => {
               <TopNavigator />
             </AuthProvider>
           </NavigationContainer>
-          <GlobalToast />
+          <ToastDisplay />
         </SafeAreaProvider>
       </FeatureFlagsProvider>
     </QueryClientProvider>

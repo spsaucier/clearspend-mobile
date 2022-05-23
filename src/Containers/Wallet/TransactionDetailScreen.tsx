@@ -1,5 +1,5 @@
 import React, { ReactNode, useRef } from 'react';
-import { View, Image, TouchableOpacity, Linking } from 'react-native';
+import { View, Image, TouchableOpacity, Linking, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation, useRoute } from '@react-navigation/core';
@@ -35,6 +35,7 @@ import ViewReceiptThumbnail from './Receipt/ViewReceiptThumbnail';
 import { getExpenseCategoryStatus } from '@/Helpers/ExpenseCategoryHelpers';
 import { useExpenseCategories } from '@/Queries/expenseCategory';
 import { getReasonText } from '@/Helpers/DeclineReasonHelpers';
+import { ToastDisplay } from '@/Components/ToastDisplay';
 
 type InfoRowProps = {
   label: string;
@@ -441,9 +442,12 @@ export const TransactionDetailScreenContent = () => {
 };
 
 const TransactionDetailScreen = () => (
-  <CSBottomSheet snapPoints={['96%']} translucidBackground>
-    <TransactionDetailScreenContent />
-  </CSBottomSheet>
+  <>
+    <CSBottomSheet snapPoints={['96%']} translucidBackground>
+      <TransactionDetailScreenContent />
+    </CSBottomSheet>
+    {Platform.OS === 'ios' ? <ToastDisplay /> : null}
+  </>
 );
 
 export default TransactionDetailScreen;
