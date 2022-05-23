@@ -1,5 +1,12 @@
 import LDClient, { LDUser } from 'launchdarkly-react-native-client-sdk';
 import Config from 'react-native-config';
+import { getBuildNumber, getVersion } from 'react-native-device-info';
+
+export const getLdUserCustomAttributes = () => ({
+  appVersion: getVersion(),
+  buildNumber: getBuildNumber(),
+  environment: Config.ENV_NAME,
+});
 
 export class SharedLDClient {
   private static ldClientInstance: LDClient;
@@ -11,7 +18,7 @@ export class SharedLDClient {
         // Promise rejects if the client is not initialised, configure the client in that case
         await client.configure(
           { mobileKey: Config.LAUNCHDARKLY_SDK_KEY },
-          { anonymous: true },
+          { anonymous: true, custom: getLdUserCustomAttributes() },
           5000,
         );
       });

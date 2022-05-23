@@ -13,11 +13,6 @@ import {
 
 import ProfileScreen from '../ProfileScreen';
 
-jest.mock('react-native-device-info', () => ({
-  getVersion: jest.fn(),
-  getBuildNumber: jest.fn(),
-}));
-
 jest.mock('@/Hooks/useAuthentication', () => ({
   useAuthentication: jest.fn(() => ({
     logout: jest.fn(),

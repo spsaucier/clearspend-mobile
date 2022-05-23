@@ -1,6 +1,6 @@
 import React, { createContext, FC, useCallback, useEffect, useState } from 'react';
 import { LDFlagSet } from 'launchdarkly-react-native-client-sdk';
-import { SharedLDClient } from '@/Services/FeatureFlags/SharedLDClient';
+import { getLdUserCustomAttributes, SharedLDClient } from '@/Services/FeatureFlags/SharedLDClient';
 import { FeatureFlagTypes } from '@/Services/FeatureFlags/flags';
 import { useUser } from '@/Queries';
 import { overrides } from '@/Services/FeatureFlags/overrides';
@@ -38,7 +38,11 @@ export const FeatureFlagsProvider: FC = ({ children }) => {
       return;
     }
 
-    SharedLDClient.identifyUser({ key: user.userId, email: user.email }).then(() => {
+    SharedLDClient.identifyUser({
+      key: user.userId,
+      email: user.email,
+      custom: getLdUserCustomAttributes(),
+    }).then(() => {
       updateFeatureFlagState();
     });
   }, [user, isLoading, updateFeatureFlagState]);
