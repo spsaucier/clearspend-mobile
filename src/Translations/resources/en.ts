@@ -485,6 +485,11 @@ export default {
     allocations: {
       allocationsTitle: 'Allocations',
       newAllocation: 'New allocation',
+      allocationOptions: 'Allocation options',
+      addFunds: 'Add funds',
+      removeFunds: 'Remove funds',
+      editSpendControls: 'Edit spend controls',
+      viewCards: 'View cards',
     },
   },
   adminFlows: {
