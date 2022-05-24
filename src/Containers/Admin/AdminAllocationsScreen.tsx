@@ -18,8 +18,7 @@ import {
   PlusMinusIcon,
 } from '@/Components/Icons';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
-import { generateAllocationTree } from '@/Helpers/AllocationHelpers';
-import { canManagePermissions } from '@/Helpers/PermissionsHelpers';
+import { generateAllocationTree, getManageableAllocations } from '@/Helpers/AllocationHelpers';
 import AllocationTree from '@/Containers/Admin/Components/AllocationTree';
 import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
 import OptionsBottomSheetButton from '@/Components/OptionsBottomSheetButton';
@@ -31,15 +30,7 @@ const AdminAllocationsScreen = () => {
   const { t } = useTranslation();
   const { data, isLoading } = useAllPermissions();
   const [selectedAllocationId, setSelectedAllocationId] = useState<string | undefined>();
-  const allocations = useMemo(() => generateAllocationTree(data?.allocations), [data]);
-
-  const onSelectAllocation = (allocationId: string) => {
-    const permission = data?.userRoles?.find((a) => a.allocationId === allocationId);
-
-    if (permission && canManagePermissions(permission)) {
-      setSelectedAllocationId(allocationId);
-    }
-  };
+  const allocations = useMemo(() => generateAllocationTree(getManageableAllocations(data)), [data]);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -75,7 +66,7 @@ const AdminAllocationsScreen = () => {
                 <ScrollView style={tw`px-5`}>
                   <AllocationTree
                     allocations={allocations}
-                    onSelectAllocation={onSelectAllocation}
+                    onSelectAllocation={setSelectedAllocationId}
                     selectedAllocationId={selectedAllocationId}
                   />
                 </ScrollView>
