@@ -4,10 +4,7 @@ import { setupServer } from 'msw/node';
 import { waitFor, cleanup } from '@testing-library/react-native';
 import { createQueryClient } from '@/Helpers/testing/reactQuery';
 import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
-import {
-  managerAllocationsAndPermissionsResponse,
-  adminAllocationsAndPermissionsResponse,
-} from '@/Helpers/testing/fixtures/permissions';
+import { managerAllocationsAndPermissionsResponse } from '@/Helpers/testing/fixtures/permissions';
 import AdminHomeScreen from '../AdminHomeScreen';
 import { usersResponse } from '@/Helpers/testing/fixtures/user';
 
@@ -27,28 +24,10 @@ afterAll(() => {
 });
 
 describe('AdminHomeScreen', () => {
-  it('shows selected admin options based on `Manger` permissions', async () => {
+  it('shows selected admin options', async () => {
     server.use(
       rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
         res(ctx.json(managerAllocationsAndPermissionsResponse)),
-      ),
-    );
-
-    const { queryByTestId } = renderComponentWithQueryClient(
-      createQueryClient(),
-      <AdminHomeScreen />,
-    );
-
-    await waitFor(() => {
-      expect(queryByTestId('admin-actions-employees')).toBeFalsy();
-      expect(queryByTestId('admin-actions-allocations')).toBeTruthy();
-    });
-  });
-
-  it('shows selected admin options based on `Admin` permissions', async () => {
-    server.use(
-      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
-        res(ctx.json(adminAllocationsAndPermissionsResponse)),
       ),
     );
 

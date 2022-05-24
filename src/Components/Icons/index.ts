@@ -3,6 +3,7 @@ export { ArrowUpIcon } from './arrowUpIcon';
 export { BackArrowIcon } from './backArrowIcon';
 export { BusinessIcon } from './businessIcon';
 export { CameraIcon } from './cameraIcon';
+export { CardIcon } from './cardIcon';
 export { CardSettingsIcon } from './cardSettingsIcon';
 export { CategoryIcon } from './categoryIcon';
 export { CheckBoxIcon } from './checkBoxIcon';

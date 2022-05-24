@@ -67,6 +67,7 @@ const AdminAllocationsScreen = () => {
                 <LinearGradient
                   colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
                   style={tw`absolute -top-32 left-0 right-0 h-32`}
+                  pointerEvents="none"
                 />
                 <Button
                   testID="manage-allocation-button"
