@@ -11,7 +11,13 @@ import tw from '@/Styles/tailwind';
 import { useUsers } from '@/Queries/user';
 import { CSText as Text, FocusAwareStatusBar } from '@/Components';
 import { ActivityIndicator } from '@/Components/ActivityIndicator';
-import { PlusCircleFilledIcon, CardIcon } from '@/Components/Icons';
+import {
+  PlusCircleFilledIcon,
+  CardIcon,
+  WalletThinIcon,
+  UserOutlineIcon,
+  HandStopIcon,
+} from '@/Components/Icons';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
 import OptionsBottomSheetButton from '@/Components/OptionsBottomSheetButton';
@@ -97,11 +103,27 @@ const AdminEmployeesScreen = () => {
           />
         </View>
       </SafeAreaView>
-      <OptionsBottomSheet ref={bottomSheetRef} title="Employee Options">
-        {/* <OptionBottomSheetButton text="View wallet" /> */}
-        <OptionsBottomSheetButton text="Issue a card" onPress={() => {}} icon={CardIcon} />
-        {/* <OptionBottomSheetButton text="Employee details" /> */}
-        {/* <OptionBottomSheetButton text="Archive employee" /> */}
+      <OptionsBottomSheet ref={bottomSheetRef} title={t('admin.employees.employeeOptions')}>
+        <OptionsBottomSheetButton
+          text={t('admin.employees.viewWallet')}
+          onPress={() => {}}
+          icon={WalletThinIcon}
+        />
+        <OptionsBottomSheetButton
+          text={t('admin.employees.issueCard')}
+          onPress={() => {}}
+          icon={CardIcon}
+        />
+        <OptionsBottomSheetButton
+          text={t('admin.employees.employeeDetails')}
+          onPress={() => {}}
+          icon={UserOutlineIcon}
+        />
+        <OptionsBottomSheetButton
+          text={t('admin.employees.archiveEmployee')}
+          onPress={() => {}}
+          icon={HandStopIcon}
+        />
       </OptionsBottomSheet>
     </BottomSheetModalProvider>
   );

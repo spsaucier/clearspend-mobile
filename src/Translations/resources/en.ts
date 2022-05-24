@@ -476,6 +476,11 @@ export default {
     employees: {
       employeesTitle: 'Employees',
       addEmployee: 'Add employee',
+      employeeOptions: 'Employee options',
+      viewWallet: 'View wallet',
+      issueCard: 'Issue a card',
+      employeeDetails: 'Employee details',
+      archiveEmployee: 'Archive employee',
     },
     allocations: {
       allocationsTitle: 'Allocations',
