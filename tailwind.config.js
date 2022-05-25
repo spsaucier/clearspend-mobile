@@ -4,14 +4,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        montreal: [
-          Platform.select({ android: 'PPNeueMontreal-Regular', ios: 'PPNeueMontrealTT-Regular' }),
-          'Roboto',
-          'Helvetica',
-          'Arial',
-          'sans-serif',
-        ],
-        telegraf: ['PPTelegraf-Regular', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        montreal: ['PP Neue Montreal TT', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        telegraf: ['PP Telegraf', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
       },
       height: {
         13: '3.25rem',
@@ -113,7 +107,6 @@ module.exports = {
       'gray-20': '#CCCCCC',
       'gray-50': '#7C7C7C',
       'gray-75': '#3F3F3F',
-
     },
     borderWidth: {
       DEFAULT: '1px',
