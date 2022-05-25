@@ -306,7 +306,10 @@ export interface Business {
     | 'PUBLIC_PARTNERSHIP'
     | 'PRIVATE_CORPORATION'
     | 'PUBLIC_CORPORATION'
-    | 'INCORPORATED_NON_PROFIT';
+    | 'INCORPORATED_NON_PROFIT'
+    | 'ACCOUNTING_FIRM'
+    | 'BANK'
+    | 'CONSULTING_FIRM';
   employerIdentificationNumber?: string;
 
   /**
@@ -328,7 +331,6 @@ export interface Business {
   accountingSetupStep?: 'AWAITING_SYNC' | 'ADD_CREDIT_CARD' | 'MAP_CATEGORIES' | 'COMPLETE';
   autoCreateExpenseCategories?: boolean;
   mcc?: string;
-  foreignTransactionFee?: number;
   businessName?: string;
   accountNumber?: string;
   routingNumber?: string;
@@ -432,6 +434,7 @@ export interface UserData {
   type?: 'EMPLOYEE' | 'BUSINESS_OWNER';
   firstName?: string;
   lastName?: string;
+  archived?: boolean;
 }
 
 export interface UserPageData {
@@ -528,6 +531,17 @@ export interface AccountActivityResponse {
     | OperationLimitExceeded
     | SpendControlViolated;
   paymentDetails?: PaymentDetails;
+  accountingDetails?: AccountingDetails;
+}
+
+export interface AccountingDetails {
+  sentToAccounting?: boolean;
+
+  /** @format uuid */
+  codatClassId?: string;
+
+  /** @format uuid */
+  codatLocationId?: string;
 }
 
 export type AddressPostalCodeMismatch = DeclineDetails & { postalCode?: string };
@@ -705,6 +719,7 @@ export interface DeclineDetails {
   reason?:
     | 'INSUFFICIENT_FUNDS'
     | 'INVALID_CARD_STATUS'
+    | 'UNLINKED_CARD'
     | 'CARD_NOT_FOUND'
     | 'LIMIT_EXCEEDED'
     | 'OPERATION_LIMIT_EXCEEDED'
@@ -1311,6 +1326,7 @@ export interface Merchant {
     | 'ZWE';
   codatSupplierName?: string;
   codatSupplierId?: string;
+  statementDescriptor?: string;
 }
 
 export type OperationLimitExceeded = DeclineDetails & {
@@ -1334,8 +1350,8 @@ export interface PagedDataAccountActivityResponse {
 
 export interface PaymentDetails {
   paymentType?: 'POS' | 'ONLINE' | 'MANUAL_ENTRY';
-  foreignTransactionFee?: number;
-  foreign?: boolean;
+  foreignTransactionFee?: Amount;
+  foreignTransaction?: boolean;
 }
 
 export interface ReceiptDetails {
@@ -1389,16 +1405,6 @@ export interface KycFailRequest {
   to?: string;
   firstName?: string;
   reasons?: string[];
-}
-
-export interface CreateBusinessOwnerRequest {
-  /** @format uuid */
-  businessId?: string;
-
-  /** @format uuid */
-  businessOwnerId?: string;
-  username?: string;
-  password?: string;
 }
 
 export interface TransactBankAccountRequest {
@@ -1943,6 +1949,12 @@ export interface IssueCardRequest {
   disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
   disableForeign: boolean;
 
+  /** The Stripe reference for a previously cancelled card that this is replacing */
+  replacementFor?: string;
+
+  /** The reason this card is a replacement. Required if replacementFor is provided. If LOST or STOLEN, the card must have had a similar reason set in Stripe for its cancellation */
+  replacementReason?: 'LOST' | 'STOLEN' | 'DAMAGED' | 'EXPIRED';
+
   /** @example DEBIT */
   binType?: 'DEBIT';
 
@@ -2101,7 +2113,10 @@ export interface UpdateBusiness {
     | 'PUBLIC_PARTNERSHIP'
     | 'PRIVATE_CORPORATION'
     | 'PUBLIC_CORPORATION'
-    | 'INCORPORATED_NON_PROFIT';
+    | 'INCORPORATED_NON_PROFIT'
+    | 'ACCOUNTING_FIRM'
+    | 'BANK'
+    | 'CONSULTING_FIRM';
   employerIdentificationNumber?: string;
 
   /**
@@ -2171,6 +2186,7 @@ export interface Allocation {
   /** @format uuid */
   parentAllocationId?: string;
   childrenAllocationIds?: string[];
+  archived?: boolean;
 }
 
 export interface UpdateBusinessAccountingStepRequest {
@@ -2210,7 +2226,10 @@ export interface CreateOrUpdateBusinessProspectRequest {
     | 'PUBLIC_PARTNERSHIP'
     | 'PRIVATE_CORPORATION'
     | 'PUBLIC_CORPORATION'
-    | 'INCORPORATED_NON_PROFIT';
+    | 'INCORPORATED_NON_PROFIT'
+    | 'ACCOUNTING_FIRM'
+    | 'BANK'
+    | 'CONSULTING_FIRM';
 
   /**
    * Relationship to business Owner
@@ -2576,6 +2595,8 @@ export interface ForgotPasswordRequest {
 }
 
 export interface ChangePasswordRequest {
+  /** @format uuid */
+  userId?: string;
   currentPassword?: string;
   newPassword?: string;
   trustChallenge?: string;
@@ -2761,6 +2782,7 @@ export interface LedgerActivityResponse {
     | OperationLimitExceeded
     | SpendControlViolated;
   paymentDetails?: PaymentDetails;
+  statementDescriptor?: string;
 }
 
 export type LedgerAllocationAccount = LedgerAccount & { allocationInfo?: AllocationInfo };
@@ -3531,7 +3553,7 @@ export interface Card {
   /** @format uuid */
   accountId?: string;
   status?: 'ACTIVE' | 'INACTIVE' | 'CANCELLED';
-  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED';
+  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED' | 'USER_ARCHIVED' | 'LOST' | 'STOLEN';
   fundingType?: 'POOLED' | 'INDIVIDUAL';
 
   /** @format date-time */
@@ -3560,7 +3582,7 @@ export interface CardAndAccount {
 
 export interface UpdateCardStatusRequest {
   /** @example CARDHOLDER_REQUESTED */
-  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED';
+  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED' | 'USER_ARCHIVED' | 'LOST' | 'STOLEN';
 }
 
 export interface ActivateCardRequest {
@@ -3568,7 +3590,7 @@ export interface ActivateCardRequest {
   lastFour?: string;
 
   /** @example CARDHOLDER_REQUESTED */
-  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED';
+  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED' | 'USER_ARCHIVED' | 'LOST' | 'STOLEN';
 }
 
 export interface UpdateCardAccountRequest {
@@ -3592,6 +3614,16 @@ export interface UpdateAccountActivityRequest {
   expenseCategoryId?: string;
   supplierId?: string;
   supplierName?: string;
+}
+
+export interface UpdateCodatLocationRequest {
+  /** @format uuid */
+  locationId?: string;
+}
+
+export interface UpdateCodatClassRequest {
+  /** @format uuid */
+  classId?: string;
 }
 
 export interface TermsAndConditionsResponse {
@@ -3656,17 +3688,6 @@ export interface CardDetailsResponse {
   disableForeign?: boolean;
 }
 
-export interface BusinessLimit {
-  limits?: LimitRecord[];
-  operationLimits?: LimitOperationRecord[];
-
-  /** @format int32 */
-  issuedPhysicalCardsLimit?: number;
-
-  /** @format int32 */
-  issuedPhysicalCardsTotal?: number;
-}
-
 export interface BusinessLimitOperationRecord {
   businessLimitType?: 'ACH_DEPOSIT' | 'ACH_WITHDRAW' | 'PURCHASE';
   limitOperationPeriods?: LimitPeriodOperationRecord[];
@@ -3675,6 +3696,20 @@ export interface BusinessLimitOperationRecord {
 export interface BusinessLimitRecord {
   businessLimitType?: 'ACH_DEPOSIT' | 'ACH_WITHDRAW' | 'PURCHASE';
   limitPeriods?: LimitPeriodRecord[];
+}
+
+export interface BusinessSettings {
+  limits?: LimitRecord[];
+  operationLimits?: LimitOperationRecord[];
+
+  /** @format int32 */
+  issuedPhysicalCardsLimit?: number;
+
+  /** @format int32 */
+  issuedPhysicalCardsTotal?: number;
+  foreignTransactionFeePercents?: number;
+  achFundsAvailabilityMode?: 'STANDARD' | 'FAST' | 'IMMEDIATE';
+  immediateAchFundsLimit?: number;
 }
 
 export interface LimitOperationRecord {
@@ -4027,6 +4062,18 @@ export interface LimitRecord {
   businessLimits?: BusinessLimitRecord[];
 }
 
+export interface ChangePhoneNumberRequest {
+  /** @format uuid */
+  userId?: string;
+
+  /** @format uuid */
+  businessId?: string;
+  changingNumber?: string;
+  trustChallenge?: string;
+  twoFactorId?: string;
+  twoFactorCode?: string;
+}
+
 export interface UpdateAllocationRequest {
   /**
    * name of the department/ allocation
@@ -4083,6 +4130,21 @@ export interface AllocationDetailsResponse {
   )[];
   disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
   disableForeign?: boolean;
+}
+
+export interface StopAllCardsRequest {
+  applyToChildAllocations?: boolean;
+  cancelVirtualCards?: boolean;
+  stopPhysicalCardsType?: 'CANCEL' | 'UNLINK' | 'NONE';
+}
+
+export interface StopAllCardsResponse {
+  cancelledCards?: string[];
+  unlinkedCards?: string[];
+}
+
+export interface ArchiveAllocationResponse {
+  archivedAllocationIds?: string[];
 }
 
 export interface User {
@@ -4179,6 +4241,22 @@ export interface AllocationsAndPermissionsResponse {
   userRoles?: UserRolesAndPermissionsRecord[];
 }
 
+export interface PartnerBusiness {
+  /** @format uuid */
+  businessId?: string;
+  legalName?: string;
+  businessName?: string;
+  ledgerBalance?: Amount;
+  onboardingStep?:
+    | 'BUSINESS'
+    | 'BUSINESS_OWNERS'
+    | 'SOFT_FAIL'
+    | 'REVIEW'
+    | 'LINK_ACCOUNT'
+    | 'TRANSFER_MONEY'
+    | 'COMPLETE';
+}
+
 export interface CreateTestDataResponse {
   businesses?: TestBusiness[];
 }
@@ -4205,11 +4283,19 @@ export interface BusinessOwner {
   type?: 'UNSPECIFIED' | 'PRINCIPLE_OWNER' | 'ULTIMATE_BENEFICIAL_OWNER';
   firstName?: NullableEncryptedString;
   lastName?: NullableEncryptedString;
+  title?: string;
   relationshipOwner?: boolean;
   relationshipRepresentative?: boolean;
   relationshipExecutive?: boolean;
   relationshipDirector?: boolean;
+  percentageOwnership?: number;
+  address?: Address;
+  taxIdentificationNumber?: NullableEncryptedString;
   email?: string;
+  phone?: string;
+
+  /** @format date */
+  dateOfBirth?: string;
   countryOfCitizenship?:
     | 'UNSPECIFIED'
     | 'ABW'
@@ -4459,17 +4545,9 @@ export interface BusinessOwner {
     | 'ZAF'
     | 'ZMB'
     | 'ZWE';
+  subjectRef?: string;
   knowYourCustomerStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
   status?: 'ACTIVE' | 'RETIRED';
-  title?: string;
-  percentageOwnership?: number;
-  address?: Address;
-  taxIdentificationNumber?: NullableEncryptedString;
-  phone?: string;
-
-  /** @format date */
-  dateOfBirth?: string;
-  subjectRef?: string;
   stripePersonReference?: string;
 
   /** @format int64 */
@@ -4501,6 +4579,27 @@ export interface SyncCountResponse {
   count?: number;
 }
 
+export interface CodatCategory {
+  /** @format uuid */
+  businessId?: string;
+  codatCategoryId?: string;
+  originalName?: string;
+  categoryName?: string;
+  type?: 'CLASS' | 'LOCATION';
+
+  /** @format int64 */
+  version?: number;
+
+  /** @format date-time */
+  created?: string;
+
+  /** @format date-time */
+  updated?: string;
+
+  /** @format uuid */
+  id?: string;
+}
+
 export interface CodatAccountNestedResponse {
   results?: CodatAccountNested[];
 }
@@ -4522,10 +4621,9 @@ export interface CodatSupplier {
 }
 
 export interface GetSuppliersResponse {
-  results?: CodatSupplier[];
-
   /** @format int32 */
   totalElements?: number;
+  results?: CodatSupplier[];
 }
 
 export interface AccountBalance {
@@ -4954,7 +5052,10 @@ export interface BusinessProspectData {
     | 'PUBLIC_PARTNERSHIP'
     | 'PRIVATE_CORPORATION'
     | 'PUBLIC_CORPORATION'
-    | 'INCORPORATED_NON_PROFIT';
+    | 'INCORPORATED_NON_PROFIT'
+    | 'ACCOUNTING_FIRM'
+    | 'BANK'
+    | 'CONSULTING_FIRM';
 
   /**
    * Relationship to business Owner

@@ -32,3 +32,11 @@ pipelines:
             - node
           script:
             - bash ./scripts/qa-nightly-build.sh
+    update-generated-types:
+      - step:
+          name: "Update generated types"
+          caches:
+            - node
+          script:
+            - yarn install --frozen-lockfile
+            - bash ./scripts/update-generated-types.sh
