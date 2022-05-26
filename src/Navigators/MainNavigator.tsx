@@ -107,16 +107,16 @@ const WalletStack = () => (
     <Stack.Screen name={MainScreens.CardSettings} component={CardSettingsScreen} />
     <Stack.Screen name={MainScreens.CardLostStolen} component={CardLostStolen} />
     <Stack.Screen name={MainScreens.CardSpendControl} component={CardSpendControl} />
+    <Stack.Screen
+      name={MainScreens.CardDetails}
+      component={CardDetailScreen}
+      options={{
+        animation: 'fade',
+      }}
+    />
 
     {/* Modal Group */}
     <Stack.Group screenOptions={transparentModal}>
-      <Stack.Screen
-        name={MainScreens.CardDetails}
-        component={CardDetailScreen}
-        options={{
-          animation: 'fade',
-        }}
-      />
       <Stack.Screen name={MainScreens.TransactionDetails} component={TransactionDetailScreen} />
       <Stack.Screen name={MainScreens.NoteInput} component={NoteInputScreen} />
       <Stack.Screen name={MainScreens.AddReceipt} component={AddReceiptScreen} />
