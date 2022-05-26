@@ -5,7 +5,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
-import { IssueCardStackParamTypes, IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import {
+  IssueCardStackParamTypes,
+  IssueCardScreens,
+  AdminStackParamTypes,
+  AdminScreens,
+} from '@/Navigators/Admin/AdminNavigatorTypes';
 import { useIssueCardContext } from '@/Hooks/useIssueCardContext';
 import { CSText as Text } from '@/Components';
 import { CardType } from '@/Services/Admin/IssueCardProvider';
@@ -56,8 +61,13 @@ const CardOption = ({
 const CardTypeScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
-    useNavigation<NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardType>>();
-  const { selectedCardType, setSelectedCardType } = useIssueCardContext();
+    useNavigation<
+      NativeStackNavigationProp<
+        IssueCardStackParamTypes & AdminStackParamTypes,
+        IssueCardScreens.CardType
+      >
+    >();
+  const { selectedCardType, setSelectedCardType, selectedUser } = useIssueCardContext();
 
   return (
     <AdminScreenWrapper
@@ -65,9 +75,19 @@ const CardTypeScreen = () => {
       title={t('adminFlows.issueCard.cardTypeTitle')}
       text={t('adminFlows.issueCard.cardTypeText')}
       onPrimaryAction={() => {
-        navigate(IssueCardScreens.Employee);
+        if (selectedUser) {
+          // entering flow via "Employee" screen
+          if (selectedCardType === CardType.Physical) {
+            navigate(IssueCardScreens.CardDetails);
+          } else {
+            navigate(IssueCardScreens.Allocation);
+          }
+        } else {
+          navigate(IssueCardScreens.Employee);
+        }
       }}
       primaryActionDisabled={!selectedCardType}
+      onClose={() => navigate(AdminScreens.Employees)}
     >
       <View>
         <CardOption

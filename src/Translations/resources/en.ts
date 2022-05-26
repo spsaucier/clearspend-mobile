@@ -521,8 +521,7 @@ export default {
       cardRequestErrorText: 'Please try again later.',
       cardConfirmationTitle: 'You’re all set!',
       confirmCta: 'Issue new card',
-      confirmationPrimaryActionCta: 'Return to dashboard',
-      confirmationSecondaryActionCta: 'Issue another card',
+      confirmationPrimaryActionCta: 'Return to admin dashboard',
       confirmationVirtualCard:
         'A new card has been issued to <key1>{{name}}</key1> and will be available to activate immediately.',
       confirmationPhysicalCard:

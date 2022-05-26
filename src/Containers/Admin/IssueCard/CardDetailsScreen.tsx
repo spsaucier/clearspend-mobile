@@ -5,7 +5,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
-import { IssueCardStackParamTypes, IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import {
+  IssueCardStackParamTypes,
+  IssueCardScreens,
+  AdminStackParamTypes,
+  AdminScreens,
+} from '@/Navigators/Admin/AdminNavigatorTypes';
 import { useIssueCardContext } from '@/Hooks/useIssueCardContext';
 import { CSText as Text, ToggleSwitch } from '@/Components';
 
@@ -13,7 +18,10 @@ const CardDetailsScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
     useNavigation<
-      NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.CardDetails>
+      NativeStackNavigationProp<
+        IssueCardStackParamTypes & AdminStackParamTypes,
+        IssueCardScreens.CardDetails
+      >
     >();
   const { selectedIsPersonal, setSelectedIsPersonal } = useIssueCardContext();
 
@@ -24,6 +32,7 @@ const CardDetailsScreen = () => {
       onPrimaryAction={() => {
         navigate(IssueCardScreens.Address);
       }}
+      onClose={() => navigate(AdminScreens.Employees)}
     >
       <View style={tw`flex-row justify-between items-center rounded p-4 bg-tan`}>
         <Text>{t('adminFlows.issueCard.cardDetailsLabel')}</Text>

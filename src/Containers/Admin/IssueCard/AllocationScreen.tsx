@@ -5,7 +5,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
-import { IssueCardStackParamTypes, IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import {
+  IssueCardStackParamTypes,
+  IssueCardScreens,
+  AdminStackParamTypes,
+  AdminScreens,
+} from '@/Navigators/Admin/AdminNavigatorTypes';
 import { useIssueCardContext } from '@/Hooks/useIssueCardContext';
 import { useAllPermissions } from '@/Queries/permissions';
 import { ActivityIndicator } from '@/Components';
@@ -16,7 +21,10 @@ const AllocationScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
     useNavigation<
-      NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Allocation>
+      NativeStackNavigationProp<
+        IssueCardStackParamTypes & AdminStackParamTypes,
+        IssueCardScreens.Allocation
+      >
     >();
   const { selectedAllocationId, setSelectedAllocationId } = useIssueCardContext();
   const { data, isLoading } = useAllPermissions();
@@ -30,6 +38,7 @@ const AllocationScreen = () => {
       text={t('adminFlows.issueCard.allocationText')}
       onPrimaryAction={() => navigate(IssueCardScreens.SpendControls)}
       primaryActionDisabled={!selectedAllocationId}
+      onClose={() => navigate(AdminScreens.Employees)}
     >
       {isLoading ? (
         <View style={tw`flex-1 items-center mt-16`}>

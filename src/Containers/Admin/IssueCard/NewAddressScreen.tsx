@@ -6,7 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
-import { IssueCardStackParamTypes, IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import {
+  IssueCardStackParamTypes,
+  IssueCardScreens,
+  AdminStackParamTypes,
+  AdminScreens,
+} from '@/Navigators/Admin/AdminNavigatorTypes';
 import { CloseIcon } from '@/Components/Icons';
 import { useAddressSuggestions } from '@/Hooks/useAddressSuggestions';
 import { getFontSizeMultiplier } from '@/Helpers/StyleHelpers';
@@ -19,7 +24,10 @@ const NewAddressScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
     useNavigation<
-      NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.NewAddress>
+      NativeStackNavigationProp<
+        IssueCardStackParamTypes & AdminStackParamTypes,
+        IssueCardScreens.NewAddress
+      >
     >();
   const { selectedAddress, setSelectedAddress } = useIssueCardContext();
   const { suggestions, isLoading: loading, setSearch } = useAddressSuggestions();
@@ -32,6 +40,7 @@ const NewAddressScreen = () => {
       }}
       primaryActionDisabled={!selectedAddress}
       onPrimaryActionLabel={t('adminFlows.issueCard.newAddressCta')}
+      onClose={() => navigate(AdminScreens.Employees)}
     >
       <View>
         {selectedAddress ? (

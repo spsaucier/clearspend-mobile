@@ -16,6 +16,7 @@ export { ChevronIconThin } from './chevronIconThin';
 export { ChevronIconLeft } from './chevronIconLeft';
 export { CircleIcon } from './circleIcon';
 export { CloseIcon } from './closeIcon';
+export { CloseCircleIcon } from './closeCircleIcon';
 export { CoinIcon } from './coinIcon';
 export { CoinNoBgIcon } from './coinNoBgIcon';
 export { CopyIcon } from './copyIcon';

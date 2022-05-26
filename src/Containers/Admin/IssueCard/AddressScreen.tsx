@@ -7,7 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { Address } from 'generated/capital';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
-import { IssueCardStackParamTypes, IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import {
+  IssueCardStackParamTypes,
+  IssueCardScreens,
+  AdminStackParamTypes,
+  AdminScreens,
+} from '@/Navigators/Admin/AdminNavigatorTypes';
 import { useIssueCardContext } from '@/Hooks/useIssueCardContext';
 import { useBusiness } from '@/Queries/business';
 import { CSText as Text } from '@/Components';
@@ -64,7 +69,12 @@ const AddressOption = ({
 const AddressScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
-    useNavigation<NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.Address>>();
+    useNavigation<
+      NativeStackNavigationProp<
+        IssueCardStackParamTypes & AdminStackParamTypes,
+        IssueCardScreens.Address
+      >
+    >();
   const { selectedUser, selectedAddress, setSelectedAddress } = useIssueCardContext();
   const { data: business } = useBusiness();
 
@@ -82,6 +92,7 @@ const AddressScreen = () => {
         }
       }}
       primaryActionDisabled={selectedAddress === undefined} // null for 'new address'
+      onClose={() => navigate(AdminScreens.Employees)}
     >
       {business?.address && (
         <AddressOption

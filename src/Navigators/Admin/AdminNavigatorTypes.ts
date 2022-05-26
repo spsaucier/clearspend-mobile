@@ -1,4 +1,4 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
+import { User } from 'generated/capital';
 
 export enum IssueCardScreens {
   CardType = 'Issue Card Card Type',
@@ -35,5 +35,5 @@ export type AdminStackParamTypes = {
   [AdminScreens.Home]: undefined;
   [AdminScreens.Employees]: undefined;
   [AdminScreens.Allocations]: undefined;
-  [AdminScreens.IssueCard]?: NavigatorScreenParams<IssueCardStackParamTypes>;
+  [AdminScreens.IssueCard]?: { user: User };
 };

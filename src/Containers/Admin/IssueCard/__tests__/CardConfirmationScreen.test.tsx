@@ -2,8 +2,7 @@ import * as React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import CardConfirmationScreen from '../CardConfirmationScreen';
 import { IssueCardProvider, CardType } from '@/Services/Admin/IssueCardProvider';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
-import { IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 
 jest.mock('@/Assets/Images/card-physical.png');
 jest.mock('@/Assets/Images/card-virtual.png');
@@ -48,7 +47,7 @@ describe('CardConfirmationScreen', () => {
     expect(cardPhysicalText).toBeTruthy();
   });
 
-  it('navigates to "Dashboard" screen when selecting primary button', async () => {
+  it('navigates to "Admin Dashboard" screen when selecting primary button', async () => {
     const { findByTestId } = render(
       <IssueCardProvider>
         <CardConfirmationScreen />
@@ -59,20 +58,6 @@ describe('CardConfirmationScreen', () => {
 
     fireEvent.press(nextButton);
 
-    expect(mockedNavigate).toHaveBeenCalledWith(MainScreens.Wallet);
-  });
-
-  it('navigates to "Card Type" screen when selecting secondary button', async () => {
-    const { findByTestId } = render(
-      <IssueCardProvider>
-        <CardConfirmationScreen />
-      </IssueCardProvider>,
-    );
-
-    const nextButton = await findByTestId('secondary-action-button');
-
-    fireEvent.press(nextButton);
-
-    expect(mockedNavigate).toHaveBeenCalledWith(IssueCardScreens.CardType);
+    expect(mockedNavigate).toHaveBeenCalledWith(AdminScreens.Home);
   });
 });

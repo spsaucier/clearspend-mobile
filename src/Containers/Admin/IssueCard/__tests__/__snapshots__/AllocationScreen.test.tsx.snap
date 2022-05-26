@@ -21,6 +21,9 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
   <View
     style={
       Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
         "paddingBottom": 20,
         "paddingLeft": 20,
         "paddingRight": 20,
@@ -147,6 +150,102 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
         >
           PROFILE.BACKNAV
         </Text>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "aspectRatio": 1,
+              "height": 24,
+              "width": 24,
+            },
+            undefined,
+          ]
+        }
+      >
+        <RNSVGSvgView
+          align="xMidYMid"
+          bbHeight="24"
+          bbWidth="24"
+          fill="none"
+          focusable={false}
+          height="24"
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              Object {
+                "flex": 0,
+                "height": 24,
+                "width": 24,
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width="24"
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          >
+            <RNSVGCircle
+              cx="12"
+              cy="12"
+              fill={4294177519}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+              r="12"
+            />
+            <RNSVGPath
+              d="M7 7L16.5354 16.5354"
+              propList={
+                Array [
+                  "stroke",
+                ]
+              }
+              stroke={4278190080}
+            />
+            <RNSVGPath
+              d="M7.4646 16.5354L17 7"
+              propList={
+                Array [
+                  "stroke",
+                ]
+              }
+              stroke={4278190080}
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
       </View>
     </View>
   </View>
@@ -583,6 +682,9 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
   <View
     style={
       Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
         "paddingBottom": 20,
         "paddingLeft": 20,
         "paddingRight": 20,
@@ -709,6 +811,102 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
         >
           PROFILE.BACKNAV
         </Text>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "aspectRatio": 1,
+              "height": 24,
+              "width": 24,
+            },
+            undefined,
+          ]
+        }
+      >
+        <RNSVGSvgView
+          align="xMidYMid"
+          bbHeight="24"
+          bbWidth="24"
+          fill="none"
+          focusable={false}
+          height="24"
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              Object {
+                "flex": 0,
+                "height": 24,
+                "width": 24,
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width="24"
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          >
+            <RNSVGCircle
+              cx="12"
+              cy="12"
+              fill={4294177519}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+              r="12"
+            />
+            <RNSVGPath
+              d="M7 7L16.5354 16.5354"
+              propList={
+                Array [
+                  "stroke",
+                ]
+              }
+              stroke={4278190080}
+            />
+            <RNSVGPath
+              d="M7.4646 16.5354L17 7"
+              propList={
+                Array [
+                  "stroke",
+                ]
+              }
+              stroke={4278190080}
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
       </View>
     </View>
   </View>

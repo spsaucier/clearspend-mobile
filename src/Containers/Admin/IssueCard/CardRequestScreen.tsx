@@ -5,8 +5,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
-import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
-import { IssueCardStackParamTypes, IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import {
+  IssueCardStackParamTypes,
+  IssueCardScreens,
+  AdminStackParamTypes,
+  AdminScreens,
+} from '@/Navigators/Admin/AdminNavigatorTypes';
 import { useIssueCardContext } from '@/Hooks/useIssueCardContext';
 import { CSText as Text, ActivityIndicator } from '@/Components';
 import { validateIssueCardRequest } from '@/Helpers/RequestHelpers';
@@ -17,7 +21,7 @@ const CardRequestScreen = () => {
   const { navigate } =
     useNavigation<
       NativeStackNavigationProp<
-        IssueCardStackParamTypes & MainStackParamTypes,
+        IssueCardStackParamTypes & AdminStackParamTypes,
         IssueCardScreens.CardRequest
       >
     >();
@@ -42,20 +46,11 @@ const CardRequestScreen = () => {
         isError
           ? () => {
               resetSelections();
-              navigate(MainScreens.Wallet);
+              navigate(AdminScreens.Home);
             }
           : undefined
       }
       onPrimaryActionLabel={t('adminFlows.issueCard.confirmationPrimaryActionCta')}
-      onSecondaryAction={
-        isError
-          ? () => {
-              resetSelections();
-              navigate(IssueCardScreens.CardType);
-            }
-          : undefined
-      }
-      onSecondaryActionLabel={t('adminFlows.issueCard.confirmationSecondaryActionCta')}
       hideBackButton
     >
       {isError ? (

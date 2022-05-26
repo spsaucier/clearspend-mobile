@@ -1,10 +1,19 @@
 import * as React from 'react';
 import { render, fireEvent, within } from '@testing-library/react-native';
 import CardTypeScreen from '../CardTypeScreen';
-import { IssueCardProvider } from '@/Services/Admin/IssueCardProvider';
+import { IssueCardProvider, CardType } from '@/Services/Admin/IssueCardProvider';
+import { IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 
 jest.mock('@/Assets/Images/card-option-physical.png');
 jest.mock('@/Assets/Images/card-option-virtual.png');
+
+const mockedNavigate = jest.fn();
+
+jest.mock('@react-navigation/core', () => ({
+  useNavigation: () => ({
+    navigate: mockedNavigate,
+  }),
+}));
 
 describe('CardTypeScreen', () => {
   it('renders default state', async () => {
@@ -45,5 +54,47 @@ describe('CardTypeScreen', () => {
 
     nextButton = await findByTestId('primary-action-button');
     expect(nextButton).toBeEnabled();
+  });
+
+  it('navigates to "Employee" screen when no user is pre-selected', async () => {
+    const { findByTestId } = render(
+      <IssueCardProvider selectedCardType={CardType.Virtual}>
+        <CardTypeScreen />
+      </IssueCardProvider>,
+    );
+
+    const nextButton = await findByTestId('primary-action-button');
+
+    fireEvent.press(nextButton);
+
+    expect(mockedNavigate).toHaveBeenCalledWith(IssueCardScreens.Employee);
+  });
+
+  it('navigates to "Allocation" screen when user is pre-selected and card type is "Virtual"', async () => {
+    const { findByTestId } = render(
+      <IssueCardProvider selectedCardType={CardType.Virtual} selectedUser={{ userId: '123' }}>
+        <CardTypeScreen />
+      </IssueCardProvider>,
+    );
+
+    const nextButton = await findByTestId('primary-action-button');
+
+    fireEvent.press(nextButton);
+
+    expect(mockedNavigate).toHaveBeenCalledWith(IssueCardScreens.Allocation);
+  });
+
+  it('navigates to "Card Details" screen when user is pre-selected and card type is "Physical"', async () => {
+    const { findByTestId } = render(
+      <IssueCardProvider selectedCardType={CardType.Physical} selectedUser={{ userId: '123' }}>
+        <CardTypeScreen />
+      </IssueCardProvider>,
+    );
+
+    const nextButton = await findByTestId('primary-action-button');
+
+    fireEvent.press(nextButton);
+
+    expect(mockedNavigate).toHaveBeenCalledWith(IssueCardScreens.CardDetails);
   });
 });

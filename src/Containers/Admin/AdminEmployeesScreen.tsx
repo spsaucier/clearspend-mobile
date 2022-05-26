@@ -1,12 +1,13 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-// import { useNavigation } from '@react-navigation/core';
-// import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/core';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { AlphabetList, IData } from 'react-native-section-alphabet-list';
 import LinearGradient from 'react-native-linear-gradient';
+import { User } from 'generated/capital';
 import tw from '@/Styles/tailwind';
 import { useUsers } from '@/Queries/user';
 import { CSText as Text, FocusAwareStatusBar } from '@/Components';
@@ -21,11 +22,11 @@ import {
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
 import OptionsBottomSheetButton from '@/Components/OptionsBottomSheetButton';
-// import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 
 const AdminEmployeesScreen = () => {
-  // const { navigate } =
-  //   useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Employees>>();
+  const { navigate } =
+    useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Employees>>();
   const { t } = useTranslation();
   const { isLoading, data } = useUsers();
   const users = useMemo(
@@ -40,10 +41,17 @@ const AdminEmployeesScreen = () => {
     [data],
   );
 
+  const [selectedUser, setSelectedUser] = useState<User | undefined>();
+
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
-  const onEmployeesPress = () => {
-    bottomSheetRef?.current?.present();
+  const onEmployeesPress = (userId: string) => {
+    const user = data?.find((u) => u.userId === userId);
+
+    if (user) {
+      setSelectedUser(user);
+      bottomSheetRef?.current?.present();
+    }
   };
 
   return (
@@ -74,7 +82,10 @@ const AdminEmployeesScreen = () => {
               indexLetterStyle={tw`text-xs text-secondary font-medium`}
               data={users}
               renderCustomItem={(item: IData & { email?: string; initials?: string }) => (
-                <TouchableOpacity style={tw`flex-row py-3 px-5`} onPress={onEmployeesPress}>
+                <TouchableOpacity
+                  style={tw`flex-row py-3 px-5`}
+                  onPress={() => onEmployeesPress(item.key)}
+                >
                   <View
                     style={tw`flex-row justify-center items-center w-10 h-10 rounded-full bg-black`}
                   >
@@ -111,7 +122,7 @@ const AdminEmployeesScreen = () => {
         />
         <OptionsBottomSheetButton
           text={t('admin.employees.issueCard')}
-          onPress={() => {}}
+          onPress={() => selectedUser && navigate(AdminScreens.IssueCard, { user: selectedUser })}
           icon={CardIcon}
         />
         <OptionsBottomSheetButton

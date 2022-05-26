@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   AdminStackParamTypes,
   IssueCardStackParamTypes,
@@ -25,8 +25,10 @@ import CardConfirmationScreen from '@/Containers/Admin/IssueCard/CardConfirmatio
 
 const IssueCardStack = createNativeStackNavigator<IssueCardStackParamTypes>();
 
-export const IssueCardNavigator = () => (
-  <IssueCardProvider>
+export const IssueCardNavigator = ({
+  route: { params },
+}: NativeStackScreenProps<AdminStackParamTypes, AdminScreens.IssueCard>) => (
+  <IssueCardProvider selectedUser={params?.user}>
     <IssueCardStack.Navigator
       initialRouteName={IssueCardScreens.CardType}
       screenOptions={{ headerShown: false }}

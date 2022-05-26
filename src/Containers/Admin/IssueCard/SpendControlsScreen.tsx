@@ -6,7 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native-gesture-handler';
 import { isEqual } from 'lodash';
 import AdminScreenWrapper from '@/Containers/Admin/Components/AdminScreenWrapper';
-import { IssueCardStackParamTypes, IssueCardScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import {
+  IssueCardStackParamTypes,
+  IssueCardScreens,
+  AdminStackParamTypes,
+  AdminScreens,
+} from '@/Navigators/Admin/AdminNavigatorTypes';
 import SpendControl, { Limit, MerchantCategoryTypes, PaymentTypes } from '../SpendControl';
 import { useAllocation } from '@/Queries/allocation';
 import { AllocationDetailsResponse } from '@/generated/capital';
@@ -171,7 +176,10 @@ const SpendControlsScreen = () => {
   const { t } = useTranslation();
   const { navigate } =
     useNavigation<
-      NativeStackNavigationProp<IssueCardStackParamTypes, IssueCardScreens.SpendControls>
+      NativeStackNavigationProp<
+        IssueCardStackParamTypes & AdminStackParamTypes,
+        IssueCardScreens.SpendControls
+      >
     >();
 
   const {
@@ -219,6 +227,7 @@ const SpendControlsScreen = () => {
       onPrimaryAction={() => navigate(IssueCardScreens.CardRequest)}
       onPrimaryActionLabel={t('adminFlows.issueCard.confirmCta')}
       primaryActionDisabled={isFetching}
+      onClose={() => navigate(AdminScreens.Employees)}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         {allocationError ? (

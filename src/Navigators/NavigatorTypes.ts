@@ -1,6 +1,3 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
-import { AdminStackParamTypes } from '@/Navigators/Admin/AdminNavigatorTypes';
-
 export enum TopScreens {
   Auth = 'Auth',
   Main = 'Main',
@@ -83,7 +80,7 @@ export enum MainScreens {
 
 export type MainStackParamTypes = {
   [MainScreens.Home]: undefined;
-  [MainScreens.Admin]: NavigatorScreenParams<AdminStackParamTypes>;
+  [MainScreens.Admin]: undefined;
 
   // Prompt before confirming logged in status
   [MainScreens.ConfirmAuth]: undefined;

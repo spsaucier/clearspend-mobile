@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { SafeAreaView, Edge } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar, Button } from '@/Components';
+import { CloseCircleIcon } from '@/Components/Icons';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
   onSecondaryActionLabel?: string;
   hideBackButton?: boolean;
   edges?: Edge[];
+  onClose?: () => void;
 }
 
 const AdminScreenWrapper: FC<Props> = ({
@@ -31,6 +33,7 @@ const AdminScreenWrapper: FC<Props> = ({
   onSecondaryActionLabel,
   hideBackButton,
   edges = ['top', 'bottom'],
+  onClose,
 }) => {
   const { t } = useTranslation();
 
@@ -38,8 +41,13 @@ const AdminScreenWrapper: FC<Props> = ({
     <SafeAreaView testID={testID} style={tw`flex-1 bg-white`} edges={edges}>
       <FocusAwareStatusBar backgroundColor={tw.color('white')} barStyle="dark-content" />
       {!hideBackButton && (
-        <View style={tw`p-5`}>
+        <View style={tw`flex-row items-center justify-between p-5`}>
           <BackButtonNavigator theme="light" />
+          {onClose && (
+            <TouchableOpacity onPress={onClose}>
+              <CloseCircleIcon />
+            </TouchableOpacity>
+          )}
         </View>
       )}
       {title && (
