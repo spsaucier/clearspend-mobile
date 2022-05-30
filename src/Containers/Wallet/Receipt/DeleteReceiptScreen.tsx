@@ -12,7 +12,7 @@ import { MainScreens } from '@/Navigators/NavigatorTypes';
 const DeleteReceiptScreen = () => {
   const route = useRoute();
   const { params } = route;
-  const { cardId, accountActivityId, receiptId } = params as any;
+  const { accountActivityId, receiptId } = params as any;
 
   const navigation = useNavigation();
   const { t } = useTranslation();
@@ -25,7 +25,6 @@ const DeleteReceiptScreen = () => {
       {
         onSuccess: () => {
           navigation.navigate(MainScreens.TransactionDetails, {
-            cardId,
             transactionId: accountActivityId,
           });
         },

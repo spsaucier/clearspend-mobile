@@ -19,7 +19,7 @@ const AddReceiptScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { params } = route;
-  const { accountActivityId, cardId } = params as any;
+  const { accountActivityId } = params as any;
   const [hasCameraAccess, setHasCameraAccess] = useState<boolean>(false);
   const [previewURI, setPreviewURI] = useState<string>();
   const imageType = 'jpeg';
@@ -56,11 +56,10 @@ const AddReceiptScreen = () => {
   useEffect(() => {
     if (linked) {
       navigation.navigate(MainScreens.TransactionDetails, {
-        cardId,
         transactionId: accountActivityId,
       });
     }
-  }, [accountActivityId, cardId, linked, navigation]);
+  }, [accountActivityId, linked, navigation]);
 
   const onCameraStatusChange = (event: any) => {
     const { cameraStatus } = event;

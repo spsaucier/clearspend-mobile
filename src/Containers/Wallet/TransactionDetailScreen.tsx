@@ -97,7 +97,6 @@ export const TransactionDetailScreenContent = () => {
   }
 
   const {
-    card,
     merchant,
     amount,
     status,
@@ -132,7 +131,6 @@ export const TransactionDetailScreenContent = () => {
       navigate(MainScreens.ViewReceipt, {
         accountActivityId: accountActivityId!,
         receiptIds: receipt?.receiptId!,
-        cardId: params.cardId,
       });
     } else {
       addReceiptPanelRef.current?.present();
@@ -157,7 +155,6 @@ export const TransactionDetailScreenContent = () => {
   const onTakePhotoPress = () => {
     navigate(MainScreens.AddReceipt, {
       accountActivityId,
-      cardId: card?.cardId!,
     });
   };
 

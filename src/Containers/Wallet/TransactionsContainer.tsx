@@ -13,9 +13,15 @@ import { TWSearchInput } from '@/Components/SearchInput';
 export const TransactionsContainer = ({
   selectedCardId,
   initialSnapPoint,
+  animateOnMount = true,
+  isAdmin = false,
+  title,
 }: {
-  selectedCardId: string;
+  selectedCardId?: string;
   initialSnapPoint: number;
+  animateOnMount?: boolean;
+  isAdmin?: boolean;
+  title?: string;
 }) => {
   const { t } = useTranslation();
   const filterTransactionBottomSheetRef = useRef<BottomSheetModal>(null);
@@ -66,7 +72,6 @@ export const TransactionsContainer = ({
   return (
     <>
       <Transactions
-        cardId={selectedCardId}
         initialSnapPoint={initialSnapPoint}
         presentFiltersModal={presentFiltersModal}
         selectedFilters={selectedFilters}
@@ -80,6 +85,9 @@ export const TransactionsContainer = ({
         }
         cardTransactionsQuery={cardTransactionsQuery}
         displayResultCount={searchText.length > 0 || selectedFilters.length > 0}
+        animateOnMount={animateOnMount}
+        isAdmin={isAdmin}
+        title={title || t('wallet.transactions.recentTransactions')}
       />
       <FilterTransactionsBottomSheet
         ref={filterTransactionBottomSheetRef}

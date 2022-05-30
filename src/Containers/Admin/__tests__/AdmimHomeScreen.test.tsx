@@ -7,8 +7,27 @@ import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClien
 import { managerAllocationsAndPermissionsResponse } from '@/Helpers/testing/fixtures/permissions';
 import AdminHomeScreen from '../AdminHomeScreen';
 import { usersResponse } from '@/Helpers/testing/fixtures/user';
+import { transactions } from '@/Helpers/testing/fixtures/transactions';
 
-const server = setupServer(rest.get(`/users`, (req, res, ctx) => res(ctx.json(usersResponse[0]))));
+jest.mock('@gorhom/bottom-sheet', () => {
+  const RN = require('react-native');
+
+  return {
+    __esModule: true,
+    ...require('@gorhom/bottom-sheet/mock'),
+    // BottomSheetComponent mock throws an error so override as follows
+    BottomSheetView: RN.View,
+    BottomSheetScrollView: RN.ScrollView,
+    BottomSheetSectionList: RN.SectionList,
+    BottomSheetFlatList: RN.FlatList,
+    BottomSheetVirtualizedList: RN.VirtualizedList,
+  };
+});
+
+const server = setupServer(
+  rest.get(`/users`, (req, res, ctx) => res(ctx.json(usersResponse[0]))),
+  rest.post(`/account-activity`, (req, res, ctx) => res(ctx.json(transactions))),
+);
 
 beforeAll(() => {
   server.listen();

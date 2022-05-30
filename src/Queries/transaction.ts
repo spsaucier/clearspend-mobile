@@ -31,6 +31,7 @@ export const useCardTransactions = ({
           withoutReceipt: withoutReceipt || undefined,
           missingExpenseCategory: missingExpenseCategory || undefined,
           pageRequest: { pageNumber: request.pageParam || 0, pageSize },
+          types: ['NETWORK_CAPTURE', 'NETWORK_AUTHORIZATION', 'NETWORK_REFUND', 'CARD_FUND_RETURN'],
         })
         .then((res) => res.data),
     {

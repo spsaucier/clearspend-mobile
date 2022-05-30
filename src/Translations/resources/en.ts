@@ -470,6 +470,7 @@ export default {
     requestsTab: 'Requests',
     issueACard: 'Issue a card',
     increaseALimit: 'Increase a limit',
+    transactionsTitle: 'Recent company transactions',
     requests: {
       newRequestFrom: 'New request from ',
     },

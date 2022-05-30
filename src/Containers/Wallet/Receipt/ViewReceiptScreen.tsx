@@ -22,7 +22,7 @@ const ViewReceiptScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { params } = route;
-  const { accountActivityId, receiptIds, cardId } = params as any;
+  const { accountActivityId, receiptIds } = params as any;
   const [currentReceiptId, setCurrentReceiptId] = useState(receiptIds[0]);
 
   const [controlsEnabled, setControlsEnabled] = useState(true);
@@ -35,7 +35,6 @@ const ViewReceiptScreen = () => {
     });
 
     navigation.navigate(MainScreens.TransactionDetails, {
-      cardId,
       transactionId: accountActivityId,
     });
   };
@@ -51,7 +50,6 @@ const ViewReceiptScreen = () => {
 
   const onDeleteReceiptPress = () => {
     navigation.navigate(MainScreens.DeleteReceipt, {
-      cardId,
       accountActivityId,
       receiptId: currentReceiptId,
     });
@@ -60,7 +58,6 @@ const ViewReceiptScreen = () => {
   const onTakePhotoPress = () => {
     navigation.navigate(MainScreens.AddReceipt, {
       accountActivityId,
-      cardId,
     });
   };
 

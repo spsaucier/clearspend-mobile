@@ -108,7 +108,7 @@ export type MainStackParamTypes = {
   [MainScreens.ProfileScreen]: undefined;
 
   // Wallet and Cards
-  [MainScreens.AddReceipt]: { accountActivityId: string; cardId: string };
+  [MainScreens.AddReceipt]: { accountActivityId: string };
   [MainScreens.CardDetails]: { cardId: string };
   [MainScreens.CardInfo]: { cardId: string };
   [MainScreens.CardLostStolen]: { cardId: string };
@@ -119,9 +119,9 @@ export type MainStackParamTypes = {
     expenseCategoryId: string | undefined;
   };
   [MainScreens.Notifications]: undefined;
-  [MainScreens.TransactionDetails]: { cardId: string; transactionId: string };
-  [MainScreens.ViewReceipt]: { accountActivityId: string; receiptIds: string[]; cardId: string };
-  [MainScreens.DeleteReceipt]: { cardId: string; accountActivityId: string; receiptId: string };
+  [MainScreens.TransactionDetails]: { transactionId: string };
+  [MainScreens.ViewReceipt]: { accountActivityId: string; receiptIds: string[] };
+  [MainScreens.DeleteReceipt]: { accountActivityId: string; receiptId: string };
   [MainScreens.Wallet]?: {
     initialFocusedCardId?: string;
   };

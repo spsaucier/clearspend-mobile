@@ -11,34 +11,14 @@ import BottomSheet, {
   useBottomSheetInternal,
 } from '@gorhom/bottom-sheet';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { Status, TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
+import { TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, AnimatedCSText, CloseIconButton, CSText } from '@/Components';
 import { FilterIcon } from '@/Components/Icons';
 import { TransactionFilterOption } from '@/Containers/Wallet/Components/FilterTransactionsBottomSheet';
-import { PagedDataAccountActivityResponse } from '@/generated/capital';
-
-type TransactionType = {
-  accountActivityId: string;
-  merchant: {
-    name: string;
-    merchantLogoUrl: string | undefined;
-    merchantCategoryGroup: string;
-  };
-  amount: { amount: number };
-  status: Status;
-  receipt: { receiptId: string[] };
-  activityTime: string;
-  expenseDetails: {
-    categoryName: string;
-    iconRef: number;
-    expenseCategoryId: string;
-    status: string;
-  };
-};
+import { PagedDataAccountActivityResponse, AccountActivityResponse } from '@/generated/capital';
 
 type SharedProps = {
-  cardId: string;
   presentFiltersModal: () => void;
   selectedFilters: TransactionFilterOption[];
   toggleFilter: (filter: TransactionFilterOption) => void;
@@ -49,10 +29,11 @@ type SharedProps = {
 
 type TransactionsContentProps = {
   expanded: boolean;
+  title: string;
+  isAdmin?: boolean;
 } & SharedProps;
 
 const TransactionsContent = ({
-  cardId,
   expanded,
   presentFiltersModal,
   selectedFilters,
@@ -60,6 +41,8 @@ const TransactionsContent = ({
   searchInputComponent,
   cardTransactionsQuery,
   displayResultCount,
+  title,
+  isAdmin,
 }: TransactionsContentProps) => {
   const { t } = useTranslation();
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
@@ -138,7 +121,7 @@ const TransactionsContent = ({
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={[tw`flex mx-6 content-start`]}>
           <AnimatedCSText style={[tw`text-base self-start`, transactionsTitleScaleAnimatedStyle]}>
-            {t('wallet.transactions.recentTransactions')}
+            {title}
           </AnimatedCSText>
 
           <View
@@ -233,21 +216,13 @@ const TransactionsContent = ({
                         {format(dateParsed, 'MMM dd, yyyy')}
                       </CSText>
                     </View>
-                    {transactions.map((transaction: TransactionType) => (
+                    {transactions.map((transaction: AccountActivityResponse) => (
                       <TransactionRow
                         key={transaction.accountActivityId}
-                        cardId={cardId}
-                        transactionId={transaction.accountActivityId}
-                        merchantName={transaction.merchant.name}
-                        amount={transaction.amount.amount}
-                        status={transaction.status}
-                        receiptIds={transaction.receipt?.receiptId}
-                        time={transaction.activityTime}
-                        merchantLogoUrl={transaction.merchant.merchantLogoUrl}
-                        merchantCategoryGroup={transaction.merchant.merchantCategoryGroup}
+                        isAdmin={isAdmin}
+                        transaction={transaction}
                         animatedIndex={animatedIndex}
                         animatedPosition={animatedPosition}
-                        expenseDetails={transaction.expenseDetails}
                       />
                     ))}
                   </View>
@@ -275,10 +250,12 @@ const TransactionsContent = ({
 
 type TransactionProps = {
   initialSnapPoint: number;
+  animateOnMount?: boolean;
+  isAdmin?: boolean;
+  title: string;
 } & SharedProps;
 
 const Transactions = ({
-  cardId,
   initialSnapPoint,
   presentFiltersModal,
   selectedFilters,
@@ -286,6 +263,9 @@ const Transactions = ({
   searchInputComponent,
   cardTransactionsQuery,
   displayResultCount,
+  animateOnMount,
+  isAdmin,
+  title,
 }: TransactionProps) => {
   const expandedSnapPoint = '100%';
 
@@ -299,21 +279,33 @@ const Transactions = ({
   return (
     <BottomSheet
       enableHandlePanningGesture
+      style={{
+        shadowColor: '#000000',
+        shadowOffset: {
+          width: 0,
+          height: 8,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 24,
+        elevation: 10,
+      }}
       snapPoints={snapPointMemo}
       handleStyle={[tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`]}
       handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
       onChange={(e) => setExpanded(e === 1)}
+      animateOnMount={animateOnMount}
     >
       <BottomSheetView onLayout={handleContentLayout}>
         <TransactionsContent
-          cardId={cardId}
           expanded={expanded}
+          title={title}
           presentFiltersModal={presentFiltersModal}
           selectedFilters={selectedFilters}
           toggleFilter={toggleFilter}
           searchInputComponent={searchInputComponent}
           cardTransactionsQuery={cardTransactionsQuery}
           displayResultCount={displayResultCount}
+          isAdmin={isAdmin}
         />
       </BottomSheetView>
     </BottomSheet>
