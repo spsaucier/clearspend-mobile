@@ -21,7 +21,7 @@ describe('Login screen', () => {
       </MockFeatureFlagsProvider>,
     );
 
-    const forgotPasswordLink = await findByTestId('forgotPasswordLink');
+    const forgotPasswordLink = await findByTestId('loginScreen-forgotPasswordLink');
     act(() => {
       fireEvent.press(forgotPasswordLink);
     });

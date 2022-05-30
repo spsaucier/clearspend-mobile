@@ -98,15 +98,27 @@ const EnterMobileScreen = () => {
             textInputProps={{
               selectionColor: tw.color('bg-primary'),
               placeholderTextColor: tw.color('white'),
+              testID: 'enterMobileScreen-phoneInput',
+              accessibilityLabel: t('enterMobile.title'),
             }}
             withDarkTheme
             autoFocus
           />
         )}
-        {mobileNumError && <CSText style={tw`text-white mt-1`}>{t('enterMobile.error')}</CSText>}
+        {mobileNumError && (
+          <CSText
+            style={tw`text-white mt-1`}
+            testID="enterMobileScreen-error"
+            accessibilityLabel={t('enterMobile.error')}
+          >
+            {t('enterMobile.error')}
+          </CSText>
+        )}
         <Button
           containerStyle={[tw`mt-auto mb-4`, mobile.length !== 10 ? tw`bg-gray-5` : tw`bg-primary`]}
           onPress={onSubmit}
+          testID="enterMobileScreen-sendVerificationBtn"
+          accessibilityLabel={t('enterMobile.buttonCta')}
           disabled={mobileNumError || mobile.length !== 10 || loading}
         >
           {t('enterMobile.buttonCta')}

@@ -116,26 +116,42 @@ const SetPasswordScreen = () => {
               setSubmissionError(undefined);
             }}
             autoFocus
+            testID="setOwnPasswordScreen-password"
+            accessibilityLabel={`${t('setPassword.titlePart1')} ${t('setPassword.titlePart2')}`}
+            secureTextIconTestID="setOwnPasswordScreen-passwordSecureIcon"
           />
           {submissionError ? (
-            <CSText testID="submissionErrorText" style={tw`text-white mb-5`}>
+            <CSText
+              testID="setOwnPasswordScreen-submissionError"
+              style={tw`text-white mb-5`}
+              accessibilityLabel={submissionError}
+            >
               {submissionError}
             </CSText>
           ) : null}
           <View>
-            <PasswordRuleRow label={t('setPassword.rules.length')} matchingRule={passwordValid()} />
+            <PasswordRuleRow
+              testID="setOwnPasswordScreen-ruleLenghtCheckBox"
+              label={t('setPassword.rules.length')}
+              matchingRule={passwordValid()}
+            />
           </View>
         </View>
 
         <View style={tw``}>
           <View style={tw`flex-row mb-6`}>
-            <CheckBoxInput onToggle={setConditionsAccepted} />
+            <CheckBoxInput
+              onToggle={setConditionsAccepted}
+              testID="setOwnPasswordScreen-termsAndPrivacyCheckBox"
+              accessibilityLabel={t('setPassword.termsAndPrivacyAcceptanceAccessiblityLabel')}
+            />
             <CSText style={tw`mx-3 text-base text-white`}>
               <Trans
                 i18nKey={t('setPassword.termsAndPrivacyAcceptance')}
                 components={{
                   key1: (
                     <CSText
+                      testID="setOwnPasswordScreen-termsLink"
                       style={tw`text-primary underline`}
                       onPress={() => launchURL(Constants.TERMS_CONDITIONS_URL)}
                     />
@@ -143,6 +159,7 @@ const SetPasswordScreen = () => {
                   key2: (
                     <CSText
                       style={tw`text-primary underline`}
+                      testID="setOwnPasswordScreen-privacyLink"
                       onPress={() => launchURL(Constants.PRIVACY_POLICY_URL)}
                     />
                   ),
@@ -155,7 +172,9 @@ const SetPasswordScreen = () => {
             containerStyle={[tw`mt-auto mb-4`, buttonDisabled ? tw`bg-gray-5` : tw`bg-primary`]}
             onPress={changePasswordOnPress}
             loading={submitting}
+            testID="setOwnPasswordScreen-changePwdBtn"
             disabled={buttonDisabled}
+            accessibilityLabel={t('setPassword.buttonCta')}
           >
             {t('setPassword.buttonCta')}
           </Button>

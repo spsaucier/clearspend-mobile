@@ -85,11 +85,18 @@ const EnterOTPScreen = () => {
           errorTitle={t('otp.incorrect')}
           onPasscodeChanged={() => setHasError(false)}
           onSuccessFinished={handleSubmit}
+          accessibilityLabel={t('otp.enterCode')}
+          testID="otpScreen-codeInputField"
         />
 
         <View style={tw`flex-row justify-center px-3`} />
 
-        <TouchableOpacity style={tw`mt-auto mt-10`} onPress={resendCode}>
+        <TouchableOpacity
+          style={tw`mt-auto mt-10`}
+          onPress={resendCode}
+          accessibilityLabel={t('otp.resendCode')}
+          testID="otpScreen-resendCodeBtn"
+        >
           <View style={tw`items-center my-6`}>
             <CSText style={tw`text-sm text-white mb-6`}>{t('otp.resendCode')}</CSText>
           </View>

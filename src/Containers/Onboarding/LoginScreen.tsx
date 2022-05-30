@@ -201,6 +201,8 @@ const LoginScreen = () => {
                   onSubmitEditing={() => passwordRef?.current?.focus()}
                   returnKeyType="next"
                   autoFocus
+                  testID="loginScreen-emailAddress"
+                  accessibilityLabel={t('login.emailPlaceholder')}
                 />
                 <CSTextInput
                   ref={passwordRef}
@@ -213,21 +215,39 @@ const LoginScreen = () => {
                   value={password}
                   secureTextEntry
                   onSubmitEditing={() => handleLogin()}
+                  accessibilityLabel={t('login.passwordPlaceholder')}
+                  testID="loginScreen-password"
+                  secureTextIconTestID="loginScreen-passwordSecureIcon"
                 />
 
                 <View style={tw`items-center mb-4`}>
-                  {authError && <CSText style={tw`text-white `}>{authError}</CSText>}
+                  {authError && (
+                    <CSText
+                      style={tw`text-white `}
+                      testID="loginScreen-errorTxt"
+                      accessibilityLabel={authError}
+                    >
+                      {authError}
+                    </CSText>
+                  )}
                 </View>
 
                 <Button
                   onPress={() => handleLogin()}
                   disabled={loginButtonDisabled}
                   loading={processing}
+                  testID="loginScreen-loginBtn"
+                  accessibilityLabel={t('login.buttonLogin')}
                 >
                   {t('login.buttonLogin')}
                 </Button>
               </View>
-              <TouchableOpacity onPress={launchForgotPassword} testID="forgotPasswordLink">
+              <TouchableOpacity
+                onPress={launchForgotPassword}
+                testID="loginScreen-forgotPasswordLink"
+                accessibilityLabel={t('login.forgotPassword')}
+                accessibilityRole="button"
+              >
                 <CSText style={tw`text-sm text-primary mt-6 self-center`}>
                   {t('login.forgotPassword')}
                 </CSText>

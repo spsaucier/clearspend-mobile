@@ -60,7 +60,7 @@ const UpdatedTermsAndConditionsScreen = () => {
 
           <TouchableOpacity
             style={tw`flex-row justify-between px-4 py-2 bg-secondary-light items-center rounded my-4`}
-            testID="termsAndPrivacyLink"
+            testID="updatedTermsScreen-termsLink"
             onPress={() => launchURL(Constants.TERMS_CONDITIONS_URL)}
           >
             <CSText style={tw`text-primary`}>
@@ -70,7 +70,7 @@ const UpdatedTermsAndConditionsScreen = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            testID="privacyPolicyLink"
+            testID="updatedTermsScreen-privacyLink"
             style={tw`flex-row justify-between px-4 py-2 bg-secondary-light items-center rounded`}
             onPress={() => launchURL(Constants.PRIVACY_POLICY_URL)}
           >
@@ -86,12 +86,17 @@ const UpdatedTermsAndConditionsScreen = () => {
             small
             onPress={onAcceptTermsAndConditionsPress}
             loading={isLoading}
-            testID="acceptAndContinueButton"
+            testID="updatedTermsScreen-acceptAndContinueBtn"
+            accessibilityLabel={t('termsAndPrivacyPolicyUpdated.acceptAndContinue')}
           >
             {t('termsAndPrivacyPolicyUpdated.acceptAndContinue')}
           </Button>
 
-          <TouchableOpacity onPress={cancelAndLogout} testID="cancelButton">
+          <TouchableOpacity
+            onPress={cancelAndLogout}
+            testID="updatedTermsScreen-cancelBtn"
+            accessibilityLabel={t('termsAndPrivacyPolicyUpdated.cancelAndLogout')}
+          >
             <CSText style={tw`text-sm text-primary mt-4 self-center`}>
               {t('termsAndPrivacyPolicyUpdated.cancelAndLogout')}
             </CSText>

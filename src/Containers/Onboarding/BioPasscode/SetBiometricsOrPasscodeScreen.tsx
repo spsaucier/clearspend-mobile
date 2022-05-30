@@ -56,11 +56,16 @@ const SetBiometricsOrPasscodeScreen = () => {
   });
 
   return (
-    <KeyboardAvoidingView style={tw`flex-1 pt-20  `} behavior="padding">
+    <KeyboardAvoidingView style={tw`flex-1 pt-20`} behavior="padding">
       <OnboardingHeader hideBackArrow title={t('loginOptions.title')} subTitle={subTitle} />
 
       {availableBio && !biometricsEnabled ? (
-        <TouchableOpacity style={tw`flex-row mb-7`} onPress={onEnableBiometrics}>
+        <TouchableOpacity
+          style={tw`flex-row mb-7`}
+          onPress={onEnableBiometrics}
+          accessibilityLabel={t(`loginOptions.${availableBio}.${Platform.OS}.title`)}
+          testID={`setBiometricsPINScreen-${availableBio}`}
+        >
           <RoundedBox>
             {availableBio === AuthenticationMethods.FACE ? (
               <FaceIdIcon size={26} />
@@ -79,7 +84,12 @@ const SetBiometricsOrPasscodeScreen = () => {
         </TouchableOpacity>
       ) : null}
 
-      <TouchableOpacity style={tw`flex-row mb-7`} onPress={onPressPasscode}>
+      <TouchableOpacity
+        style={tw`flex-row mb-7`}
+        onPress={onPressPasscode}
+        testID="setBiometricsPINScreen-PIN"
+        accessibilityLabel={t('loginOptions.pin')}
+      >
         <RoundedBox>
           <PinIcon size={34} />
         </RoundedBox>

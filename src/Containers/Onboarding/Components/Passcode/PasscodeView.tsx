@@ -7,6 +7,7 @@ import {
   Cursor,
 } from 'react-native-confirmation-code-field';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import { defaultCellInputStyles } from '@/Helpers/StyleHelpers';
@@ -34,12 +35,14 @@ export const PasscodeView: React.FC<Props> = ({
   onPasscodeChanged,
   onSuccessFinished,
 }: Props) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: PASSCODE_LENGTH });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+
   const renderCell = ({
     index,
     symbol,
@@ -92,6 +95,8 @@ export const PasscodeView: React.FC<Props> = ({
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           renderCell={renderCell}
+          accessibilityLabel={t('loginOptions.passcode.enterPINNumber')}
+          testID="passcodeView-codeInputField"
         />
       </View>
       <View style={tw.style('items-center')}>

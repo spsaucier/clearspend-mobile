@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, { Ref, useState } from 'react';
-
+import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { EyeIcon, EyeOpenIcon } from '@/Components/Icons';
 import { CSText } from './Text';
@@ -20,6 +20,7 @@ export type Props = {
   containerStyle?: StyleProp<ViewStyle>;
   limitFontScale?: boolean;
   theme?: 'light' | 'dark';
+  secureTextIconTestID?: string;
 } & TextInputProps;
 
 export const CSTextInput = React.forwardRef(
@@ -34,16 +35,25 @@ export const CSTextInput = React.forwardRef(
       secureTextEntry,
       allowFontScaling = true,
       theme = 'dark',
+      secureTextIconTestID,
       ...rest
     }: Props,
     ref: Ref<TextInput>,
   ) => {
     const [showSecureInput, setShowSecureInput] = useState(secureTextEntry);
     const darkTheme = theme === 'dark';
+    const { t } = useTranslation();
 
     const renderEye = () => (
       <TouchableOpacity
         style={tw`h-10 w-10 items-center justify-center`}
+        accessibilityRole="button"
+        testID={secureTextIconTestID}
+        accessibilityLabel={
+          showSecureInput
+            ? t('components.textInput.showPassword')
+            : t('components.textInput.hidePassword')
+        }
         onPress={() => setShowSecureInput(!showSecureInput)}
       >
         {showSecureInput ? (

@@ -35,7 +35,7 @@ describe('Updated Terms and Conditions', () => {
   it('Launches browser when tapping Terms of Service link', async () => {
     const { findByTestId } = wrapperRender();
 
-    const termsAndConditionsLink = await findByTestId('termsAndPrivacyLink');
+    const termsAndConditionsLink = await findByTestId('updatedTermsScreen-termsLink');
     act(() => {
       fireEvent.press(termsAndConditionsLink);
     });
@@ -46,7 +46,7 @@ describe('Updated Terms and Conditions', () => {
   it('Launches browser when tapping Privacy Policy link', async () => {
     const { findByTestId } = wrapperRender();
 
-    const privacyPolicyLink = await findByTestId('privacyPolicyLink');
+    const privacyPolicyLink = await findByTestId('updatedTermsScreen-privacyLink');
     act(() => {
       fireEvent.press(privacyPolicyLink);
     });
@@ -57,7 +57,7 @@ describe('Updated Terms and Conditions', () => {
   it('Cancel and logout', async () => {
     const { findByTestId } = wrapperRender();
 
-    const logoutButton = await findByTestId('cancelButton');
+    const logoutButton = await findByTestId('updatedTermsScreen-cancelBtn');
     act(() => {
       fireEvent.press(logoutButton);
     });
@@ -75,7 +75,7 @@ describe('Updated Terms and Conditions', () => {
     });
 
     const { findByTestId } = wrapperRender();
-    const acceptAndContinueButton = await findByTestId('acceptAndContinueButton');
+    const acceptAndContinueButton = await findByTestId('updatedTermsScreen-acceptAndContinueBtn');
     act(() => {
       fireEvent.press(acceptAndContinueButton);
     });

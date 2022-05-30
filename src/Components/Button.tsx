@@ -19,6 +19,7 @@ type Props = {
   small?: boolean;
   loading?: boolean;
   theme?: 'primary' | 'dark';
+  accessibilityLabel?: string;
 };
 
 export const Button = ({
@@ -34,6 +35,7 @@ export const Button = ({
   small = false,
   loading = false,
   theme = 'primary',
+  accessibilityLabel,
 }: Props) => {
   const isPrimaryTheme = theme === 'primary';
   const isDarkTheme = theme === 'dark';
@@ -51,6 +53,7 @@ export const Button = ({
     if (_.isString(children) || label) {
       return (
         <CSText
+          accessibilityLabel={accessibilityLabel}
           style={[
             tw.style(
               isPrimaryTheme && 'text-secondary',
@@ -70,6 +73,7 @@ export const Button = ({
 
   return (
     <TouchableOpacity
+      accessibilityRole="button"
       onPress={onPress}
       style={[
         tw.style(

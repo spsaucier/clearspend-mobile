@@ -6,6 +6,12 @@ export default {
     reload: 'Reload',
     back: 'BACK',
   },
+  components: {
+    textInput: {
+      showPassword: 'Show password',
+      hidePassword: 'Hide password',
+    },
+  },
   error: {
     generic: 'Looks like something went wrong.',
   },
@@ -62,6 +68,7 @@ export default {
     resendCode: 'Resend code',
     buttonCta: 'Verified',
     incorrect: 'The entered OTP was incorrect',
+    enterCode: 'Enter code',
   },
   loginOptions: {
     title: 'Login options',
@@ -100,10 +107,10 @@ export default {
       mismatch: 'Your PINs did not match',
       incorrect: 'Incorrect PIN',
       tryAgain: 'Please try again',
+      enterPINNumber: 'Enter PIN number',
     },
   },
   setPassword: {
-    title: 'Set your own password',
     titlePart1: 'Set your own',
     titlePart2: ' password',
     subTitle: 'The password we sent to your email was temporary. Please set your own password now.',
@@ -118,6 +125,8 @@ export default {
     buttonCta: 'Next',
     termsAndPrivacyAcceptance:
       'I am 18 years of age and agree to ClearSpend’s <key1>Terms of Service</key1> and <key2>Privacy Policy</key2>',
+    termsAndPrivacyAcceptanceAccessiblityLabel:
+      'I am 18 years of age and agree to ClearSpend’s Terms of Service and Privacy Policy',
   },
   forgotPassword: {
     enterEmail: {

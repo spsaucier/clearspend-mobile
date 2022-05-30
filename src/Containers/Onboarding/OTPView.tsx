@@ -14,6 +14,7 @@ interface Props {
   preface?: JSX.Element;
   title?: JSX.Element;
   testID?: string;
+  accessibilityLabel?: string;
   theme?: 'dark' | 'light';
   messaging?: string;
   onPasscodeChanged?: (newCode: string) => void;
@@ -45,6 +46,7 @@ const lightStyles = StyleSheet.create({
 export const OTPView: React.FC<Props> = ({
   title,
   testID,
+  accessibilityLabel,
   theme = 'dark',
   errorTitle,
   error = false,
@@ -111,10 +113,19 @@ export const OTPView: React.FC<Props> = ({
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           renderCell={renderCell}
+          accessibilityLabel={accessibilityLabel}
         />
       </View>
       <View style={tw.style('items-center')}>
-        {error ? <CSText style={[tw`text-white mt-3`, errorTextStyle]}>{errorTitle}</CSText> : null}
+        {error ? (
+          <CSText
+            style={[tw`text-white mt-3`, errorTextStyle]}
+            accessibilityLabel={errorTitle}
+            testID="otpView-error"
+          >
+            {errorTitle}
+          </CSText>
+        ) : null}
       </View>
     </View>
   );
