@@ -20,24 +20,23 @@ const ViewReceiptThumbnail = ({ receiptIds }: { receiptIds: string[] }) => {
   return (
     <View style={tw`flex`}>
       <View style={tw`w-full h-full `}>
-        {isError && (
+        {isError ? (
           <View style={tw`flex-1 justify-center items-center`}>
             <InfoIcon color={tw.color('black')} />
             <CSText style={tw`text-xs`}>{t('wallet.receipt.unableToLoadReceipt')}</CSText>
           </View>
-        )}
-        {!isError && (!isFetching || !receiptData) && (
+        ) : isFetching || !receiptData ? (
           <View style={tw`flex-1 justify-center items-center`}>
             <ActivityIndicator color="black" style={tw`w-10`} />
           </View>
-        )}
+        ) : null}
 
         {receiptData ? (
           detectMimeType(receiptData.contentType, receiptData.data) === MediaType.image ? (
             <Image
               source={{ uri: receiptData.data }}
               style={tw`w-full h-full `}
-              resizeMode="cover"
+              resizeMethod="resize"
             />
           ) : (
             <Pdf

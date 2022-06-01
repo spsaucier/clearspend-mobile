@@ -5,6 +5,8 @@ export default {
     continue: 'Continue',
     reload: 'Reload',
     back: 'BACK',
+    cancel: 'Cancel',
+    goToSettings: 'Go to Settings',
   },
   components: {
     textInput: {
@@ -207,7 +209,6 @@ export default {
       uploadingReceiptTime: 'This shouldn’t take too long',
       useThisPhoto: 'Use this photo',
       retakePhoto: 'Re-take photo',
-      notAuthorizedCameraAccess: 'ClearSpend needs access to your camera to take receipt photos',
       uploadNewReceipt: 'Upload a new receipt',
       addAnotherReceipt: 'Add another receipt',
       deleteReceipt: 'Delete receipt',
@@ -216,6 +217,8 @@ export default {
       deleteCancel: 'Cancel',
       deleteError: 'There was a problem deleting this receipt. Please try again later.',
       unableToLoadReceipt: 'Unable to load receipt',
+      reEnableCameraAccess:
+        'Please re-enable camera access for the ClearSpend app in your phone’s settings.',
     },
     transactionDetails: {
       title: 'Transaction Details',

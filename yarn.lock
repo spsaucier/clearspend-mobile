@@ -8434,13 +8434,6 @@ react-native-blob-util@^0.14.0:
     base-64 "0.1.0"
     glob "^7.1.6"
 
-react-native-camera@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.npmjs.org/react-native-camera/-/react-native-camera-4.2.1.tgz"
-  integrity sha512-+Vkql24PFYQfsPRznJCvPwJQfyzCnjlcww/iZ4Ej80bgivKjL9eU0IMQIXp4yi6XCrKi4voWXxIDPMupQZKeIQ==
-  dependencies:
-    prop-types "^15.6.2"
-
 react-native-codegen@^0.0.7:
   version "0.0.7"
   resolved "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.0.7.tgz"
@@ -8656,6 +8649,11 @@ react-native-vector-icons@>=7.0.0, react-native-vector-icons@^9.0.0:
     lodash.template "^4.5.0"
     prop-types "^15.7.2"
     yargs "^16.1.1"
+
+react-native-vision-camera@2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-2.13.0.tgz#844ed5872895b25cc26004d1762c2d7139845d6e"
+  integrity sha512-7rMkw/AUPuqP1wSN470IvZao2M/UqRzMyaBZdCJQhubVjEbQRXSvg7rz1rg9camRD1S8v/yS4k4bkbKFBth3mw==
 
 react-native-webview@^11.15.1:
   version "11.15.1"

@@ -1,31 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, View } from 'react-native';
-import { RNCamera } from 'react-native-camera';
+import { Alert, AppState, Image, Linking, Platform, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
+import { Camera, CameraDevice } from 'react-native-vision-camera';
 
-import { ActivityIndicator, Button, CSText } from '@/Components';
+import { Button, CSText } from '@/Components';
 import { CloseIcon, LightningIcon, LightningOffIcon } from '@/Components/Icons';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import tw from '@/Styles/tailwind';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
+import { mixpanel } from '@/Services/utils/analytics';
+
+const imageType = 'jpeg';
 
 const AddReceiptScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
+  const isFocused = useIsFocused();
+
   const { params } = route;
   const { accountActivityId } = params as any;
-  const [hasCameraAccess, setHasCameraAccess] = useState<boolean>(false);
-  const [previewURI, setPreviewURI] = useState<string>();
-  const imageType = 'jpeg';
 
+  const cameraRef = useRef<Camera>(null);
+  const [cameraDevice, setCameraDevice] = useState<CameraDevice>();
+  const [previewURI, setPreviewURI] = useState<string>();
+  const [processingPicture, setProcessingPicture] = useState<boolean>(false);
   const [flashOn, setFlashOn] = useState(false);
-  const cameraRef = useRef<RNCamera>(null);
 
   const { uploadReceiptState, uploadReceipt, isUploading } = useUploadReceipt({
     accountActivityId,
@@ -39,11 +44,27 @@ const AddReceiptScreen = () => {
   const { receiptId, linked } = uploadReceiptState;
 
   const onTakePic = async () => {
-    const data = await cameraRef.current?.takePictureAsync({ quality: 0.5, imageType });
+    setProcessingPicture(true);
 
-    const { uri } = data!;
-
-    setPreviewURI(uri);
+    cameraRef.current
+      ?.takePhoto({
+        skipMetadata: true,
+        qualityPrioritization: 'balanced',
+        flash: flashOn ? 'on' : 'off',
+      })
+      .then((data) => {
+        let { path } = data;
+        if (Platform.OS === 'android') {
+          path = `file://${path}`;
+        }
+        setPreviewURI(path);
+      })
+      .catch((ex) => {
+        mixpanel.track('Error', ex);
+      })
+      .finally(() => {
+        setProcessingPicture(false);
+      });
   };
 
   const submitReceipt = () => {
@@ -53,6 +74,44 @@ const AddReceiptScreen = () => {
     }
   };
 
+  const inferCameraDevice = () =>
+    Camera.getAvailableCameraDevices().then((response) => {
+      const camera = response.find((x) => x.position === 'back' && x.neutralZoom === 1.0);
+      setCameraDevice(camera);
+    });
+
+  useEffect(() => {
+    Camera.requestCameraPermission().then((permission) => {
+      if (permission === 'denied') {
+        Alert.alert('', t('wallet.receipt.reEnableCameraAccess'), [
+          {
+            text: t('general.cancel'),
+            onPress: () => navigation.goBack(),
+          },
+          {
+            text: t('general.goToSettings'),
+            onPress: () => Linking.openSettings(),
+          },
+        ]);
+      } else {
+        inferCameraDevice();
+      }
+    });
+  }, [isFocused]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState === 'active') {
+        Camera.getCameraPermissionStatus().then((permission) => {
+          if (permission === 'authorized') {
+            inferCameraDevice();
+          }
+        });
+      }
+    });
+    return () => subscription.remove();
+  }, []);
+
   useEffect(() => {
     if (linked) {
       navigation.navigate(MainScreens.TransactionDetails, {
@@ -60,12 +119,6 @@ const AddReceiptScreen = () => {
       });
     }
   }, [accountActivityId, linked, navigation]);
-
-  const onCameraStatusChange = (event: any) => {
-    const { cameraStatus } = event;
-
-    setHasCameraAccess(cameraStatus === 'READY');
-  };
 
   return (
     <View style={tw`flex-1 bg-black`}>
@@ -77,7 +130,7 @@ const AddReceiptScreen = () => {
               onPress={() => setFlashOn(!flashOn)}
             >
               {!previewURI &&
-                hasCameraAccess &&
+                cameraDevice &&
                 (flashOn ? <LightningIcon color={tw.color('success')} /> : <LightningOffIcon />)}
             </TouchableOpacity>
             <View style={tw`flex-grow  justify-center items-center`}>
@@ -94,45 +147,22 @@ const AddReceiptScreen = () => {
           </View>
           <View style={tw`flex-grow border-1 border-gray-75 rounded-10 overflow-hidden`}>
             {previewURI ? (
-              <View style={tw`flex-1`}>
-                <Image style={tw`flex-1`} source={{ uri: previewURI }} />
-              </View>
-            ) : (
-              <RNCamera
-                ref={cameraRef}
-                captureAudio={false}
-                flashMode={flashOn ? 'on' : 'off'}
+              <Image style={tw`flex-1`} source={{ uri: previewURI }} />
+            ) : cameraDevice ? (
+              <Camera
+                device={cameraDevice}
+                isActive={isFocused}
+                photo
                 style={tw`flex-1`}
-                onStatusChange={onCameraStatusChange}
-                type={RNCamera?.Constants.Type.back}
-              >
-                {({ status }) => {
-                  if (status === 'PENDING_AUTHORIZATION') {
-                    return (
-                      <View style={tw`flex-1 justify-center items-center`}>
-                        <ActivityIndicator />
-                      </View>
-                    );
-                  }
-                  if (status === 'NOT_AUTHORIZED') {
-                    return (
-                      <View style={tw`flex-1 justify-center items-center px-6`}>
-                        <CSText style={tw`text-white text-center`}>
-                          {t('wallet.receipt.notAuthorizedCameraAccess')}
-                        </CSText>
-                      </View>
-                    );
-                  }
-                  return null;
-                }}
-              </RNCamera>
-            )}
+                ref={cameraRef}
+              />
+            ) : null}
           </View>
           {previewURI ? (
-            <View style={tw`p-4 h-30 items-center justify-between`}>
+            <View style={tw`p-4 h-30 w-full`}>
               <Button
                 small
-                containerStyle={tw`w-full`}
+                containerStyle={tw`w-full justify-center`}
                 onPress={() => {
                   submitReceipt();
                 }}
@@ -140,6 +170,7 @@ const AddReceiptScreen = () => {
                 {t('wallet.receipt.useThisPhoto')}
               </Button>
               <TouchableOpacity
+                style={tw`w-full h-10 items-center justify-center`}
                 onPress={() => {
                   setPreviewURI(undefined);
                 }}
@@ -154,17 +185,17 @@ const AddReceiptScreen = () => {
               </TouchableOpacity>
 
               <View style={tw`flex-1 justify-center items-center`}>
-                <TouchableOpacity onPress={onTakePic} disabled={!hasCameraAccess}>
+                <TouchableOpacity onPress={onTakePic} disabled={!cameraDevice || processingPicture}>
                   <View
                     style={[
                       tw`rounded-10 justify-center items-center border-1 border-white p-1`,
-                      !hasCameraAccess && { borderColor: 'gray' },
+                      (!cameraDevice || processingPicture) && { borderColor: 'gray' },
                     ]}
                   >
                     <View
                       style={[
                         tw`rounded-10 bg-white h-14 w-14`,
-                        !hasCameraAccess && { backgroundColor: 'gray' },
+                        (!cameraDevice || processingPicture) && { backgroundColor: 'gray' },
                       ]}
                     />
                   </View>

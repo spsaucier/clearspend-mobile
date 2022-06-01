@@ -14,7 +14,7 @@ import tw from '@/Styles/tailwind';
 import WalletScreen from '@/Containers/Wallet/WalletScreen';
 import ProfileScreen from '@/Containers/Profile/ProfileScreen';
 import ChangePasswordScreen from '@/Containers/Profile/ChangePassword/CurrentPasswordScreen';
-import NotificationSettingScreen from '@/Containers/Profile/NotificationSettingsScreen';
+import NotificationSettingsScreen from '@/Containers/Profile/NotificationSettingsScreen';
 import LoginOptionsScreen from '@/Containers/Profile/LoginOptions';
 import LegalDocumentsScreen from '@/Containers/Profile/LegalDocuments';
 import NotificationScreen from '@/Containers/Notifications/NotificationScreen';
@@ -91,7 +91,7 @@ const ProfileStack = () => (
     <Stack.Screen name={MainScreens.UpdateAddress} component={UpdateAddressScreen} />
     <Stack.Screen name={MainScreens.ChangePassword} component={ChangePasswordScreen} />
     <Stack.Screen name={MainScreens.NewPassword} component={NewPasswordScreen} />
-    <Stack.Screen name={MainScreens.NotificationSettings} component={NotificationSettingScreen} />
+    <Stack.Screen name={MainScreens.NotificationSettings} component={NotificationSettingsScreen} />
     <Stack.Screen name={MainScreens.LoginOptions} component={LoginOptionsScreen} />
     <Stack.Screen name={MainScreens.ActivateCard} component={ActivateCardStack} />
     <Stack.Screen name={MainScreens.LegalDocuments} component={LegalDocumentsScreen} />

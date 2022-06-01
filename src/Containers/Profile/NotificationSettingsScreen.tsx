@@ -15,7 +15,7 @@ import { Constants } from '@/consts';
 
 import { MainScreens } from '@/Navigators/NavigatorTypes';
 
-const NotificationSettingScreen = () => {
+const NotificationSettingsScreen = () => {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
   const { navigate } = useNavigation();
@@ -114,4 +114,4 @@ const NotificationSettingScreen = () => {
   );
 };
 
-export default NotificationSettingScreen;
+export default NotificationSettingsScreen;
