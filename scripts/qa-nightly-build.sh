@@ -12,7 +12,7 @@ if [ "$BITBUCKET_BRANCH" != 'main' ]; then echo "This pipeline must be run on ma
 git fetch --unshallow
 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 git fetch origin
-git diff origin/main..origin/dev --quiet && echo "No changes between main and dev, exiting" && exit 0 || echo "New changes in main not present in dev"
+git diff --quiet origin/main..origin/dev ':!src/generated/capital.ts' && echo "No changes between main and dev, exiting" && exit 0 || echo "New changes in main not present in dev"
 
 # Install deps
 yarn
