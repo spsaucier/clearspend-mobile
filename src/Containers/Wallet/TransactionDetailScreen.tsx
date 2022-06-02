@@ -39,7 +39,7 @@ import { ToastDisplay } from '@/Components/ToastDisplay';
 
 type InfoRowProps = {
   label: string;
-  value?: string;
+  value?: string | null;
   children?: ReactNode | string;
 };
 
@@ -99,6 +99,7 @@ export const TransactionDetailScreenContent = () => {
   const {
     merchant,
     amount,
+    requestedAmount,
     status,
     activityTime,
     receipt,
@@ -106,6 +107,7 @@ export const TransactionDetailScreenContent = () => {
     expenseDetails,
     syncStatus,
     declineDetails,
+    paymentDetails,
   }: AccountActivityResponse = data;
 
   // TODO: Delete once API supports it
@@ -120,6 +122,18 @@ export const TransactionDetailScreenContent = () => {
 
   const transactionDateTime = format(parseISO(activityTime!), 'MMM dd, yyyy hh:mm a');
   const transactionAmount = amount?.amount;
+  const amountRequested = requestedAmount?.amount || 0;
+
+  const originalAmount = () => {
+    if (
+      !merchant?.amount?.amount ||
+      !merchant.amount.currency ||
+      merchant.amount.currency === 'USD'
+    ) {
+      return null;
+    }
+    return formatCurrency(merchant.amount.amount || 0, merchant.amount.currency);
+  };
 
   const latitude = merchant?.merchantLatitude;
   const longitude = merchant?.merchantLongitude;
@@ -395,10 +409,28 @@ export const TransactionDetailScreenContent = () => {
               label={t('wallet.transactionDetails.details.dateTime')}
               value={transactionDateTime}
             />
+            {amountRequested && merchant?.amount?.currency !== 'USD' ? (
+              <InfoRow
+                label={t('wallet.transactionDetails.details.requestedAmount')}
+                value={formatCurrency(amountRequested)}
+              />
+            ) : null}
             <InfoRow
               label={t('wallet.transactionDetails.details.amount')}
               value={formatCurrency(transactionAmount)}
             />
+            {originalAmount() ? (
+              <InfoRow
+                label={t('wallet.transactionDetails.details.originalAmount')}
+                value={originalAmount()}
+              />
+            ) : null}
+            {paymentDetails?.foreignTransaction || paymentDetails?.foreignTransactionFee ? (
+              <InfoRow
+                label={t('wallet.transactionDetails.details.foreignExchangeFee')}
+                value={formatCurrency(paymentDetails.foreignTransactionFee?.amount || 0)}
+              />
+            ) : null}
             <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
           </View>
           <View style={tw`mx-6`}>

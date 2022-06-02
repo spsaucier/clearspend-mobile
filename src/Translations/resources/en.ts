@@ -242,6 +242,9 @@ export default {
         dateTime: 'Posted on',
         amount: 'Posted amount',
         location: 'Country',
+        requestedAmount: 'Requested Amount',
+        originalAmount: 'Original Amount',
+        foreignExchangeFee: 'Foreign Exchange Fee',
       },
       report: 'Report an issue',
       notes: {

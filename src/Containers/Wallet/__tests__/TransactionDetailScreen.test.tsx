@@ -91,7 +91,7 @@ describe('TransactionDetailScreen', () => {
       expect(getByTestId('transaction-status-approved')).toBeTruthy();
 
       // info
-      expect(getAllByText('-$7.00')).toHaveLength(2);
+      expect(getAllByText('-$7.00')).toHaveLength(3);
       expect(getByText('Lord of the fries • Travel')).toBeTruthy();
 
       // merchant
