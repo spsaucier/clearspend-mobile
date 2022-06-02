@@ -231,6 +231,7 @@ export default {
         merchantName: 'Merchant Name',
         merchantId: 'Merchant ID',
         merchantCategory: 'Merchant Category',
+        statementDescriptor: 'Statement Descriptor',
       },
       details: {
         title: 'Transaction Details',

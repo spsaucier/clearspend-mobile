@@ -371,6 +371,12 @@ export const TransactionDetailScreenContent = () => {
               label={t('wallet.transactionDetails.merchant.merchantName')}
               value={merchant?.name}
             />
+            {merchant?.statementDescriptor ? (
+              <InfoRow
+                label={t('wallet.transactionDetails.merchant.statementDescriptor')}
+                value={merchant?.statementDescriptor}
+              />
+            ) : null}
             <InfoRow
               label={t('wallet.transactionDetails.merchant.merchantId')}
               value={merchant?.merchantNumber}
