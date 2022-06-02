@@ -159,6 +159,10 @@ export default {
     cantAccessCardScreenIfFrozenToast:
       'This card needs to be unfrozen before you can view the card details',
     notificationsHaveBeenTurnedOff: 'All notifications have been turned off',
+    cancelCard: {
+      success: 'Card cancellation successful.',
+      error: 'Card cancellation failed.',
+    },
   },
   categories: {
     merchant: {
@@ -320,6 +324,14 @@ export default {
       freezeErrorToast: 'Card could not be frozen',
       unfreezeErrorToast: 'Card could not be unfrozen',
       spendControls: 'Spend Controls',
+      cancelCard: 'Cancel Card',
+      cancelCardAlert: {
+        title: 'Cancel Card',
+        message: 'Are you sure you want to permanently cancel this card? This cannot be undone.',
+        confirm: 'Confirm',
+        back: 'Back',
+        cancelling: 'Cancelling card...',
+      },
     },
   },
   addToDigitalWallet: {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import MultitaskBlur from 'react-native-multitask-blur';
@@ -16,6 +16,7 @@ import { ProfileIcon } from '@/Components/Icons';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 import { formatCurrency } from '@/Helpers/StringHelpers';
 import { ToastDisplay } from '@/Components/ToastDisplay';
+import { ActivityOverlay } from '@/Components/ActivityOverlay';
 
 type Props = {
   route: any;
@@ -24,6 +25,7 @@ type Props = {
 const CardDetailScreen = ({ route }: Props) => {
   const balanceInfoPanelRef = useRef<BottomSheetModal>(null);
   const cardOptionsPanelRef = useRef<BottomSheetModal>(null);
+  const [isCancelling, setIsCancelling] = useState<boolean>(false);
 
   const { navigate } = useNavigation();
   const { t } = useTranslation();
@@ -158,6 +160,12 @@ const CardDetailScreen = ({ route }: Props) => {
             cardId={cardId}
             hideCardInfoButton
             isCardFrozen={isCardFrozen}
+            setIsCancelling={setIsCancelling}
+            nextIndex={0}
+          />
+          <ActivityOverlay
+            visible={isCancelling}
+            message={t('card.options.cancelCardAlert.cancelling')}
           />
         </SafeAreaView>
         {Platform.OS === 'ios' ? <ToastDisplay /> : null}

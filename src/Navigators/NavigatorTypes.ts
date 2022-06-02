@@ -124,6 +124,7 @@ export type MainStackParamTypes = {
   [MainScreens.DeleteReceipt]: { accountActivityId: string; receiptId: string };
   [MainScreens.Wallet]?: {
     initialFocusedCardId?: string;
+    initialFocusCardIdx?: number;
   };
   [MainScreens.ActivateCardDigitEntry]: undefined;
   [MainScreens.ActivateCardResult]: { lastFour: string };

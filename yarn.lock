@@ -8557,9 +8557,9 @@ react-native-phone-number-input@^2.1.0:
     react-native-country-picker-modal "^2.0.0"
 
 react-native-reanimated-carousel@^2.3.2:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated-carousel/-/react-native-reanimated-carousel-2.4.0.tgz#77afa7b9f6c7b9c2ea5252f9be8f2cf345f08a93"
-  integrity sha512-64JDaT5NMpePGR9Eok36vbMJ/e2KZwGfV72RbiHxp57tqC8UBvAk1Wc1vmQyxupuLew2GWH8KOR9Y6apgGPTDQ==
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated-carousel/-/react-native-reanimated-carousel-2.5.1.tgz#50a586e3080f00bdeaca76df6d9123e46c4c7e5f"
+  integrity sha512-6HXxhCbw7UmVoCcZVUA+wqijbyCk3WtuW4ogPmXCbQLRSZL4QDpje9auuAkENb2WTNOcklLQCKcluTtl3ByWDA==
 
 react-native-reanimated@2.2.2:
   version "2.2.2"

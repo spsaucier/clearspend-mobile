@@ -36,6 +36,7 @@ import { ArrowUpIcon } from '@/Components/Icons';
 import { lightFeedback } from '@/Helpers/HapticFeedback';
 import { TransactionsContainer } from '@/Containers/Wallet/TransactionsContainer';
 import { AddToDigitalWalletButton } from '@/Containers/Wallet/Components/AddToDigitalWalletButton';
+import { ActivityOverlay } from '@/Components/ActivityOverlay';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const { height: windowHeight } = Dimensions.get('window');
@@ -105,9 +106,13 @@ const EmptyWallet = () => {
 };
 
 const ContentWallet = ({
+  isRefetching,
+  cardsLoading,
   activeCards,
   headerIconsHeight,
 }: {
+  isRefetching: boolean;
+  cardsLoading: boolean;
   activeCards: CardDetailsResponse[];
   headerIconsHeight: number;
 }) => {
@@ -115,19 +120,21 @@ const ContentWallet = ({
   const route = useRoute<WalletScreenRouteProp>();
   const { params } = route;
   const { t } = useTranslation();
-
   const { data: user } = useUser();
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
   const [isScrolling, setIsScrolling] = useState(false);
   const [carouselHeight, setCarouselHeight] = useState<number>();
+  const [isCancelling, setIsCancelling] = useState<boolean>(false);
+  const [nextIndex, setNextIndex] = useState<number>();
 
   const carouselRef = useRef<ICarouselInstance>(null);
   const balanceInfoPanelRef = useRef<BottomSheetModal>(null);
   const cardOptionsPanelRef = useRef<BottomSheetModal>(null);
 
-  const initialCardDisplayIndex = activeCards.findIndex(
-    (card) => card.card.cardId === params?.initialFocusedCardId,
-  );
+  const initialCardDisplayIndex =
+    params?.initialFocusCardIdx !== undefined && params?.initialFocusCardIdx >= 0
+      ? params?.initialFocusCardIdx
+      : activeCards.findIndex((card) => card.card.cardId === params?.initialFocusedCardId);
 
   const onCardBalanceInfoPress = () => {
     balanceInfoPanelRef.current?.present();
@@ -138,17 +145,16 @@ const ContentWallet = ({
   };
 
   useEffect(() => {
-    if (activeCards.length) {
+    if (activeCards.length && !isRefetching && !cardsLoading) {
       if (initialCardDisplayIndex !== -1) {
         // if there is an initial index to display, scroll to it,
         // update the selected card and clear the relevant navigation param
         setSelectedCard(activeCards[initialCardDisplayIndex]);
-        const currentIdx = carouselRef?.current?.getCurrentIndex() ?? 0;
         carouselRef?.current?.scrollTo({
-          count: initialCardDisplayIndex - currentIdx,
+          index: initialCardDisplayIndex,
           animated: true,
         });
-        setParams({ initialFocusedCardId: undefined });
+        setParams({ initialFocusedCardId: undefined, initialFocusCardIdx: undefined });
       } else if (!selectedCard) {
         const [first] = activeCards;
         setSelectedCard(first);
@@ -157,10 +163,19 @@ const ContentWallet = ({
         setSelectedCard(card);
       }
     }
-  }, [activeCards, initialCardDisplayIndex, selectedCard, setParams]);
+  }, [activeCards, initialCardDisplayIndex, selectedCard, setParams, isRefetching, cardsLoading]);
 
   const selectedCardId = selectedCard?.card?.cardId;
   const selectedCardFrozen = selectedCard?.card?.status === 'INACTIVE';
+
+  useEffect(() => {
+    const idx = carouselRef?.current?.getCurrentIndex() ?? 0;
+    if (idx === activeCards.length - 1 && idx !== 0) {
+      setNextIndex(idx - 1);
+    } else {
+      setNextIndex(idx);
+    }
+  }, [activeCards.length, selectedCard]);
 
   /*
     On older Android devices `windowHeight` includes the status bar height
@@ -287,6 +302,12 @@ const ContentWallet = ({
         ref={cardOptionsPanelRef}
         cardId={selectedCardId}
         isCardFrozen={selectedCardFrozen}
+        setIsCancelling={setIsCancelling}
+        nextIndex={nextIndex}
+      />
+      <ActivityOverlay
+        visible={isCancelling}
+        message={t('card.options.cancelCardAlert.cancelling')}
       />
     </View>
   );
@@ -424,6 +445,8 @@ const WalletScreen = () => {
                       <ContentWallet
                         activeCards={activeCards}
                         headerIconsHeight={headerIconsHeight || 0}
+                        isRefetching={isRefetching}
+                        cardsLoading={cardsLoading}
                       />
                     )}
                   </Animated.View>

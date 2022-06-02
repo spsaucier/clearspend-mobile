@@ -109,6 +109,19 @@ export const useActivateCard = () => {
   );
 };
 
+export const useCancelCard = () => {
+  const queryClient = useQueryClient();
+  return useMutation<Card, AxiosError, { cardId: string | undefined } & UpdateCardStatusRequest>(
+    ({ cardId, statusReason = 'CARDHOLDER_REQUESTED' }) =>
+      apiClient.patch(`users/cards/${cardId}/cancel`, { statusReason }).then((res) => res.data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('cards');
+      },
+    },
+  );
+};
+
 export async function revealCardKey(params: Readonly<RevealCardRequest>) {
   return (await apiClient.post<Readonly<RevealCardResponse>>('/cards/reveal', params)).data;
 }
