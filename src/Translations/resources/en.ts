@@ -556,5 +556,25 @@ export default {
       confirmationPhysicalCard:
         'A new card has been issued to <key1>{{name}}</key1> and will be delivered to <key2>{{address}}</key2> in 2-3 weeks. ',
     },
+    manageAllocation: {
+      addFundsTitle: 'Select source',
+      addFundsText: 'Choose the source for your new funds.',
+      removeFundsTitle: 'Select destination',
+      removeFundsText: 'Choose the destination for your removed funds.',
+      enterAmount: 'Enter amount',
+      updateBalanceCta: 'Update balance',
+      reallocationRequestLoadingText: 'Reallocating funds...',
+      reallocationRequestErrorTitle: 'There was a problem reallocating funds.',
+      reallocationRequestErrorText: 'Please try again later.',
+      bankTransferRequestLoadingText: 'Transferring funds...',
+      bankTransferRequestErrorTitle: 'There was a problem transferring funds.',
+      bankTransferRequestErrorText: 'Please try again later.',
+      confirmationTitle: 'Transfer successful',
+      confirmationText:
+        'You have {{reallocationTypePastTense}} <key1>{{amount}}</key1> to <key2>{{allocationTo}}</key2> from <key2>{{allocationFrom}}</key2>.',
+      confirmationPrimaryActionCta: 'Return to admin dashboard',
+      updatedBalances: 'Updated balances',
+      bankTransferConfirmationDisclaimer: 'This transfer will take 3-5 business days.',
+    },
   },
 };

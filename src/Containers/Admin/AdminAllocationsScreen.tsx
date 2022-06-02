@@ -2,12 +2,13 @@ import React, { useMemo, useState, useRef } from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-// import { useNavigation } from '@react-navigation/core';
-// import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/core';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import LinearGradient from 'react-native-linear-gradient';
 import tw from '@/Styles/tailwind';
 import { useAllPermissions } from '@/Queries/permissions';
+import { useUser } from '@/Queries/user';
 import { CSText as Text, FocusAwareStatusBar, Button } from '@/Components';
 import { ActivityIndicator } from '@/Components/ActivityIndicator';
 import {
@@ -22,20 +23,37 @@ import { generateAllocationTree, getManageableAllocations } from '@/Helpers/Allo
 import AllocationTree from '@/Containers/Admin/Components/AllocationTree';
 import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
 import OptionsBottomSheetButton from '@/Components/OptionsBottomSheetButton';
-// import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { ReallocationType } from '@/Services/Admin/ManageAllocationProvider';
 
 const AdminAllocationsScreen = () => {
-  // const { navigate } =
-  //   useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Allocations>>();
+  const { navigate } =
+    useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Allocations>>();
   const { t } = useTranslation();
   const { data, isLoading } = useAllPermissions();
-  const [selectedAllocationId, setSelectedAllocationId] = useState<string | undefined>();
-  const allocations = useMemo(() => generateAllocationTree(getManageableAllocations(data)), [data]);
+  const [allocationId, setAllocationId] = useState<string | undefined>();
+  const allocations = useMemo(
+    () => generateAllocationTree(getManageableAllocations('MANAGE_FUNDS', data)),
+    [data],
+  );
+  const { data: user } = useUser();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const onEmployeesPress = () => {
     bottomSheetRef?.current?.present();
+  };
+
+  const onReallocateFunds = (reallocationType: ReallocationType) => {
+    if (!allocationId || !data?.allocations || !data?.userRoles || !user?.type) return;
+
+    navigate(AdminScreens.ManageAllocation, {
+      allocationId,
+      reallocationType,
+      allocations: data?.allocations,
+      userRoles: data?.userRoles,
+      userType: user.type,
+    });
   };
 
   return (
@@ -64,11 +82,13 @@ const AdminAllocationsScreen = () => {
             !!allocations?.length && (
               <>
                 <ScrollView style={tw`px-5`}>
-                  <AllocationTree
-                    allocations={allocations}
-                    onSelectAllocation={setSelectedAllocationId}
-                    selectedAllocationId={selectedAllocationId}
-                  />
+                  <View style={tw`pb-32`}>
+                    <AllocationTree
+                      allocations={allocations}
+                      onSelectAllocation={setAllocationId}
+                      selectedAllocationId={allocationId}
+                    />
+                  </View>
                 </ScrollView>
                 <View style={tw`mt-auto p-5`}>
                   <LinearGradient
@@ -80,7 +100,7 @@ const AdminAllocationsScreen = () => {
                     testID="manage-allocation-button"
                     label={t('admin.allocations.allocationOptions')}
                     onPress={onEmployeesPress}
-                    disabled={!selectedAllocationId}
+                    disabled={!allocationId}
                   />
                 </View>
               </>
@@ -91,12 +111,12 @@ const AdminAllocationsScreen = () => {
       <OptionsBottomSheet ref={bottomSheetRef} title={t('admin.allocations.allocationOptions')}>
         <OptionsBottomSheetButton
           text={t('admin.allocations.addFunds')}
-          onPress={() => {}}
+          onPress={() => onReallocateFunds(ReallocationType.Add)}
           icon={PlusIcon}
         />
         <OptionsBottomSheetButton
           text={t('admin.allocations.removeFunds')}
-          onPress={() => {}}
+          onPress={() => onReallocateFunds(ReallocationType.Remove)}
           icon={MinusIcon}
         />
         <OptionsBottomSheetButton

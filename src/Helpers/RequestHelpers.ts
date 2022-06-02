@@ -1,9 +1,18 @@
 import isEmpty from 'lodash/isEmpty';
-import { IssueCardRequest } from '@/generated/capital';
+import {
+  IssueCardRequest,
+  BusinessReallocationRequest,
+  TransactBankAccountRequest,
+} from '@/generated/capital';
 import {
   DefaultProps as IssueCardRequestProps,
   CardType,
 } from '@/Services/Admin/IssueCardProvider';
+import {
+  DefaultProps as ManageAllocationRequestProps,
+  ReallocationType,
+} from '@/Services/Admin/ManageAllocationProvider';
+import { validateAllocationAmount } from '@/Helpers/AllocationHelpers';
 
 export const validateIssueCardRequest = ({
   selectedCardType: cardType,
@@ -39,5 +48,51 @@ export const validateIssueCardRequest = ({
     disabledPaymentTypes: spendControls?.disabledPaymentTypes || [],
     // @ts-expect-error
     disableForeign: spendControls?.disableForeign || false,
+  };
+};
+
+export const validateReallocationRequest = ({
+  allocationId,
+  targetAllocationId,
+  reallocationType,
+  amount,
+}: ManageAllocationRequestProps): BusinessReallocationRequest | undefined => {
+  if (!allocationId || !targetAllocationId) return undefined;
+
+  const numericAmount = validateAllocationAmount(amount);
+
+  if (!numericAmount) return undefined;
+
+  const [allocationIdFrom, allocationIdTo] =
+    reallocationType === ReallocationType.Add
+      ? [targetAllocationId, allocationId]
+      : [allocationId, targetAllocationId];
+
+  return {
+    allocationIdFrom,
+    allocationIdTo,
+    amount: {
+      currency: 'USD',
+      amount: numericAmount,
+    },
+  };
+};
+
+export const validateBankTransferRequest = ({
+  reallocationType,
+  amount,
+}: Pick<ManageAllocationRequestProps, 'reallocationType' | 'amount'>):
+  | TransactBankAccountRequest
+  | undefined => {
+  const numericAmount = validateAllocationAmount(amount);
+
+  if (!numericAmount) return undefined;
+
+  return {
+    bankAccountTransactType: reallocationType === ReallocationType.Add ? 'DEPOSIT' : 'WITHDRAW',
+    amount: {
+      currency: 'USD',
+      amount: numericAmount,
+    },
   };
 };

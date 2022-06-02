@@ -58,11 +58,7 @@ const AddressOption = ({
         </>
       )}
     </View>
-    <View style={tw`flex justify-center items-center w-10 h-10 ml-auto`}>
-      {isSelected && (
-        <CheckMarkIcon testID="check-mark-icon" style={tw`w-4`} color={tw.color('black')} />
-      )}
-    </View>
+    {isSelected && <CheckMarkIcon testID="check-mark-icon" style={tw`ml-auto mr-1`} />}
   </TouchableOpacity>
 );
 

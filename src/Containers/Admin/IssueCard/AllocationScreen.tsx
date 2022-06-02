@@ -29,7 +29,10 @@ const AllocationScreen = () => {
   const { selectedAllocationId, setSelectedAllocationId } = useIssueCardContext();
   const { data, isLoading } = useAllPermissions();
 
-  const allocations = useMemo(() => generateAllocationTree(getManageableAllocations(data)), [data]);
+  const allocations = useMemo(
+    () => generateAllocationTree(getManageableAllocations('MANAGE_CARDS', data)),
+    [data],
+  );
 
   return (
     <AdminScreenWrapper

@@ -40,7 +40,7 @@ const AllocationNode = ({
               </Text>
             </View>
             {node.allocationId === selectedAllocationId && (
-              <CheckMarkIcon testID="check-mark-icon" style={tw`w-4`} color={tw.color('black')} />
+              <CheckMarkIcon testID="check-mark-icon" />
             )}
           </View>
         </TouchableOpacity>

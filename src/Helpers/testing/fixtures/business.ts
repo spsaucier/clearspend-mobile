@@ -54,3 +54,13 @@ export const transactionTestBusiness = {
   url: 'https://www.clearspend.com/',
   codatCreditCardId: null,
 };
+
+export const bankAccounts = [
+  {
+    businessBankAccountId: 'bd419bf2-1317-40eb-8a94-74855440c4c7',
+    name: 'Plaid Saving',
+    routingNumber: '011401533',
+    accountNumber: '1111222233331111',
+    accountLinkStatus: 'LINKED',
+  },
+];

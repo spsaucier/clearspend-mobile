@@ -52,9 +52,7 @@ const CardOption = ({
         <Text style={tw`text-sm text-gray-50`}>{text}</Text>
       </View>
     </View>
-    {isSelected && (
-      <CheckMarkIcon testID="check-mark-icon" style={tw`w-4 mr-2`} color={tw.color('black')} />
-    )}
+    {isSelected && <CheckMarkIcon testID="check-mark-icon" style={tw`mr-1`} />}
   </TouchableOpacity>
 );
 

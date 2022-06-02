@@ -38,7 +38,7 @@ describe('generateAllocationTree', () => {
 describe('getManageableAllocations', () => {
   it('only returns allocations that have the `MANAGE_CARDS` permission', () => {
     expect(
-      getManageableAllocations(mixedResponse as AllocationsAndPermissionsResponse),
+      getManageableAllocations('MANAGE_CARDS', mixedResponse as AllocationsAndPermissionsResponse),
     ).toStrictEqual([
       {
         account: {

@@ -419,13 +419,11 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
                     style={
                       Array [
                         Object {
-                          "aspectRatio": 1,
-                          "height": 24,
-                          "width": 24,
+                          "aspectRatio": 1.5,
+                          "height": 27,
+                          "width": 18,
                         },
-                        Object {
-                          "width": 16,
-                        },
+                        undefined,
                       ]
                     }
                     testID="check-mark-icon"
@@ -453,8 +451,8 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
                           },
                         ]
                       }
-                      vbHeight={7}
-                      vbWidth={10}
+                      vbHeight={12}
+                      vbWidth={18}
                       width="100%"
                     >
                       <RNSVGGroup
@@ -466,19 +464,13 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
                         }
                       >
                         <RNSVGPath
-                          d="M9.125 0.75L3.62497 6L0.875 3.375"
+                          d="M17.25 0.750488L6.75 11.25L1.5 6.00049"
                           propList={
                             Array [
                               "stroke",
-                              "strokeWidth",
-                              "strokeLinecap",
-                              "strokeLinejoin",
                             ]
                           }
                           stroke={4278190080}
-                          strokeLinecap={1}
-                          strokeLinejoin={1}
-                          strokeWidth="1.125"
                         />
                       </RNSVGGroup>
                     </RNSVGSvgView>
@@ -1081,13 +1073,11 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
                     style={
                       Array [
                         Object {
-                          "aspectRatio": 1,
-                          "height": 24,
-                          "width": 24,
+                          "aspectRatio": 1.5,
+                          "height": 27,
+                          "width": 18,
                         },
-                        Object {
-                          "width": 16,
-                        },
+                        undefined,
                       ]
                     }
                     testID="check-mark-icon"
@@ -1115,8 +1105,8 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
                           },
                         ]
                       }
-                      vbHeight={7}
-                      vbWidth={10}
+                      vbHeight={12}
+                      vbWidth={18}
                       width="100%"
                     >
                       <RNSVGGroup
@@ -1128,19 +1118,13 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
                         }
                       >
                         <RNSVGPath
-                          d="M9.125 0.75L3.62497 6L0.875 3.375"
+                          d="M17.25 0.750488L6.75 11.25L1.5 6.00049"
                           propList={
                             Array [
                               "stroke",
-                              "strokeWidth",
-                              "strokeLinecap",
-                              "strokeLinejoin",
                             ]
                           }
                           stroke={4278190080}
-                          strokeLinecap={1}
-                          strokeLinejoin={1}
-                          strokeWidth="1.125"
                         />
                       </RNSVGGroup>
                     </RNSVGSvgView>

@@ -11,7 +11,7 @@ export function getAllocationPermissions(
   return userRoles?.find((role) => role.allocationId === allocationId);
 }
 
-function can(permissions: Permissions, permission: AllocationPermissions): boolean {
+export function can(permissions: Permissions, permission: AllocationPermissions): boolean {
   return Boolean(permissions?.allocationPermissions?.includes(permission));
 }
 

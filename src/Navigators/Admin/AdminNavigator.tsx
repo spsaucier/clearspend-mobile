@@ -3,10 +3,13 @@ import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navig
 import {
   AdminStackParamTypes,
   IssueCardStackParamTypes,
+  ManageAllocationStackParamTypes,
   AdminScreens,
   IssueCardScreens,
+  ManageAllocationScreens,
 } from '@/Navigators/Admin/AdminNavigatorTypes';
 import { IssueCardProvider } from '@/Services/Admin/IssueCardProvider';
+import { ManageAllocationProvider } from '@/Services/Admin/ManageAllocationProvider';
 
 import AdminHomeScreen from '@/Containers/Admin/AdminHomeScreen';
 import AdminEmployeesScreen from '@/Containers/Admin/AdminEmployeesScreen';
@@ -22,6 +25,53 @@ import AllocationScreen from '@/Containers/Admin/IssueCard/AllocationScreen';
 import SpendControlsScreen from '@/Containers/Admin/IssueCard/SpendControlsScreen';
 import CardRequestScreen from '@/Containers/Admin/IssueCard/CardRequestScreen';
 import CardConfirmationScreen from '@/Containers/Admin/IssueCard/CardConfirmationScreen';
+
+// Manage Allocation Screens
+import ReallocationAccountScreen from '@/Containers/Admin/ManageAllocations/ReallocationAccountScreen';
+import ReallocationAmountScreen from '@/Containers/Admin/ManageAllocations/ReallocationAmountScreen';
+import ReallocationRequestScreen from '@/Containers/Admin/ManageAllocations/ReallocationRequestScreen';
+import BankTransferRequestScreen from '@/Containers/Admin/ManageAllocations/BankTransferRequestScreen';
+import ReallocationConfirmationScreen from '@/Containers/Admin/ManageAllocations/ReallocationConfirmationScreen';
+
+const ManageAllocationsStack = createNativeStackNavigator<ManageAllocationStackParamTypes>();
+
+export const ManageAllocationNavigator = ({
+  route: { params },
+}: NativeStackScreenProps<AdminStackParamTypes, AdminScreens.ManageAllocation>) => (
+  <ManageAllocationProvider
+    allocationId={params.allocationId}
+    reallocationType={params.reallocationType}
+    allocations={params.allocations}
+    userRoles={params.userRoles}
+    userType={params.userType}
+  >
+    <ManageAllocationsStack.Navigator
+      initialRouteName={ManageAllocationScreens.ReallocationAccount}
+      screenOptions={{ headerShown: false }}
+    >
+      <ManageAllocationsStack.Screen
+        name={ManageAllocationScreens.ReallocationAccount}
+        component={ReallocationAccountScreen}
+      />
+      <ManageAllocationsStack.Screen
+        name={ManageAllocationScreens.ReallocationAmount}
+        component={ReallocationAmountScreen}
+      />
+      <ManageAllocationsStack.Screen
+        name={ManageAllocationScreens.ReallocationRequest}
+        component={ReallocationRequestScreen}
+      />
+      <ManageAllocationsStack.Screen
+        name={ManageAllocationScreens.BankTransferRequest}
+        component={BankTransferRequestScreen}
+      />
+      <ManageAllocationsStack.Screen
+        name={ManageAllocationScreens.ReallocationConfirmation}
+        component={ReallocationConfirmationScreen}
+      />
+    </ManageAllocationsStack.Navigator>
+  </ManageAllocationProvider>
+);
 
 const IssueCardStack = createNativeStackNavigator<IssueCardStackParamTypes>();
 
@@ -60,5 +110,6 @@ export const AdminNavigator = () => (
     <AdminStack.Screen name={AdminScreens.Employees} component={AdminEmployeesScreen} />
     <AdminStack.Screen name={AdminScreens.Allocations} component={AdminAllocationsScreen} />
     <AdminStack.Screen name={AdminScreens.IssueCard} component={IssueCardNavigator} />
+    <AdminStack.Screen name={AdminScreens.ManageAllocation} component={ManageAllocationNavigator} />
   </AdminStack.Navigator>
 );

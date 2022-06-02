@@ -65,15 +65,9 @@ const EmployeeScreen = () => {
                   {item.email}
                 </Text>
               </View>
-              <View style={tw`flex justify-center items-center w-10 h-10`}>
-                {item.userId === selectedUser?.userId && (
-                  <CheckMarkIcon
-                    testID="check-mark-icon"
-                    style={tw`w-4`}
-                    color={tw.color('black')}
-                  />
-                )}
-              </View>
+              {item.userId === selectedUser?.userId && (
+                <CheckMarkIcon testID="check-mark-icon" style={tw`ml-auto mr-1`} />
+              )}
             </TouchableOpacity>
           )}
         />
