@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
-  const { card, availableBalance, allocationName } = cardData;
+  const { card, availableBalance, linkedAllocationName } = cardData;
   const [loading, setLoading] = useState(true);
   const [readyCount, setReadyCount] = useState(0);
 
@@ -48,7 +48,7 @@ export const CardWebView = ({ cardData, onCardOptionsPress }: Props) => {
         isFrozen={isFrozen}
         showSensitiveInformation
         onCardOptionsPress={onCardOptionsPress}
-        allocation={allocationName}
+        allocation={linkedAllocationName}
         cardTitle={cardLine3}
       />
       <View

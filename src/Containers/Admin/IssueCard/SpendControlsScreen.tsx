@@ -208,6 +208,8 @@ const SpendControlsScreen = () => {
     }
 
     setSelectedSpendControls({
+      // TODO support multiple allocations/spend controls on cards
+      // @ts-expect-error
       disabledMccGroups,
       disabledPaymentTypes,
       limits: [

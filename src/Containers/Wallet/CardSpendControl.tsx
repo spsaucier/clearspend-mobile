@@ -156,10 +156,15 @@ const CardSpendControl = () => {
 
   useEffect(() => {
     if (!isFetching && data) {
+      // TODO support multiple allocations/spend controls on cards
       const {
+        // @ts-expect-error
         disabledMccGroups,
+        // @ts-expect-error
         disabledPaymentTypes,
+        // @ts-expect-error
         limits,
+        // @ts-expect-error
         disableForeign,
         card: { allocationId },
       } = data;

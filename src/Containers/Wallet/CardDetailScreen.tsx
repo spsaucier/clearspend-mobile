@@ -59,6 +59,8 @@ const CardDetailScreen = ({ route }: Props) => {
     );
   }
   if (data) {
+    // TODO support multiple allocations/spend controls on cards
+    // @ts-ignore
     const { limits, card } = data;
     // TODO Remove ts-ignore when limit backend types are ready
     // @ts-ignore

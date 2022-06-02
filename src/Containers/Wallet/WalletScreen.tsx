@@ -218,7 +218,7 @@ const ContentWallet = ({
           }}
           onSnapToItem={(index: any) => setSelectedCard(activeCards[index])}
           renderItem={({ item }: any) => {
-            const { card, availableBalance, allocationName } = item;
+            const { card, availableBalance, linkedAllocationName } = item;
             const { cardId, lastFour, cardLine3, type } = card;
             const isVirtual = type === 'VIRTUAL';
             const { amount } = availableBalance;
@@ -235,7 +235,7 @@ const ContentWallet = ({
                 isVirtual={isVirtual}
                 lastDigits={lastFour || ''}
                 cardTitle={cardLine3}
-                allocation={allocationName}
+                allocation={linkedAllocationName}
                 onPress={() => {
                   if (isFrozen) {
                     Toast.show({

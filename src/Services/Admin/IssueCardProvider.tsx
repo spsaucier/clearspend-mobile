@@ -1,5 +1,5 @@
 import React, { createContext, FC, useState } from 'react';
-import { User, Address, UpdateCardRequest } from 'generated/capital';
+import { User, Address, UpdateCardSpendControlsRequest } from 'generated/capital';
 
 export enum CardType {
   Virtual = 'VIRTUAL',
@@ -17,7 +17,7 @@ export interface Props {
   setSelectedAddress: React.Dispatch<React.SetStateAction<Props['selectedAddress']>>;
   selectedAllocationId?: string;
   setSelectedAllocationId: React.Dispatch<React.SetStateAction<Props['selectedAllocationId']>>;
-  selectedSpendControls?: UpdateCardRequest;
+  selectedSpendControls?: UpdateCardSpendControlsRequest;
   setSelectedSpendControls: React.Dispatch<React.SetStateAction<Props['selectedSpendControls']>>;
   resetSelections: () => void;
 }

@@ -23,6 +23,8 @@ export const validateIssueCardRequest = ({
     cardType: [cardType],
     isPersonal: !!isPersonal,
     ...(shippingAddress ? { shippingAddress: { ...shippingAddress, country: 'USA' } } : {}),
+    // TODO support multiple allocations/spend controls on cards
+    // @ts-expect-error
     limits: spendControls?.limits || [
       {
         currency: 'USD',
@@ -31,8 +33,11 @@ export const validateIssueCardRequest = ({
         },
       },
     ],
+    // @ts-expect-error
     disabledMccGroups: spendControls?.disabledMccGroups || [],
+    // @ts-expect-error
     disabledPaymentTypes: spendControls?.disabledPaymentTypes || [],
+    // @ts-expect-error
     disableForeign: spendControls?.disableForeign || false,
   };
 };

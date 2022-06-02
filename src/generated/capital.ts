@@ -344,6 +344,10 @@ export interface Business {
   description?: string;
   url?: string;
   codatCreditCardId?: string;
+  timeZone?: 'US_EASTERN' | 'US_CENTRAL' | 'US_MOUNTAIN' | 'US_PACIFIC' | 'US_ALASKA' | 'US_HAWAII';
+
+  /** @format date-time */
+  formationDate?: string;
 }
 
 export interface CreateUserRequest {
@@ -1388,6 +1392,25 @@ export type SpendControlViolated = DeclineDetails & {
   foreignDisabled?: boolean;
 };
 
+export interface CardStatementRequest {
+  /** @format uuid */
+  cardId?: string;
+
+  /** @format date-time */
+  startDate?: string;
+
+  /** @format date-time */
+  endDate?: string;
+}
+
+export interface BusinessStatementRequest {
+  /** @format date-time */
+  startDate?: string;
+
+  /** @format date-time */
+  endDate?: string;
+}
+
 export interface NetworkMessageRequest {
   /** @format uuid */
   cardId?: string;
@@ -1458,31 +1481,6 @@ export interface SyncTransactionResponse {
   codatResponse?: CodatSyncDirectCostResponse;
 }
 
-export interface SyncLogRequest {
-  pageRequest: PageRequest;
-}
-
-export interface PagedDataSyncLogResponse {
-  /** @format int32 */
-  pageNumber?: number;
-
-  /** @format int32 */
-  pageSize?: number;
-
-  /** @format int64 */
-  totalElements?: number;
-  content?: SyncLogResponse[];
-}
-
-export interface SyncLogResponse {
-  /** @format date-time */
-  startTime?: string;
-  firstName?: string;
-  lastName?: string;
-  status?: string;
-  transactionId?: string;
-}
-
 export interface CreateAssignSupplierRequest {
   /** @format uuid */
   accountActivityId?: string;
@@ -1492,6 +1490,12 @@ export interface CreateAssignSupplierRequest {
 export interface CreateAssignSupplierResponse {
   /** @format uuid */
   accountActivityId?: string;
+}
+
+export interface SetCategoryNamesRequest {
+  /** @format uuid */
+  categoryId?: string;
+  name?: string;
 }
 
 export interface CreateCreditCardRequest {
@@ -1586,6 +1590,51 @@ export interface GetChartOfAccountsMappingResponse {
   results?: ChartOfAccountsMappingResponse[];
 }
 
+/**
+ * The allocations to assign to this card and any customizations of their spend controls. Leaving spend control fields as null will default to the allocation's spend controls.
+ */
+export interface CardAllocationSpendControls {
+  /**
+   * The ID of the allocation connected with this card.
+   * @format uuid
+   */
+  allocationId: string;
+
+  /** The name of the allocation connected with this card. */
+  allocationName?: string;
+
+  /** Currency limits for this card/allocation pair. If a create/update operation and this is null, the existing value for the allocation/card will be used. */
+  limits?: CurrencyLimit[];
+
+  /** Disabled MCC Groups for this card/allocation pair. If a create/update operation and this is null, the existing value for the allocation/card will be used. */
+  disabledMccGroups?: (
+    | 'CHILD_CARE'
+    | 'DIGITAL_GOODS'
+    | 'EDUCATION'
+    | 'ENTERTAINMENT'
+    | 'FOOD_BEVERAGE'
+    | 'GAMBLING'
+    | 'GOVERNMENT'
+    | 'HEALTH'
+    | 'MEMBERSHIPS'
+    | 'MONEY_TRANSFER'
+    | 'SERVICES'
+    | 'SHOPPING'
+    | 'TRAVEL'
+    | 'UTILITIES'
+    | 'OTHER'
+  )[];
+
+  /** Disabled Payment Types for this card/allocation pair. If a create/update operation and this is null, the existing value for the allocation/card will be used. */
+  disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
+
+  /** Disable foreign transactions for this card/allocation pair. If a create/update operation and this is null, the existing value for the allocation/card will be used. */
+  disableForeign?: boolean;
+}
+
+/**
+ * Currency limits for this card/allocation pair. If a create/update operation and this is null, the existing value for the allocation/card will be used.
+ */
 export interface CurrencyLimit {
   currency:
     | 'UNSPECIFIED'
@@ -1760,12 +1809,6 @@ export interface IssueCardRequest {
 
   /**
    * @format uuid
-   * @example 28104ecb-1343-4cc1-b6f2-e6cc88e9a80f
-   */
-  allocationId: string;
-
-  /**
-   * @format uuid
    * @example 38104ecb-1343-4cc1-b6f2-e6cc88e9a80f
    */
   userId: string;
@@ -1935,26 +1978,9 @@ export interface IssueCardRequest {
     | 'ZMW'
     | 'ZWL';
   isPersonal: boolean;
-  limits: CurrencyLimit[];
-  disabledMccGroups: (
-    | 'CHILD_CARE'
-    | 'DIGITAL_GOODS'
-    | 'EDUCATION'
-    | 'ENTERTAINMENT'
-    | 'FOOD_BEVERAGE'
-    | 'GAMBLING'
-    | 'GOVERNMENT'
-    | 'HEALTH'
-    | 'MEMBERSHIPS'
-    | 'MONEY_TRANSFER'
-    | 'SERVICES'
-    | 'SHOPPING'
-    | 'TRAVEL'
-    | 'UTILITIES'
-    | 'OTHER'
-  )[];
-  disabledPaymentTypes: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
-  disableForeign: boolean;
+
+  /** The allocations to assign to this card and any customizations of their spend controls. Leaving spend control fields as null will default to the allocation's spend controls.  */
+  allocationSpendControls?: CardAllocationSpendControls[];
 
   /** The Stripe reference for a previously cancelled card that this is replacing */
   replacementFor?: string;
@@ -1976,6 +2002,53 @@ export interface IssueCardResponse {
 
   /** Error message for any records that failed. Will be null if successful */
   errorMessage?: string;
+}
+
+export interface Card {
+  /** @format uuid */
+  cardId?: string;
+
+  /** @format uuid */
+  allocationId?: string;
+
+  /** @format uuid */
+  userId?: string;
+
+  /** @format uuid */
+  accountId?: string;
+  status?: 'ACTIVE' | 'INACTIVE' | 'CANCELLED';
+  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED' | 'USER_ARCHIVED' | 'LOST' | 'STOLEN';
+  fundingType?: 'POOLED' | 'INDIVIDUAL';
+
+  /** @format date-time */
+  issueDate?: string;
+
+  /** @format date */
+  expirationDate?: string;
+  activated?: boolean;
+
+  /** @format date-time */
+  activationDate?: string;
+  cardLine3?: string;
+  cardLine4?: string;
+  type?: 'PHYSICAL' | 'VIRTUAL';
+  superseded?: boolean;
+  cardNumber?: string;
+  lastFour?: string;
+  address?: Address;
+  externalRef?: string;
+  availableAllocationIds?: string[];
+}
+
+export interface CardDetailsResponse {
+  card: Card;
+  ledgerBalance?: Amount;
+  availableBalance?: Amount;
+
+  /** @format uuid */
+  linkedAllocationId?: string;
+  linkedAllocationName?: string;
+  allowedAllocationsAndLimits?: CardAllocationSpendControls[];
 }
 
 export interface SearchCardRequest {
@@ -2036,17 +2109,6 @@ export interface EphemeralKeyRequest {
   /** @format uuid */
   cardId?: string;
   apiVersion?: string;
-}
-
-export interface CardStatementRequest {
-  /** @format uuid */
-  cardId?: string;
-
-  /** @format date-time */
-  startDate?: string;
-
-  /** @format date-time */
-  endDate?: string;
 }
 
 export interface BusinessStatusResponse {
@@ -2135,6 +2197,7 @@ export interface UpdateBusiness {
   mcc?: string;
   description?: string;
   url?: string;
+  timeZone?: 'US_EASTERN' | 'US_CENTRAL' | 'US_MOUNTAIN' | 'US_PACIFIC' | 'US_ALASKA' | 'US_HAWAII';
 }
 
 export interface BusinessReallocationRequest {
@@ -2322,6 +2385,12 @@ export interface ConvertBusinessProspectRequest {
    * @example Business small description
    */
   description: string;
+
+  /**
+   * Timezone
+   * @example US_CENTRAL
+   */
+  timeZone: 'US_EASTERN' | 'US_CENTRAL' | 'US_MOUNTAIN' | 'US_PACIFIC' | 'US_ALASKA' | 'US_HAWAII';
 
   /**
    * Doing business as name if is different by company name
@@ -2690,6 +2759,22 @@ export interface AllocationFundCardResponse {
   allocationLedgerBalance?: Amount;
 }
 
+export interface AllocationAutoTopUpConfigCreateRequest {
+  /** @format int32 */
+  monthlyDay: number;
+  amount: Amount;
+}
+
+export interface AllocationAutoTopUpConfigResponse {
+  /** @format uuid */
+  id?: string;
+
+  /** @format int32 */
+  monthlyDay?: number;
+  amount?: Amount;
+  active?: boolean;
+}
+
 export interface LedgerActivityRequest {
   /** @format uuid */
   allocationId?: string;
@@ -2772,12 +2857,8 @@ export interface LedgerActivityResponse {
   requestedAmount?: Amount;
   syncStatus?: 'SYNCED_LOCKED' | 'READY' | 'NOT_READY';
   hold?: LedgerHoldInfo;
-  sourceAccount?:
-    | LedgerAllocationAccount
-    | LedgerBankAccount
-    | LedgerCardAccount
-    | LedgerMerchantAccount;
-  targetAccount?:
+  account?: LedgerAllocationAccount | LedgerBankAccount | LedgerCardAccount | LedgerMerchantAccount;
+  referenceAccount?:
     | LedgerAllocationAccount
     | LedgerBankAccount
     | LedgerCardAccount
@@ -3553,41 +3634,6 @@ export interface UpdateUserResponse {
   errorMessage?: string;
 }
 
-export interface Card {
-  /** @format uuid */
-  cardId?: string;
-
-  /** @format uuid */
-  allocationId?: string;
-
-  /** @format uuid */
-  userId?: string;
-
-  /** @format uuid */
-  accountId?: string;
-  status?: 'ACTIVE' | 'INACTIVE' | 'CANCELLED';
-  statusReason?: 'NONE' | 'CARDHOLDER_REQUESTED' | 'USER_ARCHIVED' | 'LOST' | 'STOLEN';
-  fundingType?: 'POOLED' | 'INDIVIDUAL';
-
-  /** @format date-time */
-  issueDate?: string;
-
-  /** @format date */
-  expirationDate?: string;
-  activated?: boolean;
-
-  /** @format date-time */
-  activationDate?: string;
-  cardLine3?: string;
-  cardLine4?: string;
-  type?: 'PHYSICAL' | 'VIRTUAL';
-  superseded?: boolean;
-  cardNumber?: string;
-  lastFour?: string;
-  address?: Address;
-  externalRef?: string;
-}
-
 export interface CardAndAccount {
   card?: Card;
   account?: Account;
@@ -3637,55 +3683,8 @@ export interface TermsAndConditionsResponse {
   documentTimestamp?: string;
 }
 
-export interface UpdateCardRequest {
-  limits?: CurrencyLimit[];
-  disabledMccGroups?: (
-    | 'CHILD_CARE'
-    | 'DIGITAL_GOODS'
-    | 'EDUCATION'
-    | 'ENTERTAINMENT'
-    | 'FOOD_BEVERAGE'
-    | 'GAMBLING'
-    | 'GOVERNMENT'
-    | 'HEALTH'
-    | 'MEMBERSHIPS'
-    | 'MONEY_TRANSFER'
-    | 'SERVICES'
-    | 'SHOPPING'
-    | 'TRAVEL'
-    | 'UTILITIES'
-    | 'OTHER'
-  )[];
-  disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
-  disableForeign?: boolean;
-}
-
-export interface CardDetailsResponse {
-  card: Card;
-  ledgerBalance?: Amount;
-  availableBalance?: Amount;
-  allocationName?: string;
-  limits?: CurrencyLimit[];
-  disabledMccGroups?: (
-    | 'CHILD_CARE'
-    | 'DIGITAL_GOODS'
-    | 'EDUCATION'
-    | 'ENTERTAINMENT'
-    | 'FOOD_BEVERAGE'
-    | 'GAMBLING'
-    | 'GOVERNMENT'
-    | 'HEALTH'
-    | 'MEMBERSHIPS'
-    | 'MONEY_TRANSFER'
-    | 'SERVICES'
-    | 'SHOPPING'
-    | 'TRAVEL'
-    | 'UTILITIES'
-    | 'OTHER'
-  )[];
-  disabledPaymentTypes?: ('POS' | 'ONLINE' | 'MANUAL_ENTRY')[];
-  disableForeign?: boolean;
-  allowedAllocationIds?: string[];
+export interface UpdateCardSpendControlsRequest {
+  allocationSpendControls?: CardAllocationSpendControls[];
 }
 
 export interface BusinessLimitOperationRecord {
@@ -4148,6 +4147,16 @@ export interface ArchiveAllocationResponse {
   archivedAllocationIds?: string[];
 }
 
+export interface AllocationAutoTopUpConfigUpdateRequest {
+  /** @format uuid */
+  id: string;
+
+  /** @format int32 */
+  monthlyDay: number;
+  amount: Amount;
+  active: boolean;
+}
+
 export interface User {
   /** @format uuid */
   userId?: string;
@@ -4285,11 +4294,19 @@ export interface BusinessOwner {
   type?: 'UNSPECIFIED' | 'PRINCIPLE_OWNER' | 'ULTIMATE_BENEFICIAL_OWNER';
   firstName?: NullableEncryptedString;
   lastName?: NullableEncryptedString;
+  title?: string;
   relationshipOwner?: boolean;
   relationshipRepresentative?: boolean;
   relationshipExecutive?: boolean;
   relationshipDirector?: boolean;
+  percentageOwnership?: number;
+  address?: Address;
+  taxIdentificationNumber?: NullableEncryptedString;
   email?: string;
+  phone?: string;
+
+  /** @format date */
+  dateOfBirth?: string;
   countryOfCitizenship?:
     | 'UNSPECIFIED'
     | 'ABW'
@@ -4539,17 +4556,9 @@ export interface BusinessOwner {
     | 'ZAF'
     | 'ZMB'
     | 'ZWE';
+  subjectRef?: string;
   knowYourCustomerStatus?: 'PENDING' | 'REVIEW' | 'FAIL' | 'PASS';
   status?: 'ACTIVE' | 'RETIRED';
-  title?: string;
-  percentageOwnership?: number;
-  address?: Address;
-  taxIdentificationNumber?: NullableEncryptedString;
-  phone?: string;
-
-  /** @format date */
-  dateOfBirth?: string;
-  subjectRef?: string;
   stripePersonReference?: string;
 
   /** @format int64 */
@@ -4625,6 +4634,10 @@ export interface AuditLogDisplayValue {
 
   /** @format date-time */
   auditTime?: string;
+
+  /** @format int64 */
+  timestamp?: number;
+  userId?: string;
 }
 
 export interface CodatSupplier {
@@ -4638,6 +4651,10 @@ export interface GetSuppliersResponse {
   /** @format int32 */
   totalElements?: number;
   results?: CodatSupplier[];
+}
+
+export interface AllocationFundsManagerResponse {
+  userDataList: UserData[];
 }
 
 export interface AccountBalance {
@@ -5225,4 +5242,12 @@ export interface AllocationRolePermissionRecord {
 
 export interface AllocationRolePermissionsResponse {
   userAllocationRoleList: AllocationRolePermissionRecord[];
+}
+
+export interface CardAllocationDetails {
+  /**
+   * The ID of the allocation connected with this card.
+   * @format uuid
+   */
+  allocationId: string;
 }

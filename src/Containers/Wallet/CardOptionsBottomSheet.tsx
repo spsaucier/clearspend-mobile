@@ -21,9 +21,13 @@ import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
 import { CSText } from '@/Components';
 import { EyeIcon, SnowflakeIcon, KeyIcon } from '@/Components/Icons';
-import { useFreezeCard, useUnFreezeCard, useCard } from '@/Queries';
+import {
+  useFreezeCard,
+  useUnFreezeCard,
+  // useCard
+} from '@/Queries';
 import { MainScreens } from '@/Navigators/NavigatorTypes';
-import { useSpendControls } from '@/Hooks/useSpendControls';
+// import { useSpendControls } from '@/Hooks/useSpendControls';
 import { useAllPermissions } from '@/Queries/permissions';
 import { showAdmin } from '@/Helpers/PermissionsHelpers';
 import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
@@ -46,9 +50,9 @@ export const CardOptionsBottomSheet = forwardRef(
     const { t } = useTranslation();
     const { navigate } = useNavigation();
 
-    const { data } = useCard(cardId);
-
-    const showSpendControlsRow = useSpendControls(data?.card?.allocationId);
+    // TODO support multiple allocations/spend controls on cards
+    // const { data } = useCard(cardId);
+    const showSpendControlsRow = false; // useSpendControls(data?.card?.allocationId);
 
     const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
       useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
