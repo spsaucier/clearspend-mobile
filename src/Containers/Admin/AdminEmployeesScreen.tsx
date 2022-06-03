@@ -22,7 +22,7 @@ import {
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
 import OptionsBottomSheetButton from '@/Components/OptionsBottomSheetButton';
-import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { AdminScreens, AdminStackParamTypes } from '@/Navigators/Admin/AdminNavigatorTypes';
 
 const AdminEmployeesScreen = () => {
   const { navigate } =
@@ -37,6 +37,7 @@ const AdminEmployeesScreen = () => {
         value: `${u.firstName} ${u.lastName}`,
         email: u.email,
         initials: `${u.firstName?.[0]} ${u.lastName?.[0]}`,
+        user: u,
       })),
     [data],
   );
@@ -45,13 +46,9 @@ const AdminEmployeesScreen = () => {
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
-  const onEmployeesPress = (userId: string) => {
-    const user = data?.find((u) => u.userId === userId);
-
-    if (user) {
-      setSelectedUser(user);
-      bottomSheetRef?.current?.present();
-    }
+  const onEmployeePress = (employee?: User) => {
+    setSelectedUser(employee);
+    bottomSheetRef?.current?.present();
   };
 
   return (
@@ -81,10 +78,12 @@ const AdminEmployeesScreen = () => {
               indexContainerStyle={tw`mr-1.5`}
               indexLetterStyle={tw`text-xs text-secondary font-medium`}
               data={users}
-              renderCustomItem={(item: IData & { email?: string; initials?: string }) => (
+              renderCustomItem={(
+                item: IData & { email?: string; initials?: string; user?: User },
+              ) => (
                 <TouchableOpacity
                   style={tw`flex-row py-3 px-5`}
-                  onPress={() => onEmployeesPress(item.key)}
+                  onPress={() => onEmployeePress(item.user)}
                 >
                   <View
                     style={tw`flex-row justify-center items-center w-10 h-10 rounded-full bg-black`}
@@ -117,7 +116,13 @@ const AdminEmployeesScreen = () => {
       <OptionsBottomSheet ref={bottomSheetRef} title={t('admin.employees.employeeOptions')}>
         <OptionsBottomSheetButton
           text={t('admin.employees.viewWallet')}
-          onPress={() => {}}
+          onPress={() => {
+            if (selectedUser) {
+              navigate(AdminScreens.EmployeeWallet, {
+                employee: selectedUser,
+              });
+            }
+          }}
           icon={WalletThinIcon}
         />
         <OptionsBottomSheetButton

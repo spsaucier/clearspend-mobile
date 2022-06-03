@@ -51,6 +51,7 @@ export enum AdminScreens {
   Allocations = 'Admin Allocations',
   IssueCard = 'Issue Card',
   ManageAllocation = 'Manage Allocation',
+  EmployeeWallet = 'Employee Wallet',
 }
 
 export type AdminStackParamTypes = {
@@ -65,4 +66,5 @@ export type AdminStackParamTypes = {
     userRoles: UserRolesAndPermissionsRecord[];
     userType: 'EMPLOYEE' | 'BUSINESS_OWNER';
   };
+  [AdminScreens.EmployeeWallet]: { employee: User };
 };

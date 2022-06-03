@@ -32,7 +32,8 @@ export type CardType = {
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  onPress?: () => void;
+  onCardPress?: () => void;
+  cardPressDisabled?: boolean;
   width?: any;
   onCardBalanceInfoPress?: () => void;
   onCardOptionsPress?: () => void;
@@ -72,7 +73,8 @@ export const Card = ({
   isFrozen,
   isVirtual,
   style,
-  onPress,
+  onCardPress,
+  cardPressDisabled = false,
   width,
   showSensitiveInformation = false,
   onCardBalanceInfoPress,
@@ -80,7 +82,7 @@ export const Card = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  const disabled = !onPress;
+  const disabledCardPress = !onCardPress || cardPressDisabled;
   const darkContent = !isFrozen;
 
   const Dot = () => (
@@ -140,8 +142,8 @@ export const Card = ({
         { aspectRatio: 1.6, width },
         style,
       ]}
-      onPress={onPress}
-      disabled={disabled}
+      onPress={onCardPress}
+      disabled={disabledCardPress}
     >
       <CardBackground isFrozen={isFrozen} isVirtual={isVirtual}>
         <View

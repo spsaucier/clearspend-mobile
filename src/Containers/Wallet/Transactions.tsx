@@ -290,7 +290,7 @@ const Transactions = ({
         elevation: 10,
       }}
       snapPoints={snapPointMemo}
-      handleStyle={[tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`]}
+      handleStyle={tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`}
       handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
       onChange={(e) => setExpanded(e === 1)}
       animateOnMount={animateOnMount}

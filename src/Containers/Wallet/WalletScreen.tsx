@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, Dimensions, StatusBar, NativeModules, LayoutChangeEvent } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,14 +20,14 @@ import { useQueryClient } from 'react-query';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { useRoute } from '@react-navigation/core';
+import { RouteProp, useRoute } from '@react-navigation/core';
 import { NativeStackScreenProps } from 'react-native-screens/native-stack';
 import tw from '@/Styles/tailwind';
 import { Button, ActivityIndicator, CSText, InfoPanel, AnimatedCSText } from '@/Components';
 import { Card } from '@/Containers/Wallet/Components/Card';
 import { useUser, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
-import { CardDetailsResponse } from '@/generated/capital';
+import { CardDetailsResponse, User } from '@/generated/capital';
 import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
@@ -36,9 +36,13 @@ import { ArrowUpIcon } from '@/Components/Icons';
 import { lightFeedback } from '@/Helpers/HapticFeedback';
 import { TransactionsContainer } from '@/Containers/Wallet/TransactionsContainer';
 import { AddToDigitalWalletButton } from '@/Containers/Wallet/Components/AddToDigitalWalletButton';
+import { invalidateCardQueries, useEmployeeCards } from '@/Queries/card';
+import { AdminScreens, AdminStackParamTypes } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { formatUserName } from '@/Helpers/UserNameHelper';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
+const pullToRefreshThreshold = screenHeight * (0.45 / scale);
 const { height: windowHeight } = Dimensions.get('window');
 const { StatusBarManager } = NativeModules;
 const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
@@ -54,12 +58,14 @@ const LoadingWallet = () => (
   </View>
 );
 
-const LoadingError = ({ cardsError, refetchCards }: any) => {
+const LoadingError = ({ cardsError, refetchCards, isEmployeeWallet }: any) => {
   const { t } = useTranslation();
   const { logout } = useAuthentication();
   return (
     <View style={tw`flex-1 justify-center items-center bg-secondary p-6`}>
-      <CSText style={tw`text-base text-white mb-4`}>{cardsError?.message}</CSText>
+      <CSText style={tw`text-base text-white mb-4`}>
+        {cardsError?.message || t('error.generic')}
+      </CSText>
       <Button
         onPress={() => {
           refetchCards();
@@ -69,9 +75,11 @@ const LoadingError = ({ cardsError, refetchCards }: any) => {
         {t('general.reload')}
       </Button>
       <View style={{ marginTop: 10 }}>
-        <Button onPress={logout} small>
-          {t('profile.profileMenu.logOut')}
-        </Button>
+        {!isEmployeeWallet ? (
+          <Button onPress={logout} small>
+            {t('profile.profileMenu.logOut')}
+          </Button>
+        ) : null}
       </View>
     </View>
   );
@@ -110,11 +118,15 @@ const ContentWallet = ({
   cardsLoading,
   activeCards,
   headerIconsHeight,
+  isEmployeeWallet,
+  employee,
 }: {
   isRefetching: boolean;
   cardsLoading: boolean;
   activeCards: CardDetailsResponse[];
   headerIconsHeight: number;
+  isEmployeeWallet: boolean;
+  employee: User;
 }) => {
   const { navigate, setParams } = useNavigation();
   const route = useRoute<WalletScreenRouteProp>();
@@ -202,6 +214,7 @@ const ContentWallet = ({
       <View onLayout={(e) => setCarouselHeight(e.nativeEvent.layout.height)}>
         <Carousel
           data={activeCards}
+          testID="walletScreen-cardCarousel"
           ref={carouselRef}
           width={screenWidth}
           onScrollBegin={() => setIsScrolling(true)}
@@ -236,7 +249,11 @@ const ContentWallet = ({
                 lastDigits={lastFour || ''}
                 cardTitle={cardLine3}
                 allocation={linkedAllocationName}
-                onPress={() => {
+                onCardPress={() => {
+                  if (isEmployeeWallet) {
+                    return;
+                  }
+
                   if (isFrozen) {
                     Toast.show({
                       type: 'success',
@@ -246,6 +263,7 @@ const ContentWallet = ({
                     navigate(MainScreens.CardDetails, { cardId });
                   }
                 }}
+                cardPressDisabled={isEmployeeWallet}
                 onCardBalanceInfoPress={onCardBalanceInfoPress}
                 onCardOptionsPress={onCardOptionsPress}
               />
@@ -273,17 +291,27 @@ const ContentWallet = ({
           </View>
         ) : null}
 
-        <AddToDigitalWalletButton
-          card={selectedCard?.card}
-          cardHolderName={`${user?.firstName} ${user?.lastName}`}
-          disabled={isScrolling}
-        />
+        {!isEmployeeWallet ? (
+          <AddToDigitalWalletButton
+            card={selectedCard?.card}
+            cardHolderName={`${user?.firstName} ${user?.lastName}`}
+            disabled={isScrolling}
+          />
+        ) : null}
       </View>
 
       {selectedCardId && carouselHeight ? (
         <TransactionsContainer
           selectedCardId={selectedCardId}
           initialSnapPoint={initialSnapPoint}
+          title={
+            isEmployeeWallet
+              ? t('wallet.transactions.employeeRecentTransactions', {
+                  userFirstName: formatUserName(employee).firstName,
+                  interpolation: { escapeValue: false },
+                })
+              : undefined
+          }
         />
       ) : null}
 
@@ -304,6 +332,7 @@ const ContentWallet = ({
         isCardFrozen={selectedCardFrozen}
         setIsCancelling={setIsCancelling}
         nextIndex={nextIndex}
+        hideCardInfoButton={isEmployeeWallet}
       />
       <ActivityOverlay
         visible={isCancelling}
@@ -315,39 +344,61 @@ const ContentWallet = ({
 
 const WalletScreen = () => {
   const { t } = useTranslation();
+  const route = useRoute<RouteProp<AdminStackParamTypes, AdminScreens.EmployeeWallet>>();
+  const queryClient = useQueryClient();
 
   const [headerIconsHeight, setHeaderIconsHeight] = useState<number>();
 
   const translationYSV = useSharedValue(0);
-  const pullToRefreshThreshold = screenHeight * (0.45 / scale);
-  const queryClient = useQueryClient();
+
+  const employee = route?.params?.employee;
+  const isEmployeeWallet = Boolean(employee);
 
   const {
-    data: allCardsData,
-    isLoading: cardsLoading,
-    isRefetching,
-    refetch: refetchCards,
-    error: cardsError,
-  } = useUserCards();
+    data: userCardsData,
+    isLoading: userCardsLoading,
+    isRefetching: isRefetchingUserCards,
+    refetch: refetchUserCards,
+    error: userCardsError,
+  } = useUserCards(!isEmployeeWallet);
+
+  const {
+    data: employeeCards,
+    isLoading: employeeCardsLoading,
+    isRefetching: isRefetchingEmployeeCards,
+    refetch: refetchEmployeeCards,
+    isError: employeeCardsError,
+  } = useEmployeeCards(employee);
+
+  const cardData = isEmployeeWallet ? employeeCards : userCardsData;
+  const isRefetching = isEmployeeWallet ? isRefetchingEmployeeCards : isRefetchingUserCards;
 
   const activeCards = useMemo(
     () =>
-      allCardsData?.filter(
+      cardData?.filter(
         (cardDetails) =>
           !(
             cardDetails.card.status === 'CANCELLED' ||
             (cardDetails.card.type === 'PHYSICAL' && cardDetails.card.activated === false)
           ),
       ) ?? [],
-    [allCardsData],
+    [cardData],
   );
+
+  const refetchCards = useCallback(() => {
+    if (isEmployeeWallet) {
+      refetchEmployeeCards();
+    } else {
+      refetchUserCards();
+    }
+  }, [isEmployeeWallet, refetchEmployeeCards, refetchUserCards]);
 
   useEffect(() => {
     if (!isRefetching) {
       translationYSV.value = withTiming(0);
     } else {
-      // invalidate sub queries
       invalidateTransactions(queryClient);
+      invalidateCardQueries(queryClient);
     }
   }, [isRefetching, translationYSV, queryClient]);
 
@@ -399,9 +450,10 @@ const WalletScreen = () => {
     };
   });
 
-  const showError = !cardsLoading && cardsError;
-  const showCardsEmpty = !cardsLoading && !cardsError && (!activeCards || activeCards.length === 0);
-  const showContent = !showError && !cardsLoading && !cardsError && !showCardsEmpty;
+  const showLoading = isEmployeeWallet ? employeeCardsLoading : userCardsLoading;
+  const showError = (isEmployeeWallet ? employeeCardsError : userCardsError) && !showLoading;
+  const showCardsEmpty = !showLoading && !showError && (!activeCards || activeCards.length === 0);
+  const showContent = !showError && !showLoading && !showCardsEmpty;
 
   return (
     <BottomSheetModalProvider>
@@ -409,10 +461,17 @@ const WalletScreen = () => {
         <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" translucent />
         <HeaderIcons
           onLayout={(e: LayoutChangeEvent) => setHeaderIconsHeight(e.nativeEvent.layout.height)}
+          employee={employee}
         />
         <View style={tw`flex-1`}>
-          {cardsLoading && <LoadingWallet />}
-          {showError && <LoadingError cardsError={cardsError} refetchCards={refetchCards} />}
+          {showLoading && <LoadingWallet />}
+          {showError && (
+            <LoadingError
+              cardsError={userCardsError}
+              refetchCards={refetchCards}
+              isEmployeeWallet={isEmployeeWallet}
+            />
+          )}
           {(showContent || showCardsEmpty) && (
             <View style={tw`flex-1`}>
               <View style={tw`flex-row items-center h-20 justify-center`}>
@@ -429,7 +488,7 @@ const WalletScreen = () => {
                   {t('wallet.refreshCardAndTransactions')}
                 </AnimatedCSText>
               </View>
-              <View style={[tw`flex-1 absolute h-full w-full`]}>
+              <View style={tw`flex-1 absolute h-full w-full`}>
                 <PanGestureHandler
                   onGestureEvent={handler}
                   activeOffsetY={25}
@@ -446,7 +505,9 @@ const WalletScreen = () => {
                         activeCards={activeCards}
                         headerIconsHeight={headerIconsHeight || 0}
                         isRefetching={isRefetching}
-                        cardsLoading={cardsLoading}
+                        cardsLoading={showLoading}
+                        isEmployeeWallet={isEmployeeWallet}
+                        employee={employee}
                       />
                     )}
                   </Animated.View>

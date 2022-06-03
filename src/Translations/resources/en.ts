@@ -196,6 +196,7 @@ export default {
     },
     transactions: {
       recentTransactions: 'Recent Transactions',
+      employeeRecentTransactions: "{{userFirstName}}'s recent transactions",
       allTransactions: 'Transactions',
       searchTransactions: 'Search transactions',
       empty: 'Your recent transactions will show here when you start using this card',

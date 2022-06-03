@@ -25,6 +25,7 @@ import AllocationScreen from '@/Containers/Admin/IssueCard/AllocationScreen';
 import SpendControlsScreen from '@/Containers/Admin/IssueCard/SpendControlsScreen';
 import CardRequestScreen from '@/Containers/Admin/IssueCard/CardRequestScreen';
 import CardConfirmationScreen from '@/Containers/Admin/IssueCard/CardConfirmationScreen';
+import WalletScreen from '@/Containers/Wallet/WalletScreen';
 
 // Manage Allocation Screens
 import ReallocationAccountScreen from '@/Containers/Admin/ManageAllocations/ReallocationAccountScreen';
@@ -109,6 +110,7 @@ export const AdminNavigator = () => (
     <AdminStack.Screen name={AdminScreens.Home} component={AdminHomeScreen} />
     <AdminStack.Screen name={AdminScreens.Employees} component={AdminEmployeesScreen} />
     <AdminStack.Screen name={AdminScreens.Allocations} component={AdminAllocationsScreen} />
+    <AdminStack.Screen name={AdminScreens.EmployeeWallet} component={WalletScreen} />
     <AdminStack.Screen name={AdminScreens.IssueCard} component={IssueCardNavigator} />
     <AdminStack.Screen name={AdminScreens.ManageAllocation} component={ManageAllocationNavigator} />
   </AdminStack.Navigator>

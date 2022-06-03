@@ -1,4 +1,12 @@
-import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+  QueryClient,
+  QueryObserverResult,
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
+import { useMemo } from 'react';
 import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
@@ -10,35 +18,109 @@ import {
   UpdateCardStatusRequest,
   IssueCardRequest,
   IssueCardResponse,
+  User,
+  SearchCardData,
 } from '@/generated/capital';
 import apiClient from '@/Services';
 
-const getCards = () => apiClient.get('/users/cards').then((res) => res.data);
-export const useUserCards = () => useQuery<CardDetailsResponse[], Error>('cards', getCards);
+const EMPLOYEE_CARDS_KEY = 'employee-cards';
+const CARDS_BY_ID_KEY = 'cards';
 
-const getCard = (cardId: string) => apiClient.get(`/users/cards/${cardId}`).then((res) => res.data);
-export const useCard = (cardId = '') =>
-  useQuery<CardDetailsResponse, Error>(['cards', cardId], () => getCard(cardId));
+export const invalidateCardQueries = async (queryClient: QueryClient) =>
+  Promise.all([
+    queryClient.invalidateQueries(CARDS_BY_ID_KEY),
+    queryClient.invalidateQueries(EMPLOYEE_CARDS_KEY),
+  ]);
 
-interface OnMutateProps {
-  updatedCard: any;
-  queryClient: QueryClient;
-  cardId: string;
-}
-const onMutateFreeze = async ({ queryClient, cardId }: OnMutateProps) => {
-  await queryClient.cancelQueries('cards');
-  const previousCards = queryClient.getQueryData('cards');
-  queryClient.setQueryData('cards', (old: CardDetailsResponse[] | undefined) => {
-    const index = old!.findIndex((c) => c.card.cardId === cardId);
-    const updated = [...old!];
-    if (index) {
-      const newStatus = updated[index].card.status === 'INACTIVE' ? 'ACTIVE' : 'INACTIVE';
-      updated[index].card.status = newStatus;
-    }
-    return updated;
-  });
-  return { previousCards };
+const getUserCards = () => apiClient.get('/users/cards').then((res) => res.data);
+export const useUserCards = (enabled: boolean) =>
+  useQuery<CardDetailsResponse[], Error>(CARDS_BY_ID_KEY, getUserCards, { enabled });
+
+export const useEmployeeCardsSearch = (userId: string, enabled: boolean) =>
+  useQuery<SearchCardData[], Error>(
+    [EMPLOYEE_CARDS_KEY, userId],
+    () =>
+      apiClient
+        .post('/cards/search', {
+          users: [userId],
+          pageRequest: {
+            orderBy: [
+              {
+                direction: 'ASC',
+                item: 'activationDate',
+              },
+            ],
+            //  TODO fetch all pages
+            pageNumber: 0,
+            pageSize: 50,
+          },
+        })
+        .then((res) => res.data.content),
+    { enabled },
+  );
+
+export const useEmployeeCards = (
+  employee?: User,
+): {
+  isLoading: boolean;
+  isError: boolean;
+  data: CardDetailsResponse[] | undefined;
+  refetch: () => Promise<QueryObserverResult<SearchCardData[], Error>>;
+  isRefetching: boolean;
+} => {
+  const employeeId = employee?.userId ?? '';
+  const shouldFetchEmployee = Boolean(employee);
+
+  const {
+    data: searchCardsData,
+    isLoading: searchCardsLoading,
+    isError: searchCardsError,
+    refetch,
+    isRefetching,
+  } = useEmployeeCardsSearch(employeeId, shouldFetchEmployee);
+
+  const cardIds = useMemo(
+    () => searchCardsData?.map((card) => card.cardId).filter(Boolean) ?? [],
+    [searchCardsData],
+    // Undefined IDs have been filtered out
+  ) as string[];
+
+  const cardQueries = useQueries(
+    cardIds.map((id) => ({
+      queryKey: [CARDS_BY_ID_KEY, id],
+      queryFn: () => getCard(id),
+      enabled: Boolean(searchCardsData),
+    })),
+  );
+
+  const employeeCards = useMemo(
+    () => cardQueries?.map((query) => query.data).filter(Boolean) ?? [],
+    [cardQueries],
+  );
+
+  const isLoading = useMemo(
+    () => searchCardsLoading || cardQueries?.some((query) => query.isLoading),
+    [cardQueries, searchCardsLoading],
+  );
+  const isError = useMemo(
+    () => searchCardsError || cardQueries?.some((query) => query.isError),
+    [cardQueries, searchCardsError],
+  );
+
+  return {
+    isLoading,
+    isError,
+    data: employeeCards,
+    refetch,
+    isRefetching,
+  };
 };
+
+const getCard = (cardId: string) => apiClient.get(`/cards/${cardId}`).then((res) => res.data);
+export const useCard = (cardId = '') =>
+  useQuery<CardDetailsResponse, Error>([CARDS_BY_ID_KEY, cardId], () => getCard(cardId), {
+    enabled: !!cardId,
+  });
 
 export const useFreezeCard = (
   cardId = '',
@@ -52,14 +134,8 @@ export const useFreezeCard = (
         .patch(`/users/cards/${cardId}/block`, { status, statusReason })
         .then((res) => res.data),
     {
-      onMutate: async (updatedCard) => onMutateFreeze({ updatedCard, queryClient, cardId }),
-      // If the mutation fails, use the context returned from onMutate to roll back
-      onError: (context: any) => {
-        queryClient.setQueryData('cards', context.previousCards);
-      },
-      // Always refetch after error or success:
-      onSettled: () => {
-        queryClient.invalidateQueries('cards');
+      onSuccess: () => {
+        invalidateCardQueries(queryClient);
       },
     },
   );
@@ -77,14 +153,8 @@ export const useUnFreezeCard = (
         .patch(`/users/cards/${cardId}/unblock`, { status, statusReason })
         .then((res) => res.data),
     {
-      onMutate: async (updatedCard) => onMutateFreeze({ updatedCard, queryClient, cardId }),
-      // If the mutation fails, use the context returned from onMutate to roll back
-      onError: (context: any) => {
-        queryClient.setQueryData('cards', context.previousCards);
-      },
-      // Always refetch after error or success:
-      onSettled: () => {
-        queryClient.invalidateQueries('cards');
+      onSuccess: () => {
+        invalidateCardQueries(queryClient);
       },
     },
   );
@@ -103,7 +173,7 @@ export const useActivateCard = () => {
       },
       // Refetch cards if a card was activated successfully
       onSuccess: () => {
-        queryClient.invalidateQueries('cards');
+        invalidateCardQueries(queryClient);
       },
     },
   );
@@ -156,7 +226,7 @@ export const useIssueCardRequest = () => {
     {
       // Refetch cards if a card was issued successfully
       onSuccess: () => {
-        queryClient.invalidateQueries('cards');
+        invalidateCardQueries(queryClient);
       },
     },
   );
