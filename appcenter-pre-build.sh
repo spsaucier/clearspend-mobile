@@ -24,3 +24,37 @@ else
   echo "Setting app center key in appcenter-config.json"
   sed -i.bak "s/SECRET_REPLACED_HERE/${APPCENTER_SECRET_KEY}/g" android/app/src/main/assets/appcenter-config.json
 fi
+
+if [[ "$CS_ENV_NAME" == "DEV"  ]] && [[ "$APPCENTER_BRANCH" == "builds/saucelabs-ios"  ]]; then
+  echo "Building for simulator"
+  yarn podinstall
+
+  cd "$APPCENTER_SOURCE_DIRECTORY/ios" || die "cd to ios directory failed"
+  /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild \
+    -sdk iphonesimulator archive ARCHS=x86_64 VALID_ARCHS=x86_64 \
+    -workspace ClearSpendMobile.xcworkspace -scheme "ClearSpendMobileDEV" \
+    -configuration "dev.Release" \
+    -archivePath ~/iOSSimulatorBuild/App.xcarchive || die "Simulator build failed"
+
+  sim_build_path=~/iOSSimulatorBuild/App.xcarchive/Products/Applications
+  sim_build_name="ClearSpend DEV.app"
+  sauce_zip="ClearSpend DEV.zip"
+
+  zip -r "$sauce_zip" "$sim_build_path/$sim_build_name"
+
+  echo "Uploading simulator build to SauceLabs"
+  curl \
+    -F "payload=@$sauce_zip" \
+    -F name="$sauce_zip" \
+    -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" 'https://api.us-west-1.saucelabs.com/v1/storage/upload'
+
+  # cancel the build now, there is a 60 minute timeout so there is not enough time to build the ad hoc signed release ipa
+  OWNER_NAME="ClearSpend"
+  APP_NAME="ClearSpend-iOS-DEV"
+
+  curl -iv "https://appcenter.ms/api/v0.1/apps/$OWNER_NAME/$APP_NAME/builds/$APPCENTER_BUILD_ID" \
+    -X PATCH \
+    -d "{\"status\":\"cancelling\"}" \
+    --header 'Content-Type: application/json' \
+    --header "X-API-Token: $APPCENTER_API_TOKEN"
+fi
