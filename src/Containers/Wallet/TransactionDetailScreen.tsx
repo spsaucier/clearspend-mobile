@@ -109,10 +109,6 @@ export const TransactionDetailScreenContent = () => {
     declineDetails,
     paymentDetails,
   }: AccountActivityResponse = data;
-
-  // TODO: Delete once API supports it
-  const country = 'USA';
-
   const statusFormatted = sentenceCase(status!);
   const statusPending = status === 'PENDING';
   const statusDeclined = status === 'DECLINED';
@@ -431,7 +427,8 @@ export const TransactionDetailScreenContent = () => {
                 value={formatCurrency(paymentDetails.foreignTransactionFee?.amount || 0)}
               />
             ) : null}
-            <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} />
+            {/* TODO enable country field once the API supports it */}
+            {/* <InfoRow label={t('wallet.transactionDetails.details.location')} value={country} /> */}
           </View>
           <View style={tw`mx-6`}>
             {status === 'APPROVED' ? (

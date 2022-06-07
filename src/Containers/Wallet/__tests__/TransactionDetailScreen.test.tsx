@@ -99,9 +99,6 @@ describe('TransactionDetailScreen', () => {
       expect(getByText('1234567890')).toBeTruthy();
       expect(getByText('Travel')).toBeTruthy();
 
-      // details
-      expect(getByText('USA')).toBeTruthy();
-
       // icons
       expect(getByTestId('transaction-no-category')).toBeTruthy();
       expect(getByTestId('transaction-no-receipt')).toBeTruthy();
