@@ -11,6 +11,44 @@ const ADMIN_ALLOCATION_PERMISSIONS = [
   'LINK_BANK_ACCOUNTS',
 ];
 
+export const oneAllocation = {
+  userRoles: [
+    {
+      allocationId: '1d77bbeb-d765-43b8-a947-0d13e54cf871',
+      allocationPermissions: ADMIN_ALLOCATION_PERMISSIONS,
+    },
+  ],
+  allocations: [
+    {
+      allocationId: '1d77bbeb-d765-43b8-a947-0d13e54cf871',
+      name: 'Dovetail',
+      account: {
+        accountId: '618175ef-c8fc-4695-8a02-5414440a0cda',
+        businessId: '58022877-a122-47b8-8f78-7bdfbbba0e4d',
+        allocationId: '1d77bbeb-d765-43b8-a947-0d13e54cf871',
+        ledgerAccountId: '024dfe66-ac98-4b55-918d-312ab55fd10c',
+        type: 'ALLOCATION' as 'ALLOCATION',
+        cardId: undefined,
+        ledgerBalance: {
+          currency: 'USD' as 'USD',
+          amount: 708,
+        },
+        availableBalance: {
+          currency: 'USD' as 'USD',
+          amount: 708,
+        },
+      },
+      ownerId: '',
+      parentAllocationId: undefined,
+      childrenAllocationIds: [
+        '7a2ed2cd-f517-428e-8b3e-bf7e13b1bb51',
+        '527b4e6c-a069-4d07-bd44-10fc04070f7d',
+        '2587f140-93af-453a-904d-506eac12a53a',
+      ],
+    },
+  ],
+};
+
 export const adminResponse = {
   userRoles: [
     {

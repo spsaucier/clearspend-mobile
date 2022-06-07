@@ -60,7 +60,7 @@ const ReallocationAccountScreen = () => {
           removeAllocationById(allocationId, allocations, userRoles),
         ),
       ),
-    [allocations, allocations, userRoles],
+    [allocationId, allocations, userRoles],
   );
 
   return (

@@ -13,10 +13,10 @@ import { CSText as Text, FocusAwareStatusBar, Button } from '@/Components';
 import { ActivityIndicator } from '@/Components/ActivityIndicator';
 import {
   PlusCircleFilledIcon,
-  CardIcon,
+  // CardIcon,
   PlusIcon,
   MinusIcon,
-  PlusMinusIcon,
+  // PlusMinusIcon,
 } from '@/Components/Icons';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { generateAllocationTree, getManageableAllocations } from '@/Helpers/AllocationHelpers';
@@ -25,6 +25,7 @@ import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
 import OptionsBottomSheetButton from '@/Components/OptionsBottomSheetButton';
 import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 import { ReallocationType } from '@/Services/Admin/ManageAllocationProvider';
+import useBankAccounts from '@/Hooks/useBankAccounts';
 
 const AdminAllocationsScreen = () => {
   const { navigate } =
@@ -37,6 +38,11 @@ const AdminAllocationsScreen = () => {
     [data],
   );
   const { data: user } = useUser();
+  const { data: bankAccounts } = useBankAccounts({
+    allocationId,
+    allocations,
+    userType: user?.type,
+  });
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -55,6 +61,11 @@ const AdminAllocationsScreen = () => {
       userType: user.type,
     });
   };
+
+  // enable reallocate options (add/remove funds) if there's more than 1 allocation
+  // or there's a bank accounts connected (business owner only)
+  const enableReallocateOptions =
+    (data?.allocations?.length || 0) > 1 || (bankAccounts?.length || 0) > 0;
 
   return (
     <BottomSheetModalProvider>
@@ -110,16 +121,20 @@ const AdminAllocationsScreen = () => {
       </SafeAreaView>
       <OptionsBottomSheet ref={bottomSheetRef} title={t('admin.allocations.allocationOptions')}>
         <OptionsBottomSheetButton
+          testID="add-funds-button"
           text={t('admin.allocations.addFunds')}
           onPress={() => onReallocateFunds(ReallocationType.Add)}
           icon={PlusIcon}
+          disabled={!enableReallocateOptions}
         />
         <OptionsBottomSheetButton
+          testID="remove-funds-button"
           text={t('admin.allocations.removeFunds')}
           onPress={() => onReallocateFunds(ReallocationType.Remove)}
           icon={MinusIcon}
+          disabled={!enableReallocateOptions}
         />
-        <OptionsBottomSheetButton
+        {/* <OptionsBottomSheetButton
           text={t('admin.allocations.editSpendControls')}
           onPress={() => {}}
           icon={PlusMinusIcon}
@@ -128,7 +143,7 @@ const AdminAllocationsScreen = () => {
           text={t('admin.allocations.viewCards')}
           onPress={() => {}}
           icon={CardIcon}
-        />
+        /> */}
       </OptionsBottomSheet>
     </BottomSheetModalProvider>
   );

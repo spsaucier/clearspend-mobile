@@ -5,12 +5,33 @@ import { cleanup, fireEvent } from '@testing-library/react-native';
 import { createQueryClient } from '@/Helpers/testing/reactQuery';
 import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
 import AdminAllocationsScreen from '../AdminAllocationsScreen';
-import { adminResponse } from '@/Helpers/testing/fixtures/allocations';
+import { adminResponse, oneAllocation } from '@/Helpers/testing/fixtures/allocations';
+import { usersResponse } from '@/Helpers/testing/fixtures/user';
+import { bankAccounts } from '@/Helpers/testing/fixtures/business';
+
+jest.mock('@gorhom/bottom-sheet', () => {
+  const RN = require('react-native');
+
+  return {
+    __esModule: true,
+    ...require('@gorhom/bottom-sheet/mock'),
+    // BottomSheetComponent mock throws an error so override as follows
+    BottomSheetView: RN.View,
+    BottomSheetScrollView: RN.ScrollView,
+    BottomSheetSectionList: RN.SectionList,
+    BottomSheetFlatList: RN.FlatList,
+    BottomSheetVirtualizedList: RN.VirtualizedList,
+  };
+});
+
+const businessOwner = usersResponse.find((u) => u.type === 'BUSINESS_OWNER');
+const notABusinessOwner = usersResponse.find((u) => u.type === 'EMPLOYEE');
 
 const server = setupServer(
   rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
     res(ctx.json(adminResponse)),
   ),
+  rest.get(`/users`, (req, res, ctx) => res(ctx.json(notABusinessOwner))),
 );
 
 beforeAll(() => {
@@ -51,7 +72,90 @@ describe('AdminAllocationsScreen', () => {
     fireEvent.press(option);
 
     const button = await findByTestId('manage-allocation-button');
+    const addFundsButton = await findByTestId('add-funds-button');
+    const removeFundsButton = await findByTestId('remove-funds-button');
 
     expect(button).toBeEnabled();
+    expect(addFundsButton).toBeEnabled();
+    expect(removeFundsButton).toBeEnabled();
+  });
+
+  it('disables "add/remove" allocation options when only allocation exists', async () => {
+    server.use(
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
+        res(ctx.json(oneAllocation)),
+      ),
+    );
+
+    const { findByTestId } = renderComponentWithQueryClient(
+      createQueryClient(),
+      <AdminAllocationsScreen />,
+    );
+
+    const option = await findByTestId(`${oneAllocation.allocations[0].allocationId}-option`);
+
+    fireEvent.press(option);
+
+    const button = await findByTestId('manage-allocation-button');
+    const addFundsButton = await findByTestId('add-funds-button');
+    const removeFundsButton = await findByTestId('remove-funds-button');
+
+    expect(button).toBeEnabled();
+    expect(addFundsButton).toBeDisabled();
+    expect(removeFundsButton).toBeDisabled();
+  });
+
+  it('enables "add/remove" allocation options when one allocation exists with a bank account', async () => {
+    server.use(
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
+        res(ctx.json(oneAllocation)),
+      ),
+    );
+    server.use(rest.get(`/users`, (req, res, ctx) => res(ctx.json(businessOwner))));
+    server.use(rest.get(`/business-bank-accounts`, (req, res, ctx) => res(ctx.json(bankAccounts))));
+
+    const { findByTestId } = renderComponentWithQueryClient(
+      createQueryClient(),
+      <AdminAllocationsScreen />,
+    );
+
+    const option = await findByTestId(`${oneAllocation.allocations[0].allocationId}-option`);
+
+    fireEvent.press(option);
+
+    const button = await findByTestId('manage-allocation-button');
+    const addFundsButton = await findByTestId('add-funds-button');
+    const removeFundsButton = await findByTestId('remove-funds-button');
+
+    expect(button).toBeEnabled();
+    expect(addFundsButton).toBeEnabled();
+    expect(removeFundsButton).toBeEnabled();
+  });
+
+  it('disables "add/remove" allocation options when one allocation exists with no bank accounts', async () => {
+    server.use(
+      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
+        res(ctx.json(oneAllocation)),
+      ),
+    );
+    server.use(rest.get(`/users`, (req, res, ctx) => res(ctx.json(businessOwner))));
+    server.use(rest.get(`/business-bank-accounts`, (req, res, ctx) => res(ctx.json([]))));
+
+    const { findByTestId } = renderComponentWithQueryClient(
+      createQueryClient(),
+      <AdminAllocationsScreen />,
+    );
+
+    const option = await findByTestId(`${oneAllocation.allocations[0].allocationId}-option`);
+
+    fireEvent.press(option);
+
+    const button = await findByTestId('manage-allocation-button');
+    const addFundsButton = await findByTestId('add-funds-button');
+    const removeFundsButton = await findByTestId('remove-funds-button');
+
+    expect(button).toBeEnabled();
+    expect(addFundsButton).toBeDisabled();
+    expect(removeFundsButton).toBeDisabled();
   });
 });

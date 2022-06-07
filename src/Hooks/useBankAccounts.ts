@@ -7,15 +7,15 @@ const useBankAccounts = ({
   allocations,
   userType,
 }: {
-  allocationId: string;
+  allocationId?: string;
   allocations?: Allocation[];
-  userType: 'EMPLOYEE' | 'BUSINESS_OWNER';
+  userType?: 'EMPLOYEE' | 'BUSINESS_OWNER';
 }) => {
   const allocation = getAllocationById(allocationId, allocations);
   const isRoot = !allocation?.parentAllocationId;
 
   return useBusinessBankAccounts({
-    enabled: isRoot && userType === 'BUSINESS_OWNER',
+    enabled: !!allocation && isRoot && userType === 'BUSINESS_OWNER',
   });
 };
 
