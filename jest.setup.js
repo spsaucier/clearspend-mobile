@@ -143,7 +143,16 @@ jest.mock('react-native-permissions', () => require('react-native-permissions/mo
 jest.mock('react-native-reanimated', () => {
   const Reanimated = require('react-native-reanimated/mock');
   Reanimated.default.call = () => {};
-  return Reanimated;
+  return {
+    ...Reanimated,
+    // mock Fade transitions (not included in mock lib for some reason?)
+    FadeIn: {
+      duration: jest.fn(),
+    },
+    FadeOut: {
+      duration: jest.fn(),
+    },
+  };
 });
 
 jest.mock('react-native-sensitive-info', () => ({

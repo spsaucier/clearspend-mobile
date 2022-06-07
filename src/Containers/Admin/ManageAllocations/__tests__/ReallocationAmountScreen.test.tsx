@@ -195,7 +195,8 @@ describe('ReallocationAmountScreen', () => {
 
     fireEvent.press(primaryActionButton);
 
-    expect(mockedNavigate).toHaveBeenCalledWith(ManageAllocationScreens.BankTransferRequest);
+    const bankTransferPrompt = await findByTestId('bank-transfer-prompt');
+    expect(bankTransferPrompt).toBeTruthy();
   });
 
   it('navigates to "Reallocation" request screen if bank account was not selected', async () => {

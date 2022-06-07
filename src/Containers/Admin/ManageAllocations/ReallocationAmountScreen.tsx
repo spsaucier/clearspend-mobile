@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, TextInput, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
@@ -23,6 +23,7 @@ import {
 import { useManageAllocationContext } from '@/Hooks/useManageAllocationContext';
 import { formatCurrency } from '@/Helpers/StringHelpers';
 import useBankAccounts from '@/Hooks/useBankAccounts';
+import Modal from '@/Components/Modal';
 
 const FromOrToTile = ({
   amount,
@@ -53,6 +54,8 @@ const ReallocationAmountScreen = () => {
       >
     >();
   const { t } = useTranslation();
+
+  const [showBankTransferPrompt, setShowBankTransferPrompt] = useState(false);
 
   const {
     allocationId,
@@ -133,7 +136,8 @@ const ReallocationAmountScreen = () => {
                   label={t('adminFlows.manageAllocation.updateBalanceCta')}
                   onPress={() => {
                     if (isBankTransfer(fromToAccounts)) {
-                      navigate(ManageAllocationScreens.BankTransferRequest);
+                      Keyboard.dismiss();
+                      setShowBankTransferPrompt(true);
                     } else {
                       navigate(ManageAllocationScreens.ReallocationRequest);
                     }
@@ -145,6 +149,15 @@ const ReallocationAmountScreen = () => {
           )}
         </View>
       </SafeAreaView>
+      {showBankTransferPrompt && (
+        <Modal
+          testID="bank-transfer-prompt"
+          title={t('adminFlows.manageAllocation.bankTransferPrompTitle')}
+          text={t('adminFlows.manageAllocation.bankTransferPrompText')}
+          onPrimaryAction={() => navigate(ManageAllocationScreens.BankTransferRequest)}
+          onSecondaryAction={() => setShowBankTransferPrompt(false)}
+        />
+      )}
     </KeyboardAvoidingView>
   );
 };

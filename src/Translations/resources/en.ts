@@ -576,6 +576,9 @@ export default {
       confirmationPrimaryActionCta: 'Return to admin dashboard',
       updatedBalances: 'Updated balances',
       bankTransferConfirmationDisclaimer: 'This transfer will take 3-5 business days.',
+      bankTransferPrompTitle: 'Bank transfer notice',
+      bankTransferPrompText:
+        "You have selected your bank account as the funding destination. By selecting Accept, you authorize ClearSpend to transfer funds from ClearSpend to credit the bank account specified for the amount. Once authorized, this funds transfer cannot be canceled. Credits posted to your bank account are subject to hold per your bank's policies.",
     },
   },
 };
