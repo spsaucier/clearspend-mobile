@@ -21,6 +21,11 @@ export type FromToAccount = {
   isBankAccount: boolean;
 };
 
+export const isRootAllocation = (allocationId?: string, allocations?: Allocation[]) => {
+  const allocation = getAllocationById(allocationId, allocations);
+  return allocation && !allocation?.parentAllocationId;
+};
+
 export const isBankTransfer = (fromToAccounts?: FromToAccount[]) =>
   fromToAccounts && fromToAccounts.find((a) => a.isBankAccount);
 

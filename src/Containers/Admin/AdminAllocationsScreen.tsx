@@ -39,8 +39,6 @@ const AdminAllocationsScreen = () => {
   );
   const { data: user } = useUser();
   const { data: bankAccounts } = useBankAccounts({
-    allocationId,
-    allocations,
     userType: user?.type,
   });
 

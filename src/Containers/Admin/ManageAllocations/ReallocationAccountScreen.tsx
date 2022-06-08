@@ -14,6 +14,7 @@ import {
   generateAllocationTree,
   getManageableAllocations,
   removeAllocationById,
+  isRootAllocation,
 } from '@/Helpers/AllocationHelpers';
 import AllocationTree from '@/Containers/Admin/Components/AllocationTree';
 import {
@@ -47,8 +48,6 @@ const ReallocationAccountScreen = () => {
   } = useManageAllocationContext();
 
   const { data: bankAccounts, isLoading: isLoadingBankAccounts } = useBankAccounts({
-    allocationId,
-    allocations,
     userType,
   });
 
@@ -92,11 +91,12 @@ const ReallocationAccountScreen = () => {
             <ActivityIndicator />
           </View>
         ) : (
-          !!allocations?.length && (
+          !!allocationsNested?.length && (
             <>
               <ScrollView style={tw`px-5`}>
                 <View style={tw`pb-32`}>
-                  {bankAccounts &&
+                  {isRootAllocation(allocationId, allocations) &&
+                    bankAccounts &&
                     bankAccounts.map(({ businessBankAccountId, name, accountNumber }) => (
                       <TouchableOpacity
                         testID={`business-account-${name}`}

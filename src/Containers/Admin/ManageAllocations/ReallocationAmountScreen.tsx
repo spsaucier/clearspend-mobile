@@ -68,8 +68,6 @@ const ReallocationAmountScreen = () => {
   } = useManageAllocationContext();
 
   const { data: bankAccounts, isLoading: isLoadingBankAccounts } = useBankAccounts({
-    allocationId,
-    allocations,
     userType,
   });
 

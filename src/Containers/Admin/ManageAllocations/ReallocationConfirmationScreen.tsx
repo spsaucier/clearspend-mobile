@@ -64,8 +64,6 @@ const ReallocationConfirmationScreen = () => {
   const { data } = useAllPermissions();
 
   const { data: bankAccounts, isLoading: isLoadingBankAccounts } = useBankAccounts({
-    allocationId,
-    allocations: data?.allocations,
     userType,
   });
 
