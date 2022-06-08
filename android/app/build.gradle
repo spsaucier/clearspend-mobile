@@ -150,7 +150,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 184
-        versionName "1.7.0"
+        versionName "1.8.0"
         resValue "string", "build_config_package", "com.clearspend.android"
     }
     splits {
