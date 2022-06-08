@@ -149,7 +149,7 @@ android {
         applicationId "com.clearspend.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 183
+        versionCode 184
         versionName "1.7.0"
         resValue "string", "build_config_package", "com.clearspend.android"
     }
