@@ -50,7 +50,7 @@ import { sharedStackHeaderConfig } from '@/Helpers/NavigationHelpers';
 const Stack = createNativeStackNavigator<MainStackParamTypes>();
 
 const transparentModal: NativeStackNavigationOptions = {
-  presentation: 'transparentModal',
+  presentation: 'containedTransparentModal',
   gestureEnabled: false,
 };
 
