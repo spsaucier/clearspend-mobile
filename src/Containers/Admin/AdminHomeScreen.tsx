@@ -16,16 +16,18 @@ import AdminActions from '@/Containers/Admin/Dashboard/AdminActions';
 import RequestsScreen from './RequestsScreen';
 import { TransactionsContainer } from '@/Containers/Wallet/TransactionsContainer';
 import { getNormalizedSnapPoint } from '@/Helpers/LayoutHelpers';
+import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
 
 const AdminHomeScreen = () => {
   const { navigate } =
     useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
   const { t } = useTranslation();
   const { data: user } = useUser();
+  const { enabled: requestFundsEnabled } = useFeatureFlag('request-funds');
 
   // default render values are based on 390 (iPhone 13) device width
   const [headerHeight, setHeaderHeight] = useState(116);
-  const [tabsHeight, setTabsHeight] = useState(35);
+  const [tabsHeight, setTabsHeight] = useState(requestFundsEnabled ? 35 : 0);
   const [actionsHeight, setActionsHeight] = useState(175);
 
   const initialSnapPoint = getNormalizedSnapPoint() - headerHeight - tabsHeight - actionsHeight;
@@ -39,7 +41,7 @@ const AdminHomeScreen = () => {
             <BackButtonNavigator theme="light" />
           </View>
           {user?.firstName && (
-            <View style={tw`mb-6`}>
+            <View style={requestFundsEnabled ? tw`mb-6` : tw`mb-3`}>
               <Text style={tw`text-xl`}>
                 <Trans
                   i18nKey={t('admin.welcome', {

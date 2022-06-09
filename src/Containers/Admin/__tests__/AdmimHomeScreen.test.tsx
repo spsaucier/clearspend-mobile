@@ -8,6 +8,7 @@ import { managerAllocationsAndPermissionsResponse } from '@/Helpers/testing/fixt
 import AdminHomeScreen from '../AdminHomeScreen';
 import { usersResponse } from '@/Helpers/testing/fixtures/user';
 import { transactions } from '@/Helpers/testing/fixtures/transactions';
+import { MockFeatureFlagsProvider } from '@/Helpers/testing/MockFeatureFlagsProvider';
 
 jest.mock('@gorhom/bottom-sheet', () => {
   const RN = require('react-native');
@@ -52,7 +53,10 @@ describe('AdminHomeScreen', () => {
 
     const { queryByTestId } = renderComponentWithQueryClient(
       createQueryClient(),
-      <AdminHomeScreen />,
+
+      <MockFeatureFlagsProvider overrides={{ 'request-funds': { enabled: true } }}>
+        <AdminHomeScreen />
+      </MockFeatureFlagsProvider>,
     );
 
     await waitFor(() => {

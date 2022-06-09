@@ -15,4 +15,7 @@ export const overrides: Partial<FeatureFlagTypes> = {
   notifications: {
     enabled: true,
   },
+  'request-funds': {
+    enabled: false,
+  },
 };

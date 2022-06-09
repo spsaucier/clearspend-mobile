@@ -13,6 +13,7 @@ export type FeatureFlagTypes = {
   'view-admin': Enabled;
   'view-dev-menu': Enabled;
   notifications: Enabled;
+  'request-funds': Enabled;
 };
 
 export const featureFlagDefaults: { [K in keyof FeatureFlagTypes]: FeatureFlagTypes[K] } = {
@@ -26,6 +27,9 @@ export const featureFlagDefaults: { [K in keyof FeatureFlagTypes]: FeatureFlagTy
     enabled: false,
   },
   notifications: {
+    enabled: false,
+  },
+  'request-funds': {
     enabled: false,
   },
 };

@@ -13,11 +13,11 @@ import { useUsers } from '@/Queries/user';
 import { CSText as Text, FocusAwareStatusBar } from '@/Components';
 import { ActivityIndicator } from '@/Components/ActivityIndicator';
 import {
-  PlusCircleFilledIcon,
+  // PlusCircleFilledIcon,
   CardIcon,
   WalletThinIcon,
-  UserOutlineIcon,
-  HandStopIcon,
+  // UserOutlineIcon,
+  // HandStopIcon,
 } from '@/Components/Icons';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
@@ -58,15 +58,15 @@ const AdminEmployeesScreen = () => {
         <View style={tw`flex-row items-center p-5`}>
           <BackButtonNavigator theme="light" />
           <Text style={tw`ml-3`}>Employees</Text>
-          <TouchableOpacity
-            onPress={() => {} /* navigate(AdminScreens.AddEmployee) */}
-            style={tw`flex-row justify-center items-center py-1.5 px-2 rounded-full bg-tan ml-auto`}
-          >
-            <PlusCircleFilledIcon />
-            <Text style={tw`ml-1.5 text-secondary text-sm`}>
-              {t('admin.employees.addEmployee')}
-            </Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity */}
+          {/*  onPress={() => {} /* navigate(AdminScreens.AddEmployee) *!/ */}
+          {/*  style={tw`flex-row justify-center items-center py-1.5 px-2 rounded-full bg-tan ml-auto`} */}
+          {/* > */}
+          {/*  <PlusCircleFilledIcon /> */}
+          {/*  <Text style={tw`ml-1.5 text-secondary text-sm`}> */}
+          {/*    {t('admin.employees.addEmployee')} */}
+          {/*  </Text> */}
+          {/* </TouchableOpacity> */}
         </View>
         <View style={tw`flex-1`}>
           {isLoading ? (
@@ -130,7 +130,7 @@ const AdminEmployeesScreen = () => {
           onPress={() => selectedUser && navigate(AdminScreens.IssueCard, { user: selectedUser })}
           icon={CardIcon}
         />
-        <OptionsBottomSheetButton
+        {/* <OptionsBottomSheetButton
           text={t('admin.employees.employeeDetails')}
           onPress={() => {}}
           icon={UserOutlineIcon}
@@ -139,7 +139,7 @@ const AdminEmployeesScreen = () => {
           text={t('admin.employees.archiveEmployee')}
           onPress={() => {}}
           icon={HandStopIcon}
-        />
+        /> */}
       </OptionsBottomSheet>
     </BottomSheetModalProvider>
   );

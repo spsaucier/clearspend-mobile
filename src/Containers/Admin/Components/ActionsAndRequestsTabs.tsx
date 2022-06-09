@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleProp, ViewProps, LayoutChangeEvent } from 
 import { useTranslation } from 'react-i18next';
 import tw from '@/Styles/tailwind';
 import { CSText as Text } from '@/Components';
+import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
 
 export enum AdminTab {
   Actions = 'Actions',
@@ -29,22 +30,28 @@ interface Props {
 const ActionsAndRequestsTabs = ({ style, children, onLayout }: Props) => {
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<AdminTab>(AdminTab.Actions);
+  const { enabled: requestFundsEnabled } = useFeatureFlag('request-funds');
 
   return (
     <>
-      <View style={[tw`flex-row pb-px mx-5`, style]} onLayout={onLayout}>
-        <TabButton text={t('admin.actionsTab')} onPress={() => setSelectedTab(AdminTab.Actions)} />
-        <TabButton
-          text={t('admin.requestsTab')}
-          onPress={() => setSelectedTab(AdminTab.Requests)}
-        />
-        <View
-          style={tw.style(
-            `absolute w-1/2 bottom-0 bg-black h-0.5`,
-            selectedTab === AdminTab.Actions ? 'left-0' : 'left-1/2',
-          )}
-        />
-      </View>
+      {requestFundsEnabled ? (
+        <View style={[tw`flex-row pb-px mx-5`, style]} onLayout={onLayout}>
+          <TabButton
+            text={t('admin.actionsTab')}
+            onPress={() => setSelectedTab(AdminTab.Actions)}
+          />
+          <TabButton
+            text={t('admin.requestsTab')}
+            onPress={() => setSelectedTab(AdminTab.Requests)}
+          />
+          <View
+            style={tw.style(
+              `absolute w-1/2 bottom-0 bg-black h-0.5`,
+              selectedTab === AdminTab.Actions ? 'left-0' : 'left-1/2',
+            )}
+          />
+        </View>
+      ) : null}
       {children && children({ selectedTab })}
     </>
   );
