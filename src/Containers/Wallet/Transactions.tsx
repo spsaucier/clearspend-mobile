@@ -280,6 +280,8 @@ const Transactions = ({
     <BottomSheet
       enableHandlePanningGesture
       style={{
+        backgroundColor: 'white',
+        borderRadius: 24,
         shadowColor: '#000000',
         shadowOffset: {
           width: 0,
@@ -287,7 +289,7 @@ const Transactions = ({
         },
         shadowOpacity: 0.1,
         shadowRadius: 24,
-        elevation: 10,
+        elevation: 20,
       }}
       snapPoints={snapPointMemo}
       handleStyle={tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`}
