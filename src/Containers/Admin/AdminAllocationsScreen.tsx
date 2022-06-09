@@ -33,9 +33,10 @@ const AdminAllocationsScreen = () => {
   const { t } = useTranslation();
   const { data, isLoading } = useAllPermissions();
   const [allocationId, setAllocationId] = useState<string | undefined>();
+  const manageableAllocations = getManageableAllocations('MANAGE_FUNDS', data);
   const allocations = useMemo(
-    () => generateAllocationTree(getManageableAllocations('MANAGE_FUNDS', data)),
-    [data],
+    () => generateAllocationTree(manageableAllocations),
+    [manageableAllocations],
   );
   const { data: user } = useUser();
   const { data: bankAccounts } = useBankAccounts({
@@ -63,7 +64,7 @@ const AdminAllocationsScreen = () => {
   // enable reallocate options (add/remove funds) if there's more than 1 allocation
   // or there's a bank accounts connected (business owner only)
   const enableReallocateOptions =
-    (data?.allocations?.length || 0) > 1 || (bankAccounts?.length || 0) > 0;
+    (manageableAllocations?.length || 0) > 1 || (bankAccounts?.length || 0) > 0;
 
   return (
     <BottomSheetModalProvider>
