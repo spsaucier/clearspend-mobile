@@ -7,6 +7,9 @@ export default {
     back: 'BACK',
     cancel: 'Cancel',
     goToSettings: 'Go to Settings',
+    exit: 'Exit',
+    areYourSureExit: 'Are you sure you want to exit?',
+    youWillLoseProgress: 'You will lose any progress you’ve made.',
   },
   components: {
     textInput: {

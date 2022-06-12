@@ -72,6 +72,8 @@ const CardTypeScreen = () => {
       testID="issue-card-card-type"
       title={t('adminFlows.issueCard.cardTypeTitle')}
       text={t('adminFlows.issueCard.cardTypeText')}
+      warningExitOnGoBack
+      hideBackButton
       onPrimaryAction={() => {
         if (selectedUser) {
           // entering flow via "Employee" screen

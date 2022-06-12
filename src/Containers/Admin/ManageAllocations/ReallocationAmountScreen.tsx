@@ -24,6 +24,7 @@ import { useManageAllocationContext } from '@/Hooks/useManageAllocationContext';
 import { formatCurrency } from '@/Helpers/StringHelpers';
 import useBankAccounts from '@/Hooks/useBankAccounts';
 import Modal from '@/Components/Modal';
+import ExitConfirmationModal from '../Components/ExitConfirmationModal';
 
 const FromOrToTile = ({
   amount,
@@ -56,6 +57,7 @@ const ReallocationAmountScreen = () => {
   const { t } = useTranslation();
 
   const [showBankTransferPrompt, setShowBankTransferPrompt] = useState(false);
+  const [askExitConfirmation, setAskExitConfirmation] = useState(false);
 
   const {
     allocationId,
@@ -89,7 +91,11 @@ const ReallocationAmountScreen = () => {
         <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
         <View style={tw`flex-row items-center justify-between py-5`}>
           <BackButtonNavigator theme="light" />
-          <TouchableOpacity onPress={() => navigate(AdminScreens.Allocations)}>
+          <TouchableOpacity
+            onPress={() => {
+              setAskExitConfirmation(true);
+            }}
+          >
             <CloseCircleIcon />
           </TouchableOpacity>
         </View>
@@ -147,7 +153,7 @@ const ReallocationAmountScreen = () => {
           )}
         </View>
       </SafeAreaView>
-      {showBankTransferPrompt && (
+      {showBankTransferPrompt ? (
         <Modal
           testID="bank-transfer-prompt"
           title={t('adminFlows.manageAllocation.bankTransferPrompTitle')}
@@ -155,7 +161,15 @@ const ReallocationAmountScreen = () => {
           onPrimaryAction={() => navigate(ManageAllocationScreens.BankTransferRequest)}
           onSecondaryAction={() => setShowBankTransferPrompt(false)}
         />
-      )}
+      ) : null}
+      {askExitConfirmation ? (
+        <ExitConfirmationModal
+          onPrimaryAction={() => navigate(AdminScreens.Allocations)}
+          onSecondaryAction={() => {
+            setAskExitConfirmation(false);
+          }}
+        />
+      ) : null}
     </KeyboardAvoidingView>
   );
 };

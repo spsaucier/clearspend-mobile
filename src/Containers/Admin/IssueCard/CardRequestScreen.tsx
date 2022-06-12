@@ -52,6 +52,7 @@ const CardRequestScreen = () => {
       }
       onPrimaryActionLabel={t('adminFlows.issueCard.confirmationPrimaryActionCta')}
       hideBackButton
+      hideCloseButton
     >
       {isError ? (
         <View style={tw`flex-1 justify-center items-center`}>

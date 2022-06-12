@@ -43,6 +43,7 @@ const CardConfirmationScreen = () => {
       }}
       onPrimaryActionLabel={t('adminFlows.issueCard.confirmationPrimaryActionCta')}
       hideBackButton
+      hideCloseButton
     >
       <View>
         <View style={[tw`mt-12 rounded-xl overflow-hidden`]}>

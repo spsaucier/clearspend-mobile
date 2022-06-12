@@ -20,15 +20,18 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
 >
   <View
     style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "paddingBottom": 20,
-        "paddingLeft": 20,
-        "paddingRight": 20,
-        "paddingTop": 20,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingBottom": 20,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 20,
+        },
+        null,
+      ]
     }
   >
     <View
@@ -164,6 +167,7 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
       onStartShouldSetResponder={[Function]}
       style={
         Object {
+          "alignSelf": "flex-end",
           "opacity": 1,
         }
       }
@@ -674,15 +678,18 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
 >
   <View
     style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "justifyContent": "space-between",
-        "paddingBottom": 20,
-        "paddingLeft": 20,
-        "paddingRight": 20,
-        "paddingTop": 20,
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingBottom": 20,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 20,
+        },
+        null,
+      ]
     }
   >
     <View
@@ -818,6 +825,7 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
       onStartShouldSetResponder={[Function]}
       style={
         Object {
+          "alignSelf": "flex-end",
           "opacity": 1,
         }
       }

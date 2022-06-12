@@ -1,15 +1,14 @@
-import React, { useMemo } from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { View, TouchableOpacity, ScrollView, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/core';
+import { useIsFocused, useNavigation } from '@react-navigation/core';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import LinearGradient from 'react-native-linear-gradient';
 import tw from '@/Styles/tailwind';
 import { CSText as Text, FocusAwareStatusBar, Button } from '@/Components';
 import { ActivityIndicator } from '@/Components/ActivityIndicator';
 import { CloseCircleIcon, CheckMarkIcon, BusinessIcon } from '@/Components/Icons';
-import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import {
   generateAllocationTree,
   getManageableAllocations,
@@ -26,6 +25,7 @@ import {
 import { useManageAllocationContext } from '@/Hooks/useManageAllocationContext';
 import { ReallocationType } from '@/Services/Admin/ManageAllocationProvider';
 import useBankAccounts from '@/Hooks/useBankAccounts';
+import ExitConfirmationModal from '../Components/ExitConfirmationModal';
 
 const ReallocationAccountScreen = () => {
   const { navigate } =
@@ -36,6 +36,8 @@ const ReallocationAccountScreen = () => {
       >
     >();
   const { t } = useTranslation();
+  const [askExitConfirmation, setAskExitConfirmation] = useState(false);
+  const isFocused = useIsFocused();
 
   const {
     allocationId,
@@ -62,12 +64,26 @@ const ReallocationAccountScreen = () => {
     [allocationId, allocations, userRoles],
   );
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (isFocused) {
+        setAskExitConfirmation(true);
+        return true;
+      }
+      return false;
+    });
+    return () => backHandler.remove();
+  }, [isFocused]);
+
   return (
     <SafeAreaView testID="admin-allocations-add-or-remove-screen" style={tw`flex-1 bg-white`}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-      <View style={tw`flex-row items-center justify-between p-5`}>
-        <BackButtonNavigator theme="light" />
-        <TouchableOpacity onPress={() => navigate(AdminScreens.Allocations)}>
+      <View style={tw`flex-row items-center justify-end p-5`}>
+        <TouchableOpacity
+          onPress={() => {
+            setAskExitConfirmation(true);
+          }}
+        >
           <CloseCircleIcon />
         </TouchableOpacity>
       </View>
@@ -146,6 +162,14 @@ const ReallocationAccountScreen = () => {
           )
         )}
       </View>
+      {askExitConfirmation ? (
+        <ExitConfirmationModal
+          onPrimaryAction={() => navigate(AdminScreens.Allocations)}
+          onSecondaryAction={() => {
+            setAskExitConfirmation(false);
+          }}
+        />
+      ) : null}
     </SafeAreaView>
   );
 };

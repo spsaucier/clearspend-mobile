@@ -21,6 +21,7 @@ jest.mock('@react-navigation/core', () => ({
   useNavigation: () => ({
     navigate: mockedNavigate,
   }),
+  useIsFocused: () => true,
 }));
 
 const server = setupServer(

@@ -1,8 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import tw from '@/Styles/tailwind';
 import { CSText as Text, Button } from '@/Components';
+import { CloseIcon } from './Icons';
+import { CSText } from './Text';
 
 const FADE_IN_DURATION = 250;
 const FADE_OUT_DURATION = 150;
@@ -15,6 +18,7 @@ interface ModalProps {
   onPrimaryActionLabel?: string;
   onSecondaryAction?: () => void;
   onSecondaryActionLabel?: string;
+  danger?: boolean;
 }
 
 const Modal = ({
@@ -25,6 +29,7 @@ const Modal = ({
   onPrimaryActionLabel = 'Accept',
   onSecondaryAction,
   onSecondaryActionLabel = 'Cancel',
+  danger = false,
 }: ModalProps) => (
   <Animated.View
     testID={testID}
@@ -37,14 +42,26 @@ const Modal = ({
       {title ? <Text style={tw`text-2xl font-telegraf text-white`}>{title}</Text> : null}
       {text ? <Text style={tw`text-sm text-white mt-4 leading-normal`}>{text}</Text> : null}
       <View style={tw`mt-10`}>
-        {onPrimaryAction && <Button label={onPrimaryActionLabel} onPress={onPrimaryAction} />}
-        {onSecondaryAction && (
+        {onPrimaryAction && (
           <Button
-            containerStyle={tw`bg-transparent mt-1`}
-            textStyle={tw`text-white`}
-            label={onSecondaryActionLabel}
-            onPress={onSecondaryAction}
+            label={onPrimaryActionLabel}
+            onPress={onPrimaryAction}
+            containerStyle={danger ? tw`bg-error` : null}
+            textStyle={danger ? tw`text-white` : null}
           />
+        )}
+        {onSecondaryAction && (
+          <TouchableOpacity
+            style={tw`flex-row items-center justify-center pt-5`}
+            onPress={onSecondaryAction}
+          >
+            <View
+              style={tw`rounded-full border-white border-1 w-7 h-7 items-center justify-center mr-1`}
+            >
+              <CloseIcon color={tw.color('white')} />
+            </View>
+            <CSText style={tw`text-white ml-1`}>{onSecondaryActionLabel}</CSText>
+          </TouchableOpacity>
         )}
       </View>
     </View>
