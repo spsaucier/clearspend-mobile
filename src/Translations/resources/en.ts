@@ -583,5 +583,46 @@ export default {
       bankTransferPrompText:
         "You have selected your bank account as the funding destination. By selecting Accept, you authorize ClearSpend to transfer funds from ClearSpend to credit the bank account specified for the amount. Once authorized, this funds transfer cannot be canceled. Credits posted to your bank account are subject to hold per your bank's policies.",
     },
+    createAllocation: {
+      parentAllocationTitle: 'Parent Allocation',
+      parentAllocationInstruction: 'Choose the allocation that will fund your new allocation',
+      enterAllocationLabel: 'Enter allocation label',
+      enterAllocationAmount: 'Enter allocation amount',
+      enterAllocationAmountBalance:
+        'The amount can not exceed the balance of the parent allocation ({{amount}}).',
+      selectManagersTitle: 'Select Managers',
+      selectManagersDescription:
+        'Managers can deposit and withdraw funds, create additional allocations under this allocation, add employees, and issue cards.',
+      selectViewersTitle: 'Select Viewers',
+      selectViewersDescription:
+        'Viewers can see balances, employees, cards, and transactions, but cannot make changes.',
+      notifications: {
+        title: 'Notifications',
+        description: 'Send a notification when balance is low.',
+        lowBalance: 'Low balance notification',
+        amount: 'Amount',
+        manager: 'Manager',
+        managers: 'Managers',
+        allManagers: 'All managers',
+        viewer: 'Viewer',
+        viewers: 'Viewers',
+        allViewers: 'All viewers',
+      },
+      spendControlsTitle: 'Spend Controls',
+      spendControlsDescription:
+        'Set limits for how much can be spent with this card for each transaction, or over the course of a day or month.',
+      confirmDetails: {
+        title: 'Confirm details',
+        allocationLabel: 'Allocation label',
+        parentAllocation: 'Parent Allocation',
+        balance: 'Balance',
+        createNewAllocation: 'Create New Allocation',
+        manager: 'Manager',
+        managers: 'Managers',
+        viewer: 'Viewer',
+        viewers: 'Viewers',
+        createSuccess: 'New allocation created successfully',
+      },
+    },
   },
 };

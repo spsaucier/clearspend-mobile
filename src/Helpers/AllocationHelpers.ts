@@ -1,10 +1,11 @@
+import { cloneDeep, isEmpty } from 'lodash';
 import {
   Allocation,
   AllocationsAndPermissionsResponse,
   BankAccount,
   UserRolesAndPermissionsRecord,
 } from 'generated/capital';
-import { cloneDeep, isEmpty } from 'lodash';
+
 import { can } from '@/Helpers/PermissionsHelpers';
 import { AllocationPermissions } from '@/Types/permissions';
 import { ReallocationType } from '@/Services/Admin/ManageAllocationProvider';
@@ -56,6 +57,40 @@ export const groupAllocation = (
 
 export const getAllocationById = (id?: string, allocations?: Allocation[]) =>
   allocations?.find((a) => a.allocationId === id);
+
+const findAllocationNode = (
+  id: string,
+  node: AllocationWithChildren,
+): AllocationWithChildren | undefined => {
+  if (id === node.allocationId) return node;
+
+  let found;
+  const children = node.children || [];
+
+  for (let i = 0; i < children.length; i += 1) {
+    const child = children[i];
+    found = findAllocationNode(id, child);
+    if (found) {
+      break;
+    }
+  }
+  return found;
+};
+
+export const findAllocationNodeGivenNodes = (
+  id: string,
+  nodes: AllocationWithChildren[],
+): AllocationWithChildren | undefined => {
+  let found;
+  for (let i = 0; i < nodes?.length; i += 1) {
+    const current = nodes[i];
+    found = findAllocationNode(id, current);
+    if (found) {
+      break;
+    }
+  }
+  return found;
+};
 
 export const getBankAccountById = (id?: string, bankAccounts?: BankAccount[]) =>
   bankAccounts?.find((b) => b.businessBankAccountId === id);

@@ -7,9 +7,12 @@ import {
   AdminScreens,
   IssueCardScreens,
   ManageAllocationScreens,
+  CreateAllocationStackParamTypes,
+  CreateAllocationScreens,
 } from '@/Navigators/Admin/AdminNavigatorTypes';
 import { IssueCardProvider } from '@/Services/Admin/IssueCardProvider';
 import { ManageAllocationProvider } from '@/Services/Admin/ManageAllocationProvider';
+import { NewAllocationProvider } from '@/Services/Admin/NewAllocationProvider';
 
 import AdminHomeScreen from '@/Containers/Admin/AdminHomeScreen';
 import AdminEmployeesScreen from '@/Containers/Admin/AdminEmployeesScreen';
@@ -33,6 +36,16 @@ import ReallocationAmountScreen from '@/Containers/Admin/ManageAllocations/Reall
 import ReallocationRequestScreen from '@/Containers/Admin/ManageAllocations/ReallocationRequestScreen';
 import BankTransferRequestScreen from '@/Containers/Admin/ManageAllocations/BankTransferRequestScreen';
 import ReallocationConfirmationScreen from '@/Containers/Admin/ManageAllocations/ReallocationConfirmationScreen';
+
+// New Allocation Screens
+import ParentAllocationScreen from '@/Containers/Admin/CreateAllocation/ParentAllocationScreen';
+import AllocationLabelScreen from '@/Containers/Admin/CreateAllocation/AllocationLabelScreen';
+import AllocationAmountScreen from '@/Containers/Admin/CreateAllocation/AllocationAmountScreen';
+import SelectManagersScreen from '@/Containers/Admin/CreateAllocation/SelectManagersScreen';
+import SelectViewersScreen from '@/Containers/Admin/CreateAllocation/SelectViewersScreen';
+import NotificationsScreen from '@/Containers/Admin/CreateAllocation/NotificationsScreen';
+import NewAllocationSpendControlsScreen from '@/Containers/Admin/CreateAllocation/SpendControlsScreen';
+import NewAllocationConfirmDetails from '@/Containers/Admin/CreateAllocation/ConfirmDetailsScreen';
 
 const ManageAllocationsStack = createNativeStackNavigator<ManageAllocationStackParamTypes>();
 
@@ -103,6 +116,47 @@ export const IssueCardNavigator = ({
   </IssueCardProvider>
 );
 
+const CreateAllocationStack = createNativeStackNavigator<CreateAllocationStackParamTypes>();
+
+export const CreateAllocationNavigator = () => (
+  <NewAllocationProvider>
+    <CreateAllocationStack.Navigator screenOptions={{ headerShown: false }}>
+      <CreateAllocationStack.Screen
+        name={CreateAllocationScreens.ParentAllocation}
+        component={ParentAllocationScreen}
+      />
+      <CreateAllocationStack.Screen
+        name={CreateAllocationScreens.AllocationLabel}
+        component={AllocationLabelScreen}
+      />
+      <CreateAllocationStack.Screen
+        name={CreateAllocationScreens.AllocationAmount}
+        component={AllocationAmountScreen}
+      />
+      <CreateAllocationStack.Screen
+        name={CreateAllocationScreens.SelectManagers}
+        component={SelectManagersScreen}
+      />
+      <CreateAllocationStack.Screen
+        name={CreateAllocationScreens.SelectViewers}
+        component={SelectViewersScreen}
+      />
+      <CreateAllocationStack.Screen
+        name={CreateAllocationScreens.Notifications}
+        component={NotificationsScreen}
+      />
+      <CreateAllocationStack.Screen
+        name={CreateAllocationScreens.SpendControls}
+        component={NewAllocationSpendControlsScreen}
+      />
+      <CreateAllocationStack.Screen
+        name={CreateAllocationScreens.ConfirmDetails}
+        component={NewAllocationConfirmDetails}
+      />
+    </CreateAllocationStack.Navigator>
+  </NewAllocationProvider>
+);
+
 const AdminStack = createNativeStackNavigator<AdminStackParamTypes>();
 
 export const AdminNavigator = () => (
@@ -113,5 +167,6 @@ export const AdminNavigator = () => (
     <AdminStack.Screen name={AdminScreens.EmployeeWallet} component={WalletScreen} />
     <AdminStack.Screen name={AdminScreens.IssueCard} component={IssueCardNavigator} />
     <AdminStack.Screen name={AdminScreens.ManageAllocation} component={ManageAllocationNavigator} />
+    <AdminStack.Screen name={AdminScreens.CreateAllocation} component={CreateAllocationNavigator} />
   </AdminStack.Navigator>
 );

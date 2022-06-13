@@ -45,6 +45,28 @@ export type IssueCardStackParamTypes = {
   [IssueCardScreens.CardConfirmation]: undefined;
 };
 
+export enum CreateAllocationScreens {
+  ParentAllocation = 'Parent Allocation',
+  AllocationLabel = 'Allocation Label',
+  AllocationAmount = 'Allocation Amount',
+  SelectManagers = 'Select Managers',
+  SelectViewers = 'Select Viewers',
+  Notifications = 'Notifications',
+  SpendControls = 'Spend Controls',
+  ConfirmDetails = 'Confirm Details',
+}
+
+export type CreateAllocationStackParamTypes = {
+  [CreateAllocationScreens.ParentAllocation]: undefined;
+  [CreateAllocationScreens.AllocationLabel]: undefined;
+  [CreateAllocationScreens.AllocationAmount]: undefined;
+  [CreateAllocationScreens.SelectManagers]: undefined;
+  [CreateAllocationScreens.SelectViewers]: undefined;
+  [CreateAllocationScreens.Notifications]: undefined;
+  [CreateAllocationScreens.SpendControls]: undefined;
+  [CreateAllocationScreens.ConfirmDetails]: undefined;
+};
+
 export enum AdminScreens {
   Home = 'Admin Home',
   Employees = 'Admin Employees',
@@ -52,6 +74,7 @@ export enum AdminScreens {
   IssueCard = 'Issue Card',
   ManageAllocation = 'Manage Allocation',
   EmployeeWallet = 'Employee Wallet',
+  CreateAllocation = 'Create Allocation',
 }
 
 export type AdminStackParamTypes = {
@@ -67,4 +90,5 @@ export type AdminStackParamTypes = {
     userType: 'EMPLOYEE' | 'BUSINESS_OWNER';
   };
   [AdminScreens.EmployeeWallet]: { employee: User };
+  [AdminScreens.CreateAllocation]: undefined;
 };

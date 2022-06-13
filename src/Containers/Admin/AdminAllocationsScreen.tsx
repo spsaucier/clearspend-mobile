@@ -2,8 +2,8 @@ import React, { useMemo, useState, useRef } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/core';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import LinearGradient from 'react-native-linear-gradient';
 import tw from '@/Styles/tailwind';
@@ -74,7 +74,7 @@ const AdminAllocationsScreen = () => {
           <BackButtonNavigator theme="light" />
           <Text style={tw`ml-3`}>{t('admin.allocations.allocationsTitle')}</Text>
           <TouchableOpacity
-            onPress={() => {} /* navigate(AdminScreens.AddEmployee) */}
+            onPress={() => navigate(AdminScreens.CreateAllocation)}
             style={tw`flex-row justify-center items-center py-1.5 px-2 rounded-full bg-tan ml-auto`}
           >
             <PlusCircleFilledIcon />

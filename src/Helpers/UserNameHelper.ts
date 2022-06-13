@@ -24,5 +24,5 @@ export const getUserInitials = (user?: User) => {
   const firstInitial = firstName?.[0] ?? '';
   const secondInitial = lastName?.[0] ?? '';
 
-  return `${firstInitial}${secondInitial}`;
+  return `${firstInitial}${secondInitial}`.toUpperCase();
 };

@@ -23,6 +23,7 @@ interface Props {
   edges?: Edge[];
   onClose?: () => void;
   warningExitOnGoBack?: boolean;
+  processing?: boolean;
 }
 
 const AdminScreenWrapper: FC<Props> = ({
@@ -40,6 +41,7 @@ const AdminScreenWrapper: FC<Props> = ({
   edges = ['top', 'bottom'],
   onClose,
   warningExitOnGoBack = false,
+  processing,
 }) => {
   const { t } = useTranslation();
   const [askExitConfirmation, setAskExitConfirmation] = useState(false);
@@ -117,6 +119,7 @@ const AdminScreenWrapper: FC<Props> = ({
               label={onPrimaryActionLabel || t('adminFlows.nextStepCta')}
               onPress={onPrimaryAction}
               disabled={primaryActionDisabled}
+              loading={processing}
             />
             {onSecondaryAction && onSecondaryActionLabel && (
               <Button
