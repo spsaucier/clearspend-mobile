@@ -4,15 +4,18 @@ import {
   AdminStackParamTypes,
   IssueCardStackParamTypes,
   ManageAllocationStackParamTypes,
+  CreateEmployeeStackParamTypes,
   AdminScreens,
   IssueCardScreens,
   ManageAllocationScreens,
   CreateAllocationStackParamTypes,
   CreateAllocationScreens,
+  CreateEmployeeScreens,
 } from '@/Navigators/Admin/AdminNavigatorTypes';
 import { IssueCardProvider } from '@/Services/Admin/IssueCardProvider';
 import { ManageAllocationProvider } from '@/Services/Admin/ManageAllocationProvider';
 import { NewAllocationProvider } from '@/Services/Admin/NewAllocationProvider';
+import { CreateEmployeeProvider } from '@/Services/Admin/CreateEmployeeProvider';
 
 import AdminHomeScreen from '@/Containers/Admin/AdminHomeScreen';
 import AdminEmployeesScreen from '@/Containers/Admin/AdminEmployeesScreen';
@@ -46,6 +49,45 @@ import SelectViewersScreen from '@/Containers/Admin/CreateAllocation/SelectViewe
 import NotificationsScreen from '@/Containers/Admin/CreateAllocation/NotificationsScreen';
 import NewAllocationSpendControlsScreen from '@/Containers/Admin/CreateAllocation/SpendControlsScreen';
 import NewAllocationConfirmDetails from '@/Containers/Admin/CreateAllocation/ConfirmDetailsScreen';
+
+// Create Employee Screens
+import EmployeeFirstNameScreen from '@/Containers/Admin/CreateEmployee/EmployeeFirstNameScreen';
+import EmployeeLastNameScreen from '@/Containers/Admin/CreateEmployee/EmployeeLastNameScreen';
+import EmployeeEmailScreen from '@/Containers/Admin/CreateEmployee/EmployeeEmailScreen';
+import EmployeeCreateRequestScreen from '@/Containers/Admin/CreateEmployee/EmployeeCreateRequestScreen';
+import EmployeeConfirmationScreen from '@/Containers/Admin/CreateEmployee/EmployeeConfirmationScreen';
+
+const CreateEmployeeStack = createNativeStackNavigator<CreateEmployeeStackParamTypes>();
+
+export const CreateEmployeeNavigator = () => (
+  <CreateEmployeeProvider>
+    <CreateEmployeeStack.Navigator
+      initialRouteName={CreateEmployeeScreens.EmployeeFirstName}
+      screenOptions={{ headerShown: false }}
+    >
+      <CreateEmployeeStack.Screen
+        name={CreateEmployeeScreens.EmployeeFirstName}
+        component={EmployeeFirstNameScreen}
+      />
+      <CreateEmployeeStack.Screen
+        name={CreateEmployeeScreens.EmployeeLastName}
+        component={EmployeeLastNameScreen}
+      />
+      <CreateEmployeeStack.Screen
+        name={CreateEmployeeScreens.EmployeeEmail}
+        component={EmployeeEmailScreen}
+      />
+      <CreateEmployeeStack.Screen
+        name={CreateEmployeeScreens.EmployeeCreateRequest}
+        component={EmployeeCreateRequestScreen}
+      />
+      <CreateEmployeeStack.Screen
+        name={CreateEmployeeScreens.EmployeeConfirmation}
+        component={EmployeeConfirmationScreen}
+      />
+    </CreateEmployeeStack.Navigator>
+  </CreateEmployeeProvider>
+);
 
 const ManageAllocationsStack = createNativeStackNavigator<ManageAllocationStackParamTypes>();
 
@@ -168,5 +210,6 @@ export const AdminNavigator = () => (
     <AdminStack.Screen name={AdminScreens.IssueCard} component={IssueCardNavigator} />
     <AdminStack.Screen name={AdminScreens.ManageAllocation} component={ManageAllocationNavigator} />
     <AdminStack.Screen name={AdminScreens.CreateAllocation} component={CreateAllocationNavigator} />
+    <AdminStack.Screen name={AdminScreens.CreateEmployee} component={CreateEmployeeNavigator} />
   </AdminStack.Navigator>
 );

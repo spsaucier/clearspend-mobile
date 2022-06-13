@@ -527,6 +527,8 @@ export default {
   },
   adminFlows: {
     nextStepCta: 'Next',
+    continueCta: 'Continue',
+    skipCta: 'Skip',
     issueCard: {
       cardTypeTitle: 'Select card type',
       cardTypeText:
@@ -623,6 +625,21 @@ export default {
         viewers: 'Viewers',
         createSuccess: 'New allocation created successfully',
       },
+    },
+    createEmployee: {
+      employeeFirstName: 'Employee’s first name',
+      employeeLastName: 'Employee’s last name',
+      employeeEmail: 'Employee’s company email',
+      employeeConfirmationTitle: 'You’re almost there',
+      employeeConfirmationText:
+        'Employees will not receive an invitation to join the ClearSpend platform until they are issued a card.',
+      employeeConfirmationPrimaryActionCta: 'Issue a card',
+      employeeConfirmationSecondaryActionCta: 'I’ll do this later',
+      employeeRequestLoadingText: 'Creating user...',
+      employeeRequestErrorTitle: 'There was a problem creating user.',
+      employeeRequestErrorText: 'Please try again later.',
+      submitCta: 'Create employee',
+      confirmationPrimaryActionCta: 'Return to admin dashboard',
     },
   },
 };

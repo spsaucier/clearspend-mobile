@@ -5,6 +5,22 @@ import {
 } from 'generated/capital';
 import { ReallocationType } from '@/Services/Admin/ManageAllocationProvider';
 
+export enum CreateEmployeeScreens {
+  EmployeeFirstName = 'Create Employee Employee First Name',
+  EmployeeLastName = 'Create Employee Employee Last Name',
+  EmployeeEmail = 'Create Employee Employee Email',
+  EmployeeCreateRequest = 'Create Employee Create Request',
+  EmployeeConfirmation = 'Create Employee Employee Confirmation',
+}
+
+export type CreateEmployeeStackParamTypes = {
+  [CreateEmployeeScreens.EmployeeFirstName]: undefined;
+  [CreateEmployeeScreens.EmployeeLastName]: undefined;
+  [CreateEmployeeScreens.EmployeeEmail]: undefined;
+  [CreateEmployeeScreens.EmployeeCreateRequest]: undefined;
+  [CreateEmployeeScreens.EmployeeConfirmation]: { userId: string };
+};
+
 export enum ManageAllocationScreens {
   ReallocationAccount = 'Manage Allocation Reallocation Account',
   ReallocationAmount = 'Manage Allocation Reallocation Amount',
@@ -75,6 +91,7 @@ export enum AdminScreens {
   ManageAllocation = 'Manage Allocation',
   EmployeeWallet = 'Employee Wallet',
   CreateAllocation = 'Create Allocation',
+  CreateEmployee = 'Create Employee',
 }
 
 export type AdminStackParamTypes = {
@@ -91,4 +108,5 @@ export type AdminStackParamTypes = {
   };
   [AdminScreens.EmployeeWallet]: { employee: User };
   [AdminScreens.CreateAllocation]: undefined;
+  [AdminScreens.CreateEmployee]: undefined;
 };

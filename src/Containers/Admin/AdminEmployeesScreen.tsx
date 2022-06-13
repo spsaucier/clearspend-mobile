@@ -12,22 +12,20 @@ import tw from '@/Styles/tailwind';
 import { useUsers } from '@/Queries/user';
 import { CSText as Text, FocusAwareStatusBar } from '@/Components';
 import { ActivityIndicator } from '@/Components/ActivityIndicator';
-import {
-  // PlusCircleFilledIcon,
-  CardIcon,
-  WalletThinIcon,
-  // UserOutlineIcon,
-  // HandStopIcon,
-} from '@/Components/Icons';
+import { CardIcon, WalletThinIcon, UserOutlineIcon, HandStopIcon } from '@/Components/Icons';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
 import OptionsBottomSheetButton from '@/Components/OptionsBottomSheetButton';
 import { AdminScreens, AdminStackParamTypes } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { useAllPermissions } from '@/Queries/permissions';
+import { showManageUsers } from '@/Helpers/PermissionsHelpers';
+import PlusButton from '@/Components/PlusButton';
 
 const AdminEmployeesScreen = () => {
   const { navigate } =
     useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Employees>>();
   const { t } = useTranslation();
+  const { data: permissions } = useAllPermissions();
   const { isLoading, data } = useUsers();
   const users = useMemo(
     () =>
@@ -58,15 +56,13 @@ const AdminEmployeesScreen = () => {
         <View style={tw`flex-row items-center p-5`}>
           <BackButtonNavigator theme="light" />
           <Text style={tw`ml-3`}>Employees</Text>
-          {/* <TouchableOpacity */}
-          {/*  onPress={() => {} /* navigate(AdminScreens.AddEmployee) *!/ */}
-          {/*  style={tw`flex-row justify-center items-center py-1.5 px-2 rounded-full bg-tan ml-auto`} */}
-          {/* > */}
-          {/*  <PlusCircleFilledIcon /> */}
-          {/*  <Text style={tw`ml-1.5 text-secondary text-sm`}> */}
-          {/*    {t('admin.employees.addEmployee')} */}
-          {/*  </Text> */}
-          {/* </TouchableOpacity> */}
+          {showManageUsers(permissions) && (
+            <PlusButton
+              testID="add-employee-button"
+              text={t('admin.employees.addEmployee')}
+              onPress={() => navigate(AdminScreens.CreateEmployee)}
+            />
+          )}
         </View>
         <View style={tw`flex-1`}>
           {isLoading ? (
@@ -130,7 +126,7 @@ const AdminEmployeesScreen = () => {
           onPress={() => selectedUser && navigate(AdminScreens.IssueCard, { user: selectedUser })}
           icon={CardIcon}
         />
-        {/* <OptionsBottomSheetButton
+        <OptionsBottomSheetButton
           text={t('admin.employees.employeeDetails')}
           onPress={() => {}}
           icon={UserOutlineIcon}
@@ -139,7 +135,7 @@ const AdminEmployeesScreen = () => {
           text={t('admin.employees.archiveEmployee')}
           onPress={() => {}}
           icon={HandStopIcon}
-        /> */}
+        />
       </OptionsBottomSheet>
     </BottomSheetModalProvider>
   );

@@ -1,6 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import FullStory from '@fullstory/react-native';
-import { UpdateUserRequest, UpdateUserResponse, User } from '@/generated/capital';
+import {
+  UpdateUserRequest,
+  UpdateUserResponse,
+  User,
+  CreateUserResponse,
+  CreateUserRequest,
+} from '@/generated/capital';
 import apiClient from '@/Services';
 
 export const useUser = () =>
@@ -14,6 +20,9 @@ export const useUser = () =>
       return data;
     }),
   );
+
+export const useUserById = (id: string) =>
+  useQuery<User, Error>(['user', { id }], () => apiClient.get(`/users/${id}`).then((r) => r.data));
 
 export const updateUser = (user: User) =>
   apiClient.patch(`/users/${user.userId}`, { ...user }).then((r) => r.data);
@@ -32,3 +41,14 @@ export const useUpdateUser = () => {
 
 export const useUsers = () =>
   useQuery<User[], Error>(['users'], () => apiClient.get(`/users/list`).then((res) => res.data));
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<CreateUserResponse, Error, CreateUserRequest>(
+    (context) => apiClient.post(`/users`, context).then((res) => res.data),
+    {
+      onSuccess: () => queryClient.invalidateQueries('users'),
+    },
+  );
+};

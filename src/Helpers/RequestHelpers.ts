@@ -3,6 +3,7 @@ import {
   IssueCardRequest,
   BusinessReallocationRequest,
   TransactBankAccountRequest,
+  CreateUserRequest,
 } from '@/generated/capital';
 import {
   DefaultProps as IssueCardRequestProps,
@@ -12,7 +13,9 @@ import {
   DefaultProps as ManageAllocationRequestProps,
   ReallocationType,
 } from '@/Services/Admin/ManageAllocationProvider';
+import { DefaultProps as CreateEmployeeRequestProps } from '@/Services/Admin/CreateEmployeeProvider';
 import { validateAllocationAmount } from '@/Helpers/AllocationHelpers';
+import { EMAIL_REGEX } from '@/Helpers/StringHelpers';
 
 export const validateIssueCardRequest = ({
   selectedCardType: cardType,
@@ -94,5 +97,19 @@ export const validateBankTransferRequest = ({
       currency: 'USD',
       amount: numericAmount,
     },
+  };
+};
+
+export const validateCreateEmployeeRequest = ({
+  firstName,
+  lastName,
+  email,
+}: CreateEmployeeRequestProps): CreateUserRequest | undefined => {
+  if (!firstName || !lastName || !email || !EMAIL_REGEX.test(email || '')) return undefined;
+
+  return {
+    firstName,
+    lastName,
+    email,
   };
 };

@@ -49,6 +49,7 @@ module.exports = {
     'no-param-reassign': ['error', { props: false }],
     '@typescript-eslint/no-use-before-define': 'off',
     'global-require': 'off',
+    'no-control-regex': 'off',
   },
   settings: {
     'import/resolver': {
