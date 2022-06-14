@@ -39,6 +39,7 @@ const AllocationLabelScreen = () => {
           autoFocus
           multiline
           value={allocationLabel}
+          blurOnSubmit
           onChangeText={setAllocationLabel}
         />
       </ScrollView>
