@@ -133,8 +133,9 @@ const AdminScreenWrapper: FC<Props> = ({
         )}
       </View>
 
-      {askExitConfirmation && onClose ? (
+      {onClose ? (
         <ExitConfirmationModal
+          visible={askExitConfirmation}
           onPrimaryAction={onClose}
           onSecondaryAction={() => {
             setAskExitConfirmation(false);

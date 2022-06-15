@@ -693,6 +693,256 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
       </View>
     </View>
   </View>
+  <Modal
+    hardwareAccelerated={true}
+    onRequestClose={[Function]}
+    presentationStyle="overFullScreen"
+    statusBarTranslucent={true}
+    testID="ask-exit-confirmation-modal"
+    transparent={true}
+    visible={false}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "bottom": 0,
+            "flexBasis": "0%",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "justifyContent": "center",
+            "left": 0,
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "backgroundColor": "rgba(0,0,0,0.8)",
+          },
+        ]
+      }
+    >
+      <View>
+        <Text
+          allowFontScaling={true}
+          maxFontSizeMultiplier={1.5}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "PP Neue Montreal TT",
+                "fontSize": 16,
+              },
+              Object {
+                "color": "#FFFFFF",
+                "fontFamily": "PP Telegraf",
+                "fontSize": 24,
+              },
+            ]
+          }
+        >
+          general.areYourSureExit
+        </Text>
+        <Text
+          allowFontScaling={true}
+          maxFontSizeMultiplier={1.5}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "PP Neue Montreal TT",
+                "fontSize": 16,
+              },
+              Object {
+                "color": "#FFFFFF",
+                "fontSize": 14,
+                "lineHeight": 21,
+                "marginTop": 16,
+              },
+            ]
+          }
+        >
+          general.youWillLoseProgress
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "marginTop": 40,
+            }
+          }
+        >
+          <View
+            accessibilityRole="button"
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF2F2F",
+                "borderRadius": 4,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 64,
+                "justifyContent": "center",
+                "opacity": 1,
+                "paddingBottom": 12,
+                "paddingLeft": 12,
+                "paddingRight": 12,
+                "paddingTop": 12,
+                "width": "100%",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              maxFontSizeMultiplier={1.5}
+              style={
+                Array [
+                  Object {
+                    "color": "#000000",
+                    "fontFamily": "PP Neue Montreal TT",
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "color": "#003333",
+                    },
+                    Object {
+                      "color": "#FFFFFF",
+                    },
+                  ],
+                ]
+              }
+            >
+              general.exit
+            </Text>
+          </View>
+          <View
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "opacity": 1,
+                "paddingTop": 20,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#FFFFFF",
+                  "borderRadius": 9999,
+                  "borderWidth": 1,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "marginRight": 4,
+                  "width": 28,
+                }
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "aspectRatio": 1,
+                      "height": 24,
+                      "width": 24,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <RNSVGSvgView
+                  align="xMidYMid"
+                  bbHeight="100%"
+                  bbWidth="100%"
+                  fill="none"
+                  focusable={false}
+                  height="100%"
+                  meetOrSlice={0}
+                  minX={0}
+                  minY={0}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "borderWidth": 0,
+                      },
+                      Object {
+                        "flex": 0,
+                        "height": "100%",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                  vbHeight={24}
+                  vbWidth={24}
+                  width="100%"
+                >
+                  <RNSVGGroup
+                    fill={null}
+                    propList={
+                      Array [
+                        "fill",
+                      ]
+                    }
+                  >
+                    <RNSVGPath
+                      d="M7.26843 15.3704C6.91294 15.7186 6.90569 16.357 7.27569 16.727C7.64569 17.097 8.28412 17.0825 8.63236 16.7343L11.9986 13.368L15.3649 16.727C15.7277 17.0898 16.3516 17.097 16.7216 16.7198C17.0916 16.3498 17.0916 15.7258 16.7288 15.3631L13.3698 12.0041L16.7288 8.6378C17.0916 8.27505 17.0916 7.65113 16.7216 7.28113C16.3516 6.90387 15.7277 6.91113 15.3649 7.27387L11.9986 10.6329L8.63236 7.26662C8.28412 6.91838 7.64569 6.90387 7.27569 7.27387C6.90569 7.64387 6.91294 8.28231 7.26843 8.6378L10.6347 12.0041L7.26843 15.3704Z"
+                      fill={4294967295}
+                      propList={
+                        Array [
+                          "fill",
+                        ]
+                      }
+                    />
+                  </RNSVGGroup>
+                </RNSVGSvgView>
+              </View>
+            </View>
+            <Text
+              allowFontScaling={true}
+              maxFontSizeMultiplier={1.5}
+              style={
+                Array [
+                  Object {
+                    "color": "#000000",
+                    "fontFamily": "PP Neue Montreal TT",
+                    "fontSize": 16,
+                  },
+                  Object {
+                    "color": "#FFFFFF",
+                    "marginLeft": 4,
+                  },
+                ]
+              }
+            >
+              Cancel
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </Modal>
 </RNCSafeAreaView>
 `;
 
@@ -1734,5 +1984,255 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
       </View>
     </View>
   </View>
+  <Modal
+    hardwareAccelerated={true}
+    onRequestClose={[Function]}
+    presentationStyle="overFullScreen"
+    statusBarTranslucent={true}
+    testID="ask-exit-confirmation-modal"
+    transparent={true}
+    visible={false}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "bottom": 0,
+            "flexBasis": "0%",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "justifyContent": "center",
+            "left": 0,
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "backgroundColor": "rgba(0,0,0,0.8)",
+          },
+        ]
+      }
+    >
+      <View>
+        <Text
+          allowFontScaling={true}
+          maxFontSizeMultiplier={1.5}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "PP Neue Montreal TT",
+                "fontSize": 16,
+              },
+              Object {
+                "color": "#FFFFFF",
+                "fontFamily": "PP Telegraf",
+                "fontSize": 24,
+              },
+            ]
+          }
+        >
+          general.areYourSureExit
+        </Text>
+        <Text
+          allowFontScaling={true}
+          maxFontSizeMultiplier={1.5}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "PP Neue Montreal TT",
+                "fontSize": 16,
+              },
+              Object {
+                "color": "#FFFFFF",
+                "fontSize": 14,
+                "lineHeight": 21,
+                "marginTop": 16,
+              },
+            ]
+          }
+        >
+          general.youWillLoseProgress
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "marginTop": 40,
+            }
+          }
+        >
+          <View
+            accessibilityRole="button"
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#FF2F2F",
+                "borderRadius": 4,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 64,
+                "justifyContent": "center",
+                "opacity": 1,
+                "paddingBottom": 12,
+                "paddingLeft": 12,
+                "paddingRight": 12,
+                "paddingTop": 12,
+                "width": "100%",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              maxFontSizeMultiplier={1.5}
+              style={
+                Array [
+                  Object {
+                    "color": "#000000",
+                    "fontFamily": "PP Neue Montreal TT",
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "color": "#003333",
+                    },
+                    Object {
+                      "color": "#FFFFFF",
+                    },
+                  ],
+                ]
+              }
+            >
+              general.exit
+            </Text>
+          </View>
+          <View
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "opacity": 1,
+                "paddingTop": 20,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "borderColor": "#FFFFFF",
+                  "borderRadius": 9999,
+                  "borderWidth": 1,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "marginRight": 4,
+                  "width": 28,
+                }
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "aspectRatio": 1,
+                      "height": 24,
+                      "width": 24,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <RNSVGSvgView
+                  align="xMidYMid"
+                  bbHeight="100%"
+                  bbWidth="100%"
+                  fill="none"
+                  focusable={false}
+                  height="100%"
+                  meetOrSlice={0}
+                  minX={0}
+                  minY={0}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "borderWidth": 0,
+                      },
+                      Object {
+                        "flex": 0,
+                        "height": "100%",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                  vbHeight={24}
+                  vbWidth={24}
+                  width="100%"
+                >
+                  <RNSVGGroup
+                    fill={null}
+                    propList={
+                      Array [
+                        "fill",
+                      ]
+                    }
+                  >
+                    <RNSVGPath
+                      d="M7.26843 15.3704C6.91294 15.7186 6.90569 16.357 7.27569 16.727C7.64569 17.097 8.28412 17.0825 8.63236 16.7343L11.9986 13.368L15.3649 16.727C15.7277 17.0898 16.3516 17.097 16.7216 16.7198C17.0916 16.3498 17.0916 15.7258 16.7288 15.3631L13.3698 12.0041L16.7288 8.6378C17.0916 8.27505 17.0916 7.65113 16.7216 7.28113C16.3516 6.90387 15.7277 6.91113 15.3649 7.27387L11.9986 10.6329L8.63236 7.26662C8.28412 6.91838 7.64569 6.90387 7.27569 7.27387C6.90569 7.64387 6.91294 8.28231 7.26843 8.6378L10.6347 12.0041L7.26843 15.3704Z"
+                      fill={4294967295}
+                      propList={
+                        Array [
+                          "fill",
+                        ]
+                      }
+                    />
+                  </RNSVGGroup>
+                </RNSVGSvgView>
+              </View>
+            </View>
+            <Text
+              allowFontScaling={true}
+              maxFontSizeMultiplier={1.5}
+              style={
+                Array [
+                  Object {
+                    "color": "#000000",
+                    "fontFamily": "PP Neue Montreal TT",
+                    "fontSize": 16,
+                  },
+                  Object {
+                    "color": "#FFFFFF",
+                    "marginLeft": 4,
+                  },
+                ]
+              }
+            >
+              Cancel
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </Modal>
 </RNCSafeAreaView>
 `;

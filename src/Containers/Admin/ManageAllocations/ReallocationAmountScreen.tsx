@@ -23,8 +23,8 @@ import {
 import { useManageAllocationContext } from '@/Hooks/useManageAllocationContext';
 import { formatCurrency } from '@/Helpers/StringHelpers';
 import useBankAccounts from '@/Hooks/useBankAccounts';
-import Modal from '@/Components/Modal';
 import ExitConfirmationModal from '../Components/ExitConfirmationModal';
+import FullScreenModal from '@/Components/FullScreenModal';
 
 const FromOrToTile = ({
   amount,
@@ -153,23 +153,22 @@ const ReallocationAmountScreen = () => {
           )}
         </View>
       </SafeAreaView>
-      {showBankTransferPrompt ? (
-        <Modal
-          testID="bank-transfer-prompt"
-          title={t('adminFlows.manageAllocation.bankTransferPrompTitle')}
-          text={t('adminFlows.manageAllocation.bankTransferPrompText')}
-          onPrimaryAction={() => navigate(ManageAllocationScreens.BankTransferRequest)}
-          onSecondaryAction={() => setShowBankTransferPrompt(false)}
-        />
-      ) : null}
-      {askExitConfirmation ? (
-        <ExitConfirmationModal
-          onPrimaryAction={() => navigate(AdminScreens.Allocations)}
-          onSecondaryAction={() => {
-            setAskExitConfirmation(false);
-          }}
-        />
-      ) : null}
+
+      <FullScreenModal
+        visible={showBankTransferPrompt}
+        testID="bank-transfer-prompt"
+        title={t('adminFlows.manageAllocation.bankTransferPrompTitle')}
+        text={t('adminFlows.manageAllocation.bankTransferPrompText')}
+        onPrimaryAction={() => navigate(ManageAllocationScreens.BankTransferRequest)}
+        onSecondaryAction={() => setShowBankTransferPrompt(false)}
+      />
+      <ExitConfirmationModal
+        visible={askExitConfirmation}
+        onPrimaryAction={() => navigate(AdminScreens.Allocations)}
+        onSecondaryAction={() => {
+          setAskExitConfirmation(false);
+        }}
+      />
     </KeyboardAvoidingView>
   );
 };

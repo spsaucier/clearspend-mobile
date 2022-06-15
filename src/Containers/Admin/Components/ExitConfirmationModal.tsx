@@ -1,19 +1,22 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Modal from '@/Components/Modal';
+import FullScreenModal from '@/Components/FullScreenModal';
 
 type ExitConfirmationModalProps = {
+  visible: boolean;
   onPrimaryAction: () => void;
   onSecondaryAction: () => void;
 };
 
 const ExitConfirmationModal = ({
+  visible,
   onPrimaryAction,
   onSecondaryAction,
 }: ExitConfirmationModalProps) => {
   const { t } = useTranslation();
   return (
-    <Modal
+    <FullScreenModal
+      visible={visible}
       danger
       testID="ask-exit-confirmation-modal"
       title={t('general.areYourSureExit')}

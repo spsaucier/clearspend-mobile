@@ -166,14 +166,13 @@ const ReallocationAccountScreen = () => {
           )
         )}
       </View>
-      {askExitConfirmation ? (
-        <ExitConfirmationModal
-          onPrimaryAction={() => navigate(AdminScreens.Allocations)}
-          onSecondaryAction={() => {
-            setAskExitConfirmation(false);
-          }}
-        />
-      ) : null}
+      <ExitConfirmationModal
+        visible={askExitConfirmation}
+        onPrimaryAction={() => navigate(AdminScreens.Allocations)}
+        onSecondaryAction={() => {
+          setAskExitConfirmation(false);
+        }}
+      />
     </SafeAreaView>
   );
 };
