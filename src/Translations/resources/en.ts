@@ -148,6 +148,19 @@ export default {
       buttonCta: 'Resend Email',
     },
   },
+  onBoardingNotificationsSetting: {
+    heading: 'Enable <key1>notifications</key1>',
+    notificationQuestion: 'Would you like to allow ClearSpend to send you notifications?',
+    notificationsExplanation:
+      'We use notifications to alert you about new transactions, nearing spend limits, new cards, and so much more.',
+    notifications: 'Notifications',
+    continue: 'Continue',
+    enableNotificationsUsingSettings:
+      'Please re-enable notifications for the ClearSpend app in your phone’s settings.',
+    cancel: 'Cancel',
+    settings: 'Go to Settings',
+  },
+
   toasts: {
     addressUpdated: 'Address updated successfully',
     disable2faInvalid: 'Insufficient information to disable 2FA',

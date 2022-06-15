@@ -3,7 +3,6 @@ import { AppState, Linking, Platform, View, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { checkNotifications, requestNotifications } from 'react-native-permissions';
-import { useMMKVBoolean } from 'react-native-mmkv';
 import { useIsFocused, useNavigation } from '@react-navigation/core';
 import { TouchableOpacity, Switch } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
@@ -11,21 +10,19 @@ import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSe
 import { NotificationBellGreenIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
-import { Constants } from '@/consts';
 
 import { MainScreens } from '@/Navigators/NavigatorTypes';
+import useNotificationsSettings from '@/Hooks/useNotificationsSettings';
 
 const NotificationSettingsScreen = () => {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
   const { navigate } = useNavigation();
-  const [permissionAllNotifications, setPermissionAllNotifications] = useMMKVBoolean(
-    Constants.PERMISSION_ALL_NOTIFICATIONS,
-  );
+  const { allowNotifications, setAllowNotifications } = useNotificationsSettings();
   const [isBlockedByOS, setIsBlockedByOS] = useState<boolean>();
 
   const turnOffNotifications = () => {
-    setPermissionAllNotifications(false);
+    setAllowNotifications(false);
     Toast.show({
       type: 'success',
       text1: t('toasts.notificationsHaveBeenTurnedOff'),
@@ -36,7 +33,7 @@ const NotificationSettingsScreen = () => {
     if (value) {
       requestNotifications(['alert', 'badge']).then((permissionStatus) => {
         const granted = permissionStatus.status === 'granted';
-        setPermissionAllNotifications(granted);
+        setAllowNotifications(granted);
         setIsBlockedByOS(permissionStatus.status === 'blocked');
       });
     } else {
@@ -60,14 +57,14 @@ const NotificationSettingsScreen = () => {
         checkNotifications().then(({ status }) => {
           const blocked = status === 'blocked';
           setIsBlockedByOS(blocked);
-          if (blocked && permissionAllNotifications) {
+          if (blocked && allowNotifications) {
             turnOffNotifications();
           }
         });
       }
     });
     return () => subscription.remove();
-  }, [setPermissionAllNotifications, permissionAllNotifications]);
+  }, [setAllowNotifications, allowNotifications]);
 
   return (
     <SafeAreaView style={tw`bg-white flex-1 p-5`}>
@@ -96,12 +93,11 @@ const NotificationSettingsScreen = () => {
         >
           <Switch
             onValueChange={toggleSwitch}
-            value={permissionAllNotifications}
+            value={allowNotifications}
             disabled={isBlockedByOS}
             thumbColor={Platform.select({
               ios: tw.color('white'),
-              android:
-                permissionAllNotifications === true ? tw.color('primary') : tw.color('gray-50'),
+              android: allowNotifications === true ? tw.color('primary') : tw.color('gray-50'),
             })}
             trackColor={{
               false: tw.color('gray-10'),

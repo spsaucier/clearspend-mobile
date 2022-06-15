@@ -46,6 +46,8 @@ import useRequireBioOrPasscodeSetup from '@/Hooks/useRequireBioOrPasscodeSetup';
 // import useRequire2FA from '@/Hooks/useRequire2FA';
 import { useUser } from '@/Queries';
 import { sharedStackHeaderConfig } from '@/Helpers/NavigationHelpers';
+import OnboardingNotificationsScreen from '@/Containers/Onboarding/NotificationsScreen';
+import useNotificationsSettings from '@/Hooks/useNotificationsSettings';
 
 const Stack = createNativeStackNavigator<MainStackParamTypes>();
 
@@ -132,6 +134,7 @@ const WalletStack = () => (
 
 const MainNavigator = () => {
   const { loading, authed, passcodeEnabled, biometricsEnabled, isLoggingOut } = useAuthentication();
+  const { onboardingNotificationsFirstCheck } = useNotificationsSettings();
 
   // TODO: Reenable 2FA setup prompt when backend is fixed
   // const { loading: loading2FA, shouldAct: needs2FA } = useRequire2FA();
@@ -164,12 +167,16 @@ const MainNavigator = () => {
           component={SetBioPasscodeNavigator}
           options={{ animationTypeForReplace: 'push' }}
         />
+      ) : !onboardingNotificationsFirstCheck ? (
+        <Stack.Screen
+          name={MainScreens.OnboardingNotifications}
+          component={OnboardingNotificationsScreen}
+        />
       ) : (
         <Stack.Screen name={MainScreens.Home} component={WalletStack} />
       )}
 
       <Stack.Screen name={MainScreens.EnterOTP} component={EnterOTPScreen} />
-
       <Stack.Screen
         name={MainScreens.UpdatedTermsAndConditionsScreen}
         component={UpdatedTermsAndConditionsScreen}

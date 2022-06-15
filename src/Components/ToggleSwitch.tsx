@@ -15,12 +15,12 @@ export const ToggleSwitch = ({
   testID,
   toggleSwitch,
   value = false,
-  disable = false,
+  disabled = false,
 }: {
   testID?: string;
   toggleSwitch: (value: boolean) => void;
   value: boolean;
-  disable?: boolean;
+  disabled?: boolean;
 }) => {
   const animationValue = useSharedValue<boolean>(value);
   const containerWidth = 40;
@@ -56,7 +56,7 @@ export const ToggleSwitch = ({
     <Animated.View style={[tw`rounded-xl`, animatedStyle]}>
       <TouchableWithoutFeedback
         testID={testID}
-        disabled={disable}
+        disabled={disabled}
         style={[tw`relative h-5 justify-center`, { minWidth: containerWidth }]}
         onPress={() => {
           const newValue = !animationValue.value;

@@ -12,6 +12,7 @@ import { IS_AUTHED, JUST_SET_2FA_KEY, LAST_ACTIVE_KEY } from '@/Store/keys';
 import { useRequireAuth } from '@/Hooks/useRequireAuth';
 import { useFeatureFlagsContext } from '@/Hooks/useFeatureFlagsContext';
 import { storage } from '@/Services/Storage/mmkv';
+import useNotificationsSettings from '@/Hooks/useNotificationsSettings';
 
 /*
 The AuthProvider provides a means to work with stateful values/effects/custom
@@ -56,6 +57,7 @@ const AuthProvider: FC = ({ children }) => {
   const [, setJustSet2FA] = useMMKVBoolean(JUST_SET_2FA_KEY);
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { resetNotificationsSettings } = useNotificationsSettings();
 
   const onRequireAuth = (authedStatus = false) => {
     if (!authedStatus) {
@@ -81,6 +83,7 @@ const AuthProvider: FC = ({ children }) => {
     storage.set(IS_AUTHED, false);
     setLastSignedIn(new Date().valueOf());
     setJustSet2FA(false);
+    resetNotificationsSettings();
     await bioProps.disableBiometrics();
     await passcodeProps.disablePasscode();
     await CookieManager.clearAll();

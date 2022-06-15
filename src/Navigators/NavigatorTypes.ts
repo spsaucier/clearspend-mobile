@@ -38,6 +38,7 @@ export enum MainScreens {
   SetBiometricsOrPasscode = 'SetBiometricsOrPasscode',
   EnterMobile = 'Enter Mobile',
   EnterOTP = 'Confirm Mobile',
+  OnboardingNotifications = 'Onboarding Notifications',
 
   // Profile & Settings
   UpdateAccount = 'Update Account',
@@ -89,9 +90,8 @@ export type MainStackParamTypes = {
   [MainScreens.SetBiometricsOrPasscode]: undefined;
   [MainScreens.EnterMobile]: undefined;
   [MainScreens.EnterOTP]: { phone: string; nextScreen?: string };
-
-  // Updated terms and conditions
   [MainScreens.UpdatedTermsAndConditionsScreen]: undefined;
+  [MainScreens.OnboardingNotifications]: undefined;
 
   // Profile & Settings
   [MainScreens.UpdateAccount]: undefined;
