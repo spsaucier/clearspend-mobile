@@ -41,6 +41,7 @@ const NewAddressScreen = () => {
       primaryActionDisabled={!selectedAddress}
       onPrimaryActionLabel={t('adminFlows.issueCard.newAddressCta')}
       onClose={() => navigate(AdminScreens.Employees)}
+      edges={['top']}
     >
       <View>
         {selectedAddress ? (

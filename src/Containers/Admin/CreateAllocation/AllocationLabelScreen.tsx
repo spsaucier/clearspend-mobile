@@ -31,6 +31,7 @@ const AllocationLabelScreen = () => {
       onPrimaryAction={() => navigate(CreateAllocationScreens.AllocationAmount)}
       primaryActionDisabled={!allocationLabel}
       onClose={() => navigate(AdminScreens.Allocations)}
+      edges={['top']}
     >
       <ScrollView style={tw`flex-1`}>
         <TextInput

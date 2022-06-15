@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Path, Svg } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
+import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
 import { PlusCircleFilledIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 
 type Props = {
   notes: string | null | undefined;
@@ -16,10 +16,10 @@ type Props = {
 
 export const TransactionNote = ({ notes = '', accountActivityId, expenseCategoryId }: Props) => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<WalletStackProps>();
 
   const navToNoteInput = () => {
-    navigate(MainScreens.NoteInput, { accountActivityId, notes, expenseCategoryId });
+    navigate(WalletScreens.NoteInput, { accountActivityId, notes, expenseCategoryId });
   };
 
   const Triangle = () => (

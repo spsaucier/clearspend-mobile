@@ -1,6 +1,7 @@
 import { LinkingOptions } from '@react-navigation/native';
 
-import { MainScreens, TopScreens } from '@/Navigators/NavigatorTypes';
+import { MainScreens, TopScreens, TabScreens } from '@/Navigators/NavigatorTypes';
+import { WalletScreens } from '@/Navigators/Wallet/WalletNavigatorTypes';
 
 export const linkingConfig = ({
   getInitialURL,
@@ -22,12 +23,15 @@ export const linkingConfig = ({
     screens: {
       [TopScreens.Main]: {
         screens: {
-          [MainScreens.Home]: {
-            initialRouteName: MainScreens.Wallet,
+          [MainScreens.Tabs]: {
             screens: {
-              [MainScreens.TransactionDetails]: {
-                path: 'transaction/:transactionId',
-                exact: true,
+              [TabScreens.Wallet]: {
+                screens: {
+                  [WalletScreens.TransactionDetails]: {
+                    path: 'transaction/:transactionId',
+                    exact: true,
+                  },
+                },
               },
             },
           },

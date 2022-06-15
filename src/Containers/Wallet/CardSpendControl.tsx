@@ -10,6 +10,9 @@ import Toast from 'react-native-toast-message';
 import { isEqual, cloneDeep } from 'lodash';
 
 import tw from '@/Styles/tailwind';
+
+import { WalletScreens, WalletStackParamTypes } from '@/Navigators/Wallet/WalletNavigatorTypes';
+
 import {
   ActivityIndicator,
   BackButtonNavigator,
@@ -26,13 +29,12 @@ import SpendControl, {
   PaymentTypes,
 } from '../Admin/SpendControl';
 import { useCard } from '@/Queries';
-import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 import { useSaveCardSpendControl } from '@/Queries/card';
 import { fetchAllocationData } from '@/Queries/allocation';
 
 type CardSpendControlNavigationProps = NativeStackScreenProps<
-  MainStackParamTypes,
-  MainScreens.CardSpendControl
+  WalletStackParamTypes,
+  WalletScreens.CardSpendControl
 >;
 type CardSpendControlRouteProp = CardSpendControlNavigationProps['route'];
 

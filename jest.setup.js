@@ -27,7 +27,12 @@ jest.mock('@react-navigation/native', () => ({
   }),
 }));
 
-jest.mock('react-native-safe-area-context', () => mockSafeAreaContext);
+jest.mock('react-native-safe-area-context', () => ({
+  ...mockSafeAreaContext,
+  useSafeAreaInsets: () => ({
+    bottom: 0,
+  }),
+}));
 
 jest.mock('react-native-device-info', () => ({
   getVersion: jest.fn(() => '1.0'),

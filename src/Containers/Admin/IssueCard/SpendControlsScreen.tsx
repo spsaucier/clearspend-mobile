@@ -230,6 +230,7 @@ const SpendControlsScreen = () => {
       onPrimaryActionLabel={t('adminFlows.issueCard.confirmCta')}
       primaryActionDisabled={isFetching}
       onClose={() => navigate(AdminScreens.Employees)}
+      edges={['top']}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         {allocationError ? (

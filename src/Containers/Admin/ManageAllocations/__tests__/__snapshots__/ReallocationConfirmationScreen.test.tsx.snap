@@ -5,7 +5,6 @@ exports[`ReallocationConfirmationScreen matches snapshot for "BankTransfer" with
   edges={
     Array [
       "top",
-      "bottom",
     ]
   }
   style={
@@ -349,7 +348,6 @@ exports[`ReallocationConfirmationScreen matches snapshot for "BankTransfer" with
   edges={
     Array [
       "top",
-      "bottom",
     ]
   }
   style={
@@ -693,7 +691,6 @@ exports[`ReallocationConfirmationScreen matches snapshot for "Rellocation" with 
   edges={
     Array [
       "top",
-      "bottom",
     ]
   }
   style={
@@ -974,7 +971,6 @@ exports[`ReallocationConfirmationScreen matches snapshot for "Rellocation" with 
   edges={
     Array [
       "top",
-      "bottom",
     ]
   }
   style={

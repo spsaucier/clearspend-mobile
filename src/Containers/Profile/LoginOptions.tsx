@@ -5,10 +5,12 @@ import { KeyboardAvoidingView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useMMKVString } from 'react-native-mmkv';
 import Toast from 'react-native-toast-message';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
 import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSettingHeader';
 import { FocusAwareStatusBar } from '@/Components';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
+import { ProfileStackParamTypes, ProfileScreens } from '@/Navigators/Profile/ProfileNavigatorTypes';
 import { ProfileMenuRow } from './Components/ProfileMenuRow';
 import { KeyIconLg } from '@/Components/Icons';
 import { useAuthentication } from '@/Hooks/useAuthentication';
@@ -16,7 +18,13 @@ import { AVAILABLE_BIO_KEY } from '@/Store/keys';
 
 const LoginOptionsScreen = () => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
+  const { navigate } =
+    useNavigation<
+      NativeStackNavigationProp<
+        ProfileStackParamTypes & MainStackParamTypes,
+        ProfileScreens.LoginOptions
+      >
+    >();
   const { biometricsEnabled, disableBiometrics, passcodeEnabled, disablePasscode } =
     useAuthentication();
   const [availableBio] = useMMKVString(AVAILABLE_BIO_KEY);
@@ -62,7 +70,7 @@ const LoginOptionsScreen = () => {
               <ProfileMenuRow
                 title={t('profile.loginOptions.updatePassword')}
                 onPress={() => {
-                  navigate(MainScreens.ChangePassword);
+                  navigate(ProfileScreens.ChangePassword);
                 }}
               />
             </View>

@@ -25,6 +25,10 @@ jest.mock('@react-navigation/core', () => ({
   }),
 }));
 
+jest.mock('@react-navigation/bottom-tabs', () => ({
+  useBottomTabBarHeight: () => 0,
+}));
+
 jest.mock('@stripe/stripe-react-native', () => ({
   isCardInWallet: jest.fn(() => ({
     isInWallet: true,

@@ -13,6 +13,7 @@ import {
 } from '@/Navigators/Admin/AdminNavigatorTypes';
 import AdminScreenWrapper from '../Components/AdminScreenWrapper';
 import AllocationTree from '../Components/AllocationTree';
+import FadeOutGradient from '@/Components/FadeOutGradient';
 
 const ParentAllocationScreen = () => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ const ParentAllocationScreen = () => {
       primaryActionDisabled={!selectedParentAllocationId}
       hideBackButton
       onClose={() => navigate(AdminScreens.Allocations)}
+      edges={['top']}
     >
       {isLoadingAllocations ? (
         <View style={tw`flex-1 items-center mt-16`}>
@@ -42,13 +44,18 @@ const ParentAllocationScreen = () => {
         </View>
       ) : (
         !!allocations?.length && (
-          <ScrollView contentContainerStyle={tw`pb-16`}>
-            <AllocationTree
-              allocations={allocations}
-              onSelectAllocation={setSelectedParentAllocationId}
-              selectedAllocationId={selectedParentAllocationId}
-            />
-          </ScrollView>
+          <>
+            <ScrollView contentContainerStyle={tw`pb-16`}>
+              <AllocationTree
+                allocations={allocations}
+                onSelectAllocation={setSelectedParentAllocationId}
+                selectedAllocationId={selectedParentAllocationId}
+              />
+            </ScrollView>
+            <View style={tw`mt-auto`}>
+              <FadeOutGradient position="-top-32" />
+            </View>
+          </>
         )
       )}
     </AdminScreenWrapper>

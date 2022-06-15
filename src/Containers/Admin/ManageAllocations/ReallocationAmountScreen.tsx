@@ -37,7 +37,7 @@ const FromOrToTile = ({
 }) => (
   <View testID={`${fromOrTo}-tile`} style={tw`w-1/2 px-2.5`}>
     <Text style={tw`text-2xs font-medium uppercase tracking-widest mb-1.5`}>{fromOrTo}</Text>
-    <View style={tw`bg-tan flex-grow-1 justify-center py-6`}>
+    <View style={tw`bg-tan flex-grow-1 justify-center px-5 py-6`}>
       <Text style={tw`text-2xs text-center uppercase tracking-widest font-medium`}>{name}</Text>
       {typeof amount === 'number' && (
         <Text style={tw`text-center mt-2`}>{formatCurrency(amount)}</Text>
@@ -87,7 +87,7 @@ const ReallocationAmountScreen = () => {
       behavior="padding"
       style={tw`flex-1 bg-white`}
     >
-      <SafeAreaView style={tw`flex-1 px-5`}>
+      <SafeAreaView style={tw`flex-1 px-5`} edges={['top']}>
         <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
         <View style={tw`flex-row items-center justify-between py-5`}>
           <BackButtonNavigator theme="light" />
@@ -134,7 +134,7 @@ const ReallocationAmountScreen = () => {
                   ))}
                 </View>
               )}
-              <View style={tw`mt-auto`}>
+              <View style={tw`mt-auto py-5`}>
                 <Button
                   testID="primary-action-button"
                   label={t('adminFlows.manageAllocation.updateBalanceCta')}

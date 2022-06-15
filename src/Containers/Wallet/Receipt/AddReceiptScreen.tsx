@@ -7,11 +7,12 @@ import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 import { Camera, CameraDevice } from 'react-native-vision-camera';
 
+import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
+
 import { Button, CSText } from '@/Components';
 import { CloseIcon, LightningIcon, LightningOffIcon } from '@/Components/Icons';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import tw from '@/Styles/tailwind';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { mixpanel } from '@/Services/utils/analytics';
 
@@ -19,7 +20,7 @@ const imageType = 'jpeg';
 
 const AddReceiptScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const navigation = useNavigation<WalletStackProps>();
   const route = useRoute();
   const isFocused = useIsFocused();
 
@@ -114,7 +115,7 @@ const AddReceiptScreen = () => {
 
   useEffect(() => {
     if (linked) {
-      navigation.navigate(MainScreens.TransactionDetails, {
+      navigation.navigate(WalletScreens.TransactionDetails, {
         transactionId: accountActivityId,
       });
     }

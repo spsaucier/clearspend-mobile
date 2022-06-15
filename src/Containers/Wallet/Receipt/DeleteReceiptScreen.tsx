@@ -3,18 +3,31 @@ import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation, useRoute } from '@react-navigation/core';
+
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  WalletScreens,
+  WalletStackParamTypes,
+  WalletStackProps,
+} from '@/Navigators/Wallet/WalletNavigatorTypes';
+
 import { Button, CSText } from '@/Components';
 import { CloseIcon } from '@/Components/Icons';
 import { useDeleteReceipt } from '@/Queries/receipt';
 import tw from '@/Styles/tailwind';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+
+type DeleteReceiptNavigationProps = NativeStackScreenProps<
+  WalletStackParamTypes,
+  WalletScreens.DeleteReceipt
+>;
+type DeleteReceiptRouteProp = DeleteReceiptNavigationProps['route'];
 
 const DeleteReceiptScreen = () => {
-  const route = useRoute();
+  const route = useRoute<DeleteReceiptRouteProp>();
   const { params } = route;
-  const { accountActivityId, receiptId } = params as any;
+  const { accountActivityId, receiptId } = params;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<WalletStackProps>();
   const { t } = useTranslation();
   const { mutate: deleteReceipt, isLoading } = useDeleteReceipt(receiptId, accountActivityId);
 
@@ -24,7 +37,7 @@ const DeleteReceiptScreen = () => {
       { receiptId },
       {
         onSuccess: () => {
-          navigation.navigate(MainScreens.TransactionDetails, {
+          navigation.navigate(WalletScreens.TransactionDetails, {
             transactionId: accountActivityId,
           });
         },

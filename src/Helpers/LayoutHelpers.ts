@@ -1,4 +1,5 @@
 import { Dimensions, NativeModules } from 'react-native';
+import { TAB_BAR_HEIGHT } from '@/Navigators/TabBar';
 
 const { height: screenHeight } = Dimensions.get('screen');
 const { height: windowHeight } = Dimensions.get('window');
@@ -24,5 +25,5 @@ export const getNormalizedSnapPoint = () => {
     bottomNav -= statusBarHeight;
   }
 
-  return screenHeight - bottomNav - statusBarHeight;
+  return screenHeight - bottomNav - statusBarHeight - TAB_BAR_HEIGHT;
 };

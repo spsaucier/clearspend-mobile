@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/core';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { AlphabetList, IData } from 'react-native-section-alphabet-list';
-import LinearGradient from 'react-native-linear-gradient';
 import { User } from 'generated/capital';
 import tw from '@/Styles/tailwind';
 import { useUsers } from '@/Queries/user';
@@ -20,6 +19,7 @@ import { AdminScreens, AdminStackParamTypes } from '@/Navigators/Admin/AdminNavi
 import { useAllPermissions } from '@/Queries/permissions';
 import { showManageUsers } from '@/Helpers/PermissionsHelpers';
 import PlusButton from '@/Components/PlusButton';
+import FadeOutGradient from '@/Components/FadeOutGradient';
 
 const AdminEmployeesScreen = () => {
   const { navigate } =
@@ -51,7 +51,7 @@ const AdminEmployeesScreen = () => {
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView testID="admin-employees-screen" style={tw`flex-1 bg-white`}>
+      <SafeAreaView testID="admin-employees-screen" style={tw`flex-1 bg-white`} edges={['top']}>
         <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
         <View style={tw`flex-row items-center p-5`}>
           <BackButtonNavigator theme="light" />
@@ -70,43 +70,41 @@ const AdminEmployeesScreen = () => {
               <ActivityIndicator />
             </View>
           ) : users?.length ? (
-            <AlphabetList
-              indexContainerStyle={tw`mr-1.5`}
-              indexLetterStyle={tw`text-xs text-secondary font-medium`}
-              data={users}
-              renderCustomItem={(
-                item: IData & { email?: string; initials?: string; user?: User },
-              ) => (
-                <TouchableOpacity
-                  style={tw`flex-row py-3 px-5`}
-                  onPress={() => onEmployeePress(item.user)}
-                >
-                  <View
-                    style={tw`flex-row justify-center items-center w-10 h-10 rounded-full bg-black`}
+            <>
+              <AlphabetList
+                indexContainerStyle={tw`mr-1.5`}
+                indexLetterStyle={tw`text-xs text-secondary font-medium`}
+                data={users}
+                renderCustomItem={(
+                  item: IData & { email?: string; initials?: string; user?: User },
+                ) => (
+                  <TouchableOpacity
+                    style={tw`flex-row py-3 px-5`}
+                    onPress={() => onEmployeePress(item.user)}
                   >
-                    <Text
-                      allowFontScaling={false}
-                      style={tw`text-white tracking-tighter text-base uppercase`}
+                    <View
+                      style={tw`flex-row justify-center items-center w-10 h-10 rounded-full bg-black`}
                     >
-                      {item.initials}
-                    </Text>
-                  </View>
-                  <View style={tw`mx-4 flex-shrink-1`}>
-                    <Text style={tw`mb-1`}>{item.value}</Text>
-                    <Text style={tw`text-sm text-gray-50`} numberOfLines={1}>
-                      {item.email}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              renderCustomSectionHeader={() => <View />}
-            />
+                      <Text
+                        allowFontScaling={false}
+                        style={tw`text-white tracking-tighter text-base uppercase`}
+                      >
+                        {item.initials}
+                      </Text>
+                    </View>
+                    <View style={tw`mx-4 flex-shrink-1`}>
+                      <Text style={tw`mb-1`}>{item.value}</Text>
+                      <Text style={tw`text-sm text-gray-50`} numberOfLines={1}>
+                        {item.email}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+                renderCustomSectionHeader={() => <View />}
+              />
+              <FadeOutGradient />
+            </>
           ) : null}
-          <LinearGradient
-            colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
-            style={tw`absolute bottom-0 left-0 right-0 h-32`}
-            pointerEvents="none"
-          />
         </View>
       </SafeAreaView>
       <OptionsBottomSheet ref={bottomSheetRef} title={t('admin.employees.employeeOptions')}>

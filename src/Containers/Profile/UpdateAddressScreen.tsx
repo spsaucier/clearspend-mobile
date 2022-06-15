@@ -14,6 +14,7 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import Toast from 'react-native-toast-message';
 import { isEqual } from 'lodash';
 import tw from '@/Styles/tailwind';
+import { ProfileStackProps } from '@/Navigators/Profile/ProfileNavigatorTypes';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { useUser, useUpdateUser } from '@/Queries/user';
@@ -32,7 +33,7 @@ const addressToString = (a: Address) => `${a.streetLine1} ${a.locality} ${a.post
 
 const UpdateAddressScreen = () => {
   const { t } = useTranslation();
-  const { goBack } = useNavigation();
+  const { goBack } = useNavigation<ProfileStackProps>();
   const [address, setAddress] = useState<Address | { streetLine2: string }>({ streetLine2: '' });
   const { isLoading, error, data: user } = useUser();
   const { suggestions, isLoading: loading, setSearch } = useAddressSuggestions();

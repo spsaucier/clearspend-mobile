@@ -3,22 +3,29 @@ import { Image, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { NativeStackScreenProps } from 'react-native-screens/native-stack';
+import {
+  NativeStackScreenProps,
+  NativeStackNavigationProp,
+} from 'react-native-screens/native-stack';
 import tw from '@/Styles/tailwind';
-import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
+import { WalletStackParamTypes, WalletScreens } from '@/Navigators/Wallet/WalletNavigatorTypes';
+import {
+  ActivateCardStackParamTypes,
+  ActivateCardScreens,
+} from '@/Navigators/Profile/ActivateCard/ActivateCardNavigatorTypes';
 import { ActivityIndicator, Button, CSText, FocusAwareStatusBar } from '@/Components';
 import { useActivateCard } from '@/Queries/card';
 
 const physicalChipCardImage = require('@/Assets/Images/blank-physical-chip-card.png');
 
-type Props = NativeStackScreenProps<MainStackParamTypes, MainScreens.ActivateCardResult>;
+type ScreenProps = NativeStackScreenProps<ActivateCardStackParamTypes, ActivateCardScreens.Result>;
 
-export const ActivateCardResultScreen = ({ route }: Props) => {
+export const ActivateCardResultScreen = ({ route }: ScreenProps) => {
   const { lastFour } = route.params;
 
   const { t } = useTranslation();
-  const { navigate, goBack } = useNavigation();
+  const { navigate, goBack } =
+    useNavigation<NativeStackNavigationProp<WalletStackParamTypes, WalletScreens>>();
   const { mutate: activateCard, data, isLoading, isSuccess } = useActivateCard();
 
   useEffect(() => {
@@ -69,7 +76,7 @@ export const ActivateCardResultScreen = ({ route }: Props) => {
             <View style={tw`items-center w-full pb-4`}>
               <Button
                 label={t('activateCard.viewCardsButtonCta')}
-                onPress={() => navigate(MainScreens.Wallet, { initialFocusedCardId: data?.cardId })}
+                onPress={() => navigate(WalletScreens.Home, { initialFocusedCardId: data?.cardId })}
               />
               <Button
                 containerStyle={tw`mt-4 bg-white`}

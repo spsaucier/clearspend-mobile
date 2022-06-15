@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Dimensions, StatusBar, NativeModules, LayoutChangeEvent } from 'react-native';
+import { View, Dimensions, StatusBar, LayoutChangeEvent } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
@@ -19,16 +19,21 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useQueryClient } from 'react-query';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import LinearGradient from 'react-native-linear-gradient';
-
 import { RouteProp, useRoute } from '@react-navigation/core';
-import { NativeStackScreenProps } from 'react-native-screens/native-stack';
+
+import type { NativeStackScreenProps } from 'react-native-screens/native-stack';
+import {
+  WalletScreens,
+  WalletStackParamTypes,
+  WalletStackProps,
+} from '@/Navigators/Wallet/WalletNavigatorTypes';
+
 import tw from '@/Styles/tailwind';
 import { Button, ActivityIndicator, CSText, InfoPanel, AnimatedCSText } from '@/Components';
 import { Card } from '@/Containers/Wallet/Components/Card';
 import { useUser, useUserCards } from '@/Queries';
 import { HeaderIcons } from './Components/HeaderIcons';
 import { CardDetailsResponse, User } from '@/generated/capital';
-import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 import { invalidateTransactions } from '@/Queries/transaction';
@@ -40,15 +45,17 @@ import { invalidateCardQueries, useEmployeeCards } from '@/Queries/card';
 import { AdminScreens, AdminStackParamTypes } from '@/Navigators/Admin/AdminNavigatorTypes';
 import { formatUserName } from '@/Helpers/UserNameHelper';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
+import { getNormalizedSnapPoint } from '@/Helpers/LayoutHelpers';
+import FadeOutGradient from '@/Components/FadeOutGradient';
 
 const { width: screenWidth, height: screenHeight, scale } = Dimensions.get('screen');
 const pullToRefreshThreshold = screenHeight * (0.45 / scale);
-const { height: windowHeight } = Dimensions.get('window');
-const { StatusBarManager } = NativeModules;
-const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
 const CARD_SCALE_CONSTANT = 0.88;
 
-type WalletScreenNavigationProps = NativeStackScreenProps<MainStackParamTypes, MainScreens.Wallet>;
+type WalletScreenNavigationProps = NativeStackScreenProps<
+  WalletStackParamTypes,
+  WalletScreens.Home
+>;
 type WalletScreenRouteProp = WalletScreenNavigationProps['route'];
 
 const LoadingWallet = () => (
@@ -128,10 +135,11 @@ const ContentWallet = ({
   isEmployeeWallet: boolean;
   employee: User;
 }) => {
-  const { navigate, setParams } = useNavigation();
+  const { navigate, setParams } = useNavigation<WalletStackProps>();
   const route = useRoute<WalletScreenRouteProp>();
   const { params } = route;
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const { data: user } = useUser();
   const [selectedCard, setSelectedCard] = useState<CardDetailsResponse>();
   const [isScrolling, setIsScrolling] = useState(false);
@@ -189,25 +197,8 @@ const ContentWallet = ({
     }
   }, [activeCards.length, selectedCard]);
 
-  /*
-    On older Android devices `windowHeight` includes the status bar height
-
-    screenHeight - windowHeight = 0 (iOS)
-    screenHeight - windowHeight = bottom nav height (Android new)
-    screenHeight - windowHeight - statusBarHeight = bottom nav height (Android old)
-  */
-
-  let bottomNav = screenHeight - windowHeight;
-
-  // assume that if the value returned for bottom nav
-  // is larger than twice the status bar height then
-  // it's probably not including the status bar e.g. it's old
-  if (bottomNav > 2 * STATUSBAR_HEIGHT) {
-    bottomNav -= STATUSBAR_HEIGHT;
-  }
-
   const initialSnapPoint =
-    screenHeight - bottomNav - STATUSBAR_HEIGHT - headerIconsHeight - (carouselHeight || 0);
+    getNormalizedSnapPoint() - headerIconsHeight - (carouselHeight || 0) - insets.bottom;
 
   return (
     <View style={tw`flex-1`}>
@@ -260,7 +251,7 @@ const ContentWallet = ({
                       text1: t('toasts.cantAccessCardScreenIfFrozenToast'),
                     });
                   } else {
-                    navigate(MainScreens.CardDetails, { cardId });
+                    navigate(WalletScreens.CardDetails, { cardId });
                   }
                 }}
                 cardPressDisabled={isEmployeeWallet}
@@ -301,18 +292,21 @@ const ContentWallet = ({
       </View>
 
       {selectedCardId && carouselHeight ? (
-        <TransactionsContainer
-          selectedCardId={selectedCardId}
-          initialSnapPoint={initialSnapPoint}
-          title={
-            isEmployeeWallet
-              ? t('wallet.transactions.employeeRecentTransactions', {
-                  userFirstName: formatUserName(employee).firstName,
-                  interpolation: { escapeValue: false },
-                })
-              : undefined
-          }
-        />
+        <>
+          <TransactionsContainer
+            selectedCardId={selectedCardId}
+            initialSnapPoint={initialSnapPoint}
+            title={
+              isEmployeeWallet
+                ? t('wallet.transactions.employeeRecentTransactions', {
+                    userFirstName: formatUserName(employee).firstName,
+                    interpolation: { escapeValue: false },
+                  })
+                : undefined
+            }
+          />
+          <FadeOutGradient />
+        </>
       ) : null}
 
       <LinearGradient
@@ -347,7 +341,7 @@ const WalletScreen = () => {
   const route = useRoute<RouteProp<AdminStackParamTypes, AdminScreens.EmployeeWallet>>();
   const queryClient = useQueryClient();
 
-  const [headerIconsHeight, setHeaderIconsHeight] = useState<number>();
+  const [headerIconsHeight, setHeaderIconsHeight] = useState<number>(0);
 
   const translationYSV = useSharedValue(0);
 
@@ -459,10 +453,12 @@ const WalletScreen = () => {
     <BottomSheetModalProvider>
       <SafeAreaView style={tw`flex-1 bg-secondary`} edges={['top']}>
         <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" translucent />
-        <HeaderIcons
-          onLayout={(e: LayoutChangeEvent) => setHeaderIconsHeight(e.nativeEvent.layout.height)}
-          employee={employee}
-        />
+        {employee && (
+          <HeaderIcons
+            onLayout={(e: LayoutChangeEvent) => setHeaderIconsHeight(e.nativeEvent.layout.height)}
+            employee={employee}
+          />
+        )}
         <View style={tw`flex-1`}>
           {showLoading && <LoadingWallet />}
           {showError && (

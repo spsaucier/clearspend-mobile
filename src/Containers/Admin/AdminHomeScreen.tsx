@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation, Trans } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
 import { CSText as Text, FocusAwareStatusBar } from '@/Components';
-import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { AdminStackParamTypes, AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 import { useUser } from '@/Queries/user';
 import ActionsAndRequestsTabs, {
@@ -17,11 +16,14 @@ import RequestsScreen from './RequestsScreen';
 import { TransactionsContainer } from '@/Containers/Wallet/TransactionsContainer';
 import { getNormalizedSnapPoint } from '@/Helpers/LayoutHelpers';
 import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
+import FadeOutGradient from '@/Components/FadeOutGradient';
 
 const AdminHomeScreen = () => {
   const { navigate } =
     useNavigation<NativeStackNavigationProp<AdminStackParamTypes, AdminScreens.Home>>();
   const { t } = useTranslation();
+  const { bottom } = useSafeAreaInsets();
+
   const { data: user } = useUser();
   const { enabled: requestFundsEnabled } = useFeatureFlag('request-funds');
 
@@ -30,16 +32,14 @@ const AdminHomeScreen = () => {
   const [tabsHeight, setTabsHeight] = useState(requestFundsEnabled ? 35 : 0);
   const [actionsHeight, setActionsHeight] = useState(175);
 
-  const initialSnapPoint = getNormalizedSnapPoint() - headerHeight - tabsHeight - actionsHeight;
+  const initialSnapPoint =
+    getNormalizedSnapPoint() - headerHeight - tabsHeight - actionsHeight - bottom;
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`} edges={['top']}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <View style={tw`flex-1`}>
-        <View style={tw`px-5`} onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}>
-          <View style={tw`py-5`}>
-            <BackButtonNavigator theme="light" />
-          </View>
+        <View style={tw`pt-10 px-5`} onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}>
           {user?.firstName && (
             <View style={requestFundsEnabled ? tw`mb-6` : tw`mb-3`}>
               <Text style={tw`text-xl`}>
@@ -75,6 +75,7 @@ const AdminHomeScreen = () => {
                   isAdmin
                   title={t('admin.transactionsTitle')}
                 />
+                <FadeOutGradient />
               </>
             ) : (
               <View style={tw`flex-1 px-5`}>

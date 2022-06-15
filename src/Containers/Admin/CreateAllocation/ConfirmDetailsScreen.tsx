@@ -99,6 +99,7 @@ const ConfirmDetailsScreen = () => {
       onClose={() => navigate(AdminScreens.Allocations)}
       primaryActionDisabled={isLoading}
       processing={isLoading}
+      edges={['top']}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <CSText style={tw`uppercase text-2xs`}>

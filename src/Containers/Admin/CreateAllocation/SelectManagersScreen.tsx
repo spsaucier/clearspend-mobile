@@ -4,8 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { AlphabetList, IData } from 'react-native-section-alphabet-list';
-import LinearGradient from 'react-native-linear-gradient';
-
 import { useNewAllocationContext } from '@/Hooks/useNewAllocationContext';
 import {
   AdminScreens,
@@ -18,6 +16,7 @@ import tw from '@/Styles/tailwind';
 import { ActivityIndicator } from '@/Components';
 import { getUserInitials } from '@/Helpers/UserNameHelper';
 import UserItemRow from './UserItemRow';
+import FadeOutGradient from '@/Components/FadeOutGradient';
 
 const SelectManagersScreen = () => {
   const { t } = useTranslation();
@@ -45,6 +44,7 @@ const SelectManagersScreen = () => {
       onPrimaryAction={() => navigate(CreateAllocationScreens.SelectViewers)}
       primaryActionDisabled={selectedManagers.length === 0}
       onClose={() => navigate(AdminScreens.Allocations)}
+      edges={['top']}
     >
       <View style={tw`flex-1`}>
         {isLoadingUsers ? (
@@ -74,11 +74,7 @@ const SelectManagersScreen = () => {
             )}
           />
         )}
-        <LinearGradient
-          colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
-          style={tw`absolute bottom-0 left-0 right-0 h-16`}
-          pointerEvents="none"
-        />
+        <FadeOutGradient />
       </View>
     </AdminScreenWrapper>
   );

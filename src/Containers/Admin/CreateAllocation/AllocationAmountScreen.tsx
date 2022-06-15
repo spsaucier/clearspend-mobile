@@ -50,6 +50,7 @@ const AllocationAmountScreen = () => {
       onPrimaryAction={() => navigate(CreateAllocationScreens.SelectManagers)}
       primaryActionDisabled={!allocationAmount}
       onClose={() => navigate(AdminScreens.Allocations)}
+      edges={['top']}
     >
       <ScrollView style={tw`flex-1`}>
         <View style={tw`flex-row items-center`}>

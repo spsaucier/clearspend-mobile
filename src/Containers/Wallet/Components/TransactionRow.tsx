@@ -5,9 +5,11 @@ import { format, parseISO } from 'date-fns';
 import { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { AccountActivityResponse } from 'generated/capital';
 import tw from '@/Styles/tailwind';
+
+import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
+
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { AnimatedView, CSText } from '@/Components';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 import { CategoryIcon, ReceiptIcon } from '@/Components/Icons';
 
@@ -34,10 +36,10 @@ export const TransactionRow = ({
   animatedIndex,
   animatedPosition,
 }: Props) => {
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<WalletStackProps>();
   const handleItemOnPress = () => {
     if (accountActivityId)
-      navigate(MainScreens.TransactionDetails, { transactionId: accountActivityId });
+      navigate(WalletScreens.TransactionDetails, { transactionId: accountActivityId });
   };
 
   const statusDeclined = status === 'DECLINED';

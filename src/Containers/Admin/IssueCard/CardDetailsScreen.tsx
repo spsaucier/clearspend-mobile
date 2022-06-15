@@ -33,6 +33,7 @@ const CardDetailsScreen = () => {
         navigate(IssueCardScreens.Address);
       }}
       onClose={() => navigate(AdminScreens.Employees)}
+      edges={['top']}
     >
       <View style={tw`flex-row justify-between items-center rounded p-4 bg-tan`}>
         <Text>{t('adminFlows.issueCard.cardDetailsLabel')}</Text>

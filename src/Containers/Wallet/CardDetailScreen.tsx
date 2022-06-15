@@ -5,13 +5,15 @@ import MultitaskBlur from 'react-native-multitask-blur';
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, CSText, FocusAwareStatusBar, InfoPanel } from '@/Components';
 import { useBusiness, useCard } from '@/Queries';
 import { LimitSection } from '@/Containers/Wallet/Components/LimitSection';
 import { CardWebView } from '@/Containers/Wallet/Components/CardWebView';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { ProfileScreens, ProfileStackParamTypes } from '@/Navigators/Profile/ProfileNavigatorTypes';
+import { WalletScreens, WalletStackParamTypes } from '@/Navigators/Wallet/WalletNavigatorTypes';
 import { ProfileIcon } from '@/Components/Icons';
 import { CardOptionsBottomSheet } from '@/Containers/Wallet/CardOptionsBottomSheet';
 import { formatCurrency } from '@/Helpers/StringHelpers';
@@ -27,7 +29,13 @@ const CardDetailScreen = ({ route }: Props) => {
   const cardOptionsPanelRef = useRef<BottomSheetModal>(null);
   const [isCancelling, setIsCancelling] = useState<boolean>(false);
 
-  const { navigate } = useNavigation();
+  const { navigate } =
+    useNavigation<
+      NativeStackNavigationProp<
+        WalletStackParamTypes & ProfileStackParamTypes,
+        WalletScreens.CardDetails
+      >
+    >();
   const { t } = useTranslation();
 
   const { cardId } = route.params;
@@ -83,7 +91,7 @@ const CardDetailScreen = ({ route }: Props) => {
             {/* Back button & Profile Icon */}
             <View style={tw`flex flex-row items-center justify-between px-5 mt-4`}>
               <BackButtonNavigator theme="dark" />
-              <TouchableOpacity onPress={() => navigate(MainScreens.Profile)}>
+              <TouchableOpacity onPress={() => navigate(ProfileScreens.Home)}>
                 <ProfileIcon color={tw.color('white')} size={26} />
               </TouchableOpacity>
             </View>

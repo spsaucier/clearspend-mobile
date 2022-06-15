@@ -1,15 +1,11 @@
 import * as React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { waitFor, cleanup } from '@testing-library/react-native';
+import { cleanup } from '@testing-library/react-native';
 import { createQueryClient } from '@/Helpers/testing/reactQuery';
 import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
 import { MockFeatureFlagsProvider } from '@/Helpers/testing/MockFeatureFlagsProvider';
-import {
-  employeeAllocationsAndPermissionsResponse,
-  managerAllocationsAndPermissionsResponse,
-  adminAllocationsAndPermissionsResponse,
-} from '@/Helpers/testing/fixtures/permissions';
+import { usersResponse } from '@/Helpers/testing/fixtures/user';
 
 import ProfileScreen from '../ProfileScreen';
 
@@ -19,7 +15,9 @@ jest.mock('@/Hooks/useAuthentication', () => ({
   })),
 }));
 
-export const handlers = [rest.get('/users', (req, res, ctx) => res(ctx.json({})))];
+export const handlers = [
+  rest.get('/users', (req, res, ctx) => res(ctx.json({ ...usersResponse[0] }))),
+];
 
 const server = setupServer(...handlers);
 
@@ -37,58 +35,16 @@ afterAll(() => {
 });
 
 describe('ProfileScreen', () => {
-  it('shows admin row when an `allocationRole` contains `Manager`', async () => {
-    server.use(
-      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
-        res(ctx.json(managerAllocationsAndPermissionsResponse)),
-      ),
-    );
-
-    const { queryByTestId } = renderComponentWithQueryClient(
+  it('renders', async () => {
+    const { findByText } = renderComponentWithQueryClient(
       createQueryClient(),
-      <MockFeatureFlagsProvider overrides={{ 'view-admin': { enabled: true } }}>
+      <MockFeatureFlagsProvider>
         <ProfileScreen />
       </MockFeatureFlagsProvider>,
     );
 
-    await waitFor(() => {
-      expect(queryByTestId('profile-menu-admin-row')).toBeTruthy();
-    });
-  });
-  it('shows admin row when an `allocationRole` contains `Admin`', async () => {
-    server.use(
-      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
-        res(ctx.json(adminAllocationsAndPermissionsResponse)),
-      ),
-    );
+    const name = await findByText('Bob Business');
 
-    const { queryByTestId } = renderComponentWithQueryClient(
-      createQueryClient(),
-      <MockFeatureFlagsProvider overrides={{ 'view-admin': { enabled: true } }}>
-        <ProfileScreen />
-      </MockFeatureFlagsProvider>,
-    );
-
-    await waitFor(() => {
-      expect(queryByTestId('profile-menu-admin-row')).toBeTruthy();
-    });
-  });
-  it('does not show admin row when an `allocationRole` does not contain `Manager` or `Admin`', async () => {
-    server.use(
-      rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>
-        res(ctx.json(employeeAllocationsAndPermissionsResponse)),
-      ),
-    );
-
-    const { queryByTestId } = renderComponentWithQueryClient(
-      createQueryClient(),
-      <MockFeatureFlagsProvider overrides={{ 'view-admin': { enabled: true } }}>
-        <ProfileScreen />
-      </MockFeatureFlagsProvider>,
-    );
-
-    await waitFor(() => {
-      expect(queryByTestId('profile-menu-admin-row')).toBeFalsy();
-    });
+    expect(name).toBeTruthy();
   });
 });

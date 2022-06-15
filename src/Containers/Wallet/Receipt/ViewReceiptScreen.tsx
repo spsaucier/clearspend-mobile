@@ -8,21 +8,33 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
 import LinearGradient from 'react-native-linear-gradient';
 
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  WalletScreens,
+  WalletStackParamTypes,
+  WalletStackProps,
+} from '@/Navigators/Wallet/WalletNavigatorTypes';
+
 import tw from '@/Styles/tailwind';
 import { CloseIcon, MinusCircleFilledIcon, PlusCircleFilledIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from '../Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import ViewReceiptCarousel from './ViewReceiptCarousel';
 
+type ViewReceiptNavigationProps = NativeStackScreenProps<
+  WalletStackParamTypes,
+  WalletScreens.ViewReceipt
+>;
+type ViewReceiptRouteProp = ViewReceiptNavigationProps['route'];
+
 const ViewReceiptScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
-  const route = useRoute();
+  const navigation = useNavigation<WalletStackProps>();
+  const route = useRoute<ViewReceiptRouteProp>();
   const { params } = route;
-  const { accountActivityId, receiptIds } = params as any;
+  const { accountActivityId, receiptIds } = params;
   const [currentReceiptId, setCurrentReceiptId] = useState(receiptIds[0]);
 
   const [controlsEnabled, setControlsEnabled] = useState(true);
@@ -34,7 +46,7 @@ const ViewReceiptScreen = () => {
       text1: t('toasts.receiptUploadedSuccessfully'),
     });
 
-    navigation.navigate(MainScreens.TransactionDetails, {
+    navigation.navigate(WalletScreens.TransactionDetails, {
       transactionId: accountActivityId,
     });
   };
@@ -49,14 +61,14 @@ const ViewReceiptScreen = () => {
   };
 
   const onDeleteReceiptPress = () => {
-    navigation.navigate(MainScreens.DeleteReceipt, {
+    navigation.navigate(WalletScreens.DeleteReceipt, {
       accountActivityId,
       receiptId: currentReceiptId,
     });
   };
 
   const onTakePhotoPress = () => {
-    navigation.navigate(MainScreens.AddReceipt, {
+    navigation.navigate(WalletScreens.AddReceipt, {
       accountActivityId,
     });
   };

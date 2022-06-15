@@ -1,3 +1,4 @@
+export { AdminSolidIcon } from './adminSolidIcon';
 export { ArrowSquareOutIcon } from './arrowSquareOutIcon';
 export { ArrowUpIcon } from './arrowUpIcon';
 export { BackArrowIcon } from './backArrowIcon';
@@ -58,6 +59,7 @@ export { PlusMinusIcon } from './plusMinusIcon';
 export { PlusWithBorderIcon } from './plusWithBorderIcon';
 export { PointOfSaleIcon } from './pointOfSaleIcon';
 export { ProfileIcon } from './profileIcon';
+export { ProfileSolidIcon } from './profileSolidIcon';
 export { ReceiptIcon } from './receiptIcon';
 export { SnowflakeIcon } from './snowflakeIcon';
 export { TouchIdIcon } from './touchIdIcon';
@@ -66,4 +68,5 @@ export { UserIcon } from './userIcon';
 export { UsersThreeIcon } from './usersThreeIcon';
 export { UserOutlineIcon } from './userOutlineIcon';
 export { WalletIcon } from './walletIcon';
+export { WalletSolidIcon } from './walletSolidIcon';
 export { WalletThinIcon } from './walletThinIcon';

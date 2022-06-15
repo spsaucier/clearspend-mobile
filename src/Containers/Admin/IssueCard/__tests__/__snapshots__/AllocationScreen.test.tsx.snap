@@ -5,7 +5,6 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
   edges={
     Array [
       "top",
-      "bottom",
     ]
   }
   style={
@@ -329,7 +328,7 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
         <View
           style={
             Object {
-              "paddingBottom": 64,
+              "paddingBottom": 128,
             }
           }
         >
@@ -596,6 +595,45 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
       style={
         Object {
           "marginTop": "auto",
+        }
+      }
+    >
+      <BVLinearGradient
+        colors={
+          Array [
+            16777215,
+            4294967295,
+          ]
+        }
+        endPoint={
+          Object {
+            "x": 0.5,
+            "y": 1,
+          }
+        }
+        locations={null}
+        pointerEvents="none"
+        startPoint={
+          Object {
+            "x": 0.5,
+            "y": 0,
+          }
+        }
+        style={
+          Object {
+            "bottom": 0,
+            "height": 128,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "marginTop": "auto",
           "paddingBottom": 20,
           "paddingTop": 20,
         }
@@ -663,7 +701,6 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
   edges={
     Array [
       "top",
-      "bottom",
     ]
   }
   style={
@@ -987,7 +1024,7 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
         <View
           style={
             Object {
-              "paddingBottom": 64,
+              "paddingBottom": 128,
             }
           }
         >
@@ -1595,6 +1632,45 @@ exports[`AllocationScreen collapsed nodes remain collapsed after parent selectio
         </View>
       </View>
     </RCTScrollView>
+    <View
+      style={
+        Object {
+          "marginTop": "auto",
+        }
+      }
+    >
+      <BVLinearGradient
+        colors={
+          Array [
+            16777215,
+            4294967295,
+          ]
+        }
+        endPoint={
+          Object {
+            "x": 0.5,
+            "y": 1,
+          }
+        }
+        locations={null}
+        pointerEvents="none"
+        startPoint={
+          Object {
+            "x": 0.5,
+            "y": 0,
+          }
+        }
+        style={
+          Object {
+            "bottom": 0,
+            "height": 128,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      />
+    </View>
     <View
       style={
         Object {

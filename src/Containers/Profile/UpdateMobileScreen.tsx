@@ -5,10 +5,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import PhoneInput from 'react-native-phone-number-input';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import tw from '@/Styles/tailwind';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { MainStackParamTypes, MainScreens } from '@/Navigators/NavigatorTypes';
+import { ProfileStackParamTypes, ProfileScreens } from '@/Navigators/Profile/ProfileNavigatorTypes';
 import { useUpdateUser, useUser } from '@/Queries/user';
 import { disableEnrollment2FA, sendEnrollment2FA } from '@/Services/Auth';
 import { useSensitiveInfo } from '@/Hooks/useSensitiveInfo';
@@ -23,7 +25,13 @@ const getCodeOnly = (code: string | null) => code?.split('|')[0] || '';
 
 const UpdateMobileScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<
+        ProfileStackParamTypes & MainStackParamTypes,
+        ProfileScreens.UpdateMobile
+      >
+    >();
   const [mobile, setMobile] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [mobileNumError, setMobileNumError] = useState(false);
@@ -48,10 +56,10 @@ const UpdateMobileScreen = () => {
         type: 'success',
         text1: t('toasts.mobileSaved'),
       });
-      if (navigation.getState().routeNames.find((r) => r === MainScreens.Home)) {
-        navigation.navigate(MainScreens.Home);
-      } else if (navigation.getState().routeNames.find((r) => r === MainScreens.Profile)) {
-        navigation.navigate(MainScreens.Profile);
+      if (navigation.getState().routeNames.find((r) => r === MainScreens.Tabs)) {
+        navigation.navigate(MainScreens.Tabs);
+      } else if (navigation.getState().routeNames.find((r) => r === ProfileScreens.Home)) {
+        navigation.navigate(ProfileScreens.Home);
       } else {
         // eslint-disable-next-line no-console
         console.warn('Unknown navigation state:', navigation.getState());

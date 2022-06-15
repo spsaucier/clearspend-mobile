@@ -40,7 +40,7 @@ const EnterMobileScreen = () => {
       text1: t('toasts.mobileSaved'),
     });
     setLoading(false);
-    replace(MainScreens.Home);
+    replace(MainScreens.Tabs);
   };
 
   const onChangeText = (newVal: string) => {
@@ -59,7 +59,7 @@ const EnterMobileScreen = () => {
         setLoading(true);
         try {
           await sendEnrollment2FA(formattedValue, user?.userId, 'sms');
-          navigate(MainScreens.EnterOTP, { phone: formattedValue, nextScreen: MainScreens.Wallet });
+          navigate(MainScreens.EnterOTP, { phone: formattedValue, nextScreen: MainScreens.Tabs });
         } catch (e) {
           Toast.show({
             type: 'error',

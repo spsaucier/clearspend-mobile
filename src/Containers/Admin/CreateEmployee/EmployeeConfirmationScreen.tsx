@@ -42,6 +42,7 @@ const EmployeeConfirmationScreen = () => {
       onSecondaryAction={() => navigate(AdminScreens.Employees)}
       onSecondaryActionLabel={t('adminFlows.createEmployee.employeeConfirmationSecondaryActionCta')}
       hideBackButton
+      edges={['top']}
     >
       <View>
         <View style={[tw`mt-12 rounded-xl overflow-hidden`]}>

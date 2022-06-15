@@ -18,13 +18,13 @@ import {
 import { PasswordRuleCheck } from './PasswordRuleCheck';
 import { useChangePassword } from '@/Queries/authentication';
 import { OTPView } from '@/Containers/Onboarding/OTPView';
-import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
+import { ProfileStackParamTypes, ProfileScreens } from '@/Navigators/Profile/ProfileNavigatorTypes';
 import { formatPhone } from '@/Helpers/StringHelpers';
 import { useUser } from '@/Queries';
 
 type NewPasswordScreenNavigationProps = NativeStackScreenProps<
-  MainStackParamTypes,
-  MainScreens.NewPassword
+  ProfileStackParamTypes,
+  ProfileScreens.NewPassword
 >;
 
 type NewPasswordScreenRouteProp = NewPasswordScreenNavigationProps['route'];

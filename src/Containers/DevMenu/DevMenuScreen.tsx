@@ -4,19 +4,27 @@ import messaging from '@react-native-firebase/messaging';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Crashes from 'appcenter-crashes';
 import Config from 'react-native-config';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useNavigation } from '@react-navigation/core';
 import Toast from 'react-native-toast-message';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
 import { Button, CSText, FocusAwareStatusBar } from '@/Components';
+import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
+import { ProfileScreens, ProfileStackParamTypes } from '@/Navigators/Profile/ProfileNavigatorTypes';
 import tw from '@/Styles/tailwind';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { requestUserNotificationPermission } from '@/Helpers/NotificationHelpers';
 import { useFeatureFlagsContext } from '@/Hooks/useFeatureFlagsContext';
 
 const DevMenuScreen = () => {
-  const { navigate } = useNavigation();
+  const { navigate } =
+    useNavigation<
+      NativeStackNavigationProp<
+        ProfileStackParamTypes & MainStackParamTypes,
+        ProfileScreens.DevMenu
+      >
+    >();
   const { allFlags } = useFeatureFlagsContext();
   const version = getVersion();
   const buildNumber = getBuildNumber();
@@ -62,7 +70,7 @@ const DevMenuScreen = () => {
         <Button
           label="Available Icon List"
           containerStyle={tw`mb-4`}
-          onPress={() => navigate(MainScreens.DevIconDemo)}
+          onPress={() => navigate(ProfileScreens.DevIconDemo)}
         />
         <CSText style={tw`text-xl pb-4`}>Toasts</CSText>
         <Button

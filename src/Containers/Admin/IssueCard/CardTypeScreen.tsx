@@ -88,6 +88,7 @@ const CardTypeScreen = () => {
       }}
       primaryActionDisabled={!selectedCardType}
       onClose={() => navigate(AdminScreens.Employees)}
+      edges={['top']}
     >
       <View>
         <CardOption

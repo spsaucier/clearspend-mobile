@@ -39,6 +39,7 @@ const EmployeeFirstNameScreen = () => {
         onPrimaryActionLabel={t('adminFlows.continueCta')}
         onClose={() => navigate(AdminScreens.Employees)}
         primaryActionDisabled={!firstName}
+        edges={['top']}
       >
         <View style={tw`flex-row items-center mb-8`}>
           <TextInput

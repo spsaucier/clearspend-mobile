@@ -76,7 +76,11 @@ const ReallocationAccountScreen = () => {
   }, [isFocused]);
 
   return (
-    <SafeAreaView testID="admin-allocations-add-or-remove-screen" style={tw`flex-1 bg-white`}>
+    <SafeAreaView
+      testID="admin-allocations-add-or-remove-screen"
+      style={tw`flex-1 bg-white`}
+      edges={['top']}
+    >
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <View style={tw`flex-row items-center justify-end p-5`}>
         <TouchableOpacity

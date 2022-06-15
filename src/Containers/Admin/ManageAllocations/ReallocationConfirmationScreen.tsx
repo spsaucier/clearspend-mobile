@@ -85,7 +85,7 @@ const ReallocationConfirmationScreen = () => {
     <SafeAreaView
       testID="manage-allocations-reallocation-confirmation-screen"
       style={tw`flex-1 bg-white px-5`}
-      edges={['top', 'bottom']}
+      edges={['top']}
     >
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       {isLoadingBankAccounts ? (

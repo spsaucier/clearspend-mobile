@@ -6,11 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
 import { BackButtonNavigator } from '@/Components/BackButtonNavigator';
 import { Button, CSText, CSTextInput, FocusAwareStatusBar } from '@/Components';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { ProfileScreens, ProfileStackProps } from '@/Navigators/Profile/ProfileNavigatorTypes';
 
 const ChangePasswordScreen = () => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<ProfileStackProps>();
   const [currPassword, setCurrPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
@@ -19,7 +19,7 @@ const ChangePasswordScreen = () => {
   }, [currPassword]);
 
   const navigateToNewPassword = () => {
-    navigate(MainScreens.NewPassword, { currentPassword: currPassword });
+    navigate(ProfileScreens.NewPassword, { currentPassword: currPassword });
   };
 
   return (

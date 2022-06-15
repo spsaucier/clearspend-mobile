@@ -7,7 +7,7 @@ import { QueryClientProvider } from 'react-query';
 
 import { useActivateCard } from '@/Queries/card';
 import { ActivateCardResultScreen } from '@/Containers/ActivateCard/ActivateCardResultScreen';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { WalletScreens } from '@/Navigators/Wallet/WalletNavigatorTypes';
 import { createQueryClient } from '@/Helpers/testing/reactQuery';
 import { renderComponentWithQueryClient } from '@/Helpers/testing/WithQueryClient';
 
@@ -81,7 +81,7 @@ describe('Activate Card Result Screen', () => {
       fireEvent.press(returnToWalletButton);
     });
 
-    expect(mockedNavigate).toHaveBeenCalledWith(MainScreens.Wallet, {
+    expect(mockedNavigate).toHaveBeenCalledWith(WalletScreens.Home, {
       initialFocusedCardId: 'mock-card-id',
     });
     expect(mockedNavigate).toHaveBeenCalledTimes(1);

@@ -8,7 +8,7 @@ import { format, parseISO } from 'date-fns';
 // import MapView, { Marker } from 'react-native-maps';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
-
+import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, Button, CSBottomSheet, CSText } from '@/Components';
 import {
@@ -22,7 +22,6 @@ import {
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { TransactionNote } from '@/Containers/Wallet/Components/TransactionNote';
 import { useBusiness, useTransaction, useUser } from '@/Queries';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import AddReceiptPanel from './Components/AddReceiptPanel';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
@@ -53,7 +52,7 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
 
 export const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<WalletStackProps>();
   const route = useRoute<any>();
   const { params } = route;
   const { transactionId: accountActivityId } = params;
@@ -138,7 +137,7 @@ export const TransactionDetailScreenContent = () => {
 
   const onReceiptModalPress = () => {
     if (thereAreReceipts) {
-      navigate(MainScreens.ViewReceipt, {
+      navigate(WalletScreens.ViewReceipt, {
         accountActivityId: accountActivityId!,
         receiptIds: receipt?.receiptId!,
       });
@@ -163,7 +162,7 @@ export const TransactionDetailScreenContent = () => {
   };
 
   const onTakePhotoPress = () => {
-    navigate(MainScreens.AddReceipt, {
+    navigate(WalletScreens.AddReceipt, {
       accountActivityId,
     });
   };

@@ -41,6 +41,7 @@ const EmployeeEmailScreen = () => {
         onPrimaryActionLabel={t('adminFlows.createEmployee.submitCta')}
         onClose={() => navigate(AdminScreens.Employees)}
         primaryActionDisabled={!isValidEmail}
+        edges={['top']}
       >
         <View style={tw`flex-row items-center mb-8`}>
           <TextInput

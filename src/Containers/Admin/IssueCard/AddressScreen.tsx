@@ -89,6 +89,7 @@ const AddressScreen = () => {
       }}
       primaryActionDisabled={selectedAddress === undefined} // null for 'new address'
       onClose={() => navigate(AdminScreens.Employees)}
+      edges={['top']}
     >
       {business?.address && (
         <AddressOption

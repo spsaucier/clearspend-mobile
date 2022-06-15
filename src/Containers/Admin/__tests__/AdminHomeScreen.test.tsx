@@ -25,6 +25,10 @@ jest.mock('@gorhom/bottom-sheet', () => {
   };
 });
 
+jest.mock('@react-navigation/bottom-tabs', () => ({
+  useBottomTabBarHeight: () => 0,
+}));
+
 const server = setupServer(
   rest.get(`/users`, (req, res, ctx) => res(ctx.json(usersResponse[0]))),
   rest.post(`/account-activity`, (req, res, ctx) => res(ctx.json(transactions))),

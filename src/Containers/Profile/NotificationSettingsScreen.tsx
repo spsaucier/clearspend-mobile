@@ -10,15 +10,14 @@ import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSe
 import { NotificationBellGreenIcon } from '@/Components/Icons';
 import tw from '@/Styles/tailwind';
 import { CSText, FocusAwareStatusBar } from '@/Components';
-
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 import useNotificationsSettings from '@/Hooks/useNotificationsSettings';
+import { ProfileScreens, ProfileStackProps } from '@/Navigators/Profile/ProfileNavigatorTypes';
 
 const NotificationSettingsScreen = () => {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
-  const { navigate } = useNavigation();
   const { allowNotifications, setAllowNotifications } = useNotificationsSettings();
+  const { navigate } = useNavigation<ProfileStackProps>();
   const [isBlockedByOS, setIsBlockedByOS] = useState<boolean>();
 
   const turnOffNotifications = () => {
@@ -82,7 +81,7 @@ const NotificationSettingsScreen = () => {
             Alert.alert('', t('profile.notificationSettings.enableNotificationsUsingSettings'), [
               {
                 text: t('profile.notificationSettings.cancel'),
-                onPress: () => navigate(MainScreens.NotificationSettings),
+                onPress: () => navigate(ProfileScreens.NotificationSettings),
               },
               {
                 text: t('profile.notificationSettings.settings'),

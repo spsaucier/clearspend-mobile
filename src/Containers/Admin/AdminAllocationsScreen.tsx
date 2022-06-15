@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import LinearGradient from 'react-native-linear-gradient';
 import tw from '@/Styles/tailwind';
 import { useAllPermissions } from '@/Queries/permissions';
 import { useUser } from '@/Queries/user';
 import { CSText as Text, FocusAwareStatusBar, Button } from '@/Components';
 import { ActivityIndicator } from '@/Components/ActivityIndicator';
+import FadeOutGradient from '@/Components/FadeOutGradient';
 import {
   PlusCircleFilledIcon,
   // CardIcon,
@@ -68,7 +68,7 @@ const AdminAllocationsScreen = () => {
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView testID="admin-allocations-screen" style={tw`flex-1 bg-white`}>
+      <SafeAreaView testID="admin-allocations-screen" style={tw`flex-1 bg-white`} edges={['top']}>
         <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
         <View style={tw`flex-row items-center p-5`}>
           <BackButtonNavigator theme="light" />
@@ -101,11 +101,7 @@ const AdminAllocationsScreen = () => {
                   </View>
                 </ScrollView>
                 <View style={tw`mt-auto p-5`}>
-                  <LinearGradient
-                    colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
-                    style={tw`absolute -top-32 left-0 right-0 h-32`}
-                    pointerEvents="none"
-                  />
+                  <FadeOutGradient position="-top-32" />
                   <Button
                     testID="manage-allocation-button"
                     label={t('admin.allocations.allocationOptions')}

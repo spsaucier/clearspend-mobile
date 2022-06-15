@@ -19,7 +19,10 @@ import { MainScreens, MainStackParamTypes } from '@/Navigators/NavigatorTypes';
 const UpdatedTermsAndConditionsScreen = () => {
   const { t } = useTranslation();
   const { logout } = useAuthentication();
-  const { replace } = useNavigation<NativeStackNavigationProp<MainStackParamTypes, MainScreens>>();
+  const { replace } =
+    useNavigation<
+      NativeStackNavigationProp<MainStackParamTypes, MainScreens.UpdatedTermsAndConditionsScreen>
+    >();
   const { mutateAsync: acceptTermsAndConditionsMutation, isLoading } =
     useAcceptTermsAndConditions();
 
@@ -32,7 +35,7 @@ const UpdatedTermsAndConditionsScreen = () => {
 
   const onAcceptTermsAndConditionsPress = () => {
     acceptTermsAndConditionsMutation()
-      .then(() => replace(MainScreens.Home))
+      .then(() => replace(MainScreens.Tabs))
       .catch(() => {
         Toast.show({
           type: 'error',

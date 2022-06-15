@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import tw from '@/Styles/tailwind';
 import { ProfileSettingsHeader } from '@/Containers/Profile/Components/ProfileSettingHeader';
 import { FocusAwareStatusBar } from '@/Components';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
+import { ProfileScreens, ProfileStackProps } from '@/Navigators/Profile/ProfileNavigatorTypes';
 import { ProfileMenuRow } from './Components/ProfileMenuRow';
 import { UserIcon } from '@/Components/Icons';
 import { useUser } from '@/Queries';
@@ -18,7 +18,7 @@ import { store } from '@/Store';
 
 const UpdateAccountScreen = () => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<ProfileStackProps>();
   const { isLoading, data: user } = useUser();
   const { data: recoveryCode, loading: recoveryCodeLoading } = useSensitiveInfo(RECOVERY_CODE_KEY);
   const methodId = store.getState().session?.twoFactor?.methods?.[0].id;
@@ -47,7 +47,7 @@ const UpdateAccountScreen = () => {
                       title={t('profile.updateAccount.updatePhone')}
                       label={formatPhone(user?.phone || '')}
                       onPress={() => {
-                        navigate(MainScreens.UpdateMobile);
+                        navigate(ProfileScreens.UpdateMobile);
                       }}
                     />
                   </View>
@@ -66,7 +66,7 @@ const UpdateAccountScreen = () => {
                       : undefined
                   }
                   onPress={() => {
-                    navigate(MainScreens.UpdateAddress);
+                    navigate(ProfileScreens.UpdateAddress);
                   }}
                 />
               </View>

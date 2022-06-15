@@ -29,7 +29,7 @@ export type AuthStackParamTypes = {
 };
 
 export enum MainScreens {
-  Home = 'Home',
+  Tabs = 'Tabs',
 
   // Prompt before confirming logged in status
   ConfirmAuth = 'Confirm Auth with Biometrics or PIN',
@@ -40,48 +40,14 @@ export enum MainScreens {
   EnterOTP = 'Confirm Mobile',
   OnboardingNotifications = 'Onboarding Notifications',
 
-  // Profile & Settings
-  UpdateAccount = 'Update Account',
-  // UpdateEmail = 'Update Email',
-  UpdateMobile = 'Update Phone',
-  UpdateAddress = 'Update Address',
-  LoginOptions = 'Log in options',
-  LegalDocuments = 'Legal documents',
-  ActivateCard = 'Activate Card',
-  ChangePassword = 'Change Password',
-  NewPassword = 'New Password',
-  NotificationSettings = 'Notification Settings',
-  Profile = 'Profile',
-  ProfileScreen = 'Profile Screen',
-  UpdatedTermsAndConditionsScreen = 'Updated Terms and Conditions',
-
-  // Wallet and Cards
-  AddReceipt = 'Add Receipt',
-  CardDetails = 'Card Details',
-  CardInfo = 'Card Info',
-  CardLostStolen = 'Card Lost Stolen',
-  CardSettings = 'Card Settings',
-  NoteInput = 'Note Input',
-  Notifications = 'Notifications',
-  TransactionDetails = 'Transaction Details',
-  ViewReceipt = 'View Receipt',
-  DeleteReceipt = 'Delete Receipt',
-  Wallet = 'Wallet',
   ActivateCardDigitEntry = 'Activate Card Digit Entry',
   ActivateCardResult = 'Activate Card Result',
-  CardSpendControl = 'Card Spend Control',
 
-  // Dev menu
-  DevMenu = 'DevMenu',
-  DevIconDemo = 'DevIconDemo',
-
-  // Admin
-  Admin = 'Admin',
+  UpdatedTermsAndConditionsScreen = 'Profile Updated Terms And Conditions',
 }
 
 export type MainStackParamTypes = {
-  [MainScreens.Home]: undefined;
-  [MainScreens.Admin]: undefined;
+  [MainScreens.Tabs]: undefined;
 
   // Prompt before confirming logged in status
   [MainScreens.ConfirmAuth]: undefined;
@@ -93,46 +59,25 @@ export type MainStackParamTypes = {
   [MainScreens.UpdatedTermsAndConditionsScreen]: undefined;
   [MainScreens.OnboardingNotifications]: undefined;
 
-  // Profile & Settings
-  [MainScreens.UpdateAccount]: undefined;
-  // [MainScreens.UpdateEmail]: undefined;
-  [MainScreens.UpdateMobile]: undefined;
-  [MainScreens.UpdateAddress]: undefined;
-  [MainScreens.LoginOptions]: undefined;
-  [MainScreens.LegalDocuments]: undefined;
-  [MainScreens.ActivateCard]: undefined;
-  [MainScreens.ChangePassword]: undefined;
-  [MainScreens.NewPassword]: { currentPassword: string };
-  [MainScreens.NotificationSettings]: undefined;
-  [MainScreens.Profile]: undefined;
-  [MainScreens.ProfileScreen]: undefined;
+  [MainScreens.ActivateCardDigitEntry]: undefined;
+  [MainScreens.ActivateCardResult]: { lastFour: string };
 
-  // Wallet and Cards
-  [MainScreens.AddReceipt]: { accountActivityId: string };
-  [MainScreens.CardDetails]: { cardId: string };
-  [MainScreens.CardInfo]: { cardId: string };
-  [MainScreens.CardLostStolen]: { cardId: string };
-  [MainScreens.CardSettings]: { cardId: string };
-  [MainScreens.NoteInput]: {
-    accountActivityId: string;
-    notes: string | null;
-    expenseCategoryId: string | undefined;
-  };
-  [MainScreens.Notifications]: undefined;
-  [MainScreens.TransactionDetails]: { transactionId: string };
-  [MainScreens.ViewReceipt]: { accountActivityId: string; receiptIds: string[] };
-  [MainScreens.DeleteReceipt]: { accountActivityId: string; receiptId: string };
-  [MainScreens.Wallet]?: {
+  [MainScreens.UpdatedTermsAndConditionsScreen]: undefined;
+};
+
+export enum TabScreens {
+  Wallet = 'Wallet',
+  Admin = 'Admin',
+  Profile = 'Profile',
+}
+
+export type TabStackParamTypes = {
+  [TabScreens.Wallet]?: {
     initialFocusedCardId?: string;
     initialFocusCardIdx?: number;
   };
-  [MainScreens.ActivateCardDigitEntry]: undefined;
-  [MainScreens.ActivateCardResult]: { lastFour: string };
-  [MainScreens.CardSpendControl]: { cardId: string };
-
-  // Dev menu
-  [MainScreens.DevMenu]: undefined;
-  [MainScreens.DevIconDemo]: undefined;
+  [TabScreens.Admin]: undefined;
+  [TabScreens.Profile]: undefined;
 };
 
 declare global {

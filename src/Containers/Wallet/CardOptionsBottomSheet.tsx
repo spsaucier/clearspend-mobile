@@ -19,6 +19,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
+
+import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
+
 import { CSText } from '@/Components';
 import { EyeIcon, SnowflakeIcon, KeyIcon } from '@/Components/Icons';
 import {
@@ -26,7 +29,6 @@ import {
   useUnFreezeCard,
   // useCard
 } from '@/Queries';
-import { MainScreens } from '@/Navigators/NavigatorTypes';
 // import { useSpendControls } from '@/Hooks/useSpendControls';
 import { useAllPermissions } from '@/Queries/permissions';
 import { showAdmin } from '@/Helpers/PermissionsHelpers';
@@ -48,7 +50,7 @@ export const CardOptionsBottomSheet = forwardRef(
     ref: any,
   ) => {
     const { t } = useTranslation();
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<WalletStackProps>();
 
     // TODO support multiple allocations/spend controls on cards
     // const { data } = useCard(cardId);
@@ -74,12 +76,12 @@ export const CardOptionsBottomSheet = forwardRef(
 
     const navigateToCardScreen = () => {
       closePanel();
-      navigate(MainScreens.CardDetails, { cardId: cardId! });
+      navigate(WalletScreens.CardDetails, { cardId: cardId! });
     };
 
     const navigateToCardSpendControlScreen = () => {
       closePanel();
-      navigate(MainScreens.CardSpendControl, { cardId: cardId! });
+      navigate(WalletScreens.CardSpendControl, { cardId: cardId! });
     };
 
     useEffect(() => {
@@ -142,7 +144,7 @@ export const CardOptionsBottomSheet = forwardRef(
       closePanel();
       mutateCancel({ cardId })
         .then(() => {
-          navigate(MainScreens.Wallet, { initialFocusCardIdx: nextIndex });
+          navigate(WalletScreens.Home, { initialFocusCardIdx: nextIndex });
           Toast.show({
             type: 'success',
             text1: t('toasts.cancelCard.success'),

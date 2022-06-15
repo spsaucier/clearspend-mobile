@@ -1,136 +1,69 @@
 import React from 'react';
 import { StatusBar, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/core';
-import { MainScreens, MainStackParamTypes } from './NavigatorTypes';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MainScreens, MainStackParamTypes, TabScreens, TabStackParamTypes } from './NavigatorTypes';
 import { ActivityIndicator } from '@/Components';
 import tw from '@/Styles/tailwind';
 
+// Tabs
+import { WalletNavigator as WalletStack } from '@/Navigators/Wallet/WalletNavigator';
+import { AdminNavigator as AdminStack } from '@/Navigators/Admin/AdminNavigator';
+import { ProfileNavigator as ProfileStack } from '@/Navigators/Profile/ProfileNavigator';
+
 // Screens
-import WalletScreen from '@/Containers/Wallet/WalletScreen';
-import ProfileScreen from '@/Containers/Profile/ProfileScreen';
-import ChangePasswordScreen from '@/Containers/Profile/ChangePassword/CurrentPasswordScreen';
-import NotificationSettingsScreen from '@/Containers/Profile/NotificationSettingsScreen';
-import LoginOptionsScreen from '@/Containers/Profile/LoginOptions';
-import LegalDocumentsScreen from '@/Containers/Profile/LegalDocuments';
-import NotificationScreen from '@/Containers/Notifications/NotificationScreen';
-import CardDetailScreen from '@/Containers/Wallet/CardDetailScreen';
-import TransactionDetailScreen from '@/Containers/Wallet/TransactionDetailScreen';
-import CardSettingsScreen from '@/Containers/Wallet/CardSettingsScreen';
-import CardLostStolen from '@/Containers/Wallet/CardLostStolen';
-import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
-import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
-import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
-import NewPasswordScreen from '@/Containers/Profile/ChangePassword/NewPasswordScreen';
 import ConfirmAuthScreen from '@/Containers/Onboarding/ConfirmAuthScreen';
 import { SetBioPasscodeNavigator } from '@/Containers/Onboarding/BioPasscode/SetBioPasscodeNavigator';
-import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';
 import EnterMobileScreen from '@/Containers/Onboarding/EnterMobileScreen';
 import EnterOTPScreen from '@/Containers/Onboarding/EnterOTPScreen';
-import { ActivateCardDigitEntryScreen } from '@/Containers/ActivateCard/ActivateCardDigitEntryScreen';
-import { ActivateCardResultScreen } from '@/Containers/ActivateCard/ActivateCardResultScreen';
-import DevMenuScreen from '@/Containers/DevMenu/DevMenuScreen';
-import { IconDemoScreen } from '@/Containers/DevMenu/IconDemoScreen';
-import UpdateAccountScreen from '@/Containers/Profile/UpdateAccountScreen';
-import UpdateMobileScreen from '@/Containers/Profile/UpdateMobileScreen';
-import UpdateAddressScreen from '@/Containers/Profile/UpdateAddressScreen';
+
 import UpdatedTermsAndConditionsScreen from '@/Containers/Onboarding/UpdatedTermsAndConditionsScreen';
-import { AdminNavigator as AdminStack } from '@/Navigators/Admin/AdminNavigator';
-import CardSpendControl from '@/Containers/Wallet/CardSpendControl';
+
 import { useAuthentication } from '@/Hooks/useAuthentication';
 import useRequireBioOrPasscodeSetup from '@/Hooks/useRequireBioOrPasscodeSetup';
 // import useRequire2FA from '@/Hooks/useRequire2FA';
 import { useUser } from '@/Queries';
-import { sharedStackHeaderConfig } from '@/Helpers/NavigationHelpers';
 import OnboardingNotificationsScreen from '@/Containers/Onboarding/NotificationsScreen';
 import useNotificationsSettings from '@/Hooks/useNotificationsSettings';
 
+import { useAllPermissions } from '@/Queries/permissions';
+import { showAdmin } from '@/Helpers/PermissionsHelpers';
+import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
+
+import TabBar from './TabBar';
+
 const Stack = createNativeStackNavigator<MainStackParamTypes>();
 
-const transparentModal: NativeStackNavigationOptions = {
-  presentation: 'containedTransparentModal',
-  gestureEnabled: false,
-};
+const Tab = createBottomTabNavigator<TabStackParamTypes>();
 
-const ActivateCardStack = () => {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
+const LoadingScreen = () => (
+  <View style={tw`flex-1 justify-center items-center bg-secondary`}>
+    <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
+    <ActivityIndicator />
+  </View>
+);
+
+const MainTabs = () => {
+  const { data: permissions, isLoading } = useAllPermissions();
+  const { enabled: adminEnabled } = useFeatureFlag('view-admin');
+  const hasAdminPermissions = showAdmin(permissions);
+
+  const showAdminTab = hasAdminPermissions && adminEnabled;
+
+  if (isLoading) return <LoadingScreen />;
 
   return (
-    <Stack.Navigator
-      initialRouteName={MainScreens.ActivateCardDigitEntry}
-      screenOptions={{
-        ...sharedStackHeaderConfig('', t('general.back'), () => {
-          navigation.goBack();
-        }),
-      }}
+    <Tab.Navigator
+      initialRouteName={TabScreens.Wallet}
+      screenOptions={{ headerShown: false }}
+      tabBar={(props) => <TabBar {...props} />}
     >
-      <Stack.Screen
-        name={MainScreens.ActivateCardDigitEntry}
-        component={ActivateCardDigitEntryScreen}
-      />
-      <Stack.Screen
-        name={MainScreens.ActivateCardResult}
-        component={ActivateCardResultScreen}
-        options={{ headerShown: true, headerTitle: '', headerLeft: () => null }}
-      />
-    </Stack.Navigator>
+      <Tab.Screen name={TabScreens.Wallet} component={WalletStack} />
+      {showAdminTab ? <Tab.Screen name={TabScreens.Admin} component={AdminStack} /> : null}
+      <Tab.Screen name={TabScreens.Profile} component={ProfileStack} />
+    </Tab.Navigator>
   );
 };
-
-const ProfileStack = () => (
-  <Stack.Navigator
-    initialRouteName={MainScreens.ProfileScreen}
-    screenOptions={{ headerShown: false }}
-  >
-    <Stack.Screen name={MainScreens.ProfileScreen} component={ProfileScreen} />
-    <Stack.Screen name={MainScreens.UpdateAccount} component={UpdateAccountScreen} />
-    <Stack.Screen name={MainScreens.UpdateMobile} component={UpdateMobileScreen} />
-    <Stack.Screen name={MainScreens.UpdateAddress} component={UpdateAddressScreen} />
-    <Stack.Screen name={MainScreens.ChangePassword} component={ChangePasswordScreen} />
-    <Stack.Screen name={MainScreens.NewPassword} component={NewPasswordScreen} />
-    <Stack.Screen name={MainScreens.NotificationSettings} component={NotificationSettingsScreen} />
-    <Stack.Screen name={MainScreens.LoginOptions} component={LoginOptionsScreen} />
-    <Stack.Screen name={MainScreens.ActivateCard} component={ActivateCardStack} />
-    <Stack.Screen name={MainScreens.LegalDocuments} component={LegalDocumentsScreen} />
-    <Stack.Screen name={MainScreens.Admin} component={AdminStack} />
-  </Stack.Navigator>
-);
-
-const WalletStack = () => (
-  <Stack.Navigator initialRouteName={MainScreens.Wallet} screenOptions={{ headerShown: false }}>
-    <Stack.Screen name={MainScreens.Wallet} component={WalletScreen} />
-    <Stack.Screen name={MainScreens.Profile} component={ProfileStack} />
-    <Stack.Screen name={MainScreens.Notifications} component={NotificationScreen} />
-    <Stack.Screen name={MainScreens.CardSettings} component={CardSettingsScreen} />
-    <Stack.Screen name={MainScreens.CardLostStolen} component={CardLostStolen} />
-    <Stack.Screen name={MainScreens.CardSpendControl} component={CardSpendControl} />
-    <Stack.Screen
-      name={MainScreens.CardDetails}
-      component={CardDetailScreen}
-      options={{
-        animation: 'fade',
-      }}
-    />
-
-    {/* Modal Group */}
-    <Stack.Group screenOptions={transparentModal}>
-      <Stack.Screen name={MainScreens.TransactionDetails} component={TransactionDetailScreen} />
-      <Stack.Screen name={MainScreens.NoteInput} component={NoteInputScreen} />
-      <Stack.Screen name={MainScreens.AddReceipt} component={AddReceiptScreen} />
-      <Stack.Screen name={MainScreens.ViewReceipt} component={ViewReceiptScreen} />
-      <Stack.Screen name={MainScreens.DeleteReceipt} component={DeleteReceiptScreen} />
-    </Stack.Group>
-
-    {/* DEV menu */}
-    <Stack.Screen name={MainScreens.DevMenu} component={DevMenuScreen} />
-    <Stack.Screen name={MainScreens.DevIconDemo} component={IconDemoScreen} />
-  </Stack.Navigator>
-);
 
 const MainNavigator = () => {
   const { loading, authed, passcodeEnabled, biometricsEnabled, isLoggingOut } = useAuthentication();
@@ -145,12 +78,7 @@ const MainNavigator = () => {
   const { data: user } = useUser();
 
   if (loading || !user || loading2FA || loadingBioPasscode || isLoggingOut) {
-    return (
-      <View style={tw`flex-1 justify-center items-center bg-secondary`}>
-        <StatusBar backgroundColor={tw.color('secondary')} barStyle="light-content" />
-        <ActivityIndicator />
-      </View>
-    );
+    return <LoadingScreen />;
   }
 
   const requiresAuthConfirmation = (passcodeEnabled || biometricsEnabled) && !authed;
@@ -173,7 +101,7 @@ const MainNavigator = () => {
           component={OnboardingNotificationsScreen}
         />
       ) : (
-        <Stack.Screen name={MainScreens.Home} component={WalletStack} />
+        <Stack.Screen name={MainScreens.Tabs} component={MainTabs} />
       )}
 
       <Stack.Screen name={MainScreens.EnterOTP} component={EnterOTPScreen} />

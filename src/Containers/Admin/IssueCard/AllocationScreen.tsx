@@ -16,6 +16,7 @@ import { useAllPermissions } from '@/Queries/permissions';
 import { ActivityIndicator } from '@/Components';
 import { generateAllocationTree, getManageableAllocations } from '@/Helpers/AllocationHelpers';
 import AllocationTree from '@/Containers/Admin/Components/AllocationTree';
+import FadeOutGradient from '@/Components/FadeOutGradient';
 
 const AllocationScreen = () => {
   const { t } = useTranslation();
@@ -42,6 +43,7 @@ const AllocationScreen = () => {
       onPrimaryAction={() => navigate(IssueCardScreens.SpendControls)}
       primaryActionDisabled={!selectedAllocationId}
       onClose={() => navigate(AdminScreens.Employees)}
+      edges={['top']}
     >
       {isLoading ? (
         <View style={tw`flex-1 items-center mt-16`}>
@@ -49,15 +51,20 @@ const AllocationScreen = () => {
         </View>
       ) : (
         !!allocations?.length && (
-          <ScrollView>
-            <View style={tw`pb-16`}>
-              <AllocationTree
-                allocations={allocations}
-                onSelectAllocation={setSelectedAllocationId}
-                selectedAllocationId={selectedAllocationId}
-              />
+          <>
+            <ScrollView>
+              <View style={tw`pb-32`}>
+                <AllocationTree
+                  allocations={allocations}
+                  onSelectAllocation={setSelectedAllocationId}
+                  selectedAllocationId={selectedAllocationId}
+                />
+              </View>
+            </ScrollView>
+            <View style={tw`mt-auto`}>
+              <FadeOutGradient />
             </View>
-          </ScrollView>
+          </>
         )
       )}
     </AdminScreenWrapper>
