@@ -9,21 +9,6 @@ import { adminResponse, oneAllocation } from '@/Helpers/testing/fixtures/allocat
 import { usersResponse } from '@/Helpers/testing/fixtures/user';
 import { bankAccounts } from '@/Helpers/testing/fixtures/business';
 
-jest.mock('@gorhom/bottom-sheet', () => {
-  const RN = require('react-native');
-
-  return {
-    __esModule: true,
-    ...require('@gorhom/bottom-sheet/mock'),
-    // BottomSheetComponent mock throws an error so override as follows
-    BottomSheetView: RN.View,
-    BottomSheetScrollView: RN.ScrollView,
-    BottomSheetSectionList: RN.SectionList,
-    BottomSheetFlatList: RN.FlatList,
-    BottomSheetVirtualizedList: RN.VirtualizedList,
-  };
-});
-
 const businessOwner = usersResponse.find((u) => u.type === 'BUSINESS_OWNER');
 const notABusinessOwner = usersResponse.find((u) => u.type === 'EMPLOYEE');
 

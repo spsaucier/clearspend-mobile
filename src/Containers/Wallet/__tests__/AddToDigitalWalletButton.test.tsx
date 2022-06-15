@@ -85,7 +85,8 @@ describe('Add To Digital Wallet Button', () => {
 
     expect(result.props.cardHolderName).toEqual(TEST_CARDHOLDER);
     expect(result.props.cardLastFour).toEqual(TEST_LAST_4_NOT_IN_WALLET);
-    expect(result.props.ephemeralKey).toEqual(TEST_KEY_RESPONSE);
+
+    await waitFor(() => expect(result.props.ephemeralKey).toEqual(TEST_KEY_RESPONSE));
   });
 
   it("Doesn't display the add to wallet button or request a key when the card is already in the wallet", async () => {
@@ -98,8 +99,6 @@ describe('Add To Digital Wallet Button', () => {
       />,
     );
 
-    const result = queryByTestId('add-to-digital-wallet-button');
-
-    await waitFor(() => expect(result).toBeFalsy());
+    await waitFor(() => expect(queryByTestId('add-to-digital-wallet-button')).toBeFalsy());
   });
 });

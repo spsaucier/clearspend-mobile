@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation, Trans } from 'react-i18next';
@@ -32,8 +32,10 @@ const AdminHomeScreen = () => {
   const [tabsHeight, setTabsHeight] = useState(requestFundsEnabled ? 35 : 0);
   const [actionsHeight, setActionsHeight] = useState(175);
 
-  const initialSnapPoint =
-    getNormalizedSnapPoint() - headerHeight - tabsHeight - actionsHeight - bottom;
+  const initialSnapPoint = useMemo(
+    () => getNormalizedSnapPoint() - headerHeight - tabsHeight - actionsHeight - bottom,
+    [actionsHeight, headerHeight, tabsHeight, bottom],
+  );
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`} edges={['top']}>

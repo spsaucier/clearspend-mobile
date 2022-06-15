@@ -34,6 +34,25 @@ jest.mock('react-native-safe-area-context', () => ({
   }),
 }));
 
+jest.mock('@react-navigation/bottom-tabs', () => ({
+  useBottomTabBarHeight: () => 0,
+}));
+
+jest.mock('@gorhom/bottom-sheet', () => {
+  const RN = require('react-native');
+
+  return {
+    __esModule: true,
+    ...require('@gorhom/bottom-sheet/mock'),
+    // BottomSheetComponent mock throws an error so override as follows
+    BottomSheetView: RN.View,
+    BottomSheetScrollView: RN.ScrollView,
+    BottomSheetSectionList: RN.SectionList,
+    BottomSheetFlatList: RN.FlatList,
+    BottomSheetVirtualizedList: RN.VirtualizedList,
+  };
+});
+
 jest.mock('react-native-device-info', () => ({
   getVersion: jest.fn(() => '1.0'),
   getBuildNumber: jest.fn(() => 10),
@@ -98,7 +117,7 @@ jest.mock('react-i18next', () => ({
     };
   },
   Trans: ({ children, components }) => {
-    return children || components.key1;
+    return children || components.key || components.key1;
   },
   initReactI18next: {
     type: '3rdParty',

@@ -94,9 +94,9 @@ export const AddToDigitalWalletButton = ({
   return (
     <View
       style={tw`items-center`}
-      pointerEvents={disabled || isFetchingEphemeralKey ? 'none' : 'auto'}
+      pointerEvents={disabled || !key || isFetchingEphemeralKey ? 'none' : 'auto'}
     >
-      {!cardIsInWallet && key && card?.lastFour ? (
+      {!cardIsInWallet && card?.lastFour ? (
         <AddToWalletButton
           testID="add-to-digital-wallet-button"
           token={androidCardToken}
@@ -109,7 +109,7 @@ export const AddToDigitalWalletButton = ({
           cardHolderName={cardHolderName}
           cardDescription={t('addToDigitalWallet.digitalWalletDescription')}
           cardLastFour={card.lastFour}
-          ephemeralKey={key}
+          ephemeralKey={key ?? {}}
           onComplete={({ error }) => {
             if (error === null) {
               if (card?.lastFour) {

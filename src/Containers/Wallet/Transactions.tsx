@@ -5,11 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { chain } from 'lodash';
 import { parse, format, parseISO } from 'date-fns';
-import BottomSheet, {
-  BottomSheetView,
-  useBottomSheetDynamicSnapPoints,
-  useBottomSheetInternal,
-} from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView, useBottomSheetInternal } from '@gorhom/bottom-sheet';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { TransactionRow } from '@/Containers/Wallet/Components/TransactionRow';
 import tw from '@/Styles/tailwind';
@@ -52,10 +48,6 @@ const TransactionsContent = ({
   const { data, isFetching, error, hasNextPage, fetchNextPage, isFetchingNextPage } =
     cardTransactionsQuery;
 
-  const onFilterTransactionModalPress = () => {
-    presentFiltersModal();
-  };
-
   useEffect(() => {
     if (!expanded) {
       transactionsListRef.current?.scrollToOffset({ animated: true, offset: 0 });
@@ -68,28 +60,46 @@ const TransactionsContent = ({
     }
   }, [animatedIndex.value]);
 
-  const transactionsWithDate = data?.pages
-    .map((page) => page.content)
-    .flat()
-    .map((x) => {
-      const activityTimeISO = parseISO(x?.activityTime || '');
-      const activityDate = format(activityTimeISO, 'yyyy-MM-dd');
-      return {
-        ...x,
-        activityDate,
-      };
-    });
+  const onFilterTransactionModalPress = () => {
+    presentFiltersModal();
+  };
 
-  const transactionsGroupedByDate = transactionsWithDate
-    ? chain(transactionsWithDate)
-        .groupBy('activityDate')
-        .map((value, key) => ({
-          date: key,
-          transactions: value,
-        }))
-        .orderBy((x) => parse(x.date, 'MM-dd-yyyy', new Date()))
-        .value()
-    : [];
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const transactionsWithDate = useMemo(
+    () =>
+      data?.pages
+        .map((page) => page.content)
+        .flat()
+        .map((x) => {
+          const activityTimeISO = parseISO(x?.activityTime || '');
+          const activityDate = format(activityTimeISO, 'yyyy-MM-dd');
+          return {
+            ...x,
+            activityDate,
+          };
+        }),
+    [data?.pages],
+  );
+
+  const transactionsGroupedByDate = useMemo(
+    () =>
+      transactionsWithDate
+        ? chain(transactionsWithDate)
+            .groupBy('activityDate')
+            .map((value, key) => ({
+              date: key,
+              transactions: value,
+            }))
+            .orderBy((x) => parse(x.date, 'MM-dd-yyyy', new Date()))
+            .value()
+        : [],
+    [transactionsWithDate],
+  );
 
   const transactionsTitleScaleAnimatedStyle = useAnimatedStyle(
     () => ({
@@ -110,16 +120,10 @@ const TransactionsContent = ({
     [animatedPosition, searchYOffset],
   );
 
-  const loadMore = () => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-  };
-
   return (
-    <View style={tw`h-full`}>
+    <BottomSheetView style={tw`h-full`}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={[tw`flex mx-6 content-start`]}>
+        <View style={tw`flex mx-6 content-start`}>
           <AnimatedCSText style={[tw`text-base self-start`, transactionsTitleScaleAnimatedStyle]}>
             {title}
           </AnimatedCSText>
@@ -158,9 +162,7 @@ const TransactionsContent = ({
               {selectedFilters.length > 0
                 ? selectedFilters.map((filter) => (
                     <TouchableOpacity
-                      style={[
-                        tw`flex-row rounded-full mr-4 pl-3 pr-2 pt-1 pb-1 bg-secondary items-center`,
-                      ]}
+                      style={tw`flex-row rounded-full mr-4 pl-3 pr-2 pt-1 pb-1 bg-secondary items-center`}
                       onPress={() => toggleFilter(filter)}
                       key={filter}
                     >
@@ -173,7 +175,7 @@ const TransactionsContent = ({
                 : null}
             </View>
             {displayResultCount ? (
-              <View style={[selectedFilters.length > 0 && tw`mt-5`]}>
+              <View style={selectedFilters.length > 0 && tw`mt-5`}>
                 {/* TODO improve pluralization */}
                 <CSText style={tw`pb-2 text-sm`}>{`${data?.pages[0].totalElements} result${
                   data?.pages[0].totalElements === 1 ? '' : 's'
@@ -194,48 +196,48 @@ const TransactionsContent = ({
             <CSText>{error?.message}</CSText>
           </View>
         ) : transactionsGroupedByDate.length > 0 ? (
-          <>
-            <FlatList<any>
-              scrollEnabled={expanded}
-              data={transactionsGroupedByDate}
-              showsVerticalScrollIndicator={false}
-              ref={transactionsListRef}
-              onEndReached={loadMore}
-              onEndReachedThreshold={0.1}
-              contentContainerStyle={tw.style(
-                'pb-2',
-                !isFetchingNextPage && !hasNextPage ? 'pb-20' : 'pb-2',
-              )}
-              renderItem={({ item, index }) => {
-                const { date, transactions } = item;
-                const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
-                return (
-                  <View style={tw.style(`pb-2`, index === 0 ? 'mt-2' : '')}>
-                    <View style={tw`flex-row justify-between bg-tan px-5 py-2 mb-2`}>
-                      <CSText style={tw`text-xs text-gray-75 uppercase tracking-widest`}>
-                        {format(dateParsed, 'MMM dd, yyyy')}
-                      </CSText>
-                    </View>
-                    {transactions.map((transaction: AccountActivityResponse) => (
-                      <TransactionRow
-                        key={transaction.accountActivityId}
-                        isAdmin={isAdmin}
-                        transaction={transaction}
-                        animatedIndex={animatedIndex}
-                        animatedPosition={animatedPosition}
-                      />
-                    ))}
-                  </View>
-                );
-              }}
-              keyExtractor={(item) => item.date}
-            />
-            {isFetchingNextPage && (
-              <View style={tw`flex-row justify-center items-center h-20 bg-white`}>
-                <ActivityIndicator style={tw`w-6`} bgColor="black" />
-              </View>
+          <FlatList<any>
+            scrollEnabled={expanded}
+            data={transactionsGroupedByDate}
+            showsVerticalScrollIndicator={false}
+            ref={transactionsListRef}
+            onEndReached={loadMore}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={
+              isFetchingNextPage ? (
+                <View style={tw`flex-row justify-center items-center h-20 bg-white`}>
+                  <ActivityIndicator style={tw`w-6`} bgColor="black" />
+                </View>
+              ) : null
+            }
+            contentContainerStyle={tw.style(
+              'pb-2',
+              !isFetchingNextPage && !hasNextPage ? 'pb-20' : 'pb-2',
             )}
-          </>
+            renderItem={({ item, index }) => {
+              const { date, transactions } = item;
+              const dateParsed = parse(date, 'yyyy-MM-dd', new Date());
+              return (
+                <View style={tw.style(`pb-2`, index === 0 ? 'mt-2' : '')}>
+                  <View style={tw`flex-row justify-between bg-tan px-5 py-2 mb-2`}>
+                    <CSText style={tw`text-xs text-gray-75 uppercase tracking-widest`}>
+                      {format(dateParsed, 'MMM dd, yyyy')}
+                    </CSText>
+                  </View>
+                  {transactions.map((transaction: AccountActivityResponse) => (
+                    <TransactionRow
+                      key={transaction.accountActivityId}
+                      isAdmin={isAdmin}
+                      transaction={transaction}
+                      animatedIndex={animatedIndex}
+                      animatedPosition={animatedPosition}
+                    />
+                  ))}
+                </View>
+              );
+            }}
+            keyExtractor={(item) => item.date}
+          />
         ) : (
           <View style={tw`items-center justify-center m-12`}>
             <CSText style={tw`text-base text-center text-gray-50`}>
@@ -244,7 +246,7 @@ const TransactionsContent = ({
           </View>
         )}
       </Animated.View>
-    </View>
+    </BottomSheetView>
   );
 };
 
@@ -267,51 +269,45 @@ const Transactions = ({
   isAdmin,
   title,
 }: TransactionProps) => {
-  const expandedSnapPoint = '100%';
-
-  const snapPointMemo = useMemo(
-    () => [initialSnapPoint, expandedSnapPoint],
-    [initialSnapPoint, expandedSnapPoint],
-  );
-  const { handleContentLayout } = useBottomSheetDynamicSnapPoints(snapPointMemo);
+  const snapPointMemo = useMemo(() => [initialSnapPoint, '100%'], [initialSnapPoint]);
   const [expanded, setExpanded] = useState(false);
 
   return (
     <BottomSheet
       enableHandlePanningGesture
-      style={{
-        backgroundColor: 'white',
-        borderRadius: 24,
-        shadowColor: '#000000',
-        shadowOffset: {
-          width: 0,
-          height: 8,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 24,
-        elevation: 20,
-      }}
       snapPoints={snapPointMemo}
+      style={bottomSheetStyle}
       handleStyle={tw`flex self-center bg-transparent w-12 rounded-full mt-1 mb-3`}
       handleIndicatorStyle={tw`bg-black-20 w-14 h-1`}
       onChange={(e) => setExpanded(e === 1)}
       animateOnMount={animateOnMount}
     >
-      <BottomSheetView onLayout={handleContentLayout}>
-        <TransactionsContent
-          expanded={expanded}
-          title={title}
-          presentFiltersModal={presentFiltersModal}
-          selectedFilters={selectedFilters}
-          toggleFilter={toggleFilter}
-          searchInputComponent={searchInputComponent}
-          cardTransactionsQuery={cardTransactionsQuery}
-          displayResultCount={displayResultCount}
-          isAdmin={isAdmin}
-        />
-      </BottomSheetView>
+      <TransactionsContent
+        expanded={expanded}
+        title={title}
+        presentFiltersModal={presentFiltersModal}
+        selectedFilters={selectedFilters}
+        toggleFilter={toggleFilter}
+        searchInputComponent={searchInputComponent}
+        cardTransactionsQuery={cardTransactionsQuery}
+        displayResultCount={displayResultCount}
+        isAdmin={isAdmin}
+      />
     </BottomSheet>
   );
 };
+
+const bottomSheetStyle = tw.style({
+  backgroundColor: 'white',
+  borderRadius: 24,
+  shadowColor: '#000000',
+  shadowOffset: {
+    width: 0,
+    height: 8,
+  },
+  shadowOpacity: 0.1,
+  shadowRadius: 24,
+  elevation: 20,
+});
 
 export default Transactions;

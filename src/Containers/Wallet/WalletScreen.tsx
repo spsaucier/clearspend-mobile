@@ -151,18 +151,21 @@ const ContentWallet = ({
   const balanceInfoPanelRef = useRef<BottomSheetModal>(null);
   const cardOptionsPanelRef = useRef<BottomSheetModal>(null);
 
-  const initialCardDisplayIndex =
-    params?.initialFocusCardIdx !== undefined && params?.initialFocusCardIdx >= 0
-      ? params?.initialFocusCardIdx
-      : activeCards.findIndex((card) => card.card.cardId === params?.initialFocusedCardId);
+  const initialCardDisplayIndex = useMemo(
+    () =>
+      params?.initialFocusCardIdx !== undefined && params?.initialFocusCardIdx >= 0
+        ? params?.initialFocusCardIdx
+        : activeCards.findIndex((card) => card.card.cardId === params?.initialFocusedCardId),
+    [activeCards, params?.initialFocusCardIdx, params?.initialFocusedCardId],
+  );
 
-  const onCardBalanceInfoPress = () => {
+  const onCardBalanceInfoPress = useCallback(() => {
     balanceInfoPanelRef.current?.present();
-  };
+  }, []);
 
-  const onCardOptionsPress = () => {
+  const onCardOptionsPress = useCallback(() => {
     cardOptionsPanelRef.current?.present();
-  };
+  }, []);
 
   useEffect(() => {
     if (activeCards.length && !isRefetching && !cardsLoading) {
@@ -185,9 +188,6 @@ const ContentWallet = ({
     }
   }, [activeCards, initialCardDisplayIndex, selectedCard, setParams, isRefetching, cardsLoading]);
 
-  const selectedCardId = selectedCard?.card?.cardId;
-  const selectedCardFrozen = selectedCard?.card?.status === 'INACTIVE';
-
   useEffect(() => {
     const idx = carouselRef?.current?.getCurrentIndex() ?? 0;
     if (idx === activeCards.length - 1 && idx !== 0) {
@@ -197,8 +197,18 @@ const ContentWallet = ({
     }
   }, [activeCards.length, selectedCard]);
 
-  const initialSnapPoint =
-    getNormalizedSnapPoint() - headerIconsHeight - (carouselHeight || 0) - insets.bottom;
+  const { selectedCardId, selectedCardFrozen } = useMemo(
+    () => ({
+      selectedCardId: selectedCard?.card?.cardId,
+      selectedCardFrozen: selectedCard?.card?.status === 'INACTIVE',
+    }),
+    [selectedCard],
+  );
+
+  const initialSnapPoint = useMemo(
+    () => getNormalizedSnapPoint() - headerIconsHeight - (carouselHeight || 0) - insets.bottom,
+    [carouselHeight, headerIconsHeight, insets.bottom],
+  );
 
   return (
     <View style={tw`flex-1`}>
@@ -291,7 +301,7 @@ const ContentWallet = ({
         ) : null}
       </View>
 
-      {selectedCardId && carouselHeight ? (
+      {selectedCardId ? (
         <>
           <TransactionsContainer
             selectedCardId={selectedCardId}
