@@ -67,7 +67,7 @@ const MainTabs = () => {
 
 const MainNavigator = () => {
   const { loading, authed, passcodeEnabled, biometricsEnabled, isLoggingOut } = useAuthentication();
-  const { onboardingNotificationsFirstCheck } = useNotificationsSettings();
+  const { shouldPromptEnableNotificationsOnboarding } = useNotificationsSettings();
 
   // TODO: Reenable 2FA setup prompt when backend is fixed
   // const { loading: loading2FA, shouldAct: needs2FA } = useRequire2FA();
@@ -95,7 +95,7 @@ const MainNavigator = () => {
           component={SetBioPasscodeNavigator}
           options={{ animationTypeForReplace: 'push' }}
         />
-      ) : !onboardingNotificationsFirstCheck ? (
+      ) : shouldPromptEnableNotificationsOnboarding ? (
         <Stack.Screen
           name={MainScreens.OnboardingNotifications}
           component={OnboardingNotificationsScreen}
