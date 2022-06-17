@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Path, Svg } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/core';
 import tw from '@/Styles/tailwind';
-import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
+import { AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { WalletScreens, TransactionStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
 import { PlusCircleFilledIcon } from '@/Components/Icons';
 import { CSText } from '@/Components';
+import { useAdminContext } from '@/Hooks/useAdminContext';
 
 type Props = {
   notes: string | null | undefined;
@@ -16,10 +18,13 @@ type Props = {
 
 export const TransactionNote = ({ notes = '', accountActivityId, expenseCategoryId }: Props) => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation<WalletStackProps>();
+  const { isAdmin } = useAdminContext();
+  const { navigate } = useNavigation<TransactionStackProps>();
+
+  const Screens = isAdmin ? AdminScreens : WalletScreens;
 
   const navToNoteInput = () => {
-    navigate(WalletScreens.NoteInput, { accountActivityId, notes, expenseCategoryId });
+    navigate(Screens.NoteInput, { accountActivityId, notes, expenseCategoryId });
   };
 
   const Triangle = () => (

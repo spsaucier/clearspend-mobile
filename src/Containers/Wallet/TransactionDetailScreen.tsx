@@ -8,7 +8,8 @@ import { format, parseISO } from 'date-fns';
 // import MapView, { Marker } from 'react-native-maps';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
-import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
+import { AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { WalletScreens, TransactionStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
 import tw from '@/Styles/tailwind';
 import { ActivityIndicator, Button, CSBottomSheet, CSText } from '@/Components';
 import {
@@ -35,6 +36,7 @@ import { getExpenseCategoryStatus } from '@/Helpers/ExpenseCategoryHelpers';
 import { useExpenseCategories } from '@/Queries/expenseCategory';
 import { getReasonText } from '@/Helpers/DeclineReasonHelpers';
 import { ToastDisplay } from '@/Components/ToastDisplay';
+import { useAdminContext } from '@/Hooks/useAdminContext';
 
 type InfoRowProps = {
   label: string;
@@ -52,7 +54,8 @@ const InfoRow = ({ label = '', value = '', children }: InfoRowProps) => (
 
 export const TransactionDetailScreenContent = () => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation<WalletStackProps>();
+  const { isAdmin } = useAdminContext();
+  const { navigate } = useNavigation<TransactionStackProps>();
   const route = useRoute<any>();
   const { params } = route;
   const { transactionId: accountActivityId } = params;
@@ -66,6 +69,8 @@ export const TransactionDetailScreenContent = () => {
     useUpdateTransaction(accountActivityId);
   const { data: business } = useBusiness();
   const { data: user } = useUser();
+
+  const Screens = isAdmin ? AdminScreens : WalletScreens;
 
   const onUploadReceiptFromGalleryFinished = () => {
     Toast.show({
@@ -137,7 +142,7 @@ export const TransactionDetailScreenContent = () => {
 
   const onReceiptModalPress = () => {
     if (thereAreReceipts) {
-      navigate(WalletScreens.ViewReceipt, {
+      navigate(Screens.ViewReceipt, {
         accountActivityId: accountActivityId!,
         receiptIds: receipt?.receiptId!,
       });
@@ -162,7 +167,7 @@ export const TransactionDetailScreenContent = () => {
   };
 
   const onTakePhotoPress = () => {
-    navigate(WalletScreens.AddReceipt, {
+    navigate(Screens.AddReceipt, {
       accountActivityId,
     });
   };

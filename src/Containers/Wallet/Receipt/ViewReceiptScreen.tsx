@@ -12,8 +12,10 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   WalletScreens,
   WalletStackParamTypes,
-  WalletStackProps,
+  TransactionStackProps,
 } from '@/Navigators/Wallet/WalletNavigatorTypes';
+import { AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { useAdminContext } from '@/Hooks/useAdminContext';
 
 import tw from '@/Styles/tailwind';
 import { CloseIcon, MinusCircleFilledIcon, PlusCircleFilledIcon } from '@/Components/Icons';
@@ -31,7 +33,8 @@ type ViewReceiptRouteProp = ViewReceiptNavigationProps['route'];
 
 const ViewReceiptScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<WalletStackProps>();
+  const { isAdmin } = useAdminContext();
+  const { navigate, goBack } = useNavigation<TransactionStackProps>();
   const route = useRoute<ViewReceiptRouteProp>();
   const { params } = route;
   const { accountActivityId, receiptIds } = params;
@@ -40,13 +43,15 @@ const ViewReceiptScreen = () => {
   const [controlsEnabled, setControlsEnabled] = useState(true);
   const addReceiptPanelRef = useRef<BottomSheetModal>(null);
 
+  const Screens = isAdmin ? AdminScreens : WalletScreens;
+
   const onUploadReceiptFromGalleryFinished = () => {
     Toast.show({
       type: 'success',
       text1: t('toasts.receiptUploadedSuccessfully'),
     });
 
-    navigation.navigate(WalletScreens.TransactionDetails, {
+    navigate(Screens.TransactionDetails, {
       transactionId: accountActivityId,
     });
   };
@@ -61,14 +66,14 @@ const ViewReceiptScreen = () => {
   };
 
   const onDeleteReceiptPress = () => {
-    navigation.navigate(WalletScreens.DeleteReceipt, {
+    navigate(Screens.DeleteReceipt, {
       accountActivityId,
       receiptId: currentReceiptId,
     });
   };
 
   const onTakePhotoPress = () => {
-    navigation.navigate(WalletScreens.AddReceipt, {
+    navigate(Screens.AddReceipt, {
       accountActivityId,
     });
   };
@@ -126,7 +131,7 @@ const ViewReceiptScreen = () => {
           <TouchableOpacity
             style={tw`self-end`}
             onPress={() => {
-              navigation.goBack();
+              goBack();
             }}
           >
             <CloseIcon style={tw`mr-4 mt-6`} size={32} color={tw.color('white')} />

@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { UseInfiniteQueryResult } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
@@ -13,6 +14,9 @@ import { ActivityIndicator, AnimatedCSText, CloseIconButton, CSText } from '@/Co
 import { FilterIcon } from '@/Components/Icons';
 import { TransactionFilterOption } from '@/Containers/Wallet/Components/FilterTransactionsBottomSheet';
 import { PagedDataAccountActivityResponse, AccountActivityResponse } from '@/generated/capital';
+import { AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { WalletScreens, TransactionStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
+import { useAdminContext } from '@/Hooks/useAdminContext';
 
 type SharedProps = {
   presentFiltersModal: () => void;
@@ -26,7 +30,6 @@ type SharedProps = {
 type TransactionsContentProps = {
   expanded: boolean;
   title: string;
-  isAdmin?: boolean;
 } & SharedProps;
 
 const TransactionsContent = ({
@@ -38,15 +41,24 @@ const TransactionsContent = ({
   cardTransactionsQuery,
   displayResultCount,
   title,
-  isAdmin,
 }: TransactionsContentProps) => {
   const { t } = useTranslation();
+  const { navigate } = useNavigation<TransactionStackProps>();
+  const { isAdmin } = useAdminContext();
   const { animatedPosition, animatedIndex } = useBottomSheetInternal();
   const transactionsListRef = useRef<any>(null);
   const [searchYOffset, setSearchYOffset] = useState(0);
 
   const { data, isFetching, error, hasNextPage, fetchNextPage, isFetchingNextPage } =
     cardTransactionsQuery;
+
+  const Screens = isAdmin ? AdminScreens : WalletScreens;
+
+  const onTransactionPress = (transactionId?: string) => {
+    if (!transactionId) return;
+
+    navigate(Screens.TransactionDetails, { transactionId });
+  };
 
   useEffect(() => {
     if (!expanded) {
@@ -227,10 +239,10 @@ const TransactionsContent = ({
                   {transactions.map((transaction: AccountActivityResponse) => (
                     <TransactionRow
                       key={transaction.accountActivityId}
-                      isAdmin={isAdmin}
                       transaction={transaction}
                       animatedIndex={animatedIndex}
                       animatedPosition={animatedPosition}
+                      onPress={() => onTransactionPress(transaction.accountActivityId)}
                     />
                   ))}
                 </View>
@@ -253,7 +265,6 @@ const TransactionsContent = ({
 type TransactionProps = {
   initialSnapPoint: number;
   animateOnMount?: boolean;
-  isAdmin?: boolean;
   title: string;
 } & SharedProps;
 
@@ -266,7 +277,6 @@ const Transactions = ({
   cardTransactionsQuery,
   displayResultCount,
   animateOnMount,
-  isAdmin,
   title,
 }: TransactionProps) => {
   const snapPointMemo = useMemo(() => [initialSnapPoint, '100%'], [initialSnapPoint]);
@@ -291,7 +301,6 @@ const Transactions = ({
         searchInputComponent={searchInputComponent}
         cardTransactionsQuery={cardTransactionsQuery}
         displayResultCount={displayResultCount}
-        isAdmin={isAdmin}
       />
     </BottomSheet>
   );

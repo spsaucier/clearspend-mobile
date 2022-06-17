@@ -10,6 +10,10 @@ import { usersResponse } from '@/Helpers/testing/fixtures/user';
 import { transactions } from '@/Helpers/testing/fixtures/transactions';
 import { MockFeatureFlagsProvider } from '@/Helpers/testing/MockFeatureFlagsProvider';
 
+jest.mock('@/Hooks/useAdminContext', () => ({
+  useAdminContext: () => ({ isAdmin: false }),
+}));
+
 const server = setupServer(
   rest.get(`/users`, (req, res, ctx) => res(ctx.json(usersResponse[0]))),
   rest.post(`/account-activity`, (req, res, ctx) => res(ctx.json(transactions))),

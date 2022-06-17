@@ -74,7 +74,6 @@ const AdminHomeScreen = () => {
                 <TransactionsContainer
                   initialSnapPoint={initialSnapPoint}
                   animateOnMount={false}
-                  isAdmin
                   title={t('admin.transactionsTitle')}
                 />
                 <FadeOutGradient />

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
+import LinearGradient from 'react-native-linear-gradient';
 import tw from '@/Styles/tailwind';
 import { ProfileMenuRow } from '@/Containers/Profile/Components/ProfileMenuRow';
 import { CSText, FocusAwareStatusBar, ActivityIndicator } from '@/Components';
@@ -120,7 +121,7 @@ const ProfileScreen = () => {
               />
             ) : null}
           </View>
-          <View style={tw`items-center my-6 px-5`}>
+          <View style={tw`items-center mt-8 mb-16 px-5`}>
             <TouchableOpacity onPress={logout}>
               <CSText style={tw`text-primary mb-2`}>{t('profile.profileMenu.logOut')}</CSText>
             </TouchableOpacity>
@@ -130,6 +131,11 @@ const ProfileScreen = () => {
           </View>
         </View>
       </ScrollView>
+      <LinearGradient
+        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.25)']}
+        style={tw`absolute left-0 right-0 bottom-0 h-12`}
+        pointerEvents="none"
+      />
     </SafeAreaView>
   );
 };

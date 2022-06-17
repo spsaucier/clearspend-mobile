@@ -1,10 +1,3 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import React, {
   Dispatch,
   forwardRef,
@@ -14,15 +7,11 @@ import React, {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/core';
-import tw from '@/Styles/tailwind';
-
-import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
-
-import { CSText } from '@/Components';
+import { User } from 'generated/capital';
+import { WalletScreens, TransactionStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
 import { EyeIcon, SnowflakeIcon, KeyIcon } from '@/Components/Icons';
 import {
   useFreezeCard,
@@ -35,6 +24,10 @@ import { showAdmin } from '@/Helpers/PermissionsHelpers';
 import { useFeatureFlag } from '@/Hooks/useFeatureFlag';
 import { ArchiveIcon } from '@/Components/Icons/archiveIcon';
 import { useCancelCard } from '@/Queries/card';
+import OptionsBottomSheet from '@/Components/OptionsBottomSheet';
+import OptionsBottomSheetButton from '@/Components/OptionsBottomSheetButton';
+import { useAdminContext } from '@/Hooks/useAdminContext';
+import { AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 
 type Props = {
   cardId: string | undefined;
@@ -42,22 +35,28 @@ type Props = {
   isCardFrozen: boolean;
   setIsCancelling: Dispatch<SetStateAction<boolean>>;
   nextIndex: number | undefined;
+  employee?: User;
 };
 
 export const CardOptionsBottomSheet = forwardRef(
   (
-    { cardId, hideCardInfoButton = false, isCardFrozen, setIsCancelling, nextIndex }: Props,
+    {
+      cardId,
+      hideCardInfoButton = false,
+      isCardFrozen,
+      setIsCancelling,
+      nextIndex,
+      employee,
+    }: Props,
     ref: any,
   ) => {
     const { t } = useTranslation();
-    const { navigate } = useNavigation<WalletStackProps>();
+    const { isAdmin } = useAdminContext();
+    const { navigate } = useNavigation<TransactionStackProps>();
 
     // TODO support multiple allocations/spend controls on cards
     // const { data } = useCard(cardId);
     const showSpendControlsRow = false; // useSpendControls(data?.card?.allocationId);
-
-    const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
-      useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
 
     const [isFrozen, setIsFrozen] = useState<boolean>(isCardFrozen);
 
@@ -126,25 +125,16 @@ export const CardOptionsBottomSheet = forwardRef(
         });
     }, [mutateUnfreeze, t]);
 
-    const renderBackdrop = useCallback(
-      ({ animatedIndex, animatedPosition, style }: BottomSheetDefaultBackdropProps) => (
-        <BottomSheetBackdrop
-          animatedIndex={animatedIndex}
-          animatedPosition={animatedPosition}
-          style={style}
-          disappearsOnIndex={-1}
-          appearsOnIndex={0}
-          pressBehavior="close"
-        />
-      ),
-      [],
-    );
-
     const confirmCardCancel = useCallback(() => {
       closePanel();
       mutateCancel({ cardId })
         .then(() => {
-          navigate(WalletScreens.Home, { initialFocusCardIdx: nextIndex });
+          if (isAdmin && employee) {
+            navigate(AdminScreens.EmployeeWallet, { employee, initialFocusCardIdx: nextIndex });
+          } else {
+            navigate(WalletScreens.Home, { initialFocusCardIdx: nextIndex });
+          }
+
           Toast.show({
             type: 'success',
             text1: t('toasts.cancelCard.success'),
@@ -178,69 +168,47 @@ export const CardOptionsBottomSheet = forwardRef(
     );
 
     return (
-      <BottomSheetModal
-        ref={ref}
-        snapPoints={animatedSnapPoints}
-        handleHeight={animatedHandleHeight}
-        contentHeight={animatedContentHeight}
-        backdropComponent={renderBackdrop}
-        handleIndicatorStyle={tw`bg-white w-0 h-0`} // TODO Check on closing UI
-        backgroundStyle={tw`bg-white`}
-      >
-        <BottomSheetView onLayout={handleContentLayout}>
-          <SafeAreaView style={tw`flex-1 pt-4 pb-8 px-5`} edges={['bottom']}>
-            <CSText style={tw`text-lg font-medium mb-4`}>{t('card.options.cardOptions')}</CSText>
-
-            <TouchableOpacity
-              style={tw`flex-row items-center py-4`}
-              onPress={() => {
-                if (!isFrozen) freeze();
-                else unfreeze();
-              }}
-              disabled={isFreezing || isUnfreezing}
-            >
-              <SnowflakeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
-              {isFreezing || isUnfreezing ? (
-                <CSText style={tw`text-base`}>
-                  {t(isUnfreezing ? 'card.options.unfreezingCard' : 'card.options.freezingCard')}
-                </CSText>
-              ) : (
-                <CSText style={tw`text-base`}>
-                  {t(isFrozen ? 'card.options.unfreezeCard' : 'card.options.freezeCard')}
-                </CSText>
-              )}
-            </TouchableOpacity>
-            {!hideCardInfoButton && !isFrozen && !isFreezing && !isUnfreezing && (
-              <TouchableOpacity
-                style={tw`flex-row items-center py-4`}
-                onPress={navigateToCardScreen}
-              >
-                <EyeIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
-                <CSText style={tw`text-base`}>{t('card.options.showCardInfo')}</CSText>
-              </TouchableOpacity>
-            )}
-            {showSpendControlsRow && (
-              <TouchableOpacity
-                style={tw`flex-row items-center py-4`}
-                onPress={navigateToCardSpendControlScreen}
-              >
-                <KeyIcon style={tw`mr-3 w-6`} color={tw.color('black')} />
-                <CSText style={tw`text-base`}>{t('card.options.spendControls')}</CSText>
-              </TouchableOpacity>
-            )}
-            {showCancelCardOption ? (
-              <TouchableOpacity style={tw`flex-row items-center py-4`} onPress={cancelAlert}>
-                <ArchiveIcon style={tw`mr-3 w-6`} color={tw.color('darkError')} />
-                <CSText style={tw`text-base text-darkError`}>{t('card.options.cancelCard')}</CSText>
-              </TouchableOpacity>
-            ) : null}
-          </SafeAreaView>
-        </BottomSheetView>
-      </BottomSheetModal>
+      <OptionsBottomSheet ref={ref} title={t('card.options.cardOptions')}>
+        <OptionsBottomSheetButton
+          text={
+            isFreezing || isUnfreezing
+              ? t(isUnfreezing ? 'card.options.unfreezingCard' : 'card.options.freezingCard')
+              : t(isFrozen ? 'card.options.unfreezeCard' : 'card.options.freezeCard')
+          }
+          onPress={() => {
+            if (!isFrozen) freeze();
+            else unfreeze();
+          }}
+          disabled={isFreezing || isUnfreezing}
+          icon={SnowflakeIcon}
+        />
+        {!hideCardInfoButton && !isFrozen && !isFreezing && !isUnfreezing && (
+          <OptionsBottomSheetButton
+            icon={EyeIcon}
+            text={t('card.options.showCardInfo')}
+            onPress={navigateToCardScreen}
+          />
+        )}
+        {showSpendControlsRow && (
+          <OptionsBottomSheetButton
+            icon={KeyIcon}
+            text={t('card.options.spendControls')}
+            onPress={navigateToCardSpendControlScreen}
+          />
+        )}
+        {showCancelCardOption && (
+          <OptionsBottomSheetButton
+            text={t('card.options.cancelCard')}
+            icon={ArchiveIcon}
+            onPress={cancelAlert}
+          />
+        )}
+      </OptionsBottomSheet>
     );
   },
 );
 
 CardOptionsBottomSheet.defaultProps = {
   hideCardInfoButton: false,
+  employee: undefined,
 };

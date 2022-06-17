@@ -35,6 +35,10 @@ jest.mock('@react-navigation/core', () => ({
   }),
 }));
 
+jest.mock('@/Hooks/useAdminContext', () => ({
+  useAdminContext: () => ({ isAdmin: false }),
+}));
+
 const server = setupServer(
   rest.get(`/expense-categories/list`, (req, res, ctx) => res(ctx.json(categories))),
   rest.get(`/businesses`, (req, res, ctx) => res(ctx.json(business))),

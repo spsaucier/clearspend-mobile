@@ -337,6 +337,7 @@ const ContentWallet = ({
         setIsCancelling={setIsCancelling}
         nextIndex={nextIndex}
         hideCardInfoButton={isEmployeeWallet}
+        employee={employee}
       />
       <ActivityOverlay
         visible={isCancelling}

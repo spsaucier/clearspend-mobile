@@ -3,18 +3,18 @@ import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation, useRoute } from '@react-navigation/core';
-
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
 import {
   WalletScreens,
   WalletStackParamTypes,
-  WalletStackProps,
+  TransactionStackProps,
 } from '@/Navigators/Wallet/WalletNavigatorTypes';
-
 import { Button, CSText } from '@/Components';
 import { CloseIcon } from '@/Components/Icons';
 import { useDeleteReceipt } from '@/Queries/receipt';
 import tw from '@/Styles/tailwind';
+import { useAdminContext } from '@/Hooks/useAdminContext';
 
 type DeleteReceiptNavigationProps = NativeStackScreenProps<
   WalletStackParamTypes,
@@ -23,13 +23,16 @@ type DeleteReceiptNavigationProps = NativeStackScreenProps<
 type DeleteReceiptRouteProp = DeleteReceiptNavigationProps['route'];
 
 const DeleteReceiptScreen = () => {
+  const { isAdmin } = useAdminContext();
   const route = useRoute<DeleteReceiptRouteProp>();
   const { params } = route;
   const { accountActivityId, receiptId } = params;
 
-  const navigation = useNavigation<WalletStackProps>();
+  const navigation = useNavigation<TransactionStackProps>();
   const { t } = useTranslation();
   const { mutate: deleteReceipt, isLoading } = useDeleteReceipt(receiptId, accountActivityId);
+
+  const Screens = isAdmin ? AdminScreens : WalletScreens;
 
   const onGoBackPress = () => navigation.goBack();
   const ondeleteReceiptPress = () => {
@@ -37,7 +40,7 @@ const DeleteReceiptScreen = () => {
       { receiptId },
       {
         onSuccess: () => {
-          navigation.navigate(WalletScreens.TransactionDetails, {
+          navigation.navigate(Screens.TransactionDetails, {
             transactionId: accountActivityId,
           });
         },

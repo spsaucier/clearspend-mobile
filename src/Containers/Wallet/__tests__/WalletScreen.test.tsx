@@ -41,6 +41,10 @@ jest.mock('@stripe/stripe-react-native', () => ({
   },
 }));
 
+jest.mock('@/Hooks/useAdminContext', () => ({
+  useAdminContext: () => ({ isAdmin: false }),
+}));
+
 const server = setupServer(
   rest.get(`/users/cards`, (req, res, ctx) => res(ctx.json(userCards))),
   rest.get(`/roles-and-permissions/allPermissions`, (req, res, ctx) =>

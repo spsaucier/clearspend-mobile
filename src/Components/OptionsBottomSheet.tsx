@@ -6,7 +6,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import React, { forwardRef, useCallback } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 import tw from '@/Styles/tailwind';
 import { CSText as Text } from '@/Components';
 
@@ -42,10 +42,10 @@ const OptionsBottomSheet = forwardRef<BottomSheetModal, Props>(({ children, titl
       backdropComponent={renderBackdrop}
     >
       <BottomSheetView onLayout={handleContentLayout}>
-        <SafeAreaView style={tw`flex-1 pt-4 pb-8 px-5`} edges={['bottom']}>
+        <View style={tw`flex-1 pt-4 pb-8 px-5`}>
           <Text style={tw`mb-5`}>{title}</Text>
           {children}
-        </SafeAreaView>
+        </View>
       </BottomSheetView>
     </BottomSheetModal>
   );

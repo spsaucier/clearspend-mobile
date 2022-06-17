@@ -1,47 +1,30 @@
 import { Image, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { format, parseISO } from 'date-fns';
 import { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { AccountActivityResponse } from 'generated/capital';
 import tw from '@/Styles/tailwind';
-
-import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
-
 import { formatCurrency, sentenceCase } from '@/Helpers/StringHelpers';
 import { AnimatedView, CSText } from '@/Components';
 import { MerchantCategoryIcon } from '@/Components/MerchantCategoryIcon';
 import { CategoryIcon, ReceiptIcon } from '@/Components/Icons';
+import { useAdminContext } from '@/Hooks/useAdminContext';
 
 type Props = {
-  isAdmin?: boolean;
   transaction: AccountActivityResponse;
   animatedIndex?: any;
   animatedPosition?: any;
   expenseDetails?: any;
+  onPress: () => void;
 };
 
 export const TransactionRow = ({
-  transaction: {
-    accountActivityId,
-    status,
-    activityTime,
-    receipt,
-    expenseDetails,
-    merchant,
-    card,
-    amount,
-  },
-  isAdmin,
+  transaction: { status, activityTime, receipt, expenseDetails, merchant, card, amount },
   animatedIndex,
   animatedPosition,
+  onPress,
 }: Props) => {
-  const { navigate } = useNavigation<WalletStackProps>();
-  const handleItemOnPress = () => {
-    if (accountActivityId)
-      navigate(WalletScreens.TransactionDetails, { transactionId: accountActivityId });
-  };
-
+  const { isAdmin } = useAdminContext();
   const statusDeclined = status === 'DECLINED';
   const statusFormatted = sentenceCase(status || '');
 
@@ -59,7 +42,7 @@ export const TransactionRow = ({
   const hasExpenseCategory = !!expenseDetails;
 
   return (
-    <TouchableOpacity style={tw`px-5 py-2`} onPress={handleItemOnPress}>
+    <TouchableOpacity style={tw`px-5 py-2`} onPress={onPress}>
       <View style={tw`flex-row items-center`}>
         <View
           style={[

@@ -92,6 +92,13 @@ export enum AdminScreens {
   EmployeeWallet = 'Employee Wallet',
   CreateAllocation = 'Create Allocation',
   CreateEmployee = 'Create Employee',
+
+  // Transaction Screens
+  TransactionDetails = 'Admin Transaction Details',
+  NoteInput = 'Admin Note Input',
+  AddReceipt = 'Admin Add Receipt',
+  ViewReceipt = 'Admin View Receipt',
+  DeleteReceipt = 'Admin Delete Receipt',
 }
 
 export type AdminStackParamTypes = {
@@ -106,7 +113,22 @@ export type AdminStackParamTypes = {
     userRoles: UserRolesAndPermissionsRecord[];
     userType: 'EMPLOYEE' | 'BUSINESS_OWNER';
   };
-  [AdminScreens.EmployeeWallet]: { employee: User };
+  [AdminScreens.EmployeeWallet]: {
+    employee: User;
+    initialFocusedCardId?: string;
+    initialFocusCardIdx?: number;
+  };
   [AdminScreens.CreateAllocation]: undefined;
   [AdminScreens.CreateEmployee]: undefined;
+
+  // Transaction Screens
+  [AdminScreens.TransactionDetails]: { transactionId: string };
+  [AdminScreens.NoteInput]: {
+    accountActivityId: string;
+    notes: string | null;
+    expenseCategoryId: string | undefined;
+  };
+  [AdminScreens.AddReceipt]: { accountActivityId: string };
+  [AdminScreens.ViewReceipt]: { accountActivityId: string; receiptIds: string[] };
+  [AdminScreens.DeleteReceipt]: { accountActivityId: string; receiptId: string };
 };

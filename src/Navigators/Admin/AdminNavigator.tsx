@@ -12,6 +12,8 @@ import {
   CreateAllocationScreens,
   CreateEmployeeScreens,
 } from '@/Navigators/Admin/AdminNavigatorTypes';
+
+import { AdminProvider } from '@/Services/Admin/AdminProvider';
 import { IssueCardProvider } from '@/Services/Admin/IssueCardProvider';
 import { ManageAllocationProvider } from '@/Services/Admin/ManageAllocationProvider';
 import { NewAllocationProvider } from '@/Services/Admin/NewAllocationProvider';
@@ -56,6 +58,15 @@ import EmployeeLastNameScreen from '@/Containers/Admin/CreateEmployee/EmployeeLa
 import EmployeeEmailScreen from '@/Containers/Admin/CreateEmployee/EmployeeEmailScreen';
 import EmployeeCreateRequestScreen from '@/Containers/Admin/CreateEmployee/EmployeeCreateRequestScreen';
 import EmployeeConfirmationScreen from '@/Containers/Admin/CreateEmployee/EmployeeConfirmationScreen';
+
+// Transaction Screens
+import TransactionDetailScreen from '@/Containers/Wallet/TransactionDetailScreen';
+import NoteInputScreen from '@/Containers/Wallet/NoteInputScreen';
+import AddReceiptScreen from '@/Containers/Wallet/Receipt/AddReceiptScreen';
+import ViewReceiptScreen from '@/Containers/Wallet/Receipt/ViewReceiptScreen';
+import DeleteReceiptScreen from '@/Containers/Wallet/Receipt/DeleteReceiptScreen';
+
+import { transparentModal } from '@/Navigators/Wallet/WalletNavigator';
 
 const CreateEmployeeStack = createNativeStackNavigator<CreateEmployeeStackParamTypes>();
 
@@ -202,14 +213,36 @@ export const CreateAllocationNavigator = () => (
 const AdminStack = createNativeStackNavigator<AdminStackParamTypes>();
 
 export const AdminNavigator = () => (
-  <AdminStack.Navigator initialRouteName={AdminScreens.Home} screenOptions={{ headerShown: false }}>
-    <AdminStack.Screen name={AdminScreens.Home} component={AdminHomeScreen} />
-    <AdminStack.Screen name={AdminScreens.Employees} component={AdminEmployeesScreen} />
-    <AdminStack.Screen name={AdminScreens.Allocations} component={AdminAllocationsScreen} />
-    <AdminStack.Screen name={AdminScreens.EmployeeWallet} component={WalletScreen} />
-    <AdminStack.Screen name={AdminScreens.IssueCard} component={IssueCardNavigator} />
-    <AdminStack.Screen name={AdminScreens.ManageAllocation} component={ManageAllocationNavigator} />
-    <AdminStack.Screen name={AdminScreens.CreateAllocation} component={CreateAllocationNavigator} />
-    <AdminStack.Screen name={AdminScreens.CreateEmployee} component={CreateEmployeeNavigator} />
-  </AdminStack.Navigator>
+  <AdminProvider isAdmin>
+    <AdminStack.Navigator
+      initialRouteName={AdminScreens.Home}
+      screenOptions={{ headerShown: false }}
+    >
+      <AdminStack.Screen name={AdminScreens.Home} component={AdminHomeScreen} />
+      <AdminStack.Screen name={AdminScreens.Employees} component={AdminEmployeesScreen} />
+      <AdminStack.Screen name={AdminScreens.Allocations} component={AdminAllocationsScreen} />
+      <AdminStack.Screen name={AdminScreens.EmployeeWallet} component={WalletScreen} />
+      <AdminStack.Screen name={AdminScreens.IssueCard} component={IssueCardNavigator} />
+      <AdminStack.Screen
+        name={AdminScreens.ManageAllocation}
+        component={ManageAllocationNavigator}
+      />
+      <AdminStack.Screen
+        name={AdminScreens.CreateAllocation}
+        component={CreateAllocationNavigator}
+      />
+      <AdminStack.Screen name={AdminScreens.CreateEmployee} component={CreateEmployeeNavigator} />
+
+      <AdminStack.Group screenOptions={transparentModal}>
+        <AdminStack.Screen
+          name={AdminScreens.TransactionDetails}
+          component={TransactionDetailScreen}
+        />
+        <AdminStack.Screen name={AdminScreens.NoteInput} component={NoteInputScreen} />
+        <AdminStack.Screen name={AdminScreens.AddReceipt} component={AddReceiptScreen} />
+        <AdminStack.Screen name={AdminScreens.ViewReceipt} component={ViewReceiptScreen} />
+        <AdminStack.Screen name={AdminScreens.DeleteReceipt} component={DeleteReceiptScreen} />
+      </AdminStack.Group>
+    </AdminStack.Navigator>
+  </AdminProvider>
 );

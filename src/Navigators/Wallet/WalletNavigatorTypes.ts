@@ -1,5 +1,7 @@
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { AdminScreens, AdminStackParamTypes } from '@/Navigators/Admin/AdminNavigatorTypes';
+
 export enum WalletScreens {
   Home = 'Wallet Home',
   Notifications = 'Wallet Notifications',
@@ -36,3 +38,8 @@ export type WalletStackParamTypes = {
 };
 
 export type WalletStackProps = NativeStackNavigationProp<WalletStackParamTypes, WalletScreens>;
+
+export type TransactionStackProps = NativeStackNavigationProp<
+  AdminStackParamTypes & WalletStackParamTypes,
+  AdminScreens | WalletScreens
+>;

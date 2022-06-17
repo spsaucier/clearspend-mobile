@@ -6,21 +6,22 @@ import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 import { Camera, CameraDevice } from 'react-native-vision-camera';
-
-import { WalletScreens, WalletStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
-
+import { AdminScreens } from '@/Navigators/Admin/AdminNavigatorTypes';
+import { WalletScreens, TransactionStackProps } from '@/Navigators/Wallet/WalletNavigatorTypes';
 import { Button, CSText } from '@/Components';
 import { CloseIcon, LightningIcon, LightningOffIcon } from '@/Components/Icons';
 import { ActivityOverlay } from '@/Components/ActivityOverlay';
 import tw from '@/Styles/tailwind';
 import useUploadReceipt from '@/Hooks/useUploadReceipt';
 import { mixpanel } from '@/Services/utils/analytics';
+import { useAdminContext } from '@/Hooks/useAdminContext';
 
 const imageType = 'jpeg';
 
 const AddReceiptScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<WalletStackProps>();
+  const { isAdmin } = useAdminContext();
+  const navigation = useNavigation<TransactionStackProps>();
   const route = useRoute();
   const isFocused = useIsFocused();
 
@@ -32,6 +33,8 @@ const AddReceiptScreen = () => {
   const [previewURI, setPreviewURI] = useState<string>();
   const [processingPicture, setProcessingPicture] = useState<boolean>(false);
   const [flashOn, setFlashOn] = useState(false);
+
+  const Screens = isAdmin ? AdminScreens : WalletScreens;
 
   const { uploadReceiptState, uploadReceipt, isUploading } = useUploadReceipt({
     accountActivityId,
@@ -115,7 +118,7 @@ const AddReceiptScreen = () => {
 
   useEffect(() => {
     if (linked) {
-      navigation.navigate(WalletScreens.TransactionDetails, {
+      navigation.navigate(Screens.TransactionDetails, {
         transactionId: accountActivityId,
       });
     }

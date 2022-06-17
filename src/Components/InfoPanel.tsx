@@ -8,7 +8,6 @@ import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typesc
 import React, { forwardRef, useCallback, useMemo } from 'react';
 import { Trans } from 'react-i18next';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from './Button';
 import { CSText } from './Text';
 import tw from '@/Styles/tailwind';
@@ -44,7 +43,6 @@ export const InfoPanel = forwardRef(
     };
 
     return (
-      // <BottomSheetModalProvider>
       <BottomSheetModal
         ref={ref}
         snapPoints={animatedSnapPoints}
@@ -55,7 +53,7 @@ export const InfoPanel = forwardRef(
         backgroundStyle={tw`bg-secondary`}
       >
         <BottomSheetView onLayout={handleContentLayout}>
-          <SafeAreaView style={tw`flex-1 pt-4 pb-8 px-5`} edges={['bottom']}>
+          <View style={tw`flex-1 pt-4 pb-8 px-5`}>
             <CSText style={tw`text-xl text-white`} testID="infoPanelTitleText">
               <Trans
                 i18nKey={title as string}
@@ -74,10 +72,9 @@ export const InfoPanel = forwardRef(
                 {okButtonText}
               </Button>
             </View>
-          </SafeAreaView>
+          </View>
         </BottomSheetView>
       </BottomSheetModal>
-      // </BottomSheetModalProvider>
     );
   },
 );
